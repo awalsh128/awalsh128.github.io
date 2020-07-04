@@ -1,0 +1,1662 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.19.3 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Understanding type theory (Part one: Lambda Calculus). - Andrew Walsh’s Website</title>
+<meta name="description" content="Series Introduction">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Andrew Walsh's Website">
+<meta property="og:title" content="Understanding type theory (Part one: Lambda Calculus).">
+<meta property="og:url" content="http://localhost:4000/understanding-type-theory-part-one/">
+
+
+  <meta property="og:description" content="Series Introduction">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2013-04-14T20:57:00-07:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/understanding-type-theory-part-one/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Andrew Walsh",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Andrew Walsh's Website Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--posts wide">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Andrew Walsh's Website
+          <span class="site-subtitle">Foobar baz</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="">Notes</a>
+            </li><li class="masthead__menu-item">
+              <a href="/">Posts</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name"></h3>
+    
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">Understanding type theory (Part one: Lambda Calculus).</h1>
+    
+    <h3 id="series-introduction">Series Introduction</h3>
+
+<p>I initially was going to put this together as a single post but quickly
+realized that it would be a bit much to try and put all of the
+information into one post. To make it more digestable, I decided to
+break it up into separate parts. This is by no means a comprehensive
+study of lambda calculus or type theory, but rather a quick introductory
+series so you can can get started. My goal is that, by the end, you will
+be able to understand enough to start reading papers on your own and
+have some cursory knowledge of type systems. Also, I am targeting
+programmers that want to get a better understanding of the theory behind
+type systems in compiler design. If you are comfortable programming in
+functional languages, then you will start to see many parallels quickly.
+Although, I will give examples using an imperative approach to cover
+programmers who may not immediately appreciate these parallels.</p>
+
+<h3 id="mathematical-formalisms">Mathematical Formalisms</h3>
+
+<p>The mathematical underpinnings for describing computability is mostly
+famously attributed to <a href="http://en.wikipedia.org/wiki/Kurt_G%C3%B6del">Kurt
+Gödel</a>, <a href="http://en.wikipedia.org/wiki/Alan_Turing">Alan
+Turing</a> and <a href="http://en.wikipedia.org/wiki/Alonzo_Church">Alonzo
+Church</a>. Church and Turing
+took different routes to <a href="http://en.wikipedia.org/wiki/Church%E2%80%93Turing_thesis">the same ending
+conclusion</a>
+(ie. <a href="http://plato.stanford.edu/entries/turing-machine/">universal Turing
+machine</a>,
+<a href="http://plato.stanford.edu/entries/lambda-calculus/"><img src="http://latex.codecogs.com/gif.latex?\inline%20\lambda" alt="" />-calculus</a>).
+What is now known as the <a href="http://plato.stanford.edu/entries/church-turing/">Church-Turing
+thesis</a>. In this post
+we will focus strictly on Church's work, more specifically his
+notation. By understanding the lambda calculus syntax, we will start to
+grasp an idealized model of a programming language and what it means
+later for learning type systems.</p>
+
+<h3 id="notation--basic-structure">Notation &amp; Basic Structure</h3>
+
+<p>Let's look at a function that returns the square of its input:</p>
+
+<p>::: {align=”center”}
+<img src="http://latex.codecogs.com/gif.latex?f(x)%20=%20x%5E2" alt="" title="Squared Function" />
+:::</p>
+
+<p>::: {align=”center”}
+<code class="language-plaintext highlighter-rouge">int f(int x) { return x * x; }</code>
+:::</p>
+
+<p>In lambda calculus, we can represent it as:</p>
+
+<p>::: {align=”center”}
+<img src="http://latex.codecogs.com/gif.latex?\lambda%20x.*x\;x" alt="" title="Squared Function" />
+:::</p>
+
+<p>Let's break this down into its parts and start defining those pieces.</p>
+
+<ul>
+  <li><strong>Term</strong>: Since x is a variable, it can be considered a term and the
+whole expression itself is also a term (specifically a lambda
+abstraction).</li>
+  <li><strong>Bound Variable</strong>: Any variable in the term that is a parameter of
+the function. In this case it is x.</li>
+  <li><strong>Free Variable</strong>: The term above has none since any argument to the
+term would be applied to all variables in it. If the term were to be
+<img src="http://latex.codecogs.com/gif.latex?\inline%20\lambda%20x.*x\;y" alt="" />
+instead, then y would be our free variable. We will give another
+example that demonstrates free variables later.</li>
+  <li><strong>Abstraction Symbol</strong>: The
+<img src="http://latex.codecogs.com/gif.latex?\inline%20\lambda" alt="" /> symbol
+indicates the beginning of the function, followed by the parameter.</li>
+  <li><strong>Function Body</strong>: Everything following the dot is part of the
+function body (ie.
+<img src="http://latex.codecogs.com/gif.latex?\inline%20*\;x\;x" alt="" />).</li>
+</ul>
+
+<p>\</p>
+
+<h3 id="binding--applying-terms">Binding &amp; Applying Terms</h3>
+
+<p>Now the switch from our named function (f) to the lambda term was not
+entirely without loss. The
+<img src="http://latex.codecogs.com/gif.latex?\inline%20\lambda" alt="" /> symbol is not
+the function name but rather indicates that the following symbol (x) is
+a function parameter, just like the period represents the beginning of
+the function body. This is where the term <a href="http://en.wikipedia.org/wiki/Anonymous_function">anonymous
+function</a> comes from.
+We took a named function (f) and anonymized it. Now let's try defining
+the function without loss of information.</p>
+
+<p>::: {align=”center”}
+<img src="http://latex.codecogs.com/gif.latex?f%20\equiv%20\lambda%20x.*x\;x" alt="" title="Squared Function" />
+:::</p>
+
+<p>It can sometimes be taken for granted in programming that a function
+name is just another type of variable. The above example makes that
+pretty clear. Much like a program function name directly references the
+code it needs to execute, we bound the function to a variable (f) that
+directly references the term. Although the lowercase letter name isn't
+considered good convention in lambda calculus. Terms are normally bound
+to a capitalized letter in these situations; it would be better form to
+call it F instead.</p>
+
+<p>::: {align=”center”}
+<img src="http://latex.codecogs.com/gif.latex?F%20\equiv%20\lambda%20x.*x\;x" alt="" title="Squared Function" />
+:::</p>
+
+<p>That's better. What about function pointers? How would they be
+expressed in the lambda calculus? Let's define some function pointer
+(G), our previous function (F) and bind them in the C language:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="p">(</span><span class="o">*</span><span class="n">G</span><span class="p">)(</span><span class="kt">int</span><span class="p">);</span>
+<span class="kt">int</span> <span class="nf">F</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span><span class="p">;</span> <span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+   <span class="n">G</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">F</span><span class="p">;</span>
+   <span class="p">(</span><span class="o">*</span><span class="n">G</span><span class="p">)(</span><span class="mi">2</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This is generally equivalent to:</p>
+
+<p>::: {align=”center”}
+<img src="http://latex.codecogs.com/gif.latex?G%20\equiv%20\lambda%20g.g\;\land\;F%20\equiv%20\lambda%20x.*x\;x\;:\;GF2%20=%204" alt="" />
+:::</p>
+
+<p>I could have written our <img src="http://latex.codecogs.com/gif.latex?GF2" alt="" />
+term as <img src="http://latex.codecogs.com/gif.latex?\inline%20G(F(2))" alt="" /> but
+this is implicit in the lambda calculus. Terms are always <a href="http://en.wikipedia.org/wiki/Associativity">applied from
+left to right</a>; first F is
+applied to G and then 2 is applied to that. Having these semantics
+eliminates the need for excessive parentheses. Now let's break down the
+application of the terms in steps.</p>
+
+<p>::: {align=”center”}
+<img src="http://latex.codecogs.com/gif.latex?%20\begin%7Balign*%7D%20GF2&amp;\;\;\;\text%7BGiven%7D\\%20\lambda%20g.g(\lambda%20x.*x\;x)2&amp;\;\;\;\text%7BResolve%20F%20and%20G%7D\\%20(\lambda%20x.*x\;x)2&amp;\;\;\;\text%7BApply%20F%20to%20G%7D\\%204&amp;\;\;\;\text%7BApply%202%20to%20GF%7D%20\end%7Balign*%7D" alt="" />
+:::</p>
+
+<p>The first line is like the declares in our C program (line 1 and 2). The
+second line is akin to when we assign the address of the function F to G
+(line 6) and dereference G below it (line 7). The third line is when we
+apply the value 2 to the function (line 7).</p>
+
+<h3 id="multiple-parameters">Multiple Parameters</h3>
+
+<p>You may have noticed that all of our terms only accept a single
+parameter. This is called the <a href="http://en.wikipedia.org/wiki/Currying">curried
+form</a> or
+<a href="http://en.wikipedia.org/wiki/Moses_Sch%C3%B6nfinkel">Schönfinkeled</a>
+form if you want to get all crazy about it. You may have heard this
+mentioned before when people talk about
+<a href="http://en.wikipedia.org/wiki/Closure_(computer_science)">closures</a>.
+Since we can't demonstrate currying in C (nested functions aren't
+supported), let's do it in Python:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># uncurried form
+</span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span>
+
+<span class="c1"># curried form using named functions
+</span><span class="k">def</span> <span class="nf">g</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">h</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">x</span>
+    <span class="k">return</span> <span class="n">h</span>
+
+<span class="c1"># curried form using lambda functions
+</span><span class="n">h</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">y</span><span class="p">:</span> <span class="n">x</span>
+
+<span class="n">f</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">g</span><span class="p">(</span><span class="mi">2</span><span class="p">)(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">h</span><span class="p">(</span><span class="mi">2</span><span class="p">)(</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>I took a lot of liberties comparing the lambda terms earlier against the
+C program and is why I wrote that they were generally equivalent. You
+may have noticed how line 12 looks almost exactly like the actual lambda
+calculus notation form of
+<img src="http://latex.codecogs.com/gif.latex?\inline%20\lambda%20x.\lambda%20y.x" alt="" />.
+This is why programmers who know functional programming have a much
+easier time learning lambda calculus and type systems. In Python, the
+<a href="http://pythonconquerstheuniverse.wordpress.com/2009/10/03/static-vs-dynamic-typing-of-programming-languages/">type system is
+dynamic</a>
+in the sense that a single variable can be rebound to a different type
+during its lifetime. Also, lambda functions are explicitly available,
+where they were not in C. These kind of features are what differentiates
+different languages in terms of expressibility with respect to the
+lambda calculus.</p>
+
+<h3 id="beta-reductions">Beta Reductions</h3>
+
+<p>You might not have known it, but by applying different terms, you were
+performing what is called a beta-reduction. This is the process of
+normalizing to its beta-redex term form. So in the case of FG, the
+beta-redex term is
+<img src="http://latex.codecogs.com/gif.latex?\inline%20\lambda%20x.*x\;x" alt="" />.
+Let's try something with more terms and reduce it.</p>
+
+<p>::: {align=”center”}
+<img src="http://latex.codecogs.com/gif.latex?%20\begin%7Balign*%7D%20&amp;(\lambda%20w.w)((\lambda%20x.xx)(\lambda%20y.y))\\%20&amp;(\lambda%20w.w)((\lambda%20x.xx)%5Bx%20:=%20\lambda%20y.y%5D)\\%20&amp;(\lambda%20w.w)((\lambda%20y.y)(\lambda%20y.y))\\%20&amp;(\lambda%20w.w)((\lambda%20y.y)%5By%20:=%20\lambda%20y.y%5D)\\%20&amp;(\lambda%20w.w)\lambda%20y.y\\%20&amp;(\lambda%20w.w)%5Bw%20:=%20\lambda%20y.y%5D\\%20&amp;\lambda%20y.y\\%20\end%7Balign*%7D" alt="" />
+:::</p>
+
+<p>That normalized nicely. Let's do another one.</p>
+
+<p>::: {align=”center”}
+<img src="http://latex.codecogs.com/gif.latex?%20\begin%7Balign*%7D%20&amp;(\lambda%20x.xx)(\lambda%20y.yy)\\%20&amp;(\lambda%20x.xx)%5Bx%20:=%20\lambda%20y.yy%5D\\%20&amp;(\lambda%20y.yy)(\lambda%20y.yy)\\%20&amp;(\lambda%20y.yy)%5By%20:=%20\lambda%20y.yy%5D\\%20&amp;(\lambda%20y.yy)(\lambda%20y.yy)\\%20&amp;(\lambda%20y.yy)%5By%20:=%20\lambda%20y.yy%5D\\%20&amp;(\lambda%20y.yy)(\lambda%20y.yy)\\%20&amp;\ldots\\%20\end%7Balign*%7D" alt="" />
+:::</p>
+
+<p>This is a case where we could keep applying the terms ad-nauseum but
+that isn't needed because the repeating term is
+<img src="http://latex.codecogs.com/gif.latex?\inline%20(\lambda%20y.yy)(\lambda%20y.yy)" alt="" />,
+which is also our beta-redex term. So there is no need to go any
+further. Now let's do another example using free variables.</p>
+
+<p>::: {align=”center”}
+<img src="http://latex.codecogs.com/gif.latex?%20\begin%7Balign*%7D%20&amp;(\lambda%20x.x)(\lambda%20z.zz)(\lambda%20w.t)5\\%20&amp;(\lambda%20x.x)%5Bx%20:=%20\lambda%20z.zz%5D(\lambda%20w.t)5\\%20&amp;(\lambda%20z.zz)(\lambda%20w.t)5\\%20&amp;(\lambda%20z.zz)%5Bz%20:=%20\lambda%20w.t%5D5\\%20&amp;(\lambda%20w.t)(\lambda%20w.t)5\\%20&amp;(\lambda%20w.t)%5Bw%20:=%20\lambda%20w.t%5D5\\%20&amp;(\lambda%20w.t)5\\%20&amp;(\lambda%20w.t)%5Bw%20:=%205%5D\\%20&amp;t%20\end%7Balign*%7D" alt="" />
+:::</p>
+
+<p>I mentioned at the beginning I would give an example using free
+variables and here it is (ie. t). So what happened to 5? Well it was
+bound to w and w is not in the function body of the last lambda term
+(<img src="http://latex.codecogs.com/gif.latex?\inline%20\lambda%20w.t" alt="" />), so
+it didn't survive. Although t did and that is because t is not bound to
+anything, thus making it a free variable.</p>
+
+<p>Beta reductions are a lot like refactoring some complex code down to its
+simpler and functionally equivalent form.</p>
+
+<h3 id="untyped-lambda-calculus">Untyped Lambda Calculus</h3>
+
+<p>So far we haven't really considered types. In the examples where
+multiplication was required, we went beyond the simple untyped system to
+demonstrate the similarities of lambda calculus with other more familiar
+systems of computation. In the untyped system, the only type is the
+<a href="http://en.wikipedia.org/wiki/Function_type">function type</a>. Our
+previous example could still be considered in the untyped system if we
+just interpret 5 as a free variable; attaching no meaning to the
+variable itself.</p>
+
+<p>As developers, our building blocks are binary logical operations. Let's
+start by defining some of these essentials in the lambda calculus.</p>
+
+<p>Let T be true and F be false:</p>
+
+<p>::: {align=”center”}
+<img src="http://latex.codecogs.com/gif.latex?%20\begin%7Bcenter%7D%20&amp;T%20\equiv%20\lambda%20x.\lambda%20y.x\\%20&amp;F%20\equiv%20\lambda%20x.\lambda%20y.y\\%20\end%7Bcenter%7D" alt="" />
+:::</p>
+
+<p>Now let's define some binary operations:</p>
+
+<p>::: {align=”center”}
+<img src="http://latex.codecogs.com/gif.latex?%20\begin%7Balign*%7D%20&amp;AND%20\equiv%20\lambda%20x.\lambda%20y.xyF\\%20&amp;OR%20\equiv%20\lambda%20x.\lambda%20y.xTy\\%20&amp;NOT%20\equiv%20\lambda%20x.xFT\\%20\end%7Balign*%7D" alt="" />
+:::</p>
+
+<p>To convince ourselves that these will give the desired results, let's
+start with AND:</p>
+
+<p>::: {align=”center”}
+<img src="http://latex.codecogs.com/gif.latex?%20\begin%7Balign*%7D%20&amp;AND\;T\;F\\%20&amp;(\lambda%20x.\lambda%20y.xyF)TF\\%20&amp;(\lambda%20x.\lambda%20y.xyF)%5Bx%20:=%20T%5DF\\%20&amp;(\lambda%20y.TyF)F\\%20&amp;(\lambda%20y.TyF)%5Bx%20:=%20F%5D\\%20&amp;TFF\\%20&amp;(\lambda%20x.\lambda%20y.x)FF\\%20&amp;(\lambda%20x.\lambda%20y.x)%5Bx%20:=%20F%5DF\\%20&amp;(\lambda%20x.\lambda%20y.F)F\\%20&amp;(\lambda%20x.\lambda%20y.F)%5Bx%20:=%20F%5D\\%20&amp;\lambda%20y.F\\%20&amp;F%20\end%7Balign*%7D" alt="" />
+:::</p>
+
+<p>Then for good measure, let's do OR as well:</p>
+
+<p>::: {align=”center”}
+<img src="http://latex.codecogs.com/gif.latex?%20\begin%7Balign*%7D%20&amp;OR\;T\;F\\%20&amp;(\lambda%20x.\lambda%20y.xTy)TF\\%20&amp;(\lambda%20x.\lambda%20y.xTy)%5Bx%20:=%20T%5DF\\%20&amp;(\lambda%20x.\lambda%20y.TTy)F\\%20&amp;(\lambda%20x.\lambda%20y.TTy)%5By%20:=%20F%5D\\%20&amp;TTF\\%20&amp;(\lambda%20x.\lambda%20y.x)TF\\%20&amp;(\lambda%20x.\lambda%20y.x)%5Bx%20:=%20T%5DF\\%20&amp;(\lambda%20y.T)F\\%20&amp;(\lambda%20y.T)%5By%20:=%20F%5D\\%20&amp;T\\%20\end%7Balign*%7D" alt="" />
+:::</p>
+
+<p>Learning the untyped variant of lambda calculus is a good starting
+place, because we don't place any domain restrictions on our functions
+and it is fairly simple to get started defining particular behaviors.</p>
+
+<h3 id="coming-up-next">Coming up next</h3>
+
+<p>Part two will cover type systems and get you familiar with the syntax.
+If you want to learn lambda calculus in more depth or go through some
+exercises, check out the links below. Also, please feel free to post
+comments with questions, suggestions or corrections.</p>
+
+<h3 id="more-reading--resources">More Reading &amp; Resources</h3>
+
+<ul>
+  <li><a href="http://www.cse.iitb.ac.in/~rkj/lambda.pdf">Notes on Untyped Lambda
+Calculus</a></li>
+  <li><a href="http://www.cs.man.ac.uk/~hsimmons/BOOKS/lcalculus.pdf">An Introduction to Lambda Calculi and
+Arithmetic</a></li>
+  <li><a href="http://www.cs.bham.ac.uk/~axj/pub/papers/lambda-calculus.pdf">A short introduction to the Lambda
+Calculus</a></li>
+  <li><a href="http://www.mscs.dal.ca/~selinger/papers/papers/lambdanotes.pdf">Lectures Notes on the Lambda
+Calculus</a></li>
+  <li><a href="http://www.inf.fu-berlin.de/lehre/WS03/alpi/lambda.pdf">A Tutorial Introduction to the Lambda
+Calculus</a></li>
+  <li><a href="http://classes.soe.ucsc.edu/cmps112/Spring03/readings/lambdacalculus/project3.html">Lambda Calculus
+Tutorial</a></li>
+  <li><a href="http://www.cs.ru.nl/~herman/PUBS/IntroTT-improved.pdf">An Introduction to Type
+Theory</a></li>
+  <li><a href="http://events.math.unipd.it/3wftop/pdf/coquandintro.pdf">A Short Introduction to Type
+Theory</a></li>
+</ul>
+
+
+<ul class="taxonomy__index">
+  
+  
+    <li>
+      <a href="#2015">
+        <strong>2015</strong> <span class="taxonomy__count">5</span>
+      </a>
+    </li>
+  
+    <li>
+      <a href="#2014">
+        <strong>2014</strong> <span class="taxonomy__count">2</span>
+      </a>
+    </li>
+  
+    <li>
+      <a href="#2013">
+        <strong>2013</strong> <span class="taxonomy__count">4</span>
+      </a>
+    </li>
+  
+    <li>
+      <a href="#2012">
+        <strong>2012</strong> <span class="taxonomy__count">8</span>
+      </a>
+    </li>
+  
+    <li>
+      <a href="#2011">
+        <strong>2011</strong> <span class="taxonomy__count">13</span>
+      </a>
+    </li>
+  
+</ul>
+
+
+
+  <section id="2015" class="taxonomy__section">
+    <h2 class="archive__subtitle">2015</h2>
+    <div class="entries-list">
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/streaming-uuencoder-in-net/" rel="permalink">Streaming UUEncoder in .NET.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Flashback
+</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/get-windows-service-name-from/" rel="permalink">Get Windows Service name from executable in PowerShell.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">I was recently putting some PowerShell scripts together for deployment
+and maintenance of software to our machine instances. One of the
+requirements was to b...</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/log-per-class-pattern/" rel="permalink">Log per class pattern.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Rookie Moves
+</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/creating-xml-based-templates-in-log4net/" rel="permalink">Creating XML based templates in log4net.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Motivation
+</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/using-type-converters-for-jsonnet/" rel="permalink">Using type converters for JSON.NET.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Motivation
+</p>
+  </article>
+</div>
+
+      
+    </div>
+    <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+  </section>
+
+  <section id="2014" class="taxonomy__section">
+    <h2 class="archive__subtitle">2014</h2>
+    <div class="entries-list">
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/using-ccnet-gallio-for-priority-based/" rel="permalink">Using CC.NET &amp; Gallio for priority based smoke testing.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Pitfalls in Production
+</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/state-behavioral-pattern-to-rescue/" rel="permalink">State behavioral pattern to the rescue.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  12 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The Creeping Problem
+</p>
+  </article>
+</div>
+
+      
+    </div>
+    <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+  </section>
+
+  <section id="2013" class="taxonomy__section">
+    <h2 class="archive__subtitle">2013</h2>
+    <div class="entries-list">
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/understanding-type-theory-part-one/" rel="permalink">Understanding type theory (Part one: Lambda Calculus).
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  7 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Series Introduction
+</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/pcap-ng-reader-for-net/" rel="permalink">PCAP-NG reader for .NET.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Introduction &amp; Scope
+</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/automated-combinatorial-and-spot/" rel="permalink">Automated combinatorial and spot testing of web service operations.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Introduction &amp; Scope
+</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/text-generation-using-markov-chains/" rel="permalink">Text generation using Markov chains.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Introduction
+</p>
+  </article>
+</div>
+
+      
+    </div>
+    <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+  </section>
+
+  <section id="2012" class="taxonomy__section">
+    <h2 class="archive__subtitle">2012</h2>
+    <div class="entries-list">
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/reading-and-writing-large-binary-data/" rel="permalink">Reading and writing large binary data in T-SQL and ADO.NET.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Introduction
+</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/understanding-compression-and-huffman/" rel="permalink">Understanding compression and Huffman Coding.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Definitions
+</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/imapi-version-2-managed-wrapper/" rel="permalink">IMAPI version 2 managed wrapper.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Introduction
+</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/implementing-bit-readerwriter-in-c/" rel="permalink">Implementing a bit reader/writer in C.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Introduction
+</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/licensing-using-xml-digital-signing/" rel="permalink">Licensing using XML digital signing.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  6 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Motivation
+</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/automate-iis-enable-on-windows-7/" rel="permalink">Automate IIS enable on Windows 7.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Background
+</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/converting-thermocouple-voltages-to/" rel="permalink">Converting thermocouple voltages to temperature.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Background
+</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/bit-specific-builds-in-visual-studio/" rel="permalink">Bit specific builds in Visual Studio 2010.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Using Conditioned Tags
+</p>
+  </article>
+</div>
+
+      
+    </div>
+    <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+  </section>
+
+  <section id="2011" class="taxonomy__section">
+    <h2 class="archive__subtitle">2011</h2>
+    <div class="entries-list">
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/wpf-and-data-multithreading-deadlocks/" rel="permalink">WPF and data multithreading deadlocks.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">WPF &amp; Multithreading
+</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/tips-for-java-performance-on-android/" rel="permalink">Tips for Java performance on Android.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">While Java may be a higher level language that makes code writeability
+easier, conventions must be broken when developing on Android to reap
+performance gain...</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/poco-not-transforming-into-poco-proxy/" rel="permalink">POCO not transforming into a POCO proxy.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">A POCO (Plain Old CLR Object) must be transformed into a POCO proxy
+[MyNamespace.MyClass
+-&gt;{System.Data.Entity.DynamicProxies.MyClass_0A943C2FC37D33304CEB...</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/detecting-cycles-in-decimal-digits-and/" rel="permalink">Detecting cycles in decimal digits and lists.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">I was recently working on solving problem 64 for project
+Euler and one of the needed
+algorithms was a detection of cycles in a list. This routine works for
+d...</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/entity-framework-june-2011-ctp-bug/" rel="permalink">Entity Framework June 2011 CTP Bug
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">I recently installed the Entity Framework June 2011 CTP to preview the
+enum support but ran into a bug along the way that reported an error
+while processing ...</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/ef-41-code-first-many-one-to-one/" rel="permalink">EF 4.1 Code First: Many one-to-one properties for same class type on an object.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">I just started using the Entity Framework recently to employ persistence
+for an already established code base. Initially I was using the "Model
+&amp; Databas...</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/pseudo-random-proportional-scheduling/" rel="permalink">Pseudo random proportional scheduling in games.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">I have been working on a game where enemy characters must select a
+target seemingly at random but such that the distribution of selected
+targets is balanced....</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/writing-teds-ieee-14514-parser/" rel="permalink">Writing a TEDS (IEEE 1451.4) parser.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">I was tasked recently with writing a parser for TEDS bit stream data.
+There is an IEEE published
+paper with an
+overview of the standard but it doesn't give a...</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/reentrant-lock-acquires-in-clr/" rel="permalink">Reentrant lock acquires in CLR.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">I always like when a post gets to the point (especially after searching
+in Google). In short, if you perform an operation that waits to
+acquire a lock, the t...</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/namespace-within-classes/" rel="permalink">Namespaces for classes.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">When designing classes for outside use (eg. API) or as a library
+component for multiple applications, readability and easy element
+(field/function) selection...</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/delete-long-file-path-names/" rel="permalink">Delete long file path names.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">I made the stupid mistake of importing an Eclipse project into my
+workspace when the import location was from the workspace
+itself. I went to
+delete the recu...</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/representing-scientific-units-in-code/" rel="permalink">Representing scientific units in code.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">I have been working on implementing a stream reader for IEEE 1451.4
+TEDS and came
+across this interesting
+paper regarding
+representation of scientific units ...</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/using-ubuntu-1004-with-svnhttp/" rel="permalink">Using Ubuntu 10.04 with SVN+HTTP.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">I setup a server recently using Ubuntu 10.04. LAMP was easy to
+configure, as was Subversion. Although making Subversion and Apache2
+play nice together with D...</p>
+  </article>
+</div>
+
+      
+    </div>
+    <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+  </section>
+
+
+  </div>
+</div>
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="mailto:awalsh128@gmail.com" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i> Email</a></li>
+        
+      
+        
+          <li><a href="https://github.com/awalsh128" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+          <li><a href="https://www.linkedin.com/in/andrew-walsh-a235787/" rel="nofollow noopener noreferrer"><i class="fab fa-linkedin" aria-hidden="true"></i> Linkedin</a></li>
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2020 Andrew Walsh. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:4000/understanding-type-theory-part-one/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/understanding-type-theory-part-one"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+    };
+    (function() { /* DON'T EDIT BELOW THIS LINE */
+      var d = document, s = d.createElement('script');
+      s.src = 'https://andrew-walshs-website.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+
+  </body>
+</html>

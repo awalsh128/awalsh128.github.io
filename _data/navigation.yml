@@ -1,0 +1,9 @@
+main:  
+  - title: "Notes"
+    items:
+      - title: "C++"
+        url: "/notes/cpp.md"
+      - title: "C++ Concepts"
+        url: "/notes/cpp-concepts.md"
+  - title: "Posts"
+    url: "/"

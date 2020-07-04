@@ -1,0 +1,1471 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.19.3 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Implementing a bit reader/writer in C. - Andrew Walsh’s Website</title>
+<meta name="description" content="Introduction">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Andrew Walsh's Website">
+<meta property="og:title" content="Implementing a bit reader/writer in C.">
+<meta property="og:url" content="http://localhost:4000/implementing-bit-readerwriter-in-c/">
+
+
+  <meta property="og:description" content="Introduction">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2012-09-13T16:30:00-07:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/implementing-bit-readerwriter-in-c/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Andrew Walsh",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Andrew Walsh's Website Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--posts wide">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Andrew Walsh's Website
+          <span class="site-subtitle">Foobar baz</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="">Notes</a>
+            </li><li class="masthead__menu-item">
+              <a href="/">Posts</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name"></h3>
+    
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">Implementing a bit reader/writer in C.</h1>
+    
+    <h3 id="introduction">Introduction</h3>
+
+<p>I was working on implementing a simple compression tool based on naive
+<a href="http://en.wikipedia.org/wiki/Huffman_coding">Huffman coding</a> and
+initially assumed all of my <a href="http://en.wikipedia.org/wiki/Prefix_code">prefix
+codes</a> would be at or under a
+byte long. Although I failed to account for the <a href="http://www.arturocampos.com/ac_fib_huffman.html#Fibbonaci%20and%20Huffman">worst case of Huffman
+coding</a>,
+which can yield codes up to 255 bits in length.</p>
+
+<p>This required a bit reading and writing function that would allow for
+variable length codes. I could have used other methods to balance worst
+case Huffman trees, but this issue presented a unique challenge. How to
+write a bit reader/writer in C.</p>
+
+<h3 id="bit-readerwriter-specifications">Bit Reader/Writer Specifications</h3>
+
+<ul>
+  <li>Read and write using reader and writer
+<a href="http://en.wikipedia.org/wiki/Abstract_data_type">ADT's</a>.</li>
+  <li>Handle any possible bit length given.</li>
+  <li>Remember bits read from file but are outside the requested bit
+length (eg. 2 bytes read in but only 12 bits requested, leaving 4
+bits in the buffer).</li>
+  <li>Flush a partially written block to disk on a free of the bit writer
+ADT.</li>
+  <li>Return number of bits read and written on the read and write
+functions.</li>
+</ul>
+
+<h3 id="design">Design</h3>
+
+<p>The underlying structure to the ADT will contain fields for the: file
+pointer, the byte long buffer and the buffer bit length. The examples
+given for every case are in steps; what is originally in the buffer,
+what bits are requested, what bits are read from or written to the file,
+and finally what bits are left over and buffered.</p>
+
+<h2 id="reader">Reader</h2>
+
+<p>There are two main cases to consider when designing the read function.</p>
+
+<p><strong>Empty Buffer</strong>: The is simple since the file read bits will already be
+byte aligned to your output bits. You just need to simply mask out the
+unneeded bits and buffer them for the next read (eg. no bits buffered,
+12 bits requested, 16 bits read in, 4 bits buffered).</p>
+
+<p>::: {.separator style=”clear: both; text-align: center;”}
+<a href="http://4.bp.blogspot.com/--oQWBFnoeZs/UFIbvaS6dvI/AAAAAAAAA94/0sDK-D0rhWw/s1600/bits1.png"><img src="http://4.bp.blogspot.com/--oQWBFnoeZs/UFIbvaS6dvI/AAAAAAAAA94/0sDK-D0rhWw/s400/bits1.png" alt="" />{width=”400”
+height=”42”}</a>
+:::</p>
+
+<p><strong>Populated Buffer</strong>: The can get a little trickier, especially in the
+last two cases of this.</p>
+
+<ol>
+  <li><strong>Requested bits already buffered.</strong> This is very easy since it
+doesn't require any file read and the buffer just needs to shift
+out the read bits (eg. 7 bits in the buffer and 3 are requested;
+buffer serves out 3 and truncates to 4).</li>
+  <li>
+    <p><strong>Not all requested bits buffered; end of read bits not in same byte
+block as end of output bits.</strong> The last output byte block must mask
+out the unneeded bits, put them in the buffer and then append the
+additional unneeded read bits from the next byte block (eg. 4 bits
+buffered, 13 bits requested, 16 bits read in, 8 bits buffered).
+::: {.separator style=”clear: both; text-align: center;”}
+<a href="http://2.bp.blogspot.com/-wCITShIYyBg/UFIcK77GIzI/AAAAAAAAA-E/IbYkzeHHiQw/s400/bits2-2.png"><img src="http://2.bp.blogspot.com/-wCITShIYyBg/UFIcK77GIzI/AAAAAAAAA-E/IbYkzeHHiQw/s400/bits2-2.png" alt="" /></a>
+:::</p>
+  </li>
+  <li><strong>Not all requested bits buffered; end of read bits in same byte
+block as end of output bits.</strong> The last output byte block must mask
+out the unneeded bits and put them in the buffer (eg. 4 bits
+buffered, 10 bits requested, 8 bits read in, 2 bits buffered).
+::: {.separator style=”clear: both; text-align: center;”}
+<a href="http://1.bp.blogspot.com/-yZcVwLBuEts/UFIcRFPoL3I/AAAAAAAAA-Q/xJAcG1Zv73M/s1600/bits2-3.png"><img src="http://1.bp.blogspot.com/-yZcVwLBuEts/UFIcRFPoL3I/AAAAAAAAA-Q/xJAcG1Zv73M/s400/bits2-3.png" alt="" />{width=”400”
+height=”42”}</a>
+:::</li>
+</ol>
+
+<h2 id="writer">Writer</h2>
+
+<p>There are only two cases to consider when designing the write function.</p>
+
+<ol>
+  <li><strong>Full Buffer</strong>: Shift in write bits, commit to disk and repeat
+until all bits are processed. If the last bit to write is not on the
+buffer byte boundary, it will wait until the next write (eg. 6 bits
+buffered, 12 bits to write, 16 bits written out, 2 bits buffered).</li>
+  <li><strong>Partial Buffer</strong>: Shift in write bits (eg. 2 bits buffered, 4 bits
+to write, no bits written out, 6 bits buffered).</li>
+</ol>
+
+<h3 id="caveats">Caveats</h3>
+
+<p>The code below is purely a demonstration of how a bit reader/writer
+works in a generic sense. There is room for plenty of optimization if
+you know what type of architecture your targeting and the domain of your
+reader/write arguments.</p>
+
+<h3 id="the-code">The Code</h3>
+
+<h2 id="header-file">Header File</h2>
+
+<h2 id="source-file">Source File</h2>
+
+
+<ul class="taxonomy__index">
+  
+  
+    <li>
+      <a href="#2015">
+        <strong>2015</strong> <span class="taxonomy__count">5</span>
+      </a>
+    </li>
+  
+    <li>
+      <a href="#2014">
+        <strong>2014</strong> <span class="taxonomy__count">2</span>
+      </a>
+    </li>
+  
+    <li>
+      <a href="#2013">
+        <strong>2013</strong> <span class="taxonomy__count">4</span>
+      </a>
+    </li>
+  
+    <li>
+      <a href="#2012">
+        <strong>2012</strong> <span class="taxonomy__count">8</span>
+      </a>
+    </li>
+  
+    <li>
+      <a href="#2011">
+        <strong>2011</strong> <span class="taxonomy__count">13</span>
+      </a>
+    </li>
+  
+</ul>
+
+
+
+  <section id="2015" class="taxonomy__section">
+    <h2 class="archive__subtitle">2015</h2>
+    <div class="entries-list">
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/streaming-uuencoder-in-net/" rel="permalink">Streaming UUEncoder in .NET.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Flashback
+</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/get-windows-service-name-from/" rel="permalink">Get Windows Service name from executable in PowerShell.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">I was recently putting some PowerShell scripts together for deployment
+and maintenance of software to our machine instances. One of the
+requirements was to b...</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/log-per-class-pattern/" rel="permalink">Log per class pattern.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Rookie Moves
+</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/creating-xml-based-templates-in-log4net/" rel="permalink">Creating XML based templates in log4net.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Motivation
+</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/using-type-converters-for-jsonnet/" rel="permalink">Using type converters for JSON.NET.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Motivation
+</p>
+  </article>
+</div>
+
+      
+    </div>
+    <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+  </section>
+
+  <section id="2014" class="taxonomy__section">
+    <h2 class="archive__subtitle">2014</h2>
+    <div class="entries-list">
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/using-ccnet-gallio-for-priority-based/" rel="permalink">Using CC.NET &amp; Gallio for priority based smoke testing.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Pitfalls in Production
+</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/state-behavioral-pattern-to-rescue/" rel="permalink">State behavioral pattern to the rescue.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  12 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">The Creeping Problem
+</p>
+  </article>
+</div>
+
+      
+    </div>
+    <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+  </section>
+
+  <section id="2013" class="taxonomy__section">
+    <h2 class="archive__subtitle">2013</h2>
+    <div class="entries-list">
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/understanding-type-theory-part-one/" rel="permalink">Understanding type theory (Part one: Lambda Calculus).
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  7 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Series Introduction
+</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/pcap-ng-reader-for-net/" rel="permalink">PCAP-NG reader for .NET.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Introduction &amp; Scope
+</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/automated-combinatorial-and-spot/" rel="permalink">Automated combinatorial and spot testing of web service operations.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Introduction &amp; Scope
+</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/text-generation-using-markov-chains/" rel="permalink">Text generation using Markov chains.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Introduction
+</p>
+  </article>
+</div>
+
+      
+    </div>
+    <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+  </section>
+
+  <section id="2012" class="taxonomy__section">
+    <h2 class="archive__subtitle">2012</h2>
+    <div class="entries-list">
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/reading-and-writing-large-binary-data/" rel="permalink">Reading and writing large binary data in T-SQL and ADO.NET.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Introduction
+</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/understanding-compression-and-huffman/" rel="permalink">Understanding compression and Huffman Coding.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Definitions
+</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/imapi-version-2-managed-wrapper/" rel="permalink">IMAPI version 2 managed wrapper.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Introduction
+</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/implementing-bit-readerwriter-in-c/" rel="permalink">Implementing a bit reader/writer in C.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Introduction
+</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/licensing-using-xml-digital-signing/" rel="permalink">Licensing using XML digital signing.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  6 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Motivation
+</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/automate-iis-enable-on-windows-7/" rel="permalink">Automate IIS enable on Windows 7.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Background
+</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/converting-thermocouple-voltages-to/" rel="permalink">Converting thermocouple voltages to temperature.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Background
+</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/bit-specific-builds-in-visual-studio/" rel="permalink">Bit specific builds in Visual Studio 2010.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Using Conditioned Tags
+</p>
+  </article>
+</div>
+
+      
+    </div>
+    <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+  </section>
+
+  <section id="2011" class="taxonomy__section">
+    <h2 class="archive__subtitle">2011</h2>
+    <div class="entries-list">
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/wpf-and-data-multithreading-deadlocks/" rel="permalink">WPF and data multithreading deadlocks.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">WPF &amp; Multithreading
+</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/tips-for-java-performance-on-android/" rel="permalink">Tips for Java performance on Android.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">While Java may be a higher level language that makes code writeability
+easier, conventions must be broken when developing on Android to reap
+performance gain...</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/poco-not-transforming-into-poco-proxy/" rel="permalink">POCO not transforming into a POCO proxy.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">A POCO (Plain Old CLR Object) must be transformed into a POCO proxy
+[MyNamespace.MyClass
+-&gt;{System.Data.Entity.DynamicProxies.MyClass_0A943C2FC37D33304CEB...</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/detecting-cycles-in-decimal-digits-and/" rel="permalink">Detecting cycles in decimal digits and lists.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">I was recently working on solving problem 64 for project
+Euler and one of the needed
+algorithms was a detection of cycles in a list. This routine works for
+d...</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/entity-framework-june-2011-ctp-bug/" rel="permalink">Entity Framework June 2011 CTP Bug
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">I recently installed the Entity Framework June 2011 CTP to preview the
+enum support but ran into a bug along the way that reported an error
+while processing ...</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/ef-41-code-first-many-one-to-one/" rel="permalink">EF 4.1 Code First: Many one-to-one properties for same class type on an object.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">I just started using the Entity Framework recently to employ persistence
+for an already established code base. Initially I was using the "Model
+&amp; Databas...</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/pseudo-random-proportional-scheduling/" rel="permalink">Pseudo random proportional scheduling in games.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">I have been working on a game where enemy characters must select a
+target seemingly at random but such that the distribution of selected
+targets is balanced....</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/writing-teds-ieee-14514-parser/" rel="permalink">Writing a TEDS (IEEE 1451.4) parser.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">I was tasked recently with writing a parser for TEDS bit stream data.
+There is an IEEE published
+paper with an
+overview of the standard but it doesn't give a...</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/reentrant-lock-acquires-in-clr/" rel="permalink">Reentrant lock acquires in CLR.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">I always like when a post gets to the point (especially after searching
+in Google). In short, if you perform an operation that waits to
+acquire a lock, the t...</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/namespace-within-classes/" rel="permalink">Namespaces for classes.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">When designing classes for outside use (eg. API) or as a library
+component for multiple applications, readability and easy element
+(field/function) selection...</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/delete-long-file-path-names/" rel="permalink">Delete long file path names.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">I made the stupid mistake of importing an Eclipse project into my
+workspace when the import location was from the workspace
+itself. I went to
+delete the recu...</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/representing-scientific-units-in-code/" rel="permalink">Representing scientific units in code.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">I have been working on implementing a stream reader for IEEE 1451.4
+TEDS and came
+across this interesting
+paper regarding
+representation of scientific units ...</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/using-ubuntu-1004-with-svnhttp/" rel="permalink">Using Ubuntu 10.04 with SVN+HTTP.
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  less than 1 minute read
+
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">I setup a server recently using Ubuntu 10.04. LAMP was easy to
+configure, as was Subversion. Although making Subversion and Apache2
+play nice together with D...</p>
+  </article>
+</div>
+
+      
+    </div>
+    <a href="#page-title" class="back-to-top">Back to top &uarr;</a>
+  </section>
+
+
+  </div>
+</div>
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="mailto:awalsh128@gmail.com" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i> Email</a></li>
+        
+      
+        
+          <li><a href="https://github.com/awalsh128" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+          <li><a href="https://www.linkedin.com/in/andrew-walsh-a235787/" rel="nofollow noopener noreferrer"><i class="fab fa-linkedin" aria-hidden="true"></i> Linkedin</a></li>
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2020 Andrew Walsh. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:4000/implementing-bit-readerwriter-in-c/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/implementing-bit-readerwriter-in-c"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+    };
+    (function() { /* DON'T EDIT BELOW THIS LINE */
+      var d = document, s = d.createElement('script');
+      s.src = 'https://andrew-walshs-website.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+
+  </body>
+</html>
