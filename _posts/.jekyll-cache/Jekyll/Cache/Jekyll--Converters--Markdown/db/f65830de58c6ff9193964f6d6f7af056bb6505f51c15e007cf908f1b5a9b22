@@ -1,0 +1,101 @@
+I"<h3 id="rookie-moves">Rookie Moves</h3>
+
+<p>Awhile ago, I had originally created a single logger for each service
+and shared it statically across the application.</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">static</span> <span class="k">class</span> <span class="nc">Log</span>
+<span class="p">{</span>
+  <span class="k">private</span> <span class="k">readonly</span> <span class="k">static</span> <span class="n">Lazy</span><span class="p">&lt;</span><span class="n">Log</span><span class="p">&gt;</span> <span class="n">instance</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Lazy</span><span class="p">&lt;</span><span class="n">Log</span><span class="p">&gt;(()</span> <span class="p">=&gt;</span> <span class="k">new</span> <span class="nf">Log</span><span class="p">(),</span> <span class="k">true</span><span class="p">);</span>
+  <span class="k">public</span> <span class="k">static</span> <span class="n">Log</span> <span class="n">Instance</span>
+  <span class="p">{</span>
+    <span class="k">get</span> <span class="p">{</span> <span class="k">return</span> <span class="n">instance</span><span class="p">.</span><span class="n">Value</span><span class="p">;</span> <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>It always had felt strange doing this since it violated
+<a href="http://en.wikipedia.org/wiki/Encapsulation_%28object-oriented_programming%29">encapsulation</a>.
+I was referencing a static instance inside my objects without ensuring
+the existence of the log instance itself, while also making assumptions
+about the instance's state. Essentially reaching outside the class
+every time to the
+<a href="http://en.wikipedia.org/wiki/Singleton_pattern">singleton</a>, which is a
+global state instance in my case.</p>
+
+<h3 id="best-practices">Best Practices</h3>
+
+<p>As I researched more on best practices with logging, logger per class
+appeared to be the best pattern since it offered the most fine grain
+control with respect to filtering and configuration.</p>
+
+<p>When using logging in your class, you should separate the concern of how
+the log gets created from the use of the log. This can be achieved by
+having a factory accessor.</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">Log</span>
+<span class="p">{</span>
+  <span class="c1">// Set your factory property to the actual log implementation you wish to use.</span>
+  <span class="k">public</span> <span class="k">static</span> <span class="n">Func</span><span class="p">&lt;</span><span class="n">Type</span><span class="p">,</span> <span class="n">Log</span><span class="p">&gt;</span> <span class="n">Factory</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+
+  <span class="c1">// Instance based properties and methods.</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>You can also use the <a href="http://en.wikipedia.org/wiki/Abstract_factory_pattern">abstract factory
+pattern</a> if you
+have to wrap your logging implementations.</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">abstract</span> <span class="k">class</span> <span class="nc">LogBase</span>
+<span class="p">{</span>
+  <span class="c1">// Set your factory property to the actual log implementation you wish to use.</span>
+  <span class="k">public</span> <span class="k">static</span> <span class="n">Func</span><span class="p">&lt;</span><span class="n">Type</span><span class="p">,</span> <span class="n">LogBase</span><span class="p">&gt;</span> <span class="n">Factory</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+
+  <span class="c1">// Abstract properties and methods.</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Then just call the factory by passing in the class type it is for.</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">SomeObject</span>
+<span class="p">{</span>
+  <span class="k">private</span> <span class="k">static</span> <span class="k">readonly</span> <span class="n">LogBase</span> <span class="n">log</span> <span class="p">=</span> <span class="n">Log</span><span class="p">.</span><span class="nf">Factory</span><span class="p">(</span><span class="k">typeof</span><span class="p">(</span><span class="n">SomeObject</span><span class="p">));</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="the-difference">The Difference</h3>
+
+<p>It may not seem like much of a change but subtle differences are
+happening:</p>
+
+<ul>
+  <li>Calling class can now communicate it's state to the log's
+creation.</li>
+  <li>Log creation is no longer the responsibility, implicitly or
+otherwise, of the class.</li>
+</ul>
+
+<p>In my case, this was very liberating since we had several log
+implementations in our large codebase. I no longer needed to worry about
+which log implementation was being used by messing with the singleton
+construction, and could leverage filtering when I need to isolate a
+single component or service that was causing trouble. Something that I
+couldn't do before.</p>
+
+<h3 id="more-reading--resources">More Reading &amp; Resources</h3>
+
+<ul>
+  <li><a href="http://c2.com/cgi/wiki?LoggingBestPractices">C&amp;C Inc: Logging Best
+Practices</a></li>
+  <li><a href="http://www.beefycode.com/post/Log4Net-Recommended-Practices-pt-1-Your-Code.aspx">beefycode: Log4Net Recommended Practices pt 1: Your
+Code</a></li>
+  <li><a href="http://www.jayway.com/2011/06/13/a-nice-basic-log4net-setup/">JayWay: A nice, basic log4net
+setup</a></li>
+  <li><a href="http://stackoverflow.com/questions/3143929/why-do-loggers-recommend-using-a-logger-per-class">Stack Overflow: Why do loggers recommend using a logger per
+class?</a></li>
+  <li><a href="http://stackoverflow.com/questions/5504148/log4net-configure-to-ignore-messages-from-a-specific-class">Stack Overflow: log4net: Configure to ignore messages from a
+specific
+class</a></li>
+  <li><a href="http://rolf-engelhard.de/2013/03/logging-anti-patterns-part-i/">Rolf Engelhard: Logging Anti-Patterns, Part
+I</a></li>
+</ul>
+:ET

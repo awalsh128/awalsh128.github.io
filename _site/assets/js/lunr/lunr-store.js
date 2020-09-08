@@ -1,4 +1,10 @@
 var store = [{
+        "title": "C++ Examples",
+        "excerpt":"Asserts (Static) For type support and asserts see the CPP Reference entry which has an exhaustive list. template &lt;typename T&gt; T DoSomething(T value) { static_assert(std::is_same&lt;decltype(value), bool&gt;::value, \"value must be bool\"); // ... } template &lt;typename T&gt; T DoSomething(T value) { static_assert(std::is_floating_point&lt;T&gt;::value, \"value must be an integer type.\"); // ... }...","categories": [],
+        "tags": ["C++"],
+        "url": "http://localhost:4000/notes/cpp/",
+        "teaser": null
+      },{
         "title": "Using Ubuntu 10.04 with SVN+HTTP.",
         "excerpt":"I setup a server recently using Ubuntu 10.04. LAMP was easy to configure, as was Subversion. Although making Subversion and Apache2 play nice together with DAV SVN was a nightmare. I followed the guide provided but the website location just kept reprompting for my login. After hours of running in circles,...","categories": [],
         "tags": ["SVN","Apache"],

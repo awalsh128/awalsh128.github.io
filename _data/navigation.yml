@@ -1,9 +1,7 @@
-main:  
+main:
   - title: "Notes"
-    items:
-      - title: "C++"
-        url: "/notes/cpp.md"
-      - title: "C++ Concepts"
-        url: "/notes/cpp-concepts.md"
+    url: /notes
   - title: "Posts"
-    url: "/"
+    url: /posts/
+  - title: "Tags"
+    url: /tags/

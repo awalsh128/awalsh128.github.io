@@ -1,0 +1,297 @@
+I"�F<h3 id="series-introduction">Series Introduction</h3>
+
+<p>I initially was going to put this together as a single post but quickly
+realized that it would be a bit much to try and put all of the
+information into one post. To make it more digestable, I decided to
+break it up into separate parts. This is by no means a comprehensive
+study of lambda calculus or type theory, but rather a quick introductory
+series so you can can get started. My goal is that, by the end, you will
+be able to understand enough to start reading papers on your own and
+have some cursory knowledge of type systems. Also, I am targeting
+programmers that want to get a better understanding of the theory behind
+type systems in compiler design. If you are comfortable programming in
+functional languages, then you will start to see many parallels quickly.
+Although, I will give examples using an imperative approach to cover
+programmers who may not immediately appreciate these parallels.</p>
+
+<h3 id="mathematical-formalisms">Mathematical Formalisms</h3>
+
+<p>The mathematical underpinnings for describing computability is mostly
+famously attributed to <a href="http://en.wikipedia.org/wiki/Kurt_G%C3%B6del">Kurt
+Gödel</a>, <a href="http://en.wikipedia.org/wiki/Alan_Turing">Alan
+Turing</a> and <a href="http://en.wikipedia.org/wiki/Alonzo_Church">Alonzo
+Church</a>. Church and Turing
+took different routes to <a href="http://en.wikipedia.org/wiki/Church%E2%80%93Turing_thesis">the same ending
+conclusion</a>
+(ie. <a href="http://plato.stanford.edu/entries/turing-machine/">universal Turing
+machine</a>,
+<a href="http://plato.stanford.edu/entries/lambda-calculus/"><img src="http://latex.codecogs.com/gif.latex?\inline%20\lambda" alt="" />-calculus</a>).
+What is now known as the <a href="http://plato.stanford.edu/entries/church-turing/">Church-Turing
+thesis</a>. In this post
+we will focus strictly on Church's work, more specifically his
+notation. By understanding the lambda calculus syntax, we will start to
+grasp an idealized model of a programming language and what it means
+later for learning type systems.</p>
+
+<h3 id="notation--basic-structure">Notation &amp; Basic Structure</h3>
+
+<p>Let's look at a function that returns the square of its input:</p>
+
+<p>::: {align=”center”}
+<img src="http://latex.codecogs.com/gif.latex?f(x)%20=%20x%5E2" alt="" title="Squared Function" />
+:::</p>
+
+<p>::: {align=”center”}
+<code class="language-plaintext highlighter-rouge">int f(int x) { return x * x; }</code>
+:::</p>
+
+<p>In lambda calculus, we can represent it as:</p>
+
+<p>::: {align=”center”}
+<img src="http://latex.codecogs.com/gif.latex?\lambda%20x.*x\;x" alt="" title="Squared Function" />
+:::</p>
+
+<p>Let's break this down into its parts and start defining those pieces.</p>
+
+<ul>
+  <li><strong>Term</strong>: Since x is a variable, it can be considered a term and the
+whole expression itself is also a term (specifically a lambda
+abstraction).</li>
+  <li><strong>Bound Variable</strong>: Any variable in the term that is a parameter of
+the function. In this case it is x.</li>
+  <li><strong>Free Variable</strong>: The term above has none since any argument to the
+term would be applied to all variables in it. If the term were to be
+<img src="http://latex.codecogs.com/gif.latex?\inline%20\lambda%20x.*x\;y" alt="" />
+instead, then y would be our free variable. We will give another
+example that demonstrates free variables later.</li>
+  <li><strong>Abstraction Symbol</strong>: The
+<img src="http://latex.codecogs.com/gif.latex?\inline%20\lambda" alt="" /> symbol
+indicates the beginning of the function, followed by the parameter.</li>
+  <li><strong>Function Body</strong>: Everything following the dot is part of the
+function body (ie.
+<img src="http://latex.codecogs.com/gif.latex?\inline%20*\;x\;x" alt="" />).</li>
+</ul>
+
+<p>\</p>
+
+<h3 id="binding--applying-terms">Binding &amp; Applying Terms</h3>
+
+<p>Now the switch from our named function (f) to the lambda term was not
+entirely without loss. The
+<img src="http://latex.codecogs.com/gif.latex?\inline%20\lambda" alt="" /> symbol is not
+the function name but rather indicates that the following symbol (x) is
+a function parameter, just like the period represents the beginning of
+the function body. This is where the term <a href="http://en.wikipedia.org/wiki/Anonymous_function">anonymous
+function</a> comes from.
+We took a named function (f) and anonymized it. Now let's try defining
+the function without loss of information.</p>
+
+<p>::: {align=”center”}
+<img src="http://latex.codecogs.com/gif.latex?f%20\equiv%20\lambda%20x.*x\;x" alt="" title="Squared Function" />
+:::</p>
+
+<p>It can sometimes be taken for granted in programming that a function
+name is just another type of variable. The above example makes that
+pretty clear. Much like a program function name directly references the
+code it needs to execute, we bound the function to a variable (f) that
+directly references the term. Although the lowercase letter name isn't
+considered good convention in lambda calculus. Terms are normally bound
+to a capitalized letter in these situations; it would be better form to
+call it F instead.</p>
+
+<p>::: {align=”center”}
+<img src="http://latex.codecogs.com/gif.latex?F%20\equiv%20\lambda%20x.*x\;x" alt="" title="Squared Function" />
+:::</p>
+
+<p>That's better. What about function pointers? How would they be
+expressed in the lambda calculus? Let's define some function pointer
+(G), our previous function (F) and bind them in the C language:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="p">(</span><span class="o">*</span><span class="n">G</span><span class="p">)(</span><span class="kt">int</span><span class="p">);</span>
+<span class="kt">int</span> <span class="nf">F</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span><span class="p">;</span> <span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+   <span class="n">G</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">F</span><span class="p">;</span>
+   <span class="p">(</span><span class="o">*</span><span class="n">G</span><span class="p">)(</span><span class="mi">2</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This is generally equivalent to:</p>
+
+<p>::: {align=”center”}
+<img src="http://latex.codecogs.com/gif.latex?G%20\equiv%20\lambda%20g.g\;\land\;F%20\equiv%20\lambda%20x.*x\;x\;:\;GF2%20=%204" alt="" />
+:::</p>
+
+<p>I could have written our <img src="http://latex.codecogs.com/gif.latex?GF2" alt="" />
+term as <img src="http://latex.codecogs.com/gif.latex?\inline%20G(F(2))" alt="" /> but
+this is implicit in the lambda calculus. Terms are always <a href="http://en.wikipedia.org/wiki/Associativity">applied from
+left to right</a>; first F is
+applied to G and then 2 is applied to that. Having these semantics
+eliminates the need for excessive parentheses. Now let's break down the
+application of the terms in steps.</p>
+
+<p>::: {align=”center”}
+<img src="http://latex.codecogs.com/gif.latex?%20\begin%7Balign*%7D%20GF2&amp;\;\;\;\text%7BGiven%7D\\%20\lambda%20g.g(\lambda%20x.*x\;x)2&amp;\;\;\;\text%7BResolve%20F%20and%20G%7D\\%20(\lambda%20x.*x\;x)2&amp;\;\;\;\text%7BApply%20F%20to%20G%7D\\%204&amp;\;\;\;\text%7BApply%202%20to%20GF%7D%20\end%7Balign*%7D" alt="" />
+:::</p>
+
+<p>The first line is like the declares in our C program (line 1 and 2). The
+second line is akin to when we assign the address of the function F to G
+(line 6) and dereference G below it (line 7). The third line is when we
+apply the value 2 to the function (line 7).</p>
+
+<h3 id="multiple-parameters">Multiple Parameters</h3>
+
+<p>You may have noticed that all of our terms only accept a single
+parameter. This is called the <a href="http://en.wikipedia.org/wiki/Currying">curried
+form</a> or
+<a href="http://en.wikipedia.org/wiki/Moses_Sch%C3%B6nfinkel">Schönfinkeled</a>
+form if you want to get all crazy about it. You may have heard this
+mentioned before when people talk about
+<a href="http://en.wikipedia.org/wiki/Closure_(computer_science)">closures</a>.
+Since we can't demonstrate currying in C (nested functions aren't
+supported), let's do it in Python:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># uncurried form
+</span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span>
+
+<span class="c1"># curried form using named functions
+</span><span class="k">def</span> <span class="nf">g</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">h</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">x</span>
+    <span class="k">return</span> <span class="n">h</span>
+
+<span class="c1"># curried form using lambda functions
+</span><span class="n">h</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">y</span><span class="p">:</span> <span class="n">x</span>
+
+<span class="n">f</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">g</span><span class="p">(</span><span class="mi">2</span><span class="p">)(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">h</span><span class="p">(</span><span class="mi">2</span><span class="p">)(</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>I took a lot of liberties comparing the lambda terms earlier against the
+C program and is why I wrote that they were generally equivalent. You
+may have noticed how line 12 looks almost exactly like the actual lambda
+calculus notation form of
+<img src="http://latex.codecogs.com/gif.latex?\inline%20\lambda%20x.\lambda%20y.x" alt="" />.
+This is why programmers who know functional programming have a much
+easier time learning lambda calculus and type systems. In Python, the
+<a href="http://pythonconquerstheuniverse.wordpress.com/2009/10/03/static-vs-dynamic-typing-of-programming-languages/">type system is
+dynamic</a>
+in the sense that a single variable can be rebound to a different type
+during its lifetime. Also, lambda functions are explicitly available,
+where they were not in C. These kind of features are what differentiates
+different languages in terms of expressibility with respect to the
+lambda calculus.</p>
+
+<h3 id="beta-reductions">Beta Reductions</h3>
+
+<p>You might not have known it, but by applying different terms, you were
+performing what is called a beta-reduction. This is the process of
+normalizing to its beta-redex term form. So in the case of FG, the
+beta-redex term is
+<img src="http://latex.codecogs.com/gif.latex?\inline%20\lambda%20x.*x\;x" alt="" />.
+Let's try something with more terms and reduce it.</p>
+
+<p>::: {align=”center”}
+<img src="http://latex.codecogs.com/gif.latex?%20\begin%7Balign*%7D%20&amp;(\lambda%20w.w)((\lambda%20x.xx)(\lambda%20y.y))\\%20&amp;(\lambda%20w.w)((\lambda%20x.xx)%5Bx%20:=%20\lambda%20y.y%5D)\\%20&amp;(\lambda%20w.w)((\lambda%20y.y)(\lambda%20y.y))\\%20&amp;(\lambda%20w.w)((\lambda%20y.y)%5By%20:=%20\lambda%20y.y%5D)\\%20&amp;(\lambda%20w.w)\lambda%20y.y\\%20&amp;(\lambda%20w.w)%5Bw%20:=%20\lambda%20y.y%5D\\%20&amp;\lambda%20y.y\\%20\end%7Balign*%7D" alt="" />
+:::</p>
+
+<p>That normalized nicely. Let's do another one.</p>
+
+<p>::: {align=”center”}
+<img src="http://latex.codecogs.com/gif.latex?%20\begin%7Balign*%7D%20&amp;(\lambda%20x.xx)(\lambda%20y.yy)\\%20&amp;(\lambda%20x.xx)%5Bx%20:=%20\lambda%20y.yy%5D\\%20&amp;(\lambda%20y.yy)(\lambda%20y.yy)\\%20&amp;(\lambda%20y.yy)%5By%20:=%20\lambda%20y.yy%5D\\%20&amp;(\lambda%20y.yy)(\lambda%20y.yy)\\%20&amp;(\lambda%20y.yy)%5By%20:=%20\lambda%20y.yy%5D\\%20&amp;(\lambda%20y.yy)(\lambda%20y.yy)\\%20&amp;\ldots\\%20\end%7Balign*%7D" alt="" />
+:::</p>
+
+<p>This is a case where we could keep applying the terms ad-nauseum but
+that isn't needed because the repeating term is
+<img src="http://latex.codecogs.com/gif.latex?\inline%20(\lambda%20y.yy)(\lambda%20y.yy)" alt="" />,
+which is also our beta-redex term. So there is no need to go any
+further. Now let's do another example using free variables.</p>
+
+<p>::: {align=”center”}
+<img src="http://latex.codecogs.com/gif.latex?%20\begin%7Balign*%7D%20&amp;(\lambda%20x.x)(\lambda%20z.zz)(\lambda%20w.t)5\\%20&amp;(\lambda%20x.x)%5Bx%20:=%20\lambda%20z.zz%5D(\lambda%20w.t)5\\%20&amp;(\lambda%20z.zz)(\lambda%20w.t)5\\%20&amp;(\lambda%20z.zz)%5Bz%20:=%20\lambda%20w.t%5D5\\%20&amp;(\lambda%20w.t)(\lambda%20w.t)5\\%20&amp;(\lambda%20w.t)%5Bw%20:=%20\lambda%20w.t%5D5\\%20&amp;(\lambda%20w.t)5\\%20&amp;(\lambda%20w.t)%5Bw%20:=%205%5D\\%20&amp;t%20\end%7Balign*%7D" alt="" />
+:::</p>
+
+<p>I mentioned at the beginning I would give an example using free
+variables and here it is (ie. t). So what happened to 5? Well it was
+bound to w and w is not in the function body of the last lambda term
+(<img src="http://latex.codecogs.com/gif.latex?\inline%20\lambda%20w.t" alt="" />), so
+it didn't survive. Although t did and that is because t is not bound to
+anything, thus making it a free variable.</p>
+
+<p>Beta reductions are a lot like refactoring some complex code down to its
+simpler and functionally equivalent form.</p>
+
+<h3 id="untyped-lambda-calculus">Untyped Lambda Calculus</h3>
+
+<p>So far we haven't really considered types. In the examples where
+multiplication was required, we went beyond the simple untyped system to
+demonstrate the similarities of lambda calculus with other more familiar
+systems of computation. In the untyped system, the only type is the
+<a href="http://en.wikipedia.org/wiki/Function_type">function type</a>. Our
+previous example could still be considered in the untyped system if we
+just interpret 5 as a free variable; attaching no meaning to the
+variable itself.</p>
+
+<p>As developers, our building blocks are binary logical operations. Let's
+start by defining some of these essentials in the lambda calculus.</p>
+
+<p>Let T be true and F be false:</p>
+
+<p>::: {align=”center”}
+<img src="http://latex.codecogs.com/gif.latex?%20\begin%7Bcenter%7D%20&amp;T%20\equiv%20\lambda%20x.\lambda%20y.x\\%20&amp;F%20\equiv%20\lambda%20x.\lambda%20y.y\\%20\end%7Bcenter%7D" alt="" />
+:::</p>
+
+<p>Now let's define some binary operations:</p>
+
+<p>::: {align=”center”}
+<img src="http://latex.codecogs.com/gif.latex?%20\begin%7Balign*%7D%20&amp;AND%20\equiv%20\lambda%20x.\lambda%20y.xyF\\%20&amp;OR%20\equiv%20\lambda%20x.\lambda%20y.xTy\\%20&amp;NOT%20\equiv%20\lambda%20x.xFT\\%20\end%7Balign*%7D" alt="" />
+:::</p>
+
+<p>To convince ourselves that these will give the desired results, let's
+start with AND:</p>
+
+<p>::: {align=”center”}
+<img src="http://latex.codecogs.com/gif.latex?%20\begin%7Balign*%7D%20&amp;AND\;T\;F\\%20&amp;(\lambda%20x.\lambda%20y.xyF)TF\\%20&amp;(\lambda%20x.\lambda%20y.xyF)%5Bx%20:=%20T%5DF\\%20&amp;(\lambda%20y.TyF)F\\%20&amp;(\lambda%20y.TyF)%5Bx%20:=%20F%5D\\%20&amp;TFF\\%20&amp;(\lambda%20x.\lambda%20y.x)FF\\%20&amp;(\lambda%20x.\lambda%20y.x)%5Bx%20:=%20F%5DF\\%20&amp;(\lambda%20x.\lambda%20y.F)F\\%20&amp;(\lambda%20x.\lambda%20y.F)%5Bx%20:=%20F%5D\\%20&amp;\lambda%20y.F\\%20&amp;F%20\end%7Balign*%7D" alt="" />
+:::</p>
+
+<p>Then for good measure, let's do OR as well:</p>
+
+<p>::: {align=”center”}
+<img src="http://latex.codecogs.com/gif.latex?%20\begin%7Balign*%7D%20&amp;OR\;T\;F\\%20&amp;(\lambda%20x.\lambda%20y.xTy)TF\\%20&amp;(\lambda%20x.\lambda%20y.xTy)%5Bx%20:=%20T%5DF\\%20&amp;(\lambda%20x.\lambda%20y.TTy)F\\%20&amp;(\lambda%20x.\lambda%20y.TTy)%5By%20:=%20F%5D\\%20&amp;TTF\\%20&amp;(\lambda%20x.\lambda%20y.x)TF\\%20&amp;(\lambda%20x.\lambda%20y.x)%5Bx%20:=%20T%5DF\\%20&amp;(\lambda%20y.T)F\\%20&amp;(\lambda%20y.T)%5By%20:=%20F%5D\\%20&amp;T\\%20\end%7Balign*%7D" alt="" />
+:::</p>
+
+<p>Learning the untyped variant of lambda calculus is a good starting
+place, because we don't place any domain restrictions on our functions
+and it is fairly simple to get started defining particular behaviors.</p>
+
+<h3 id="coming-up-next">Coming up next</h3>
+
+<p>Part two will cover type systems and get you familiar with the syntax.
+If you want to learn lambda calculus in more depth or go through some
+exercises, check out the links below. Also, please feel free to post
+comments with questions, suggestions or corrections.</p>
+
+<h3 id="more-reading--resources">More Reading &amp; Resources</h3>
+
+<ul>
+  <li><a href="http://www.cse.iitb.ac.in/~rkj/lambda.pdf">Notes on Untyped Lambda
+Calculus</a></li>
+  <li><a href="http://www.cs.man.ac.uk/~hsimmons/BOOKS/lcalculus.pdf">An Introduction to Lambda Calculi and
+Arithmetic</a></li>
+  <li><a href="http://www.cs.bham.ac.uk/~axj/pub/papers/lambda-calculus.pdf">A short introduction to the Lambda
+Calculus</a></li>
+  <li><a href="http://www.mscs.dal.ca/~selinger/papers/papers/lambdanotes.pdf">Lectures Notes on the Lambda
+Calculus</a></li>
+  <li><a href="http://www.inf.fu-berlin.de/lehre/WS03/alpi/lambda.pdf">A Tutorial Introduction to the Lambda
+Calculus</a></li>
+  <li><a href="http://classes.soe.ucsc.edu/cmps112/Spring03/readings/lambdacalculus/project3.html">Lambda Calculus
+Tutorial</a></li>
+  <li><a href="http://www.cs.ru.nl/~herman/PUBS/IntroTT-improved.pdf">An Introduction to Type
+Theory</a></li>
+  <li><a href="http://events.math.unipd.it/3wftop/pdf/coquandintro.pdf">A Short Introduction to Type
+Theory</a></li>
+</ul>
+:ET

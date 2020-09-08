@@ -1,0 +1,78 @@
+I"l<h2 id="wpf--multithreading">WPF &amp; Multithreading</h2>
+
+<p>In designing applications, it may be advantageous to run data processing
+methods on a separate thread from the UI. This allows greater
+responsiveness in the application and takes advantage of concurrent
+computation.</p>
+
+<p>The cornerstone interface to any binding in WPF is
+<a href="http://msdn.microsoft.com/en-us/library/system.componentmodel.inotifypropertychanged.aspx">INotifyPropertyChanged</a>,
+which is implemented on a data structure's different properties.
+Although this can be the source of deadlocks if the data structure is
+being processed on a separate thread where locks are explicitly
+implemented by the developer.</p>
+
+<p>A deadlock could occur if some UI event was being triggered on a data
+structure (eg. expanding a view, changing a text box entry) while the
+data thread was processing it with an acquired lock. <del>Internally, the
+<a href="http://msdn.microsoft.com/en-us/library/system.componentmodel.inotifypropertychanged.propertychanged.aspx">PropertyChanged</a>
+event will call a
+<a href="http://msdn.microsoft.com/en-us/library/system.windows.threading.dispatcher.invoke.aspx">Dispatcher.Invoke</a>
+on the UI. Although the UI could be waiting for the lock to release on
+that same property that the data thread already has, creating a cyclic
+dependency or deadlock.</del></p>
+
+<p>The call stack for the UI thread. Note the wait call.</p>
+
+<p>::: {.separator style=”clear: both; text-align: center;”}
+<a href="http://3.bp.blogspot.com/-frk5kVor7dU/TvIrjJ_uxeI/AAAAAAAAAuA/8xswKGeSKg0/s1600/uithread.png"><img src="http://3.bp.blogspot.com/-frk5kVor7dU/TvIrjJ_uxeI/AAAAAAAAAuA/8xswKGeSKg0/s400/uithread.png" alt="" /></a>
+:::</p>
+
+<p>The call stack for the data thread.</p>
+
+<p>::: {.separator style=”clear: both; text-align: center;”}
+<a href="http://3.bp.blogspot.com/-_CPhXd1Z3VQ/TvIr0eLxl9I/AAAAAAAAAuM/mneSJNQZZvs/s1600/workerthread.png"><img src="http://3.bp.blogspot.com/-_CPhXd1Z3VQ/TvIr0eLxl9I/AAAAAAAAAuM/mneSJNQZZvs/s400/workerthread.png" alt="" /></a>
+:::</p>
+
+<h2 id="deadlock-scenario">Deadlock Scenario</h2>
+
+<p>As an example, suppose you have your standard WPF application UI thread
+and a separate data thread. The data thread polls a time stamp from a
+remote database and updates a class property called
+<code class="language-plaintext highlighter-rouge">DataObject.Timestamp</code>{.inlinecode}, which raises the
+<code class="language-plaintext highlighter-rouge">PropertyChanged</code>{.inlinecode} event. The property is also bound to a
+text box in our WPF application window, which is made visible in the
+window based on the user's preference (ie. collapsing and expanding a
+view).</p>
+
+<p>In our deadlock example, the data thread puts a lock on the
+<code class="language-plaintext highlighter-rouge">DataObject.Timestamp</code>{.inlinecode} property while it updates it and
+other data structures. While this is happening, the view is expanded,
+causing the text box to start binding to the
+<code class="language-plaintext highlighter-rouge">DataObject.Timestamp</code>{.inlinecode} property and wait for an acquire of
+the lock that the data thread is holding. The data thread then sets the
+<code class="language-plaintext highlighter-rouge">DataObject.Timestamp</code>{.inlinecode} property inside the critical region
+code and the <code class="language-plaintext highlighter-rouge">PropertyChanged</code>{.inlinecode} event is raised. <del>This
+causes the new time stamp value to be marshaled back onto the
+<code class="language-plaintext highlighter-rouge">Dispatcher</code>{.inlinecode} with a blocking/synchronous
+<code class="language-plaintext highlighter-rouge">Dispatcher.Invoke</code>{.inlinecode} call. Although the data thread now
+deadlocks in the critical region, waiting for the UI
+<code class="language-plaintext highlighter-rouge">Dispatcher.Invoke</code>{.inlinecode} to return, which is waiting on the data
+thread to release the lock.</del></p>
+
+<h2 id="solution">Solution</h2>
+
+<p>To prevent the data thread's deadlock <del>critical region from blocking
+on the <code class="language-plaintext highlighter-rouge">Dispatcher.Invoke</code>{.inlinecode}</del>, override the
+<code class="language-plaintext highlighter-rouge">OnPropertyChanged</code>{.inlinecode} method to marshal the value
+asynchronously to the dispatcher.</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">protected</span> <span class="k">override</span> <span class="k">void</span> <span class="nf">OnPropertyChanged</span><span class="p">(</span><span class="kt">string</span> <span class="n">propertyName</span><span class="p">)</span>
+<span class="p">{</span>
+ <span class="n">Application</span><span class="p">.</span><span class="n">Current</span><span class="p">.</span><span class="n">Dispatcher</span><span class="p">.</span><span class="nf">BeginInvoke</span><span class="p">(</span><span class="k">new</span> <span class="nf">Action</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span> <span class="k">base</span><span class="p">.</span><span class="nf">OnPropertyChanged</span><span class="p">(</span><span class="n">propertyName</span><span class="p">);</span> <span class="p">}));</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This will ensure that the critical region doesn't block and the
+property changes are still serviced by the dispatcher.</p>
+:ET

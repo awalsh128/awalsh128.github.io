@@ -1,0 +1,123 @@
+I"�;<p>I was tasked recently with writing a parser for TEDS bit stream data.
+There is an <a href="http://standards.ieee.org/develop/regauth/tut/teds.pdf">IEEE published
+paper</a> with an
+overview of the standard but it doesn't give any examples for
+implementation. I was finally able to find a
+<a href="http://standards.ieee.org/develop/regauth/tut/tdl.pdf">paper</a> that gave
+examples but still had trouble parsing the data. I finally realized
+there is not only 2 selector bits after the basic TEDS block but
+selector bits inside the standard template (2 in the case of template
+25). Here are my main findings:<br />
+\</p>
+
+<ul>
+  <li>It depends on the software interface to get the bit-stream, but bits
+usually start their indexing from left to right. If you are using a
+language that assumes right to left bit encoding, the stream indices
+will need to be reversed (eg. 01011000[2]{.Apple-style-span
+style=”font-size: xx-small;”}[ ]{.Apple-style-span
+style=”font-size: xx-small;”}translates
+to 00011010[2 ]{.Apple-style-span style=”font-size: xx-small;”}=
+26[10]{.Apple-style-span style=”font-size: xx-small;”}).</li>
+  <li>If you are using an little-endian architecture (eg. x86), then the
+byte order will need to be converted from big-endian (reverse the
+byte indices). It is big-endian since the standard is defined for
+networks and thus has a network byte order.</li>
+  <li>To calculate [ConRelRes ]{.Apple-style-span
+style=”font-family: Arial, Helvetica, sans-serif;”}values, use the
+formula...<br />
+[&lt;start_value&gt; * [1 + 2 * &lt;tolerance&gt;] \^
+&lt;teds_value&gt;]{.Apple-style-span
+style=”font-family: ‘Courier New’, Courier, monospace;”}<br />
+In the published paper, you will see an entry like [ConRelRes(5E-7
+to 172, +- 0.15%)]{.Apple-style-span
+style=”font-family: Arial, Helvetica, sans-serif;”} in the "[Data
+Type (and Range)]{.Apple-style-span
+style=”font-family: Arial, Helvetica, sans-serif;”}" field. 5E-7 is
+the start value, 0.15 is the tolerance and the TEDS value is
+whatever value gets parsed from the bit stream.</li>
+</ul>
+
+<p><br />
+Here are some helper functions to parse TEDS correctly on the .NET
+platform (x86 systems).\</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">_streamOffset</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>
+
+<span class="k">private</span> <span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">BitArray</span> <span class="nf">_GetBits</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">BitArray</span> <span class="n">bits</span><span class="p">,</span> <span class="kt">int</span> <span class="n">length</span><span class="p">)</span>
+<span class="p">{</span>
+ <span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">BitArray</span> <span class="n">result</span> <span class="p">=</span> <span class="k">new</span> <span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="nf">BitArray</span><span class="p">(</span><span class="n">length</span><span class="p">);</span>
+ <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">index</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span> <span class="n">index</span> <span class="p">&lt;=</span> <span class="n">length</span> <span class="p">-</span> <span class="m">1</span><span class="p">;</span> <span class="n">index</span><span class="p">++)</span> <span class="p">{</span>
+  <span class="n">result</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="p">=</span> <span class="n">bits</span><span class="p">[</span><span class="n">_streamOffset</span> <span class="p">+</span> <span class="n">index</span><span class="p">];</span>
+ <span class="p">}</span>
+ <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">private</span> <span class="kt">byte</span><span class="p">[]</span> <span class="nf">_GetBytes</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">BitArray</span> <span class="n">bits</span><span class="p">)</span>
+<span class="p">{</span>
+ <span class="kt">int</span> <span class="n">byteCount</span> <span class="p">=</span> <span class="n">Convert</span><span class="p">.</span><span class="nf">ToInt32</span><span class="p">(</span><span class="n">Math</span><span class="p">.</span><span class="nf">Ceiling</span><span class="p">(</span><span class="n">bits</span><span class="p">.</span><span class="n">Count</span> <span class="p">/</span> <span class="m">8</span><span class="p">));</span>
+ <span class="kt">int</span> <span class="n">padCount</span> <span class="p">=</span> <span class="p">(</span><span class="n">byteCount</span> <span class="p">*</span> <span class="m">8</span><span class="p">)</span> <span class="p">-</span> <span class="n">bits</span><span class="p">.</span><span class="n">Count</span><span class="p">;</span>
+ <span class="kt">byte</span><span class="p">[]</span> <span class="n">bytes</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="p">[</span><span class="n">byteCount</span><span class="p">];</span>
+ <span class="kt">int</span> <span class="n">byteIndex</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>
+ <span class="kt">int</span> <span class="n">bitIndex</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>
+ <span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">BitArray</span> <span class="n">reverseBits</span> <span class="p">=</span> <span class="k">new</span> <span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="nf">BitArray</span><span class="p">(</span><span class="n">bits</span><span class="p">.</span><span class="n">Count</span> <span class="p">+</span> <span class="n">padCount</span><span class="p">);</span>
+
+ <span class="c1">//byte align new bit array</span>
+ <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">index</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span> <span class="n">index</span> <span class="p">&lt;=</span> <span class="n">padCount</span> <span class="p">-</span> <span class="m">1</span><span class="p">;</span> <span class="n">index</span><span class="p">++)</span> <span class="p">{</span>
+  <span class="n">reverseBits</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
+ <span class="p">}</span>
+ <span class="c1">//reverse bits to read from right to left</span>
+ <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">index</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span> <span class="n">index</span> <span class="p">&lt;=</span> <span class="n">bits</span><span class="p">.</span><span class="n">Length</span> <span class="p">-</span> <span class="m">1</span><span class="p">;</span> <span class="n">index</span><span class="p">++)</span> <span class="p">{</span>
+  <span class="n">reverseBits</span><span class="p">[</span><span class="n">padCount</span> <span class="p">+</span> <span class="n">index</span><span class="p">]</span> <span class="p">=</span> <span class="n">bits</span><span class="p">[</span><span class="n">bits</span><span class="p">.</span><span class="n">Length</span> <span class="p">-</span> <span class="m">1</span> <span class="p">-</span> <span class="n">index</span><span class="p">];</span>
+ <span class="p">}</span>
+
+ <span class="c1">//create byte array from byte aligned right to left bits</span>
+ <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">index</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span> <span class="n">index</span> <span class="p">&lt;=</span> <span class="n">reverseBits</span><span class="p">.</span><span class="n">Count</span> <span class="p">-</span> <span class="m">1</span><span class="p">;</span> <span class="n">index</span><span class="p">++)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">((</span><span class="n">reverseBits</span><span class="p">[</span><span class="n">index</span><span class="p">]))</span> <span class="p">{</span>
+   <span class="n">bytes</span><span class="p">[</span><span class="n">byteIndex</span><span class="p">]</span> <span class="p">=</span> <span class="n">bytes</span><span class="p">[</span><span class="n">byteIndex</span><span class="p">]</span> <span class="p">|</span> <span class="n">Convert</span><span class="p">.</span><span class="nf">ToByte</span><span class="p">(</span><span class="m">1</span> <span class="p">&lt;&lt;</span> <span class="p">(</span><span class="m">7</span> <span class="p">-</span> <span class="n">bitIndex</span><span class="p">));</span>
+  <span class="p">}</span>
+
+  <span class="n">bitIndex</span> <span class="p">+=</span> <span class="m">1</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">((</span><span class="n">bitIndex</span> <span class="p">==</span> <span class="m">8</span><span class="p">))</span> <span class="p">{</span>
+   <span class="n">bitIndex</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>
+   <span class="n">byteIndex</span> <span class="p">+=</span> <span class="m">1</span><span class="p">;</span>
+  <span class="p">}</span>
+ <span class="p">}</span>
+
+ <span class="k">return</span> <span class="n">bytes</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">private</span> <span class="kt">bool</span> <span class="nf">_GetBoolean</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">BitArray</span> <span class="n">bits</span><span class="p">)</span>
+<span class="p">{</span>
+ <span class="kt">bool</span> <span class="n">result</span> <span class="p">=</span> <span class="n">bits</span><span class="p">[</span><span class="n">_streamOffset</span><span class="p">];</span>
+ <span class="n">_streamOffset</span> <span class="p">+=</span> <span class="m">1</span><span class="p">;</span>
+ <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">private</span> <span class="kt">char</span> <span class="nf">_GetChar</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">BitArray</span> <span class="n">bits</span><span class="p">,</span> <span class="kt">int</span> <span class="n">length</span><span class="p">)</span>
+<span class="p">{</span>
+ <span class="kt">char</span> <span class="n">result</span> <span class="p">=</span> <span class="n">BitConverter</span><span class="p">.</span><span class="nf">ToChar</span><span class="p">(</span><span class="k">new</span> <span class="kt">byte</span><span class="p">[]</span> <span class="p">{</span>
+  <span class="m">0</span><span class="p">,</span>
+  <span class="nf">_GetBytes</span><span class="p">(</span><span class="nf">_GetBits</span><span class="p">(</span><span class="n">bits</span><span class="p">,</span> <span class="n">length</span><span class="p">))[</span><span class="m">0</span><span class="p">]</span>
+ <span class="p">},</span> <span class="m">0</span><span class="p">);</span>
+ <span class="n">_streamOffset</span> <span class="p">+=</span> <span class="n">length</span><span class="p">;</span>
+ <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">private</span> <span class="kt">int</span> <span class="nf">_GetInteger</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">BitArray</span> <span class="n">bits</span><span class="p">,</span> <span class="kt">int</span> <span class="n">length</span><span class="p">)</span>
+<span class="p">{</span>
+ <span class="kt">byte</span><span class="p">[]</span> <span class="n">intBytes</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="p">[]</span> <span class="p">{</span>
+  <span class="m">0</span><span class="p">,</span>
+  <span class="m">0</span><span class="p">,</span>
+  <span class="m">0</span><span class="p">,</span>
+  <span class="m">0</span>
+ <span class="p">};</span>
+ <span class="kt">byte</span><span class="p">[]</span> <span class="n">bytes</span> <span class="p">=</span> <span class="nf">_GetBytes</span><span class="p">(</span><span class="nf">_GetBits</span><span class="p">(</span><span class="n">bits</span><span class="p">,</span> <span class="n">length</span><span class="p">));</span>
+ <span class="kt">int</span> <span class="n">result</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>
+ <span class="c1">//pad out rest of bytes so it is int32 aligned and convert endianess</span>
+ <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">index</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span> <span class="n">index</span> <span class="p">&lt;=</span> <span class="n">bytes</span><span class="p">.</span><span class="n">Length</span> <span class="p">-</span> <span class="m">1</span><span class="p">;</span> <span class="n">index</span><span class="p">++)</span> <span class="p">{</span>
+  <span class="n">intBytes</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="p">=</span> <span class="n">bytes</span><span class="p">[</span><span class="n">bytes</span><span class="p">.</span><span class="n">Length</span> <span class="p">-</span> <span class="m">1</span> <span class="p">-</span> <span class="n">index</span><span class="p">];</span>
+ <span class="p">}</span>
+ <span class="n">result</span> <span class="p">=</span> <span class="n">Convert</span><span class="p">.</span><span class="nf">ToInt32</span><span class="p">(</span><span class="n">BitConverter</span><span class="p">.</span><span class="nf">ToUInt32</span><span class="p">(</span><span class="n">intBytes</span><span class="p">,</span> <span class="m">0</span><span class="p">));</span>
+ <span class="n">_streamOffset</span> <span class="p">+=</span> <span class="n">length</span><span class="p">;</span>
+ <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+:ET
