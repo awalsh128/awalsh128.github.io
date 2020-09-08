@@ -1,0 +1,26 @@
+I"�<p>A POCO (Plain Old CLR Object) must be transformed into a POCO proxy<br />
+[MyNamespace.MyClass
+-&gt;{System.Data.Entity.DynamicProxies.MyClass_0A943C2FC37D33304CEB497A9210C754E3F553B50315F8E6F0F7A6FAF43777F2}]{.Apple-style-span
+style=”font-size: x-small;”})<br />
+in order for features like lazy loading and change tracking to work.<br />
+<br />
+<a href="http://msdn.microsoft.com/en-us/library/dd468057.aspx">MSDN has a great
+article</a> that
+explains how to prepare a POCO to be transformed into a proxy. If you
+find that an object retrieved or attached to the context does not show
+itself in the DynamicProxies namespace (eg. MyNamespace.MyClass instead
+of ...DynamicProxies.MyClass), then you probably don't have a
+compliant class. You may have noticed this already when hovering your
+mouse cursor over an instance and seeing the runtime information on it.<br />
+<br />
+The distilled points are that your POCO must:</p>
+
+<ul>
+  <li>be public, not abstract and not sealed;</li>
+  <li>have a public or protected parameterless constructor;</li>
+  <li>have public overridable properties that are read/write if they are
+navigation properties;</li>
+  <li>and implement ICollection if they are a one-to-many navigation
+property.</li>
+</ul>
+:ET

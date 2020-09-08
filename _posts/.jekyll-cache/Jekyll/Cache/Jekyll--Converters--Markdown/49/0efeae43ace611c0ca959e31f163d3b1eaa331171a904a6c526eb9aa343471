@@ -1,0 +1,57 @@
+I"ž	<h2 id="using-conditioned-tags">Using Conditioned Tags</h2>
+
+<p>The Visual Studio 2010 UI does not have options to handle conditional
+references based on what kind of configuration and platform you are
+running. For example, you may have a project reference that needs to
+change depending on whether you are doing a 32 or 64 bit build.</p>
+
+<p>Fortunately, the project file syntax does support conditional
+references. I was able to find this out on <a href="http://stackoverflow.com/questions/1997268/how-to-reference-different-version-of-dll-with-msbuild">stack
+overflow</a>.</p>
+
+<p>In our case, we have our DLL's in source control under the project's
+bin directory. For some reason I kept getting the 64-bit version of the
+DLL and then found out it was because the Content tags also needed to be
+conditioned.</p>
+
+<h2 id="example">Example</h2>
+
+<p>Lets say you have a project (MyProject) with two DLL's, 32bit.dll and
+64bit.dll, that are referenced by the project and kept under the bin
+directory for the project:</p>
+
+<ul>
+  <li>MyProject\bin\x86\32bit.dll</li>
+  <li>MyProject\bin\x64\64bit.dll</li>
+</ul>
+
+<p>You will need to hand edit the MyProject\MyProject.vbproj file and add
+these entries to it (or change it if they are already in there). The
+first two entries are for the project references and the last two are
+for their inclusion as a content item in the project.</p>
+
+<pre><code class="language-{.prettyprint}">   &lt;Reference Include="32bit" Condition="'$(Platform)' == 'x86'"&gt;
+      &lt;HintPath&gt;bin\x86\32bit.dll&lt;/HintPath&gt;
+   &lt;/Reference&gt;  
+   &lt;Reference Include="64bit" Condition="'$(Platform)' == 'x64'"&gt;
+      &lt;HintPath&gt;bin\x64\64bit.dll&lt;/HintPath&gt;
+   &lt;/Reference&gt;
+   ...
+   &lt;ItemGroup&gt;    
+      &lt;Content Include="bin\x86\32bit.dll" Condition="'$(Platform)' == 'x86'"/&gt;
+      &lt;Content Include="bin\x64\64bit.dll" Condition="'$(Platform)' == 'x64'"/&gt;
+   &lt;/ItemGroup&gt;
+</code></pre>
+
+<p>Now, whenever the platform is changed to x86, it will only use the x86
+conditioned tags and likewise when changed to x64. This can also be
+applied to other conditions too, check the links below for a complete
+breakdown of the MSBuild schema and conditions.</p>
+
+<ul>
+  <li><a href="http://msdn.microsoft.com/en-us/library/5dy88c2e.aspx">MSBuild Project File Schema
+Reference</a></li>
+  <li><a href="http://msdn.microsoft.com/en-us/library/7szfhaft.aspx">MSBuild
+Conditions</a></li>
+</ul>
+:ET

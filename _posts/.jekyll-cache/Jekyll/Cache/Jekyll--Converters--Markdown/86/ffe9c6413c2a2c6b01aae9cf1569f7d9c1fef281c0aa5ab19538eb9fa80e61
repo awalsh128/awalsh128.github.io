@@ -1,0 +1,607 @@
+I"=�<h3 id="the-creeping-problem">The Creeping Problem</h3>
+
+<p>I recently found myself developing a request-response style system,
+where the lifetime of a request could be interrupted at any moment. For
+most same process execution, like your average desktop application, this
+is a concern, but arises more often when dealing with multiple
+coordinated processes. My case ended up being the latter.</p>
+
+<p>One of the ways to ensure redundancy is to isolate the steps of the
+request-response workflow into isolated atomic units or states. This
+way, if it fails, it can always be re-executed without having to perform
+the work that came before it. It is especially helpful when the total
+resources required are large and there is a higher probability of
+failure. We can just divvy up the work into states that act like
+<a href="http://stackoverflow.com/questions/1077412/what-is-an-idempotent-operation">idempotent
+functions</a>.
+Below is a great simplification of the actual project I worked on but I
+wanted to boil it down to its simplest form, eliminating excessive
+states that I have collapsed to the CreateResponse state.</p>
+
+<p>::: {.separator style=”clear: both; text-align: center;”}
+<a href="http://2.bp.blogspot.com/-3UkWChCOHY4/UyWBnlNbLGI/AAAAAAAAg5Y/mqhF-oDM7qs/s1600/requestresponse-states.png"><img src="http://2.bp.blogspot.com/-3UkWChCOHY4/UyWBnlNbLGI/AAAAAAAAg5Y/mqhF-oDM7qs/s1600/requestresponse-states.png" alt="" /></a>
+:::</p>
+
+<p>In my original implementation, I modeled the requests as queued items
+(UserRequest) that I would dequeue and start work on.</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">request</span> <span class="k">in</span> <span class="n">requests</span><span class="p">)</span> <span class="c1">// as IEnumerable</span>
+<span class="p">{</span>
+   <span class="k">switch</span> <span class="p">(</span><span class="n">request</span><span class="p">.</span><span class="n">State</span><span class="p">)</span>
+   <span class="p">{</span>
+      <span class="k">case</span> <span class="n">State</span><span class="p">.</span><span class="n">ReceiveRequest</span><span class="p">:</span>
+         <span class="k">if</span> <span class="p">(</span><span class="nf">TryReceiveRequest</span><span class="p">(</span><span class="n">request</span><span class="p">))</span> <span class="n">request</span><span class="p">.</span><span class="n">State</span> <span class="p">=</span> <span class="n">State</span><span class="p">.</span><span class="n">CreateResponse</span><span class="p">;</span>
+         <span class="k">break</span><span class="p">;</span>
+         
+      <span class="k">case</span> <span class="n">State</span><span class="p">.</span><span class="n">CreateResponse</span><span class="p">:</span>
+         <span class="k">if</span> <span class="p">(</span><span class="nf">TryCreateResponse</span><span class="p">(</span><span class="n">request</span><span class="p">))</span> <span class="n">request</span><span class="p">.</span><span class="n">State</span> <span class="p">=</span> <span class="n">State</span><span class="p">.</span><span class="n">SendResponse</span><span class="p">;</span>
+         <span class="k">break</span><span class="p">;</span>
+
+      <span class="k">case</span> <span class="n">State</span><span class="p">.</span><span class="n">SendResponse</span><span class="p">:</span>
+         <span class="k">if</span> <span class="p">(</span><span class="nf">TrySendResponse</span><span class="p">(</span><span class="n">request</span><span class="p">))</span> <span class="n">request</span><span class="p">.</span><span class="n">State</span> <span class="p">=</span> <span class="n">State</span><span class="p">.</span><span class="n">ResponseSent</span><span class="p">;</span>
+         <span class="k">break</span><span class="p">;</span>
+
+      <span class="k">case</span> <span class="n">State</span><span class="p">.</span><span class="n">ResponseSent</span><span class="p">:</span>
+         <span class="k">break</span><span class="p">;</span>
+
+      <span class="k">case</span> <span class="n">State</span><span class="p">.</span><span class="n">Faulted</span><span class="p">:</span>
+
+      <span class="k">default</span><span class="p">:</span>
+         <span class="k">throw</span> <span class="k">new</span> <span class="nf">ArgumentOutOfRangeException</span><span class="p">(</span><span class="s">"request.State"</span><span class="p">);</span>
+   <span class="p">}</span>
+   <span class="k">if</span> <span class="p">(</span><span class="n">request</span><span class="p">.</span><span class="n">State</span> <span class="p">!=</span> <span class="n">State</span><span class="p">.</span><span class="n">ResponseSent</span> <span class="p">&amp;&amp;</span> <span class="n">request</span><span class="p">.</span><span class="n">State</span> <span class="p">!=</span> <span class="n">State</span><span class="p">.</span><span class="n">Faulted</span><span class="p">)</span>
+      <span class="n">requests</span><span class="p">.</span><span class="nf">Enqueue</span><span class="p">(</span><span class="n">request</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Seems simple enough, but in my case the CreateResponse state ended being
+fairly computationally intensive and could take anywhere from a few
+seconds to several minutes. These long delays could be due to the
+workload of remote processes it was waiting on, temporal failure points
+like the network or even the system the process was running on. Another
+added complexity was that these requests were being serviced in
+parallel, by multiple processes that could be on the same system or not.
+Lastly, actual production level code never ends up being this simple;
+you quickly find yourself adding a lot of instrumentation and covering
+of edge cases.</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">request</span> <span class="k">in</span> <span class="n">requests</span><span class="p">)</span>
+<span class="p">{</span>
+   <span class="n">log</span><span class="p">.</span><span class="nf">LogDebug</span><span class="p">(</span><span class="s">"request.Id = {0}: Request dequeued in state {1}."</span><span class="p">,</span> <span class="n">request</span><span class="p">.</span><span class="n">Id</span><span class="p">,</span> <span class="n">request</span><span class="p">.</span><span class="n">State</span><span class="p">);</span>
+   <span class="k">switch</span> <span class="p">(</span><span class="n">request</span><span class="p">.</span><span class="n">State</span><span class="p">)</span>
+   <span class="p">{</span>
+      <span class="k">case</span> <span class="n">State</span><span class="p">.</span><span class="n">ReceiveRequest</span><span class="p">:</span>
+         <span class="n">logger</span><span class="p">.</span><span class="nf">LogDebug</span><span class="p">(</span><span class="s">"request.Id = {0}: Trying to receive request."</span><span class="p">,</span> <span class="n">request</span><span class="p">.</span><span class="n">Id</span><span class="p">);</span>
+         <span class="k">if</span> <span class="p">(</span><span class="nf">TryReceiveRequest</span><span class="p">(</span><span class="n">request</span><span class="p">))</span> <span class="n">request</span><span class="p">.</span><span class="n">State</span> <span class="p">=</span> <span class="n">State</span><span class="p">.</span><span class="n">CreateResponsePart1</span><span class="p">;</span>
+         <span class="k">break</span><span class="p">;</span>
+         
+      <span class="k">case</span> <span class="n">State</span><span class="p">.</span><span class="n">CreateResponsePart1</span><span class="p">:</span>
+         <span class="n">logger</span><span class="p">.</span><span class="nf">LogDebug</span><span class="p">(</span><span class="s">"request.Id = {0}: Trying to create response for part 1."</span><span class="p">,</span> <span class="n">request</span><span class="p">.</span><span class="n">Id</span><span class="p">);</span>
+         <span class="k">if</span> <span class="p">(</span><span class="nf">TryCreateResponsePart1</span><span class="p">(</span><span class="n">request</span><span class="p">))</span> <span class="n">request</span><span class="p">.</span><span class="n">State</span> <span class="p">=</span> <span class="n">State</span><span class="p">.</span><span class="n">CreateResponsePart2</span><span class="p">;</span>
+         <span class="k">break</span><span class="p">;</span>
+
+      <span class="k">case</span> <span class="n">State</span><span class="p">.</span><span class="n">CreateResponsePart2</span><span class="p">:</span>
+         <span class="n">logger</span><span class="p">.</span><span class="nf">LogDebug</span><span class="p">(</span><span class="s">"request.Id = {0}: Trying to create response for part 2."</span><span class="p">,</span> <span class="n">request</span><span class="p">.</span><span class="n">Id</span><span class="p">);</span>
+         <span class="k">if</span> <span class="p">(</span><span class="nf">TryCreateResponsePart2</span><span class="p">(</span><span class="n">request</span><span class="p">))</span>
+         <span class="p">{</span>
+            <span class="n">request</span><span class="p">.</span><span class="n">State</span> <span class="p">=</span> <span class="n">State</span><span class="p">.</span><span class="n">CreateResponsePart3</span><span class="p">;</span>
+         <span class="p">}</span>
+         <span class="k">else</span>
+         <span class="p">{</span>
+            <span class="n">request</span><span class="p">.</span><span class="n">State</span> <span class="p">=</span> <span class="n">State</span><span class="p">.</span><span class="n">CreateResponsePart1</span><span class="p">;</span>
+            <span class="nf">ExecuteCreateResponsePart2Cleanup</span><span class="p">();</span>
+            <span class="n">logger</span><span class="p">.</span><span class="nf">LogError</span><span class="p">(</span><span class="s">"request.Id = {0}: Unexpected failure while evaluation create response part 2."</span><span class="p">,</span> <span class="n">request</span><span class="p">.</span><span class="n">Id</span><span class="p">);</span>
+         <span class="p">}</span>
+         <span class="k">break</span><span class="p">;</span>
+
+      <span class="k">case</span> <span class="n">State</span><span class="p">.</span><span class="n">CreateResponsePart3</span><span class="p">:</span>
+         <span class="n">logger</span><span class="p">.</span><span class="nf">LogDebug</span><span class="p">(</span><span class="s">"request.Id = {0}: Trying to create response for part 3."</span><span class="p">,</span> <span class="n">request</span><span class="p">.</span><span class="n">Id</span><span class="p">);</span>
+         <span class="kt">bool</span> <span class="n">unrecoverable</span><span class="p">;</span>
+         <span class="k">if</span> <span class="p">(</span><span class="nf">TryCreateResponsePart3</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="k">out</span> <span class="n">unrecoverable</span><span class="p">))</span>
+         <span class="p">{</span>
+            <span class="n">request</span><span class="p">.</span><span class="n">State</span> <span class="p">=</span> <span class="n">State</span><span class="p">.</span><span class="n">SendResponse</span><span class="p">;</span>
+         <span class="p">}</span>
+         <span class="k">else</span>
+         <span class="p">{</span>
+           <span class="k">if</span> <span class="p">(</span><span class="n">unrecoverable</span><span class="p">)</span>
+           <span class="p">{</span>
+               <span class="n">logger</span><span class="p">.</span><span class="nf">LogError</span><span class="p">(</span><span class="s">"request.Id = {0}: Failure is unrecoverable, faulting request."</span><span class="p">,</span> <span class="n">request</span><span class="p">.</span><span class="n">Id</span><span class="p">);</span>
+               <span class="n">request</span><span class="p">.</span><span class="n">State</span> <span class="p">=</span> <span class="n">State</span><span class="p">.</span><span class="n">Faulted</span><span class="p">;</span>
+           <span class="p">}</span>
+           <span class="k">else</span>
+           <span class="p">{</span>
+               <span class="n">request</span><span class="p">.</span><span class="n">State</span> <span class="p">=</span> <span class="n">State</span><span class="p">.</span><span class="n">CreateResponse2</span><span class="p">;</span>
+           <span class="p">}</span>
+         <span class="p">}</span>
+         <span class="k">break</span><span class="p">;</span>
+
+      <span class="k">case</span> <span class="n">State</span><span class="p">.</span><span class="n">SendResponse</span><span class="p">:</span>
+         <span class="n">logger</span><span class="p">.</span><span class="nf">LogDebug</span><span class="p">(</span><span class="s">"request.Id = {0}: Trying to send response."</span><span class="p">,</span> <span class="n">request</span><span class="p">.</span><span class="n">Id</span><span class="p">);</span>
+         <span class="k">if</span> <span class="p">(</span><span class="nf">TrySendResponse</span><span class="p">(</span><span class="n">request</span><span class="p">))</span> <span class="n">request</span><span class="p">.</span><span class="n">State</span> <span class="p">=</span> <span class="n">State</span><span class="p">.</span><span class="n">ResponseSent</span><span class="p">;</span>
+         <span class="k">break</span><span class="p">;</span>
+
+      <span class="k">case</span> <span class="n">State</span><span class="p">.</span><span class="n">ResponseSent</span><span class="p">:</span>
+         <span class="k">break</span><span class="p">;</span>
+
+      <span class="k">case</span> <span class="n">State</span><span class="p">.</span><span class="n">Faulted</span><span class="p">:</span>
+         <span class="n">logger</span><span class="p">.</span><span class="nf">LogCritical</span><span class="p">(</span><span class="s">"request.Id = {0}: Request faulted."</span><span class="p">,</span> <span class="n">request</span><span class="p">.</span><span class="n">Id</span><span class="p">);</span>
+         <span class="k">break</span><span class="p">;</span>
+
+      <span class="k">default</span><span class="p">:</span>
+         <span class="k">throw</span> <span class="k">new</span> <span class="nf">ArgumentOutOfRangeException</span><span class="p">(</span><span class="s">"request.State"</span><span class="p">);</span>
+   <span class="p">}</span>
+   <span class="n">log</span><span class="p">.</span><span class="nf">LogDebug</span><span class="p">(</span><span class="s">"request.Id = {0}: Request transitioned to state {1}."</span><span class="p">,</span> <span class="n">request</span><span class="p">.</span><span class="n">Id</span><span class="p">,</span> <span class="n">request</span><span class="p">.</span><span class="n">State</span><span class="p">);</span>
+   <span class="k">if</span> <span class="p">(</span><span class="n">request</span><span class="p">.</span><span class="n">State</span> <span class="p">!=</span> <span class="n">State</span><span class="p">.</span><span class="n">ResponseSent</span> <span class="p">&amp;&amp;</span> <span class="n">request</span><span class="p">.</span><span class="n">State</span> <span class="p">!=</span> <span class="n">State</span><span class="p">.</span><span class="n">Faulted</span><span class="p">)</span>
+   <span class="p">{</span>
+      <span class="n">logger</span><span class="p">.</span><span class="nf">LogDebug</span><span class="p">(</span><span class="s">"request.Id = {0}: Re-enqueuing request for further evaluation."</span><span class="p">,</span> <span class="n">request</span><span class="p">.</span><span class="n">Id</span><span class="p">);</span>
+      <span class="n">requests</span><span class="p">.</span><span class="nf">Enqueue</span><span class="p">(</span><span class="n">request</span><span class="p">);</span>
+   <span class="p">}</span>
+   <span class="k">else</span>
+   <span class="p">{</span>
+      <span class="n">logger</span><span class="p">.</span><span class="nf">LogDebug</span><span class="p">(</span><span class="s">"request.Id = {0}: Request evaluation is complete, not re-enqueuing."</span><span class="p">,</span> <span class="n">request</span><span class="p">.</span><span class="n">Id</span><span class="p">);</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>What a mess! This code quickly starts getting bloated. In addition, not
+every state evaluation will be successful and be considered exceptional.
+Maybe it is polling another process and can't transition until that
+process is ready. As the result of each state evaluation changes beyond
+a simple yes/no (true/false), we end up with a state machine that could
+have multiple transitions. This makes for ugly code and too much
+coupling. All the state evaluation logic is in the same class and you
+have this huge switch statement. We could get around the extensive
+logging by using dependency injection but what do we inject? There is no
+consistent call site signature to inject to. The ever growing case
+statements could be <a href="http://refactoring.com/catalog/extractMethod.html">extracted into their own
+method</a>, but then
+<a href="http://programmers.stackexchange.com/questions/162923/what-defines-code-readability">readability</a>
+suffers. This sucks.</p>
+
+<p>You may be saying, "Well you obviously could solve it by ..." and I
+would agree with you. This code ugliness could be solved many different
+ways, and is intentionally crap for the purpose of this post. The major
+problems I faced was:</p>
+
+<ul>
+  <li>A large state machine object and large code blocks.</li>
+  <li>Lack of symmetry in state handling.</li>
+  <li>Multiple method
+<a href="http://en.wikipedia.org/wiki/Postcondition">postconditions</a> that
+couldn't be expressed by the boolean return result alone.</li>
+  <li>Coupling of state transition logic, business logic and diagnostics.</li>
+</ul>
+
+<p>I knew something was wrong but I wasn't quite sure how to solve it
+without adding more complexity to the system and allowing readability to
+suffer. As someone who has had to spend hours reading other people's
+unreadable code, I didn't want to commit the same sin.</p>
+
+<h3 id="looking-for-a-solution">Looking For A Solution</h3>
+
+<p>In university, they teach you how to be a good Computer Scientist; you
+learn complexity analysis, synthetic languages and the theoretical
+underpinning of computation. Although, none of this really prepares you
+to be a software engineer. I could concoct my own system, by why do this
+when I can stand on the shoulders of giants.</p>
+
+<p>I always read or heard references to the <a href="http://en.wikipedia.org/wiki/Design_Patterns">Gang of Four
+book</a>, even listened to
+talks by the original authors and became familiar with some of the more
+famous patterns
+(<a href="http://en.wikipedia.org/wiki/Factory_method_pattern">Factory</a> and
+<a href="http://en.wikipedia.org/wiki/Singleton_pattern">Singleton</a> come to
+mind). Maybe there was a solution in there. I can't be the first one to
+come across this simple design problem. So there I found it in the
+<a href="http://en.wikipedia.org/wiki/State_pattern">State design pattern</a>.</p>
+
+<p>::: {.separator style=”clear: both; text-align: center;”}
+<a href="http://upload.wikimedia.org/wikipedia/commons/e/e8/State_Design_Pattern_UML_Class_Diagram.svg"><img src="http://upload.wikimedia.org/wikipedia/commons/e/e8/State_Design_Pattern_UML_Class_Diagram.svg" alt="" /></a>
+:::</p>
+
+<p>The design is pretty simple. You have a context that is used by the end
+user, and the states themselves wrapped by the context. The context can
+have a range of methods that behave differently based on the concrete
+state type being used at that moment (eg. behavior of a cursor click in
+a graphics editor). I modified this design, using a single method to
+abstract workflow and act as a procedural agent for processing multiple
+state machines.</p>
+
+<h3 id="the-code">The Code</h3>
+
+<p>The first step was to construct a state object that will be the super
+type to all of my concrete states.</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">abstract</span> <span class="k">class</span> <span class="nc">StateBase</span>   
+<span class="p">{</span>
+   <span class="c1">// Let the concrete type decide what the next transition state will be.</span>
+   <span class="k">protected</span> <span class="k">abstract</span> <span class="n">StateBase</span> <span class="nf">OnExecute</span><span class="p">();</span>  
+
+   <span class="k">public</span> <span class="n">StateBase</span> <span class="nf">Execute</span><span class="p">()</span>
+   <span class="p">{</span>
+      <span class="c1">// Can add diagnostic information here.</span>
+      <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nf">OnExecute</span><span class="p">();</span>   
+   <span class="p">}</span>   
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Next I need a context class that can create and run the state machine.</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">abstract</span> <span class="k">class</span> <span class="nc">StateContextBase</span>
+<span class="p">{</span>
+   <span class="k">private</span> <span class="n">StateBase</span> <span class="n">state</span><span class="p">;</span>   
+
+   <span class="k">protected</span> <span class="k">abstract</span> <span class="n">StateBase</span> <span class="nf">OnCreate</span><span class="p">();</span>
+   <span class="k">protected</span> <span class="k">abstract</span> <span class="n">StateBase</span> <span class="nf">OnExecuted</span><span class="p">(</span><span class="n">StateBase</span> <span class="n">nextState</span><span class="p">);</span>
+   <span class="k">protected</span> <span class="k">abstract</span> <span class="kt">bool</span> <span class="nf">OnIsRunning</span><span class="p">(</span><span class="n">StateBase</span> <span class="n">state</span><span class="p">);</span>
+
+   <span class="k">public</span> <span class="nf">StateContextBase</span><span class="p">(</span><span class="n">StateBase</span> <span class="n">state</span><span class="p">)</span>
+   <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="n">state</span> <span class="p">=</span> <span class="n">state</span><span class="p">;</span>
+   <span class="p">}</span>
+
+   <span class="k">public</span> <span class="n">StateContextBase</span> <span class="nf">Execute</span><span class="p">()</span>
+   <span class="p">{</span>
+      <span class="c1">// Need to create the state machine from something.</span>
+      <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">state</span> <span class="p">==</span> <span class="k">null</span><span class="p">)</span>
+      <span class="p">{</span>
+         <span class="c1">// We will get to this later.</span>
+         <span class="k">this</span><span class="p">.</span><span class="n">state</span> <span class="p">=</span> <span class="k">this</span><span class="p">.</span><span class="nf">OnCreate</span><span class="p">();</span>
+      <span class="p">}</span>
+      <span class="c1">// Let the concrete context decide what to do after a state transition.</span>
+      <span class="k">this</span><span class="p">.</span><span class="n">state</span> <span class="p">=</span> <span class="k">this</span><span class="p">.</span><span class="nf">OnExecuted</span><span class="p">(</span><span class="n">state</span><span class="p">.</span><span class="nf">Execute</span><span class="p">());</span>
+      <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+   <span class="p">}</span> 
+ 
+   <span class="k">public</span> <span class="kt">bool</span> <span class="nf">IsRunning</span><span class="p">()</span>
+   <span class="p">{</span>
+      <span class="c1">// Have the concrete type tell us when it is in the final state.</span>
+      <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nf">OnIsRunning</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">state</span><span class="p">);</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>While glossing over the details, what will this look like at the
+application's entry point.</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Program</span>
+<span class="p">{</span>
+   <span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
+   <span class="p">{</span>
+      <span class="c1">// Will need to get it from somewhere but won't worry about this for now.</span>
+      <span class="kt">var</span> <span class="n">requests</span> <span class="p">=</span> <span class="n">Enumerable</span><span class="p">.</span><span class="n">Empty</span><span class="p">&lt;</span><span class="n">StateContextBase</span><span class="p">&gt;();</span>
+
+      <span class="c1">// Can be changed to false on an exit call.</span>
+      <span class="kt">var</span> <span class="n">running</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+      <span class="k">while</span> <span class="p">(</span><span class="n">running</span><span class="p">)</span>
+      <span class="p">{</span>    
+         <span class="n">requests</span> <span class="p">=</span> <span class="n">requests</span>
+            <span class="p">.</span><span class="nf">Where</span><span class="p">(</span><span class="n">r</span> <span class="p">=&gt;</span> <span class="n">r</span><span class="p">.</span><span class="nf">IsRunning</span><span class="p">())</span>
+            <span class="p">.</span><span class="nf">Select</span><span class="p">(</span><span class="n">r</span> <span class="p">=&gt;</span> <span class="n">r</span><span class="p">.</span><span class="nf">Execute</span><span class="p">());</span>
+      <span class="p">}</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>That is beautiful! All I see is the state machine decider logic and I
+don't even need to be concerned with what type of state machines are
+running.</p>
+
+<p>So let's dive into the details. First, there is the creation of the
+state into memory. We have to get this from somewhere, so let's add
+another abstraction on top of our StateBase super type. Something that
+can be persisted in case the process crashes and can be accessed across
+many systems (eg. database).</p>
+
+<p>In my case, I used the <a href="http://en.wikipedia.org/wiki/Entity_Framework">Entity
+Framework</a>
+<a href="http://en.wikipedia.org/wiki/Object-relational_mapping">ORM</a>, which is
+based off of the <a href="http://martinfowler.com/eaaCatalog/unitOfWork.html">unit of
+work</a> and
+<a href="http://martinfowler.com/eaaCatalog/repository.html">repository</a> design
+patterns. There is a context (DataContext) that I will get my model
+object (UserRequest) from to figure out the current state. A unique key
+(UserRequest.Id : Guid) will be used to identify the persisted object.
+We won't concern ourselves as to why this is just unique and not an
+identity key (that could be in another post) but it basically comes down
+to the object's initial creation at runtime not relying on any
+persistence store for uniqueness.</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">DataContext</span>
+   <span class="p">:</span> <span class="n">System</span><span class="p">.</span><span class="n">Data</span><span class="p">.</span><span class="n">Entity</span><span class="p">.</span><span class="n">DbContext</span>
+<span class="p">{</span>
+   <span class="k">public</span> <span class="n">DbSet</span> <span class="n">UserRequests</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+
+   <span class="k">public</span> <span class="nf">DataContext</span><span class="p">()</span>
+      <span class="p">:</span> <span class="k">base</span><span class="p">(</span><span class="s">"name=DataContext"</span><span class="p">)</span>
+   <span class="p">{</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">abstract</span> <span class="k">class</span> <span class="nc">PersistedStateBase</span><span class="p">&lt;</span><span class="n">TEntity</span><span class="p">&gt;</span>
+   <span class="p">:</span> <span class="n">StateBase</span>
+   <span class="k">where</span> <span class="n">TEntity</span> <span class="p">:</span> <span class="k">class</span>
+<span class="err">{</span>
+   <span class="nc">private</span> <span class="n">Guid</span> <span class="n">id</span><span class="p">;</span>
+
+   <span class="k">protected</span> <span class="k">abstract</span> <span class="n">StateBase</span> <span class="nf">OnExecuteCommit</span><span class="p">(</span><span class="n">DataContext</span> <span class="n">context</span><span class="p">,</span> <span class="n">Guid</span> <span class="n">id</span><span class="p">,</span> <span class="n">TEntity</span> <span class="n">entity</span><span class="p">);</span>
+   <span class="k">protected</span> <span class="k">abstract</span> <span class="n">TEntity</span> <span class="nf">OnExecuteCreate</span><span class="p">(</span><span class="n">DataContext</span> <span class="n">context</span><span class="p">,</span> <span class="n">Guid</span> <span class="n">id</span><span class="p">);</span>
+   <span class="k">protected</span> <span class="k">abstract</span> <span class="n">StateBase</span> <span class="nf">OnExecuteRollback</span><span class="p">(</span><span class="n">DataContext</span> <span class="n">context</span><span class="p">,</span> <span class="n">Guid</span> <span class="n">id</span><span class="p">,</span> <span class="n">TEntity</span> <span class="n">entity</span><span class="p">);</span>
+
+   <span class="k">public</span> <span class="nf">PersistedStateBase</span><span class="p">(</span><span class="n">Guid</span> <span class="n">id</span><span class="p">)</span>
+   <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="n">id</span> <span class="p">=</span> <span class="n">id</span><span class="p">;</span>
+   <span class="p">}</span>
+
+   <span class="k">protected</span> <span class="k">override</span> <span class="n">StateBase</span> <span class="nf">OnExecute</span><span class="p">()</span>
+   <span class="p">{</span>
+      <span class="c1">// Also consider exceptions thrown by DataContext.</span>
+      <span class="n">StateBase</span> <span class="n">nextState</span> <span class="p">=</span> <span class="k">this</span><span class="p">;</span>
+      <span class="k">using</span> <span class="p">(</span><span class="kt">var</span> <span class="n">context</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">DataContext</span><span class="p">())</span>
+      <span class="p">{</span>
+         <span class="n">TEntity</span> <span class="n">entity</span> <span class="p">=</span> <span class="k">null</span><span class="p">;</span>
+         <span class="k">try</span>
+         <span class="p">{</span>
+            <span class="n">entity</span> <span class="p">=</span> <span class="k">this</span><span class="p">.</span><span class="nf">OnExecuteCreate</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="n">id</span><span class="p">);</span>
+            <span class="n">nextState</span> <span class="p">=</span> <span class="k">this</span><span class="p">.</span><span class="nf">OnExecuteCommit</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">entity</span><span class="p">);</span>
+            <span class="n">context</span><span class="p">.</span><span class="nf">SaveChanges</span><span class="p">();</span>
+         <span class="p">}</span>
+         <span class="k">catch</span> <span class="p">(</span><span class="n">Exception</span> <span class="n">ex</span><span class="p">)</span>
+         <span class="p">{</span>
+            <span class="c1">// Handle exception.</span>
+            <span class="n">nextState</span> <span class="p">=</span> <span class="k">this</span><span class="p">.</span><span class="nf">OnExecuteRollback</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">entity</span><span class="p">);</span>
+         <span class="p">}</span>
+      <span class="p">}</span>
+      <span class="k">return</span> <span class="n">nextState</span><span class="p">;</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The model object (UserRequest, our entity type) will hold the state as
+an enumeration (UserRequest.State) and contain all the data needed for
+processing through the state machine.</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">enum</span> <span class="n">UserRequestState</span>
+<span class="p">{</span>
+   <span class="n">None</span> <span class="p">=</span> <span class="m">0</span><span class="p">,</span>  
+   <span class="n">Receive</span> <span class="p">=</span> <span class="m">1</span><span class="p">,</span>  
+   <span class="n">CreateResponse</span> <span class="p">=</span> <span class="m">3</span><span class="p">,</span>
+   <span class="n">SendResponse</span> <span class="p">=</span> <span class="m">4</span><span class="p">,</span>
+   <span class="n">ResponseSent</span> <span class="p">=</span> <span class="m">5</span><span class="p">,</span>
+   <span class="n">Faulted</span> <span class="p">=</span> <span class="p">-</span><span class="m">1</span><span class="p">,</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="n">DataContract</span><span class="p">]</span>
+<span class="k">public</span> <span class="k">class</span> <span class="nc">UserRequest</span>
+<span class="p">{</span>
+   <span class="p">[</span><span class="n">DataMember</span><span class="p">]</span>
+   <span class="k">public</span> <span class="n">Guid</span> <span class="n">Id</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">private</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+   <span class="p">[</span><span class="n">DataMember</span><span class="p">]</span>
+   <span class="k">public</span> <span class="n">UserRequestState</span> <span class="n">State</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">private</span>  <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+
+   <span class="c1">// Other properties here like the location of the user request and other metadata.</span>
+
+   <span class="k">private</span> <span class="nf">UserRequest</span><span class="p">()</span>  <span class="c1">// Required by EF to create the POCO proxy.</span>
+   <span class="p">{}</span>
+
+   <span class="k">public</span> <span class="nf">UserRequest</span><span class="p">(</span><span class="n">Guid</span> <span class="n">id</span><span class="p">,</span> <span class="n">UserRequestState</span> <span class="n">state</span><span class="p">)</span>
+   <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="n">Id</span> <span class="p">=</span> <span class="n">id</span><span class="p">;</span>
+      <span class="k">this</span><span class="p">.</span><span class="n">State</span> <span class="p">=</span> <span class="n">state</span><span class="p">;</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Now let's implement our first state using the types we have created.</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">ReceiveState</span>
+   <span class="p">:</span> <span class="n">PersistedStateBase</span><span class="p">&lt;</span><span class="n">UserRequest</span><span class="p">&gt;</span>
+<span class="p">{</span>
+   <span class="k">public</span> <span class="nf">ReceiveState</span><span class="p">(</span><span class="n">Guid</span> <span class="n">id</span><span class="p">)</span>
+      <span class="p">:</span> <span class="k">base</span><span class="p">(</span><span class="n">id</span><span class="p">)</span>
+   <span class="p">{}</span>
+  
+   <span class="k">protected</span> <span class="k">override</span> <span class="n">StateBase</span> <span class="nf">OnExecuteCommit</span><span class="p">(</span><span class="n">DataContext</span> <span class="n">context</span><span class="p">,</span> <span class="n">Guid</span> <span class="n">id</span><span class="p">,</span> <span class="n">UserRequest</span> <span class="n">entity</span><span class="p">)</span>
+   <span class="p">{</span>      
+      <span class="kt">var</span> <span class="n">successful</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
+      <span class="kt">var</span> <span class="n">faulted</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
+      <span class="c1">// Receive user request and decide whether successful, unsuccessful with retry or</span>
+      <span class="c1">// unrecoverable/faulted. </span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">successful</span><span class="p">)</span>
+      <span class="p">{</span>
+         <span class="k">return</span> <span class="k">new</span> <span class="nf">CreateResponseState</span><span class="p">(</span><span class="n">id</span><span class="p">);</span>
+      <span class="p">}</span>
+      <span class="k">else</span>
+      <span class="p">{</span>
+         <span class="k">return</span> <span class="n">faulted</span> <span class="p">?</span> <span class="k">new</span> <span class="nf">FaultedState</span><span class="p">(</span><span class="n">id</span><span class="p">)</span> <span class="p">:</span> <span class="k">this</span><span class="p">;</span>
+      <span class="p">}</span>
+   <span class="p">}</span>
+
+   <span class="k">protected</span> <span class="k">override</span> <span class="n">UserRequest</span> <span class="nf">OnExecuteCreate</span><span class="p">(</span><span class="n">DataContext</span> <span class="n">context</span><span class="p">,</span> <span class="n">Guid</span> <span class="n">id</span><span class="p">)</span>
+   <span class="p">{</span>
+      <span class="c1">// Get model object</span>
+      <span class="k">return</span> <span class="n">context</span><span class="p">.</span><span class="n">UserRequests</span><span class="p">.</span><span class="nf">Find</span><span class="p">(</span><span class="n">id</span><span class="p">);</span>
+   <span class="p">}</span>
+
+   <span class="k">protected</span> <span class="k">override</span> <span class="n">StateBase</span> <span class="nf">OnExecuteRollback</span><span class="p">(</span><span class="n">DataContext</span> <span class="n">context</span><span class="p">,</span> <span class="n">Guid</span> <span class="n">id</span><span class="p">,</span> <span class="n">UserRequest</span> <span class="n">entity</span><span class="p">)</span>
+   <span class="p">{</span>
+      <span class="c1">// Rollback any changes possibly made in the OnExecuteCommit method and attempt recovery,</span>
+      <span class="c1">// if possible, in this method. For this example, we will just return the current state.</span>
+      <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>We need to also make our state context concrete with the type below.
+This tends to have more wiring since type per state doesn't really
+translate well in an ORM. This class could be greater simplified with
+attributes on the state types, designating the enumeration value they
+map to.</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">UserRequestContext</span>
+   <span class="p">:</span> <span class="n">StateContextBase</span>
+<span class="p">{</span>
+   <span class="k">private</span> <span class="k">static</span> <span class="n">Dictionary</span><span class="p">&lt;</span><span class="n">Type</span><span class="p">,</span> <span class="n">UserRequestState</span><span class="p">&gt;</span> <span class="n">typeToDbState</span><span class="p">;</span>
+   <span class="k">private</span> <span class="k">static</span> <span class="kt">bool</span> <span class="n">databaseRead</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
+
+   <span class="k">public</span> <span class="n">Guid</span> <span class="n">Id</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">private</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+
+   <span class="k">static</span> <span class="nf">UserRequestContext</span><span class="p">()</span>
+   <span class="p">{</span>
+      <span class="n">databaseRead</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
+      <span class="n">typeToDbState</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Dictionary</span><span class="p">&lt;</span><span class="n">Type</span><span class="p">,</span> <span class="n">UserRequestState</span><span class="p">&gt;()</span>
+      <span class="p">{</span>
+         <span class="p">{</span> <span class="k">typeof</span><span class="p">(</span><span class="n">ReceiveState</span><span class="p">),</span> <span class="n">UserRequestState</span><span class="p">.</span><span class="n">Receive</span> <span class="p">},</span>
+         <span class="p">{</span> <span class="k">typeof</span><span class="p">(</span><span class="n">CreateResponseState</span><span class="p">),</span> <span class="n">UserRequestState</span><span class="p">.</span><span class="n">CreateResponse</span><span class="p">},</span>
+         <span class="p">{</span> <span class="k">typeof</span><span class="p">(</span><span class="n">SendResponse</span><span class="p">),</span> <span class="n">UserRequestState</span><span class="p">.</span><span class="n">SendResponse</span><span class="p">},</span>
+         <span class="p">{</span> <span class="k">typeof</span><span class="p">(</span><span class="n">ResponseSent</span><span class="p">),</span> <span class="n">UserRequestState</span><span class="p">.</span><span class="n">ResponseSent</span><span class="p">},</span>
+         <span class="p">{</span> <span class="k">typeof</span><span class="p">(</span><span class="n">FaultedState</span><span class="p">),</span> <span class="n">UserRequestState</span><span class="p">.</span><span class="n">Faulted</span> <span class="p">},</span>
+      <span class="p">};</span>
+   <span class="p">}</span>
+
+   <span class="k">public</span> <span class="nf">UserRequestContext</span><span class="p">(</span><span class="n">Guid</span> <span class="n">id</span><span class="p">)</span>
+      <span class="p">:</span> <span class="k">base</span><span class="p">(</span><span class="k">null</span><span class="p">)</span>
+   <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="n">Id</span> <span class="p">=</span> <span class="n">id</span><span class="p">;</span>
+   <span class="p">}</span>
+
+   <span class="k">public</span> <span class="k">static</span> <span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">Guid</span><span class="p">&gt;</span> <span class="nf">GetRunningIds</span><span class="p">()</span>
+   <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">UserRequestContext</span><span class="p">.</span><span class="n">databaseRead</span><span class="p">)</span>
+      <span class="p">{</span>
+         <span class="kt">var</span> <span class="n">ids</span> <span class="p">=</span> <span class="n">Enumerable</span><span class="p">.</span><span class="n">Empty</span><span class="p">&lt;</span><span class="n">Guid</span><span class="p">&gt;();</span> <span class="c1">// Get from message queue.    </span>
+         <span class="k">return</span> <span class="n">ids</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="k">else</span>
+      <span class="p">{</span>
+         <span class="k">using</span> <span class="p">(</span><span class="kt">var</span> <span class="n">dataContext</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">DataContext</span><span class="p">())</span>
+         <span class="p">{</span>
+            <span class="kt">var</span> <span class="n">ids</span> <span class="p">=</span> <span class="n">dataContext</span><span class="p">.</span><span class="n">UserRequests</span>
+               <span class="p">.</span><span class="nf">Where</span><span class="p">(</span><span class="n">u</span> <span class="p">=&gt;</span> 
+                  <span class="n">u</span><span class="p">.</span><span class="n">State</span> <span class="p">!=</span> <span class="n">UserRequestState</span><span class="p">.</span><span class="n">ResponseSent</span> <span class="p">&amp;&amp;</span>
+                  <span class="n">u</span><span class="p">.</span><span class="n">State</span> <span class="p">!=</span> <span class="n">UserRequestState</span><span class="p">.</span><span class="n">Faulted</span><span class="p">)</span>
+               <span class="p">.</span><span class="nf">Select</span><span class="p">(</span><span class="n">u</span> <span class="p">=&gt;</span> <span class="n">u</span><span class="p">.</span><span class="n">Id</span><span class="p">)</span>
+               <span class="p">.</span><span class="nf">ToArray</span><span class="p">();</span> <span class="c1">// Force evaluation.</span>
+
+            <span class="n">UserRequestContext</span><span class="p">.</span><span class="n">databaseRead</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+
+            <span class="k">return</span> <span class="n">ids</span><span class="p">;</span>
+         <span class="p">}</span>
+      <span class="p">}</span>
+   <span class="p">}</span>
+
+   <span class="k">protected</span> <span class="k">override</span> <span class="kt">bool</span> <span class="nf">OnIsRunning</span><span class="p">(</span><span class="n">StateBase</span> <span class="n">state</span><span class="p">)</span>
+   <span class="p">{</span>
+      <span class="k">return</span> <span class="p">!(</span><span class="n">state</span> <span class="k">is</span> <span class="n">CompleteState</span><span class="p">);</span>
+   <span class="p">}</span>
+
+   <span class="k">protected</span> <span class="k">override</span> <span class="n">StateBase</span> <span class="nf">OnCreate</span><span class="p">()</span>
+   <span class="p">{</span>
+      <span class="k">using</span> <span class="p">(</span><span class="kt">var</span> <span class="n">dataContext</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">DataContext</span><span class="p">())</span>
+      <span class="p">{</span>
+         <span class="c1">// Maps persisted state enumeration to runtime types.</span>
+         <span class="kt">var</span> <span class="n">entity</span> <span class="p">=</span> <span class="n">dataContext</span><span class="p">.</span><span class="n">UserRequests</span><span class="p">.</span><span class="nf">Find</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">Id</span><span class="p">);</span>
+         <span class="k">switch</span> <span class="p">(</span><span class="n">entity</span><span class="p">.</span><span class="n">State</span><span class="p">)</span>
+         <span class="p">{</span>
+            <span class="k">case</span> <span class="n">UserRequestState</span><span class="p">.</span><span class="n">Receive</span><span class="p">:</span>
+               <span class="k">return</span> <span class="k">new</span> <span class="nf">ReceiveState</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">Id</span><span class="p">);</span>
+
+            <span class="k">case</span> <span class="n">UserRequestState</span><span class="p">.</span><span class="n">CreateResponse</span><span class="p">:</span>
+               <span class="k">return</span> <span class="k">new</span> <span class="nf">CreateResponseState</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">Id</span><span class="p">);</span>
+
+            <span class="k">case</span> <span class="n">UserRequestState</span><span class="p">.</span><span class="n">SendResponse</span><span class="p">:</span>
+               <span class="k">return</span> <span class="k">new</span> <span class="nf">SendResponseState</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">Id</span><span class="p">);</span>
+
+            <span class="k">case</span> <span class="n">UserRequestState</span><span class="p">.</span><span class="n">ResponseSent</span><span class="p">:</span>
+               <span class="k">return</span> <span class="k">new</span> <span class="nf">ResponseSentState</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">Id</span><span class="p">);</span>
+
+            <span class="k">case</span> <span class="n">UserRequestState</span><span class="p">.</span><span class="n">Faulted</span><span class="p">:</span>
+               <span class="k">return</span> <span class="k">new</span> <span class="nf">FaultedState</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">Id</span><span class="p">);</span>
+
+            <span class="k">default</span><span class="p">:</span>
+               <span class="k">throw</span> <span class="k">new</span> <span class="nf">ArgumentOutOfRangeException</span><span class="p">();</span>
+         <span class="p">}</span>
+      <span class="p">}</span>
+   <span class="p">}</span>
+
+   <span class="k">protected</span> <span class="k">override</span> <span class="n">StateBase</span> <span class="nf">OnExecuted</span><span class="p">(</span><span class="n">StateBase</span> <span class="n">nextState</span><span class="p">)</span>
+   <span class="p">{</span>
+      <span class="c1">// Run any other deciding logic in here that is independent </span>
+      <span class="c1">// of the states themselves (eg. logging, perf counters).</span>
+
+      <span class="k">return</span> <span class="n">nextState</span><span class="p">;</span>      
+   <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Finally, let's come full circle and show what the application entry
+point will look like once all is said and done.</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Program</span>
+<span class="p">{</span>
+   <span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
+   <span class="p">{</span>
+      <span class="kt">var</span> <span class="n">requests</span> <span class="p">=</span> <span class="n">Enumerable</span><span class="p">.</span><span class="n">Empty</span><span class="p">&lt;</span><span class="n">StateContextBase</span><span class="p">&gt;();</span>
+
+      <span class="kt">var</span> <span class="n">running</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+      <span class="k">while</span> <span class="p">(</span><span class="n">running</span><span class="p">)</span>
+      <span class="p">{</span>         
+         <span class="n">requests</span> <span class="p">=</span> <span class="n">requests</span>
+            <span class="p">.</span><span class="nf">Where</span><span class="p">(</span><span class="n">r</span> <span class="p">=&gt;</span> <span class="n">r</span><span class="p">.</span><span class="nf">IsRunning</span><span class="p">())</span>
+            <span class="c1">// Append new user requests found.</span>
+            <span class="p">.</span><span class="nf">Concat</span><span class="p">((</span><span class="n">IEnumerable</span><span class="p">)</span><span class="n">UserRequestContext</span>
+               <span class="p">.</span><span class="nf">GetRunningIds</span><span class="p">()</span>
+               <span class="p">.</span><span class="nf">Select</span><span class="p">(</span><span class="n">i</span> <span class="p">=&gt;</span> <span class="k">new</span> <span class="nf">UserRequestContext</span><span class="p">(</span><span class="n">i</span><span class="p">)));</span>
+            <span class="p">.</span><span class="nf">Select</span><span class="p">(</span><span class="n">r</span> <span class="p">=&gt;</span> <span class="n">r</span><span class="p">.</span><span class="nf">Execute</span><span class="p">());</span>
+      <span class="p">}</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="ahhhh-yeah">Ahhhh Yeah...</h3>
+
+<p>After fleshing it all out, I really got that satisfying feeling you get
+as a software engineer when you know that you made the right design
+decisions. I isolated my business logic into their own types (eg.
+ReceiveRequestState), separated it from the state machine transition
+logic, added symmetrical handling of persistence logic by layering it on
+top of the state type (PersistedStateBase) and contained the
+persistence-runtime bridge (from UserRequest to PersistedStateBase
+subtypes) into its own type (UserRequestContext). If I want to add more
+states, I can simply add to the model's state enumeration
+(UserRequest.State) and update the state context (UserRequestContext).
+If I want to change the transition logic, all I need to do is go to the
+concrete state type itself (eg. ReceiveRequestState) and feel confident
+that my variables are all scoped correctly. No coupling, no excessive
+mutations and no excessive side effects.</p>
+
+<h3 id="using-the-right-tool">Using The Right Tool</h3>
+
+<p>This design pattern isn't for every state machine problem. In simple
+cases, it can definitely be overkill; you can see a bit of starter code
+is needed. Although, if you find yourself designing a state machine with
+multiple outbound transitions and final states, this could be the right
+modified pattern for you.</p>
+
+<h3 id="more-reading--resources">More Reading &amp; Resources</h3>
+
+<ul>
+  <li><a href="http://www.amazon.com/Design-Patterns-Object-Oriented-Addison-Wesley-Professional/dp/0201633612">Amazon: Design Patterns
+Book</a></li>
+  <li><a href="http://en.wikipedia.org/wiki/Design_Patterns">Wikipedia: Design Patterns (AKA Gang of Four
+Book)</a></li>
+  <li><a href="http://en.wikipedia.org/wiki/State_pattern">Wikipedia: State
+Pattern</a></li>
+  <li><a href="http://www.se-radio.net/2007/12/episode-81-interview-erich-gamma/">Software Engineering Radio - Episode 81: Interview with one of the
+Gang of
+Four.</a></li>
+  <li><a href="http://java.dzone.com/articles/design-patterns-state">Design Patterns Uncovered: The State
+Pattern</a></li>
+  <li><a href="http://sourcemaking.com/design_patterns/state">State Design Pattern: Code examples in other
+languages.</a></li>
+  <li><a href="http://www.tutorialspoint.com/design_pattern/state_pattern.htm">State Pattern: Really simple implementation in
+Java.</a></li>
+</ul>
+:ET

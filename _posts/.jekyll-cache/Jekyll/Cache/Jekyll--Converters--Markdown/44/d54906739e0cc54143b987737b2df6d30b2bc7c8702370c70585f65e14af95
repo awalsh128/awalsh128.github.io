@@ -1,0 +1,23 @@
+I"�<p>I setup a server recently using Ubuntu 10.04. LAMP was easy to
+configure, as was Subversion. Although making Subversion and Apache2
+play nice together with DAV SVN was a nightmare. I followed the <a href="https://help.ubuntu.com/10.04/serverguide/C/subversion.html">guide
+provided</a> but
+the website location just kept reprompting for my login.<br />
+<br />
+After hours of running in circles, I was able to find the solution. The
+<em>Require valid-user</em> directive in
+/etc/apache2/mods-available/dav_svn.conf <a href="http://www.linuxquestions.org/questions/showthread.php?p=4413943#post4413943">required the Limit
+directive</a>
+to be around it.<br />
+\</p>
+
+<blockquote>
+  <p>&lt;Limit GET POST PUT DELETE CONNECT OPTIONS PATCH PROPFIND PROPPATCH
+MKCOL COPY MOVE LOCK UNLOCK&gt;<br />
+   Require valid-user<br />
+&lt;/Limit&gt;</p>
+</blockquote>
+
+<p>The <em>LimitExcept</em> directive can also be used as long as the limitations
+are specified.</p>
+:ET

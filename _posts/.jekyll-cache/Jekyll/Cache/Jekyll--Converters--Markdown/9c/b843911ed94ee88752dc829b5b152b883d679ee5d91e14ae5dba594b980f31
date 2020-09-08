@@ -1,0 +1,360 @@
+I"t’<h3 id="motivation">Motivation</h3>
+
+<p>One of the main concerns in any licensing implementation is that
+authored license files are coming from the trusted authority (ie. your
+company) and not some third party. This can be accomplished in software
+by encrypting and decrypting the license with a <a href="http://en.wikipedia.org/wiki/Symmetric-key_algorithm">single
+key</a>, but
+symmetric <a href="http://en.wikipedia.org/wiki/Key_management">key storage</a> can
+be cumbersome and have added complexity.</p>
+
+<p><a href="http://en.wikipedia.org/wiki/Public-key_cryptography">Assymetric
+cryptography</a>, on
+the other hand, allows for two keys: a private one to author files with
+and a public one to verify its authenticity. This is well suited for
+licensing, where we want to ensure that the authored license has not
+been altered in anyway and the content can be relied on.</p>
+
+<h3 id="implementation">Implementation</h3>
+
+<p>I ran across <a href="http://www.codeproject.com/Articles/4940/Using-XML-Digital-Signatures-for-Application-Licen%20">a great
+article</a>
+that details the use of XML digital signatures in the .NET framework. It
+describes the type of digital signatures that can be implemented and
+lays out the classes and methods needed to author and verify license
+files.</p>
+
+<p>This specific implementation allows for an: authentication key to
+compare against some unique value tying the license to the system,
+expiration date to set a time span on the software use and set of
+available features the user is authorized for.</p>
+
+<h2 id="base-class">Base Class</h2>
+
+<p>This forms the runtime object representation of the license and will be
+inherited by the license reader and writer.</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Collections.Generic</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Collections.ObjectModel</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Text</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Security</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Security.Cryptography</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Security.Cryptography.Xml</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Xml</span><span class="p">;</span>
+
+<span class="k">namespace</span> <span class="nn">Licensing</span>
+<span class="p">{</span>
+
+<span class="k">public</span> <span class="k">abstract</span> <span class="k">class</span> <span class="nc">LicenseBase</span>
+<span class="p">{</span> 
+ <span class="k">private</span> <span class="kt">byte</span><span class="p">[]</span> <span class="n">_authenticationKey</span><span class="p">;</span> 
+ <span class="k">private</span> <span class="n">DateTime</span> <span class="n">_expiration</span><span class="p">;</span> 
+ <span class="k">private</span> <span class="n">List</span> <span class="n">_features</span><span class="p">;</span>
+    <span class="k">private</span> <span class="kt">int</span> <span class="n">_id</span><span class="p">;</span>
+
+ <span class="k">public</span> <span class="kt">byte</span><span class="p">[]</span> <span class="n">AuthenticationKey</span> <span class="p">{</span>
+  <span class="k">get</span> <span class="p">{</span> <span class="k">return</span> <span class="n">_authenticationKey</span><span class="p">;</span> <span class="p">}</span>
+  <span class="k">protected</span> <span class="k">set</span> <span class="p">{</span> <span class="n">_authenticationKey</span> <span class="p">=</span> <span class="k">value</span><span class="p">;</span> <span class="p">}</span>
+ <span class="p">}</span>
+ <span class="k">public</span> <span class="n">DateTime</span> <span class="n">Expiration</span> <span class="p">{</span>
+  <span class="k">get</span> <span class="p">{</span> <span class="k">return</span> <span class="n">_expiration</span><span class="p">;</span> <span class="p">}</span>
+  <span class="k">protected</span> <span class="k">set</span> <span class="p">{</span> <span class="n">_expiration</span> <span class="p">=</span> <span class="k">value</span><span class="p">;</span> <span class="p">}</span>
+ <span class="p">}</span>
+ <span class="k">public</span> <span class="kt">int</span> <span class="n">Id</span> <span class="p">{</span>
+  <span class="k">get</span> <span class="p">{</span> <span class="k">return</span> <span class="n">_id</span><span class="p">;</span> <span class="p">}</span>
+        <span class="k">protected</span> <span class="k">set</span> <span class="p">{</span> <span class="n">_id</span> <span class="p">=</span> <span class="k">value</span><span class="p">;</span> <span class="p">}</span>
+ <span class="p">}</span>
+ <span class="k">protected</span> <span class="n">List</span> <span class="n">Features</span> <span class="p">{</span>
+        <span class="k">get</span> <span class="p">{</span> <span class="k">return</span> <span class="n">_features</span><span class="p">;</span> <span class="p">}</span>
+ <span class="p">}</span> 
+
+ <span class="k">public</span> <span class="nf">LicenseBase</span><span class="p">()</span>
+ <span class="p">{</span>
+  <span class="n">_features</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">List</span><span class="p">();</span>
+ <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">void</span> <span class="nf">Clear</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">_id</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>
+        <span class="n">_authenticationKey</span> <span class="p">=</span> <span class="k">null</span><span class="p">;</span>
+        <span class="n">_features</span><span class="p">.</span><span class="nf">Clear</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="writer-class">Writer Class</h2>
+
+<p>This class will be used internally to author the license files that will
+be distributed with the released software. Note that the private key is
+added as an embedded resource in the project and should not be
+distributed since the public key can be derived from it.</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.IO</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Security</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Security.Cryptography</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Security.Cryptography.Xml</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Text</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Xml</span><span class="p">;</span>
+
+<span class="k">namespace</span> <span class="nn">Licensing</span>
+<span class="p">{</span>
+    <span class="k">class</span> <span class="nc">License</span> <span class="p">:</span> <span class="n">LicenseBase</span>
+    <span class="p">{</span>
+
+        <span class="nf">License</span><span class="p">(</span><span class="kt">int</span> <span class="n">id</span><span class="p">,</span> <span class="kt">byte</span><span class="p">[]</span> <span class="n">authenticationKey</span><span class="p">,</span> <span class="n">DateTime</span> <span class="n">expiration</span><span class="p">,</span> <span class="kt">string</span><span class="p">[]</span> <span class="n">features</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="n">AuthenticationKey</span> <span class="p">=</span> <span class="n">authenticationKey</span><span class="p">;</span>            
+            <span class="k">this</span><span class="p">.</span><span class="n">Expiration</span> <span class="p">=</span> <span class="n">expiration</span><span class="p">;</span>
+            <span class="k">this</span><span class="p">.</span><span class="n">Id</span> <span class="p">=</span> <span class="n">id</span><span class="p">;</span>
+            <span class="k">this</span><span class="p">.</span><span class="n">Features</span><span class="p">.</span><span class="nf">AddRange</span><span class="p">(</span><span class="n">features</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="c1">/// </span>
+        <span class="c1">/// Generates a key pair for digital signing and verification.</span>
+        <span class="c1">/// </span>
+        <span class="c1">/// </span>
+        <span class="c1">/// </span>
+        <span class="k">static</span> <span class="k">internal</span> <span class="k">void</span> <span class="nf">GenerateAssymetricKeys</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="kt">string</span> <span class="n">datestamp</span> <span class="p">=</span> <span class="k">null</span><span class="p">;</span>
+            <span class="n">StreamWriter</span> <span class="n">output</span> <span class="p">=</span> <span class="k">null</span><span class="p">;</span>
+            <span class="n">RSA</span> <span class="n">key</span> <span class="p">=</span> <span class="n">RSA</span><span class="p">.</span><span class="nf">Create</span><span class="p">();</span>
+            <span class="n">key</span><span class="p">.</span><span class="n">KeySize</span> <span class="p">=</span> <span class="m">1024</span><span class="p">;</span>
+
+            <span class="n">datestamp</span> <span class="p">=</span> <span class="n">DateTime</span><span class="p">.</span><span class="n">UtcNow</span><span class="p">.</span><span class="nf">ToString</span><span class="p">(</span><span class="s">"yyyyMMdd"</span><span class="p">);</span>
+
+            <span class="c1">// Generate private key to only be used internally (DO NOT DISTRIBUTE).</span>
+            <span class="n">output</span> <span class="p">=</span> <span class="n">File</span><span class="p">.</span><span class="nf">CreateText</span><span class="p">(</span><span class="s">"private-"</span> <span class="p">+</span> <span class="n">datestamp</span> <span class="p">+</span> <span class="s">".key"</span><span class="p">);</span>
+            <span class="n">output</span><span class="p">.</span><span class="nf">Write</span><span class="p">(</span><span class="n">key</span><span class="p">.</span><span class="nf">ToXmlString</span><span class="p">(</span><span class="k">true</span><span class="p">));</span>
+            <span class="n">output</span><span class="p">.</span><span class="nf">Close</span><span class="p">();</span>
+
+            <span class="c1">// Generate public key to be used by customers (distribute).</span>
+            <span class="n">output</span> <span class="p">=</span> <span class="n">File</span><span class="p">.</span><span class="nf">CreateText</span><span class="p">(</span><span class="s">"public-"</span> <span class="p">+</span> <span class="n">datestamp</span> <span class="p">+</span> <span class="s">".key"</span><span class="p">);</span>
+            <span class="n">output</span><span class="p">.</span><span class="nf">Write</span><span class="p">(</span><span class="n">key</span><span class="p">.</span><span class="nf">ToXmlString</span><span class="p">(</span><span class="k">false</span><span class="p">));</span>
+            <span class="n">output</span><span class="p">.</span><span class="nf">Close</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="c1">/// </span>
+        <span class="c1">/// Digitally sign an XML document.</span>
+        <span class="c1">/// </span>
+        <span class="c1">/// The XML document to sign.</span>
+        <span class="c1">/// The private key to sign it with.    </span>
+        <span class="c1">/// </span>
+        <span class="k">private</span> <span class="k">static</span> <span class="k">void</span> <span class="nf">_SignXmlDocument</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">Xml</span><span class="p">.</span><span class="n">XmlDocument</span> <span class="n">document</span><span class="p">,</span> <span class="n">RSA</span> <span class="n">privateKey</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">SignedXml</span> <span class="n">signedDocument</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">SignedXml</span><span class="p">(</span><span class="n">document</span><span class="p">);</span>
+            <span class="n">signedDocument</span><span class="p">.</span><span class="n">SigningKey</span> <span class="p">=</span> <span class="n">privateKey</span><span class="p">;</span>
+            <span class="n">signedDocument</span><span class="p">.</span><span class="n">SignedInfo</span><span class="p">.</span><span class="n">CanonicalizationMethod</span> <span class="p">=</span> <span class="n">SignedXml</span><span class="p">.</span><span class="n">XmlDsigCanonicalizationUrl</span><span class="p">;</span>
+
+            <span class="c1">// Add reference to XML data</span>
+            <span class="n">Reference</span> <span class="n">@ref</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">Reference</span><span class="p">(</span><span class="s">""</span><span class="p">);</span>
+            <span class="n">@ref</span><span class="p">.</span><span class="nf">AddTransform</span><span class="p">(</span><span class="k">new</span> <span class="nf">XmlDsigEnvelopedSignatureTransform</span><span class="p">(</span><span class="k">false</span><span class="p">));</span>
+            <span class="n">signedDocument</span><span class="p">.</span><span class="nf">AddReference</span><span class="p">(</span><span class="n">@ref</span><span class="p">);</span>
+
+            <span class="c1">// Build the signature.</span>
+            <span class="n">signedDocument</span><span class="p">.</span><span class="nf">ComputeSignature</span><span class="p">();</span>
+
+            <span class="c1">// Attach the signature to the XML document.</span>
+            <span class="n">XmlElement</span> <span class="n">signature</span> <span class="p">=</span> <span class="n">signedDocument</span><span class="p">.</span><span class="nf">GetXml</span><span class="p">();</span>
+            <span class="n">document</span><span class="p">.</span><span class="n">DocumentElement</span><span class="p">.</span><span class="nf">AppendChild</span><span class="p">(</span><span class="n">signature</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="c1">/// </span>
+        <span class="c1">/// Write the contents and digitally sign the document.</span>
+        <span class="c1">/// </span>
+        <span class="c1">/// The file path to the digitally signed document.</span>
+        <span class="k">public</span> <span class="k">void</span> <span class="nf">WriteDocument</span><span class="p">(</span><span class="kt">string</span> <span class="n">filepath</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">XmlDocument</span> <span class="n">document</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">XmlDocument</span><span class="p">();</span>
+            <span class="n">document</span><span class="p">.</span><span class="nf">AppendChild</span><span class="p">(</span><span class="n">document</span><span class="p">.</span><span class="nf">CreateXmlDeclaration</span><span class="p">(</span><span class="s">"1.0"</span><span class="p">,</span> <span class="s">"UTF-8"</span><span class="p">,</span> <span class="k">null</span><span class="p">));</span>
+
+            <span class="n">XmlElement</span> <span class="n">root</span> <span class="p">=</span> <span class="n">document</span><span class="p">.</span><span class="nf">CreateElement</span><span class="p">(</span><span class="s">"License"</span><span class="p">);</span>
+            <span class="n">document</span><span class="p">.</span><span class="nf">AppendChild</span><span class="p">(</span><span class="n">root</span><span class="p">);</span>
+
+            <span class="n">XmlElement</span> <span class="n">id</span> <span class="p">=</span> <span class="n">document</span><span class="p">.</span><span class="nf">CreateElement</span><span class="p">(</span><span class="s">"Id"</span><span class="p">);</span>
+            <span class="n">id</span><span class="p">.</span><span class="n">InnerText</span> <span class="p">=</span> <span class="k">this</span><span class="p">.</span><span class="n">Id</span><span class="p">.</span><span class="nf">ToString</span><span class="p">();</span>
+            <span class="n">root</span><span class="p">.</span><span class="nf">AppendChild</span><span class="p">(</span><span class="n">id</span><span class="p">);</span>
+
+            <span class="n">XmlElement</span> <span class="n">authenticationKey</span> <span class="p">=</span> <span class="n">document</span><span class="p">.</span><span class="nf">CreateElement</span><span class="p">(</span><span class="s">"AuthenticationKey"</span><span class="p">);</span>            
+            <span class="n">authenticationKey</span><span class="p">.</span><span class="n">InnerText</span> <span class="p">=</span> <span class="n">Convert</span><span class="p">.</span><span class="nf">ToBase64String</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">AuthenticationKey</span><span class="p">);</span>
+            <span class="n">root</span><span class="p">.</span><span class="nf">AppendChild</span><span class="p">(</span><span class="n">authenticationKey</span><span class="p">);</span>
+
+            <span class="n">XmlElement</span> <span class="n">expiration</span> <span class="p">=</span> <span class="n">document</span><span class="p">.</span><span class="nf">CreateElement</span><span class="p">(</span><span class="s">"Expiration"</span><span class="p">);</span>
+            <span class="n">expiration</span><span class="p">.</span><span class="n">InnerText</span> <span class="p">=</span> <span class="k">this</span><span class="p">.</span><span class="n">Expiration</span><span class="p">.</span><span class="nf">ToString</span><span class="p">();</span>
+            <span class="n">root</span><span class="p">.</span><span class="nf">AppendChild</span><span class="p">(</span><span class="n">expiration</span><span class="p">);</span>
+
+            <span class="n">XmlElement</span> <span class="n">options</span> <span class="p">=</span> <span class="n">document</span><span class="p">.</span><span class="nf">CreateElement</span><span class="p">(</span><span class="s">"Features"</span><span class="p">);</span>
+            <span class="n">XmlElement</span> <span class="n">featureItem</span> <span class="p">=</span> <span class="k">null</span><span class="p">;</span>
+            <span class="k">foreach</span> <span class="p">(</span><span class="kt">string</span> <span class="n">feature</span> <span class="k">in</span> <span class="k">this</span><span class="p">.</span><span class="n">Features</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">featureItem</span> <span class="p">=</span> <span class="n">document</span><span class="p">.</span><span class="nf">CreateElement</span><span class="p">(</span><span class="s">"Feature"</span><span class="p">);</span>
+                <span class="n">featureItem</span><span class="p">.</span><span class="n">InnerText</span> <span class="p">=</span> <span class="n">feature</span><span class="p">;</span>
+                <span class="n">options</span><span class="p">.</span><span class="nf">AppendChild</span><span class="p">(</span><span class="n">featureItem</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="n">root</span><span class="p">.</span><span class="nf">AppendChild</span><span class="p">(</span><span class="n">options</span><span class="p">);</span>
+
+            <span class="n">XmlElement</span> <span class="n">publickey</span> <span class="p">=</span> <span class="n">document</span><span class="p">.</span><span class="nf">CreateElement</span><span class="p">(</span><span class="s">"Certificate"</span><span class="p">);</span>
+            <span class="n">publickey</span><span class="p">.</span><span class="nf">SetAttribute</span><span class="p">(</span><span class="s">"DateCode"</span><span class="p">,</span> <span class="n">KeyCreationDateCode</span><span class="p">);</span>
+            <span class="n">publickey</span><span class="p">.</span><span class="n">InnerXml</span> <span class="p">=</span> <span class="n">File</span><span class="p">.</span><span class="nf">ReadAllText</span><span class="p">(</span><span class="n">PublicKeyFilename</span><span class="p">);</span>
+            <span class="n">root</span><span class="p">.</span><span class="nf">AppendChild</span><span class="p">(</span><span class="n">publickey</span><span class="p">);</span>
+
+            <span class="n">RSA</span> <span class="n">privateKey</span> <span class="p">=</span> <span class="n">RSA</span><span class="p">.</span><span class="nf">Create</span><span class="p">();</span>
+            <span class="n">privateKey</span><span class="p">.</span><span class="nf">FromXmlString</span><span class="p">(</span><span class="n">Licensing</span><span class="p">.</span><span class="n">Properties</span><span class="p">.</span><span class="n">Resources</span><span class="p">.</span><span class="n">privatekey</span><span class="p">);</span>
+            <span class="nf">_SignXmlDocument</span><span class="p">(</span><span class="n">document</span><span class="p">,</span> <span class="n">privateKey</span><span class="p">);</span>
+
+            <span class="n">File</span><span class="p">.</span><span class="nf">WriteAllText</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">document</span><span class="p">.</span><span class="n">InnerXml</span><span class="p">);</span>            
+        <span class="p">}</span>
+
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="reader-class">Reader Class</h2>
+
+<p>This class will be used in the field to verify the license files that
+will be distributed with the released software. It is best to wrap the
+license read and authenticate methods in try-catch blocks since they
+represent exceptional behavior that fall outside the post-conditions of
+the method. Handling the exceptions will allow for better error
+reporting in the field so you can decide what information you will share
+with the end user (eg. bad authentication key, malformed/tampered
+licenses). Note again that the public key is an embedded resource for
+the project. It should never be distributed with the license since an
+attacker could generate their own keypair and envelope their own public
+key, with signature, in the license.</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Collections.Generic</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Collections.ObjectModel</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Text</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Security</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Security.Cryptography</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Security.Cryptography.Xml</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Xml</span><span class="p">;</span>
+
+<span class="k">namespace</span> <span class="nn">Licensing</span>
+<span class="p">{</span>
+    <span class="k">class</span> <span class="nc">LicenseReader</span> <span class="p">:</span> <span class="n">LicenseBase</span>
+    <span class="p">{</span>
+        <span class="nf">LicenseReader</span><span class="p">()</span>
+        <span class="p">{</span>
+        <span class="p">}</span>
+
+        <span class="k">public</span> <span class="k">void</span> <span class="nf">Authenticate</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="c1">// Check the hardware key value against the AuthenticationKey        </span>
+            <span class="k">if</span> <span class="p">(!</span><span class="nf">_AuthenticationKeyMatches</span><span class="p">(</span><span class="n">hardwareKey</span><span class="p">))</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="nf">LicenseAuthenticationException</span><span class="p">(</span><span class="s">"The license failed to authenticate the hardware key."</span><span class="p">);</span>
+
+            <span class="c1">// ... or check some node locking ID (eg. MAC ID, hard drive serial number) against the AuthenticationKey.</span>
+            <span class="k">if</span> <span class="p">(!</span><span class="nf">_AuthenticationKeyMatches</span><span class="p">(</span><span class="n">nodeLockedId</span><span class="p">))</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="nf">LicenseAuthenticationException</span><span class="p">(</span><span class="s">"The license failed to authenticate the node locked ID."</span><span class="p">);</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">Expiration</span> <span class="p">&gt;</span> <span class="n">DateTime</span><span class="p">.</span><span class="n">UtcNow</span><span class="p">)</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="nf">LicenseAuthenticationException</span><span class="p">(</span><span class="s">"The license has expired."</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="c1">/// </span>
+        <span class="c1">/// Compare byte array against authentication key byte array.</span>
+        <span class="c1">/// </span>
+        <span class="c1">/// Byte array to compare against.</span>
+        <span class="c1">/// True if a match, else false.</span>
+        <span class="k">private</span> <span class="kt">bool</span> <span class="nf">_AuthenticationKeyMatches</span><span class="p">(</span><span class="kt">byte</span><span class="p">[]</span> <span class="n">compare</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">AuthenticationKey</span> <span class="p">==</span> <span class="k">null</span><span class="p">)</span>
+                <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+
+            <span class="kt">int</span> <span class="n">upperBound</span> <span class="p">=</span> <span class="n">Math</span><span class="p">.</span><span class="nf">Min</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">AuthenticationKey</span><span class="p">.</span><span class="n">Length</span><span class="p">,</span> <span class="n">compare</span><span class="p">.</span><span class="n">Length</span><span class="p">);</span>
+            <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="p">&lt;</span> <span class="n">upperBound</span><span class="p">;</span> <span class="n">i</span><span class="p">++)</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">AuthenticationKey</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">!=</span> <span class="n">compare</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                    <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">public</span> <span class="kt">bool</span> <span class="nf">IsFeature</span><span class="p">(</span><span class="kt">string</span> <span class="n">featureName</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="n">Features</span><span class="p">.</span><span class="nf">Contains</span><span class="p">(</span><span class="n">featureName</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="c1">/// </span>
+        <span class="c1">/// Read the digitally signed document and load its contents.</span>
+        <span class="c1">/// </span>
+        <span class="c1">/// The file path to the digitally signed document.</span>
+        <span class="k">protected</span> <span class="k">virtual</span> <span class="k">void</span> <span class="nf">ReadDocument</span><span class="p">(</span><span class="kt">string</span> <span class="n">filepath</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nf">Clear</span><span class="p">();</span>
+
+            <span class="n">XmlDocument</span> <span class="n">document</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">XmlDocument</span><span class="p">();</span>
+            <span class="n">document</span><span class="p">.</span><span class="nf">Load</span><span class="p">(</span><span class="n">filepath</span><span class="p">);</span>
+
+            <span class="n">RSA</span> <span class="n">publicKey</span> <span class="p">=</span> <span class="n">RSA</span><span class="p">.</span><span class="nf">Create</span><span class="p">();</span>
+            <span class="n">publicKey</span><span class="p">.</span><span class="nf">FromXmlString</span><span class="p">(</span><span class="n">Licensing</span><span class="p">.</span><span class="n">Properties</span><span class="p">.</span><span class="n">Resources</span><span class="p">.</span><span class="n">publickey</span><span class="p">);</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="nf">_VerifyXmlDocument</span><span class="p">(</span><span class="n">document</span><span class="p">,</span> <span class="n">publicKey</span><span class="p">))</span>
+            <span class="p">{</span>
+                <span class="k">this</span><span class="p">.</span><span class="n">Id</span> <span class="p">=</span> <span class="kt">int</span><span class="p">.</span><span class="nf">Parse</span><span class="p">(</span><span class="n">document</span><span class="p">.</span><span class="nf">SelectSingleNode</span><span class="p">(</span><span class="s">"//License/Id"</span><span class="p">).</span><span class="n">InnerText</span><span class="p">);</span>
+                <span class="k">this</span><span class="p">.</span><span class="n">AuthenticationKey</span> <span class="p">=</span> <span class="n">Convert</span><span class="p">.</span><span class="nf">FromBase64String</span><span class="p">(</span><span class="n">document</span><span class="p">.</span><span class="nf">SelectSingleNode</span><span class="p">(</span><span class="s">"//License/AuthenticationKey"</span><span class="p">).</span><span class="n">InnerText</span><span class="p">);</span>
+                <span class="k">this</span><span class="p">.</span><span class="n">Expiration</span> <span class="p">=</span> <span class="n">DateTime</span><span class="p">.</span><span class="nf">Parse</span><span class="p">(</span><span class="n">document</span><span class="p">.</span><span class="nf">SelectSingleNode</span><span class="p">(</span><span class="s">"//License/Expiration"</span><span class="p">).</span><span class="n">InnerText</span><span class="p">);</span>
+
+                <span class="n">XmlNodeList</span> <span class="n">features</span> <span class="p">=</span> <span class="n">document</span><span class="p">.</span><span class="nf">SelectNodes</span><span class="p">(</span><span class="s">"//License/Features/Feature"</span><span class="p">);</span>
+                <span class="k">foreach</span> <span class="p">(</span><span class="n">XmlNode</span> <span class="n">feature</span> <span class="k">in</span> <span class="n">features</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="k">this</span><span class="p">.</span><span class="n">Features</span><span class="p">.</span><span class="nf">Add</span><span class="p">(</span><span class="n">feature</span><span class="p">.</span><span class="n">InnerText</span><span class="p">);</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+
+        <span class="p">}</span>
+
+        <span class="c1">/// </span>
+        <span class="c1">/// Verify the digital signature of an XML document.</span>
+        <span class="c1">/// </span>
+        <span class="c1">/// The XML document containing the signature.</span>
+        <span class="c1">/// The public key to verify signature authenticity.</span>
+        <span class="c1">/// True if the signature is authentic, else false.</span>
+        <span class="c1">/// </span>
+        <span class="k">private</span> <span class="kt">bool</span> <span class="nf">_VerifyXmlDocument</span><span class="p">(</span><span class="n">XmlDocument</span> <span class="n">document</span><span class="p">,</span> <span class="n">RSA</span> <span class="n">publicKey</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">SignedXml</span> <span class="n">signedDocument</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">SignedXml</span><span class="p">(</span><span class="n">document</span><span class="p">);</span>
+            <span class="k">try</span>
+            <span class="p">{</span>
+                <span class="n">XmlNode</span> <span class="n">signature</span> <span class="p">=</span> <span class="n">document</span><span class="p">.</span><span class="nf">GetElementsByTagName</span><span class="p">(</span><span class="s">"Signature"</span><span class="p">,</span> <span class="n">SignedXml</span><span class="p">.</span><span class="n">XmlDsigNamespaceUrl</span><span class="p">)[</span><span class="m">0</span><span class="p">];</span>
+                <span class="n">signedDocument</span><span class="p">.</span><span class="nf">LoadXml</span><span class="p">((</span><span class="n">XmlElement</span><span class="p">)(</span><span class="n">signature</span><span class="p">));</span>
+            <span class="p">}</span>
+            <span class="k">catch</span>
+            <span class="p">{</span>
+                <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="n">signedDocument</span><span class="p">.</span><span class="nf">CheckSignature</span><span class="p">(</span><span class="n">publicKey</span><span class="p">);</span>
+        <span class="p">}</span>
+
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="additions--caveats">Additions &amp; Caveats</h3>
+
+<p>Symmetric encryption could also be used to hinder casual viewing of the
+license file. The issue of symmetric key storage must be revisited but
+will no longer be critical to maintaining the integrity of the license
+files.</p>
+
+<p>Strong naming of the license reading assembly is encouraged to prevent
+dissasembly and re-embedding of an attacker's own public key. Although,
+this is by no means an attack-proof method since <a href="http://www.codeproject.com/Articles/15374/Removing-Strong-Signing-from-assemblies-at-file-le">strong naming can be
+removed</a>
+by changing information in the <a href="http://www.ntcore.com/Files/dotnetformat.htm">CLI
+header</a> of the portable
+executable (PE). Even if the application was able to secure the public
+key outside the application in a
+<a href="http://en.wikipedia.org/wiki/Public_key_infrastructure">PKI</a>, there is
+still the issue of code injection or recompilation once strong naming is
+stripped. Indirection of the public key or obfuscation of the assembly
+can also help but is <a href="http://csrc.nist.gov/publications/secpubs/faq-sec.txt">not a reliable security
+measure</a>.</p>
+:ET

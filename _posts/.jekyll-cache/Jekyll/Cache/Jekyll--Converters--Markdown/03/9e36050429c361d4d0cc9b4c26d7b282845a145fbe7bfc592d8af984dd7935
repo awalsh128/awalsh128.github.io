@@ -1,0 +1,220 @@
+I"�A<h3 id="background">Background</h3>
+
+<p>Unlike most sensors used in data acquisition, thermocouples do not have
+a linear mapping between their voltage and celcius values. This means
+that instead of factoring some scalar value against the data, in order
+to scale it to engineering units (eg. volts to acceleration), an
+<a href="http://en.wikipedia.org/wiki/Thermocouple#Voltage.E2.80.93temperature_relationship">experimentally derived
+equation</a>
+must be created to approximate the temperature at specific voltages.
+This non-linearity is primarily due to the materials being used to
+discover the temperature difference.</p>
+
+<p>The science and engineering behind thermocouples goes beyond the scope
+of this post but more information can be found below:</p>
+
+<ul>
+  <li><a href="http://en.wikipedia.org/wiki/Thermoelectric_effect">Wikipedia: Thermoelectric
+Effect</a></li>
+  <li><a href="http://en.wikipedia.org/wiki/Thermocouple">Wikipedia: Thermocouple</a></li>
+  <li><a href="http://www.omega.com/temperature/z/pdf/z021-032.pdf">Reference
+Temperatures</a></li>
+  <li><a href="http://www.scienceeducationreview.com/open_access/molki-seebeck.pdf">Simple Demonstration of the Seebeck
+Effect</a></li>
+</ul>
+
+<h3 id="k-type-thermocouples">K-Type Thermocouples</h3>
+
+<p>One of the most general purpose thermocouple types used in data
+acquisition are <a href="http://en.wikipedia.org/wiki/Thermocouple#K">K types</a>
+since their are relatively inexpensive to make. This will also be the
+thermocouple that I will focus on.</p>
+
+<p>Luckily, <a href="http://www.nist.gov">NIST</a> provides a <a href="http://srdata.nist.gov/its90/main/">table of discrete
+values</a>, correlating voltages to
+celcius and vice-versa. In addition, they also provide the exact
+polynomial equation to use <a href="http://srdata.nist.gov/its90/download/type_k.tab">underneath the given
+tables</a>, depending on
+the voltage range the value falls in. Following is the exact functions
+to do the conversion for K-type thermocouples.</p>
+
+<h2 id="voltage-to-celcius">Voltage To Celcius</h2>
+
+<p>Given some ordered set of coefficients, <em>D</em>, and a voltages value, <em>v</em>,
+let the voltage to celcius conversion be defined as a function of <em>v</em> as
+follows.</p>
+
+<p>::: {.separator style=”clear: both; text-align: center;”}
+<a href="http://1.bp.blogspot.com/-gaacEByTnvA/UBBLzb9lfWI/AAAAAAAAA8k/vigwBYw-Pas/s1600/ktype.gif"><img src="http://1.bp.blogspot.com/-gaacEByTnvA/UBBLzb9lfWI/AAAAAAAAA8k/vigwBYw-Pas/s400/ktype.gif" alt="" />{width=”56”
+height=”56”}</a>
+:::</p>
+
+<p><em>D</em> is dependent on the voltage value being evaluated:</p>
+
+<ul>
+  <li>values greater than 206.44 mV will have <em>D = {-131.8058, 48.30222,
+-1.646031, 0.05464731, -0.0009650715, 0.000008802193,
+-0.0000000311081, 0.0, 0.0, 0.0 }</em>;</li>
+  <li>values geater than 0.0 V will have <em>D = { 0.0, 25.08355, 0.07860106,
+-0.2503131, 0.0831527, -0.01228034, 0.0009804036, -0.0000441303,
+0.000001057734,-0.00000001052755}</em>;</li>
+  <li>and values less than 0.0 V will have <em>D = { 0.0, 25.173462,
+-1.1662878, -1.0833638, -0.8977354, -0.37342377, -0.086632643,
+-0.010450598, -0.00051920577, 0.0 }</em>.</li>
+</ul>
+
+<h2 id="celcius-to-voltage">Celcius To Voltage</h2>
+
+<p>Given some ordered set of coefficients, <em>C</em>, an ordered set of
+exponentials, <em>A</em>, and a celcius value, <em>x</em>, let the celcius to voltage
+conversion be defined as a function of <em>x</em> as follows.</p>
+
+<p>::: {.separator style=”clear: both; text-align: center;”}
+<a href="http://4.bp.blogspot.com/-KxsCdsIpbCg/UBBQYlp3s5I/AAAAAAAAA80/hdsuZgJaktQ/s1600/ktype-ctov.gif"><img src="http://4.bp.blogspot.com/-KxsCdsIpbCg/UBBQYlp3s5I/AAAAAAAAA80/hdsuZgJaktQ/s400/ktype-ctov.gif" alt="" />{width=”182”
+height=”56”}</a>
+:::</p>
+
+<p><em>C</em> is dependent on the celius value being evaluated:</p>
+
+<ul>
+  <li>positive and zero values will have <em>C = { -0.017600413686,
+0.038921204975, 0.000018558770032, -0.000000099457592874,
+0.00000000031840945719, -0.00000000000056072844889,
+0.00000000000000056075059059, -3.2020720003E-19, 9.7151147152E-23,
+-1.2104721275E-26}</em>;</li>
+  <li>negative values will have <em>C = { 0.0, 0.039450128025,
+0.000023622373598, -0.00000032858906784, -0.0000000049904828777,
+-0.000000000067509059173, -0.00000000000057410327428,
+-0.0000000000000031088872894, -1.0451609365E-17, -1.9889266878E-20,
+-1.6322697486E-23}</em>;</li>
+</ul>
+
+<p><em>A</em> is a fixed ordered set of exponentials; <em>A = {0.1185976,
+-0.0001183432, 126.9686}</em>.</p>
+
+<h3 id="performance">Performance</h3>
+
+<p>Since the polynomial equation's number of terms are bounded by a
+constant (ie. <em>|D|</em> or <em>|C|</em>) the performance hit will be a constant
+factor to the number of voltage or celcius values to calculate. Also,
+temperature is sampled at a very low rate, yielding small data sets that
+usually have redundant values in them. Further optimization can be made
+by caching previous computations and reusing their results if the same
+voltage or celcius value is encountered again.</p>
+
+<h3 id="the-code">The Code</h3>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="k">static</span> <span class="kt">double</span><span class="p">[]</span> <span class="n">_thermocoupleCoefficientsTypeKneg</span> <span class="p">=</span> <span class="p">{</span>
+ <span class="m">0.0</span><span class="p">,</span>
+ <span class="m">0.039450128025</span><span class="p">,</span>
+ <span class="m">2.3622373598E-05</span><span class="p">,</span>
+ <span class="p">-</span><span class="m">3.2858906784E-07</span><span class="p">,</span>
+ <span class="p">-</span><span class="m">4.9904828777E-09</span><span class="p">,</span>
+ <span class="p">-</span><span class="m">6.7509059173E-11</span><span class="p">,</span>
+ <span class="p">-</span><span class="m">5.7410327428E-13</span><span class="p">,</span>
+ <span class="p">-</span><span class="m">3.1088872894E-15</span><span class="p">,</span>
+ <span class="p">-</span><span class="m">1.0451609365E-17</span><span class="p">,</span>
+ <span class="p">-</span><span class="m">1.9889266878E-20</span><span class="p">,</span>
+ <span class="p">-</span><span class="m">1.6322697486E-23</span>
+<span class="p">};</span>
+<span class="k">private</span> <span class="k">static</span> <span class="kt">double</span><span class="p">[]</span> <span class="n">_thermocoupleCoefficientsTypeKpos</span> <span class="p">=</span> <span class="p">{</span>
+ <span class="p">-</span><span class="m">0.017600413686</span><span class="p">,</span>
+ <span class="m">0.038921204975</span><span class="p">,</span>
+ <span class="m">1.8558770032E-05</span><span class="p">,</span>
+ <span class="p">-</span><span class="m">9.9457592874E-08</span><span class="p">,</span>
+ <span class="m">3.1840945719E-10</span><span class="p">,</span>
+ <span class="p">-</span><span class="m">5.6072844889E-13</span><span class="p">,</span>
+ <span class="m">5.6075059059E-16</span><span class="p">,</span>
+ <span class="p">-</span><span class="m">3.2020720003E-19</span><span class="p">,</span>
+ <span class="m">9.7151147152E-23</span><span class="p">,</span>
+ <span class="p">-</span><span class="m">1.2104721275E-26</span>
+<span class="p">};</span>
+<span class="k">private</span> <span class="k">static</span> <span class="kt">double</span><span class="p">[]</span> <span class="n">_thermocoupleExponentialsTypeK</span> <span class="p">=</span> <span class="p">{</span>
+ <span class="m">0.1185976</span><span class="p">,</span>
+ <span class="p">-</span><span class="m">0.0001183432</span><span class="p">,</span>
+ <span class="m">126.9686</span>
+<span class="p">};</span>
+<span class="c1">/// </span>
+<span class="c1">/// Type K thermocouple inverse coefficient values for voltage to celcius conversions.</span>
+<span class="c1">/// </span>
+<span class="c1">/// Valid values for -200C - 0C / -5.891mV - 0mV.</span>
+<span class="k">private</span> <span class="k">static</span> <span class="kt">double</span><span class="p">[]</span> <span class="n">_thermocoupleInverseCoefficientsTypeK0</span> <span class="p">=</span> <span class="p">{</span>
+ <span class="m">0.0</span><span class="p">,</span>
+ <span class="m">25.173462</span><span class="p">,</span>
+ <span class="p">-</span><span class="m">1.1662878</span><span class="p">,</span>
+ <span class="p">-</span><span class="m">1.0833638</span><span class="p">,</span>
+ <span class="p">-</span><span class="m">0.8977354</span><span class="p">,</span>
+ <span class="p">-</span><span class="m">0.37342377</span><span class="p">,</span>
+ <span class="p">-</span><span class="m">0.086632643</span><span class="p">,</span>
+ <span class="p">-</span><span class="m">0.010450598</span><span class="p">,</span>
+ <span class="p">-</span><span class="m">0.00051920577</span><span class="p">,</span>
+ <span class="m">0.0</span>
+<span class="p">};</span>
+<span class="c1">/// </span>
+<span class="c1">/// Type K thermocouple inverse coefficient values for voltage to celcius conversions.</span>
+<span class="c1">/// </span>
+<span class="c1">/// Valid values for 0C - 500C / 0mV - 20.644mV.</span>
+<span class="k">private</span> <span class="k">static</span> <span class="kt">double</span><span class="p">[]</span> <span class="n">_thermocoupleInverseCoefficientsTypeK1</span> <span class="p">=</span> <span class="p">{</span>
+ <span class="m">0.0</span><span class="p">,</span>
+ <span class="m">25.08355</span><span class="p">,</span>
+ <span class="m">0.07860106</span><span class="p">,</span>
+ <span class="p">-</span><span class="m">0.2503131</span><span class="p">,</span>
+ <span class="m">0.0831527</span><span class="p">,</span>
+ <span class="p">-</span><span class="m">0.01228034</span><span class="p">,</span>
+ <span class="m">0.0009804036</span><span class="p">,</span>
+ <span class="p">-</span><span class="m">4.41303E-05</span><span class="p">,</span>
+ <span class="m">1.057734E-06</span><span class="p">,</span>
+ <span class="p">-</span><span class="m">1.052755E-08</span>
+<span class="p">};</span>
+<span class="c1">/// </span>
+<span class="c1">/// Type K thermocouple inverse coefficient values for voltage to celcius conversions.</span>
+<span class="c1">/// </span>
+<span class="c1">/// Valid values for 500C - 1372C / 20.644mV - 54.886mV.</span>
+<span class="k">private</span> <span class="k">static</span> <span class="kt">double</span><span class="p">[]</span> <span class="n">_thermocoupleInverseCoefficientsTypeK2</span> <span class="p">=</span> <span class="p">{</span>
+ <span class="p">-</span><span class="m">131.8058</span><span class="p">,</span>
+ <span class="m">48.30222</span><span class="p">,</span>
+ <span class="p">-</span><span class="m">1.646031</span><span class="p">,</span>
+ <span class="m">0.05464731</span><span class="p">,</span>
+ <span class="p">-</span><span class="m">0.0009650715</span><span class="p">,</span>
+ <span class="m">8.802193E-06</span><span class="p">,</span>
+ <span class="p">-</span><span class="m">3.11081E-08</span><span class="p">,</span>
+ <span class="m">0.0</span><span class="p">,</span>
+ <span class="m">0.0</span><span class="p">,</span>
+ <span class="m">0.0</span>
+<span class="p">};</span>
+
+
+<span class="k">public</span> <span class="k">static</span> <span class="kt">double</span> <span class="nf">CelciusToVoltageTypeK</span><span class="p">(</span><span class="kt">double</span> <span class="k">value</span><span class="p">)</span>
+<span class="p">{</span>
+ <span class="kt">double</span><span class="p">[]</span> <span class="n">a</span> <span class="p">=</span> <span class="n">_thermocoupleExponentialsTypeK</span><span class="p">;</span>
+ <span class="kt">double</span><span class="p">[]</span> <span class="n">c</span> <span class="p">=</span> <span class="k">null</span><span class="p">;</span>
+ <span class="kt">double</span> <span class="n">result</span> <span class="p">=</span> <span class="m">0.0</span><span class="p">;</span>
+ <span class="k">if</span> <span class="p">((</span><span class="k">value</span> <span class="p">&gt;=</span> <span class="m">0.0</span><span class="p">))</span> <span class="p">{</span>
+  <span class="n">c</span> <span class="p">=</span> <span class="n">_thermocoupleCoefficientsTypeKpos</span><span class="p">;</span>
+ <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+  <span class="n">c</span> <span class="p">=</span> <span class="n">_thermocoupleCoefficientsTypeKneg</span><span class="p">;</span>
+ <span class="p">}</span>
+ <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">index</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span> <span class="n">index</span> <span class="p">&lt;=</span> <span class="n">c</span><span class="p">.</span><span class="n">Length</span> <span class="p">-</span> <span class="m">1</span><span class="p">;</span> <span class="n">index</span><span class="p">++)</span> <span class="p">{</span>
+  <span class="n">result</span> <span class="p">+=</span> <span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="p">*</span> <span class="n">Math</span><span class="p">.</span><span class="nf">Pow</span><span class="p">(</span><span class="k">value</span><span class="p">,</span> <span class="n">index</span><span class="p">))</span> <span class="p">+</span> <span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="m">0</span><span class="p">]</span> <span class="p">*</span> <span class="n">Math</span><span class="p">.</span><span class="nf">Exp</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="p">*</span> <span class="n">Math</span><span class="p">.</span><span class="nf">Pow</span><span class="p">(</span><span class="k">value</span> <span class="p">-</span> <span class="n">a</span><span class="p">[</span><span class="m">2</span><span class="p">],</span> <span class="m">2</span><span class="p">)));</span>
+ <span class="p">}</span>
+ <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">public</span> <span class="k">static</span> <span class="kt">double</span> <span class="nf">VoltageToCelciusTypeK</span><span class="p">(</span><span class="kt">double</span> <span class="k">value</span><span class="p">)</span>
+<span class="p">{</span>
+ <span class="kt">double</span><span class="p">[]</span> <span class="n">d</span> <span class="p">=</span> <span class="k">null</span><span class="p">;</span>
+ <span class="kt">double</span> <span class="n">result</span> <span class="p">=</span> <span class="m">0.0</span><span class="p">;</span>
+ <span class="k">if</span> <span class="p">((</span><span class="k">value</span> <span class="p">&gt;</span> <span class="m">0.020644</span><span class="p">))</span> <span class="p">{</span>
+  <span class="n">d</span> <span class="p">=</span> <span class="n">_thermocoupleInverseCoefficientsTypeK2</span><span class="p">;</span>
+ <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">((</span><span class="k">value</span> <span class="p">&gt;=</span> <span class="m">0.0</span><span class="p">))</span> <span class="p">{</span>
+  <span class="n">d</span> <span class="p">=</span> <span class="n">_thermocoupleInverseCoefficientsTypeK1</span><span class="p">;</span>
+ <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+  <span class="n">d</span> <span class="p">=</span> <span class="n">_thermocoupleInverseCoefficientsTypeK0</span><span class="p">;</span>
+ <span class="p">}</span>
+ <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">index</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span> <span class="n">index</span> <span class="p">&lt;=</span> <span class="n">d</span><span class="p">.</span><span class="n">Length</span> <span class="p">-</span> <span class="m">1</span><span class="p">;</span> <span class="n">index</span><span class="p">++)</span> <span class="p">{</span>
+  <span class="n">result</span> <span class="p">+=</span> <span class="n">d</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="p">*</span> <span class="n">Math</span><span class="p">.</span><span class="nf">Pow</span><span class="p">(</span><span class="k">value</span><span class="p">,</span> <span class="n">index</span><span class="p">);</span>
+ <span class="p">}</span>
+ <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+:ET

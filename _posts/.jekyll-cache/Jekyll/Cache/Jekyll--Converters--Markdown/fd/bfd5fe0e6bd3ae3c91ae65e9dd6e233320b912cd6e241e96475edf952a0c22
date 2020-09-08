@@ -1,0 +1,33 @@
+I"²	<p>I have been working on a game where enemy characters must select a
+target seemingly at random but such that the distribution of selected
+targets is balanced. Initially I had come up with a randomization
+algorithm with weighted values for each target but this became
+cumbersome and much too complex.<br />
+<br />
+Then I remembered the scheduling algorithms from my Operating Systems
+class. In particular, the <a href="http://en.wikipedia.org/wiki/Lottery_scheduling">lottery scheduling
+algorithm</a>.<br />
+\</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// assume a queue of targets</span>
+<span class="kt">int</span> <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+
+<span class="k">for</span> <span class="o">(</span><span class="nc">Target</span> <span class="n">t</span> <span class="o">:</span> <span class="n">targets</span><span class="o">)</span> <span class="o">{</span>
+   <span class="n">t</span><span class="o">.</span><span class="na">tickets</span> <span class="o">=</span> <span class="mi">5</span><span class="o">;</span>
+   <span class="n">total</span> <span class="o">+=</span> <span class="n">t</span><span class="o">.</span><span class="na">tickets</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="c1">// generate a random number from 0 to total</span>
+<span class="k">for</span> <span class="o">(</span><span class="nc">Target</span> <span class="n">t</span> <span class="o">:</span> <span class="n">targets</span><span class="o">)</span> <span class="o">{</span>
+   <span class="n">randNum</span> <span class="o">-=</span> <span class="n">t</span><span class="o">.</span><span class="na">tickets</span><span class="o">;</span>
+   <span class="k">if</span> <span class="o">(</span><span class="n">randNum</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">targets</span><span class="o">.</span><span class="na">reenqueue</span><span class="o">(</span><span class="n">t</span><span class="o">);</span>
+      <span class="k">return</span> <span class="n">t</span><span class="o">;</span>
+   <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>The queue structure is critical to ensuring proportionality in target
+selection. Also, targets can be given a higher amount of tickets if bias
+is needed.</p>
+:ET

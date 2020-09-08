@@ -10,7 +10,8 @@
 # Review documentation to determine if you should use `theme` or `remote_theme`
 # https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/#installing-the-theme
 
-remote_theme             : "mmistakes/minimal-mistakes"
+theme                    : "minimal-mistakes-jekyll"
+#remote_theme             : "mmistakes/minimal-mistakes"
 minimal_mistakes_skin    : "dark" # "default", "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
 
 # Site Settings
@@ -122,7 +123,6 @@ footer:
 # Reading Files
 include:
   - .htaccess
-  - .well-known
   - _pages
 exclude:
   - "*.sublime-project"
@@ -186,8 +186,8 @@ sass:
 
 # Outputting
 permalink: /:categories/:title/
-paginate: 5 # amount of posts to show
-paginate_path: /page:num/
+# paginate: 5 # amount of posts to show
+# paginate_path: /page:num/
 timezone: # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 
 
@@ -245,6 +245,13 @@ compress_html:
     envs: development
 
 
+# Collections
+collections:
+  notes:
+    output: true
+    permalink: /:collection/:path/
+
+
 # Defaults
 defaults:
   # _posts
@@ -259,3 +266,28 @@ defaults:
       comments: true
       share: true
       related: true
+  # _pages
+  - scope:
+      path: "_pages"
+      type: pages
+    values:
+      layout: single
+      author_profile: true
+  # _notes
+  - scope:
+      path: ""
+      type: notes
+    values:
+      author_profile: true
+      layout: single      
+      comments: true
+      share: true
+
+category_archive:
+  type: liquid
+  path: /categories/
+tag_archive:
+  type: liquid
+  path: /tags/
+
+github: [metadata]

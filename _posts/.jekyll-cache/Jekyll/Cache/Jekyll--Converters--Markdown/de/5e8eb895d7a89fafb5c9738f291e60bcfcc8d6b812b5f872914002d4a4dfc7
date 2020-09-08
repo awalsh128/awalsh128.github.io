@@ -1,0 +1,138 @@
+I"C9<h3 id="introduction">Introduction</h3>
+
+<p>In some cases, you may want to read/write binary data from/to your
+relational database. This can be a problem when the data set size
+exceeds the memory address size (eg. 32-bit processes) or the <a href="http://msdn.microsoft.com/en-us/magazine/cc534993.aspx">managed
+large object
+heap</a> cannot
+load it all without throwing an
+<a href="http://msdn.microsoft.com/en-us/library/system.outofmemoryexception.aspx">OutOfMemoryException</a>.
+In those cases, you will need to load the data into memory in chunks.
+Fortunately, the <a href="http://en.wikipedia.org/wiki/Transact-SQL">T-SQL</a>
+syntax supports this operation.</p>
+
+<h3 id="latest-standard">Latest Standard</h3>
+
+<p>The old standard for reading and writing raw text data was by using the
+<a href="http://msdn.microsoft.com/en-us/library/ms189466.aspx">UPDATETEXT</a>,
+<a href="http://msdn.microsoft.com/en-us/library/ms187365.aspx">READTEXT</a> and
+<a href="http://msdn.microsoft.com/en-us/library/ms176068.aspx">TEXTPTR</a>
+commands. Although, these are being obsoleted for the newer command
+<a href="http://msdn.microsoft.com/en-us/library/ms187748.aspx">SUBSTRING</a> and
+the addition of the <code class="language-plaintext highlighter-rouge">.WRITE</code> argument to the
+<a href="http://msdn.microsoft.com/en-us/library/ms177523.aspx">UPDATE</a> command.
+I found the newer syntax much easier to use and requiring less
+parameters. Below is an example schema and implementation.</p>
+
+<h3 id="example-schema">Example Schema</h3>
+
+<p>For this example, we will use a very simple table setup with a primary
+key and binary data column.</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="p">[</span><span class="n">dbo</span><span class="p">].[</span><span class="n">DataTable</span><span class="p">]</span> <span class="p">(</span>
+ <span class="p">[</span><span class="n">Id</span><span class="p">]</span> <span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="k">IDENTITY</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+ <span class="p">[</span><span class="k">Data</span><span class="p">]</span> <span class="p">[</span><span class="nb">varbinary</span><span class="p">](</span><span class="k">max</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="example-code">Example Code</h3>
+
+<p>The <code class="language-plaintext highlighter-rouge">Read</code> method simply provides an offset into the data and the size
+of the chunk it wishes to read. The same applies for the <code class="language-plaintext highlighter-rouge">Write</code> method,
+except that a data argument is also supplied.</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="k">const</span> <span class="kt">int</span> <span class="n">ReadChunkSize</span> <span class="p">=</span> <span class="m">1</span> <span class="p">&lt;&lt;</span> <span class="m">21</span><span class="p">;</span>   <span class="c1">// 2MB Chunks</span>
+<span class="k">private</span> <span class="k">const</span> <span class="kt">int</span> <span class="n">WriteChunkSize</span> <span class="p">=</span> <span class="m">1</span> <span class="p">&lt;&lt;</span> <span class="m">21</span><span class="p">;</span>  <span class="c1">// 2MB Chunks</span>
+
+<span class="p">...</span>
+
+<span class="k">public</span> <span class="k">static</span> <span class="k">void</span> <span class="nf">Read</span><span class="p">(</span><span class="kt">string</span> <span class="n">connectionString</span><span class="p">,</span> <span class="kt">string</span> <span class="n">readPath</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">using</span> <span class="p">(</span><span class="kt">var</span> <span class="n">connection</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">SqlConnection</span><span class="p">(</span><span class="n">connectionString</span><span class="p">))</span>
+    <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">offsetIndex</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>
+        <span class="kt">var</span> <span class="n">buffer</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="p">[</span><span class="m">1</span><span class="p">];</span>
+        <span class="kt">var</span> <span class="n">offset</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">SqlParameter</span><span class="p">(</span><span class="s">"@Offset"</span><span class="p">,</span> <span class="n">SqlDbType</span><span class="p">.</span><span class="n">Int</span><span class="p">,</span> <span class="m">32</span><span class="p">);</span>
+        <span class="kt">var</span> <span class="n">command</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">SqlCommand</span><span class="p">(</span><span class="s">@"SELECT SUBSTRING([Data], @Offset, "</span> <span class="p">+</span> <span class="n">ReadChunkSize</span> <span class="p">+</span> <span class="s">") FROM [dbo].[DataTable] WHERE [Id] = 1"</span><span class="p">,</span> <span class="n">connection</span><span class="p">);</span>
+
+        <span class="n">command</span><span class="p">.</span><span class="n">Parameters</span><span class="p">.</span><span class="nf">Add</span><span class="p">(</span><span class="n">offset</span><span class="p">);</span>
+
+        <span class="n">connection</span><span class="p">.</span><span class="nf">Open</span><span class="p">();</span>
+
+        <span class="k">using</span> <span class="p">(</span><span class="kt">var</span> <span class="n">stream</span> <span class="p">=</span> <span class="n">File</span><span class="p">.</span><span class="nf">Create</span><span class="p">(</span><span class="n">readPath</span><span class="p">))</span>
+        <span class="p">{</span>
+            <span class="k">using</span> <span class="p">(</span><span class="kt">var</span> <span class="n">writer</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">BinaryWriter</span><span class="p">(</span><span class="n">stream</span><span class="p">))</span>
+            <span class="p">{</span>
+                <span class="k">while</span> <span class="p">(</span><span class="n">buffer</span><span class="p">.</span><span class="n">Length</span> <span class="p">&gt;</span> <span class="m">0</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">offset</span><span class="p">.</span><span class="n">Value</span> <span class="p">=</span> <span class="n">offsetIndex</span><span class="p">;</span>
+                    <span class="n">buffer</span> <span class="p">=</span> <span class="p">(</span><span class="kt">byte</span><span class="p">[])</span><span class="n">command</span><span class="p">.</span><span class="nf">ExecuteScalar</span><span class="p">();</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">buffer</span><span class="p">.</span><span class="n">Length</span> <span class="p">&gt;</span> <span class="m">0</span><span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="n">writer</span><span class="p">.</span><span class="nf">Write</span><span class="p">(</span><span class="n">buffer</span><span class="p">);</span>
+                        <span class="n">offsetIndex</span> <span class="p">+=</span> <span class="n">ReadChunkSize</span><span class="p">;</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">public</span> <span class="k">static</span> <span class="k">void</span> <span class="nf">Write</span><span class="p">(</span><span class="kt">string</span> <span class="n">connectionString</span><span class="p">,</span> <span class="kt">string</span> <span class="n">writePath</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">using</span> <span class="p">(</span><span class="kt">var</span> <span class="n">connection</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">SqlConnection</span><span class="p">(</span><span class="n">connectionString</span><span class="p">))</span>
+    <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">offsetIndex</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>
+        <span class="kt">var</span> <span class="n">buffer</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="p">[</span><span class="m">1</span><span class="p">];</span>
+        <span class="kt">var</span> <span class="n">offset</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">SqlParameter</span><span class="p">(</span><span class="s">"@Offset"</span><span class="p">,</span> <span class="n">SqlDbType</span><span class="p">.</span><span class="n">Int</span><span class="p">,</span> <span class="m">32</span><span class="p">);</span>
+        <span class="kt">var</span> <span class="n">data</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">SqlParameter</span><span class="p">(</span><span class="s">"@Data"</span><span class="p">,</span> <span class="n">SqlDbType</span><span class="p">.</span><span class="n">Binary</span><span class="p">,</span> <span class="n">WriteChunkSize</span><span class="p">);</span>
+        <span class="kt">var</span> <span class="n">command</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">SqlCommand</span><span class="p">(</span><span class="s">@"UPDATE [dbo].[DataTable] SET [Data] .WRITE(@Data, @Offset, "</span> <span class="p">+</span> <span class="n">WriteChunkSize</span> <span class="p">+</span> <span class="s">") WHERE [Id] = 1"</span><span class="p">,</span> <span class="n">connection</span><span class="p">);</span>
+
+        <span class="n">command</span><span class="p">.</span><span class="n">Parameters</span><span class="p">.</span><span class="nf">Add</span><span class="p">(</span><span class="n">offset</span><span class="p">);</span>
+        <span class="n">command</span><span class="p">.</span><span class="n">Parameters</span><span class="p">.</span><span class="nf">Add</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+
+        <span class="n">connection</span><span class="p">.</span><span class="nf">Open</span><span class="p">();</span>
+
+        <span class="k">using</span> <span class="p">(</span><span class="kt">var</span> <span class="n">stream</span> <span class="p">=</span> <span class="n">File</span><span class="p">.</span><span class="nf">OpenRead</span><span class="p">(</span><span class="n">writePath</span><span class="p">))</span>
+        <span class="p">{</span>
+            <span class="k">using</span> <span class="p">(</span><span class="kt">var</span> <span class="n">reader</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">BinaryReader</span><span class="p">(</span><span class="n">stream</span><span class="p">))</span>
+            <span class="p">{</span>
+                <span class="k">while</span> <span class="p">(</span><span class="n">buffer</span><span class="p">.</span><span class="n">Length</span> <span class="p">&gt;</span> <span class="m">0</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">buffer</span> <span class="p">=</span> <span class="n">reader</span><span class="p">.</span><span class="nf">ReadBytes</span><span class="p">(</span><span class="n">WriteChunkSize</span><span class="p">);</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">buffer</span><span class="p">.</span><span class="n">Length</span> <span class="p">&gt;</span> <span class="m">0</span><span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="n">offset</span><span class="p">.</span><span class="n">Value</span> <span class="p">=</span> <span class="n">offsetIndex</span><span class="p">;</span>
+                        <span class="n">data</span><span class="p">.</span><span class="n">Value</span> <span class="p">=</span> <span class="n">buffer</span><span class="p">;</span>
+                        <span class="n">command</span><span class="p">.</span><span class="nf">ExecuteNonQuery</span><span class="p">();</span>
+                        <span class="n">offsetIndex</span> <span class="p">+=</span> <span class="n">WriteChunkSize</span><span class="p">;</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="performance-considerations">Performance Considerations</h3>
+
+<p>When benchmarking my code against the simple database schema, execution
+time was drastically different if the data was already read into memory.
+When a read was performed after a write, it took 2 seconds. A read
+without a write beforehand took about 10 seconds. This is also the same
+time that the write took before a read. The chunk size did not seems to
+have any significant impact when adjusted between 512K and 4MB sizes.
+Your results may vary though depending on your system's memory layout.</p>
+
+<p>These time benchmarks are very informal and highly dependent on system
+architecture, network latency and hardware specifications. Although, the
+relative performance gain between the two benchmarks can be gleaned from
+these tests.</p>
+
+<p>A further performance gain would be to front load the data into memory
+on a separate thread and process the loaded data into and out of the
+database on another. This would require some tweaking and knowledge of
+the system's memory constraints to ensure it doesn't become a
+performance bottleneck. If properly done, a lot can be gained from not
+having to block on I/O between every chunk read and write.</p>
+:ET
