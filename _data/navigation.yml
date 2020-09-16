@@ -1,4 +1,6 @@
 main:
+  - title: "Reading"
+    url:  /reading/
   - title: "Notes"
     url: /notes
   - title: "Posts"
