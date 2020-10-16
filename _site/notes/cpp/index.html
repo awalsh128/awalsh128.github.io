@@ -306,7 +306,7 @@
         
           <aside class="sidebar__right ">
             <nav class="toc">
-              <header><h4 class="nav__title"><i class="fas fa-columns"></i> On this page</h4></header>
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
               <ul class="toc__menu">
   <li><a href="#asserts-static">Asserts (Static)</a></li>
   <li><a href="#fibers">Fibers</a></li>
@@ -428,7 +428,7 @@ exhaustive list.</p>
   <span class="k">static_assert</span><span class="p">(</span>
       <span class="n">std</span><span class="o">::</span><span class="n">is_fundamental</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">value</span> <span class="o">||</span> <span class="n">std</span><span class="o">::</span><span class="n">is_same</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;::</span><span class="n">value</span><span class="p">,</span>
       <span class="s">"object must be a fundamental or string type."</span><span class="p">);</span>
-  <span class="p">...</span>
+  <span class="c1">// ...</span>
 <span class="p">}</span>
 </code></pre></div></div>
 
@@ -453,7 +453,7 @@ exhaustive list.</p>
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include "thread/fiber/fiber.h"
 #include "boost/fiber/buffered_channel.hpp"
 </span>
-<span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="nf">CreateText</span><span class="p">()</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+<span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="nf">CreateText</span><span class="p">()</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">}</span>
 <span class="n">boost</span><span class="o">::</span><span class="n">fibers</span><span class="o">::</span><span class="n">buffered_channel</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">channel</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
 
 <span class="c1">// Capture channel by reference in the lambda below.</span>
@@ -520,11 +520,11 @@ exhaustive list.</p>
 
 <span class="n">std</span><span class="o">::</span><span class="n">string_view</span> <span class="n">path</span> <span class="o">=</span> <span class="s">"/dir"</span><span class="p">;</span>
 <span class="k">for</span> <span class="p">(</span><span class="k">const</span> <span class="n">fs</span><span class="o">::</span><span class="n">directory_entry</span><span class="o">&amp;</span> <span class="n">entry</span> <span class="o">:</span> <span class="n">fs</span><span class="o">::</span><span class="n">directory_iterator</span><span class="p">(</span><span class="n">path</span><span class="p">))</span> <span class="p">{</span>
-  <span class="p">...</span>
+  <span class="c1">// ...</span>
 <span class="p">}</span>
 <span class="c1">// or recursively </span>
 <span class="k">for</span> <span class="p">(</span><span class="k">const</span> <span class="n">fs</span><span class="o">::</span><span class="n">directory_entry</span><span class="o">&amp;</span> <span class="n">entry</span> <span class="o">:</span> <span class="n">fs</span><span class="o">::</span><span class="n">recursive_directory_iterator</span><span class="p">(</span><span class="n">path</span><span class="p">))</span> <span class="p">{</span>
-  <span class="p">...</span>
+  <span class="c1">// ...</span>
 <span class="p">}</span>
 </code></pre></div></div>
 
@@ -596,7 +596,7 @@ exhaustive list.</p>
 #include &lt;string_view&gt;
 </span>
 <span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span> <span class="n">MyObject</span><span class="o">&gt;</span> <span class="n">text_to_int</span><span class="p">;</span>
-<span class="p">...</span> <span class="c1">// insert stuff</span>
+<span class="c1">// ... insert stuff</span>
 <span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">text_to_int</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">text_to_int</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="o">++</span><span class="n">it</span><span class="p">)</span> <span class="p">{</span>
     <span class="n">std</span><span class="o">::</span><span class="n">string_view</span> <span class="n">t</span> <span class="o">=</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">first</span><span class="p">;</span>
     <span class="k">const</span> <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">;</span>
@@ -608,7 +608,7 @@ exhaustive list.</p>
 #include &lt;string_view&gt;
 </span>
 <span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span> <span class="n">MyObject</span><span class="o">&gt;</span> <span class="n">text_to_int</span><span class="p">;</span>
-<span class="p">...</span> <span class="c1">// insert stuff</span>
+<span class="c1">// ... insert stuff</span>
 <span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">text_to_int</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="s">"foo"</span><span class="p">);</span>
 <span class="k">if</span> <span class="p">(</span><span class="n">it</span> <span class="o">==</span> <span class="n">text_to_int</span><span class="p">.</span><span class="n">end</span><span class="p">())</span> <span class="p">{</span>
   <span class="c1">// not found</span>
@@ -848,8 +848,8 @@ int Get##func_name##n##m(VAR_ARGS) {                      \
 <h3 id="differencer">Differencer</h3>
 
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;google/protobuf/util/message_differencer.h&gt;
-</span><span class="n">Proto</span> <span class="n">proto1</span> <span class="o">=</span> <span class="p">...;</span>
-<span class="n">Proto</span> <span class="n">proto2</span> <span class="o">=</span> <span class="p">...;</span>
+</span><span class="n">Proto</span> <span class="n">proto1</span> <span class="o">=</span> <span class="cm">/* ... */</span><span class="p">;</span>
+<span class="n">Proto</span> <span class="n">proto2</span> <span class="o">=</span> <span class="cm">/* ... */</span><span class="p">;</span>
 <span class="kt">bool</span> <span class="n">is_equal</span> <span class="o">=</span> <span class="n">google</span><span class="o">::</span><span class="n">protobuf</span><span class="o">::</span><span class="n">util</span><span class="o">::</span><span class="n">MessageDifferencer</span><span class="o">::</span><span class="n">Equals</span><span class="p">(</span><span class="o">&amp;</span><span class="n">proto1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">proto2</span><span class="p">);</span>
 </code></pre></div></div>
 
@@ -1154,7 +1154,7 @@ int Get##func_name##n##m(VAR_ARGS) {                      \
   <span class="kt">float</span> <span class="n">z</span><span class="p">;</span>
 <span class="p">};</span>
 
-<span class="n">Packed</span> <span class="n">p</span> <span class="o">=</span> <span class="p">...;</span>
+<span class="n">Packed</span> <span class="n">p</span> <span class="o">=</span> <span class="cm">/* ... */</span><span class="p">;</span>
 
 <span class="c1">// access by reference</span>
 <span class="k">auto</span> <span class="o">&amp;</span> <span class="p">[</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="p">]</span> <span class="o">=</span> <span class="n">p</span><span class="p">;</span>
@@ -1166,7 +1166,7 @@ int Get##func_name##n##m(VAR_ARGS) {                      \
 
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="p">&gt;</span>
 <span class="n">T</span> <span class="nf">DoSomething</span><span class="p">(</span><span class="n">T</span> <span class="n">a</span><span class="p">,</span> <span class="n">T</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
- <span class="p">...</span>
+ <span class="c1">// ...</span>
 <span class="p">}</span>
 </code></pre></div></div>
 
@@ -1228,7 +1228,7 @@ int Get##func_name##n##m(VAR_ARGS) {                      \
 <span class="n">time</span><span class="o">-&gt;</span><span class="n">tm_mon</span><span class="p">;</span>   <span class="c1">// Month</span>
 <span class="n">time</span><span class="o">-&gt;</span><span class="n">tm_mday</span><span class="p">;</span>  <span class="c1">// Day of Month</span>
 <span class="n">time</span><span class="o">-&gt;</span><span class="n">tm_wday</span><span class="p">;</span>  <span class="c1">// Day of Week</span>
-<span class="p">...</span>
+<span class="c1">// ...</span>
 </code></pre></div></div>
 
 <h2 id="tuple">Tuple</h2>
@@ -1346,6 +1346,16 @@ int Get##func_name##n##m(VAR_ARGS) {                      \
 
 
       
+  <nav class="pagination">
+    
+      <a href="#" class="pagination--pager disabled">Previous</a>
+    
+    
+      <a href="/notes/git/" class="pagination--pager" title="Git Notes
+">Next</a>
+    
+  </nav>
+
     </div>
 
     

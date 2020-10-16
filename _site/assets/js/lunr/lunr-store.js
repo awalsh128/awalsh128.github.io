@@ -5,6 +5,12 @@ var store = [{
         "url": "http://localhost:4000/notes/cpp/",
         "teaser": null
       },{
+        "title": "Git Notes",
+        "excerpt":"Common Commands Short Description Command Description Add git add &lt;pattern&gt;   Add All git add -u Add all pending changes. Clean git clean Clean all untracked changes. Clean Preview git clean -n   Commit Pending git commit -m \"&lt;message&gt;\"   Move git mv &lt;source&gt; &lt;target&gt;   Pull from Master git...","categories": [],
+        "tags": ["git"],
+        "url": "http://localhost:4000/notes/git/",
+        "teaser": null
+      },{
         "title": "Using Ubuntu 10.04 with SVN+HTTP.",
         "excerpt":"I setup a server recently using Ubuntu 10.04. LAMP was easy to configure, as was Subversion. Although making Subversion and Apache2 play nice together with DAV SVN was a nightmare. I followed the guide provided but the website location just kept reprompting for my login. After hours of running in circles,...","categories": [],
         "tags": ["SVN","Apache"],
@@ -195,5 +201,11 @@ var store = [{
         "excerpt":"Flashback The last time I used Unix-to-Unix format (AKA UUEncoding) was when USENET was still the big thing and Mosaic web browser was just coming out. That was until recently, when I had a requirement to encode and decode this file type. Searching for an Implementation Since Base64 has largely...","categories": [],
         "tags": [],
         "url": "http://localhost:4000/streaming-uuencoder-in-net/",
+        "teaser": null
+      },{
+        "title": "C++ Memory Semantics for C# and Java Devs",
+        "excerpt":"When I first started using C++, I was really confused as to how to pass things around and reason about best practices for memory. In C#, primitives were passed by value and all else by memory reference (ignoring nuance). C++ was a whole new world of aliases, pointers, smart pointers,...","categories": [],
+        "tags": ["C++"],
+        "url": "http://localhost:4000/cpp-memory-semantic-for-csharp-java-devs/",
         "teaser": null
       }]

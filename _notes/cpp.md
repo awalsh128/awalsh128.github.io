@@ -3,10 +3,9 @@ title: C++ Examples
 date: '2020-09-07T21:46:00.000-07:00'
 tags:
 - C++
-modified_time: '2020-09-07T21:46:00.000-07:00'
+modified_time: '2020-10-06T00:00:00.000-07:00'
 excerpt: "C++ notes giving short examples on commonly used data structures and patterns."
 toc: true
-toc_icon: "columns"
 ---
 
 ## Asserts (Static)
@@ -55,7 +54,7 @@ std::vector<std::byte> ToBytes(const T& object) {
   static_assert(
       std::is_fundamental<T>::value || std::is_same<T, std::string>::value,
       "object must be a fundamental or string type.");
-  ...
+  // ...
 }
 ```
 
@@ -80,7 +79,7 @@ Using a channel to communicate data.
 #include "thread/fiber/fiber.h"
 #include "boost/fiber/buffered_channel.hpp"
 
-std::string CreateText() { ... }
+std::string CreateText() { /* ... */ }
 boost::fibers::buffered_channel<std::string> channel(0);
 
 // Capture channel by reference in the lambda below.
@@ -151,11 +150,11 @@ namespace fs = std::filesystem;
 
 std::string_view path = "/dir";
 for (const fs::directory_entry& entry : fs::directory_iterator(path)) {
-  ...
+  // ...
 }
 // or recursively 
 for (const fs::directory_entry& entry : fs::recursive_directory_iterator(path)) {
-  ...
+  // ...
 }
 ```
 
@@ -233,7 +232,7 @@ text_to_int["foo"] = 1;
 #include <string_view>
 
 std::map<std::string, MyObject> text_to_int;
-... // insert stuff
+// ... insert stuff
 for (auto it = text_to_int.begin(); it != text_to_int.end(); ++it) {
     std::string_view t = it->first;
     const int x = it->second;
@@ -246,7 +245,7 @@ for (auto it = text_to_int.begin(); it != text_to_int.end(); ++it) {
 #include <string_view>
 
 std::map<std::string, MyObject> text_to_int;
-... // insert stuff
+// ... insert stuff
 auto it = text_to_int.find("foo");
 if (it == text_to_int.end()) {
   // not found
@@ -502,8 +501,8 @@ GET_DECL(std::string, Baz, std::string_view baz1_value, int baz2_value);
 
 ```cpp
 #include <google/protobuf/util/message_differencer.h>
-Proto proto1 = ...;
-Proto proto2 = ...;
+Proto proto1 = /* ... */;
+Proto proto2 = /* ... */;
 bool is_equal = google::protobuf::util::MessageDifferencer::Equals(&proto1, &proto2);
 ```
 
@@ -829,7 +828,7 @@ struct Packed {
   float z;
 };
 
-Packed p = ...;
+Packed p = /* ... */;
 
 // access by reference
 auto & [ x, y, z ] = p;
@@ -842,7 +841,7 @@ auto && [ xx, yy, zz ] = p;
 ```cpp
 template <class T>
 T DoSomething(T a, T b) {
- ...
+ // ...
 }
 ```
 
@@ -908,7 +907,7 @@ time->tm_year;  // Year
 time->tm_mon;   // Month
 time->tm_mday;  // Day of Month
 time->tm_wday;  // Day of Week
-...
+// ...
 ```
 
 ## Tuple
