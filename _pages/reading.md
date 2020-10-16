@@ -16,7 +16,7 @@ toc: true
 
 ### Design &amp; Architecture
 
-* [Elements Programming Style(https://www.amazon.com/Elements-Programming-Style-Brian-Kernighan/dp/0070341990)
+* [Elements Programming Style](https://www.amazon.com/Elements-Programming-Style-Brian-Kernighan/dp/0070341990)
 * [Design Patterns: Elements of Reusable Object-Oriented Software (Gang of Four Book)](https://www.amazon.com/Design-Patterns-Elements-Reusable-Object-Oriented/dp/0201633612)
 * [Object-Oriented Analysis and Design with Applications](https://www.amazon.com/Object-Oriented-Analysis-Design-Applications-3rd/dp/020189551X)
 * [Patterns of Enterprise Application Architecture](https://www.amazon.com/Patterns-Enterprise-Application-Architecture-Martin/dp/0321127420)
