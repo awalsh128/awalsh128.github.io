@@ -1,4 +1,4 @@
-           ---
+---
 title: C++ Memory Semantics for C# and Java Devs
 date: '2020-10-15T00:00:00.000-07:00'
 tags:
