@@ -1,4 +1,4 @@
----
+           ---
 title: C++ Memory Semantics for C# and Java Devs
 date: '2020-10-15T00:00:00.000-07:00'
 tags:
@@ -23,7 +23,7 @@ The layout of this post will follow:
 
 ## The Literal Approach (AKA Wrong Approach)
 
-Let's start with a common misconception. Memory semantics and how the language approaches it are important. We can't just take our understanding from C# and literally apply it to C++.
+Let's start with a common misconception that memory semantics are interchageable with all other languages. Memory semantics and how the language approaches it are important. We can't just take our understanding from C# and literally apply it to C++.
 
 For example:
 ```cs
@@ -298,7 +298,7 @@ The [std::move](https://en.cppreference.com/w/cpp/utility/move) function is used
 ```cpp
 #include <memory>
 
-void Foo() {
+void Baz() {
   std::unique_ptr<LargeObject> o(/*...*/);
   Foo(std::move(o));  
   int y = o->x;   // ERROR: Undefined behavior.
@@ -367,6 +367,13 @@ struct simple_shared_pointer {
 An example of using a type of shared smart pointer called [``std::shared_ptr``](https://en.cppreference.com/w/cpp/memory/shared_ptr).
 
 ```cpp
+// Construction and copy operations.
+void Bar(std::unique_ptr<LargeObject> o) {
+  std::shared_ptr<LargeObject> ctor_shared = std::make_unique<LargeObject>(/*...*/);
+  std::shared_ptr<LargeObject> moved_shared = std::move(o);   // moved_shared takes ownership
+  std::shared_ptr<LargeObject> copied_shared = moved_shared;  // shared pointer reference count is 2
+}
+
 void Bar(std::shared_ptr<LargeObject> o) {
   // Do stuff with o all in scope. No passing to objects that outlive Bar.  
 } // Decrement reference count as std::shared_ptr is destructed.
@@ -507,6 +514,8 @@ Isn't this the same thing as just returning a ``void``? Yes, and maybe it is bes
 
 ### Dependency Injection (DI) Container
 
+[DI](https://en.wikipedia.org/wiki/Dependency_injection) containers can hold all the components necessary to maintain a service. If created at the code entry point it is best to share by reference in a top don way.
+
 ```cpp
 class Component1 {
  public:
@@ -548,8 +557,8 @@ class Container {
   }
 
   // Never expose the pointer, just the value pointed to.
-  Component1& component1() { return component1_; }
-  Component2& component2() { return component2_; }
+  Component1& component1() { return *component1_; }
+  Component2& component2() { return *component2_; }
 
  private:
   std::unique_ptr<Component1> component1_;
@@ -558,10 +567,35 @@ class Container {
 
 void DoStuff(Component1& component) { /*...*/ }
 
-void Foo() {
+void main() {
   auto prod_container = Container::CreateProd();
   DoStuff(prod_container.component1());
 }
+```
+
+If used in a separate thread or allocation is very large, prefer ``std::shared_ptr`` instead. Below is a modification of the previous class layout.
+
+```cpp
+class Container {
+ public:
+  // Consume only unique pointers since no other object should hold the dependencies
+  explicit Container(
+    std::unique_ptr<Component1> component1, 
+    std::unique_ptr<Component2> component2)
+    // Release ownership to the shared pointers.
+    : component1_(std::move(component1)), 
+      component2_(std::move(component2)) {}
+
+  // ...
+
+  // Never expose the pointer, just the value pointed to.
+  std::shared_ptr<Component1> component1() { return component1_; }
+  std::shared_ptr<Component2> component2() { return component2_; }
+
+ private:
+  std::shared_ptr<Component1> component1_;
+  std::shared_ptr<Component2> component2_;
+};
 ```
 
 ## Rules of Thumb
