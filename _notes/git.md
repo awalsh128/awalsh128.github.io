@@ -16,6 +16,7 @@ toc: true
 | Add All            | ``git add -u``                   | Add all pending changes.     |
 | Clean              | ``git clean``                    | Clean all untracked changes. |
 | Clean Preview      | ``git clean -n``                 |
+| Clone Repository   | ``git clong <project ULR>``
 | Commit Pending     | ``git commit -m "<message>"``    |
 | Move               | ``git mv <source> <target>``     |
 | Pull from Master   | ``git pull origin master``       | 
