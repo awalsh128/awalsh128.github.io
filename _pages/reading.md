@@ -34,7 +34,7 @@ Some computer based reading I have enjoyed over the years.
 ### Maintenance &amp; Management
 
 * [Mythical Man-Month](https://www.amazon.com/dp/B00B8USS14?ref=KC_GS_GB_US) - Presents the multiple ideas of Fred Brooks with the central theme that "adding manpower to a late software project makes it later" (Brook's Law).
-* [Site Reliability Engineering](https://landing.google.com/sre/books/) - Outlines concepts used by Google SRE for public comsumption.
+* [Site Reliability Engineering](https://landing.google.com/sre/books/) - Outlines concepts used by Google SRE for managing large scale systems.
 
 ## Landmark Papers
 
@@ -47,8 +47,8 @@ Some computer based reading I have enjoyed over the years.
 
 ## Cyber Punk Fiction
 
-* [Akira](https://www.amazon.com/Akira-Vol-1-Katsuhiro-Otomo/dp/1935429000) - In the backdrop of post WIII Neo-Tokyo, two friends relationship becomes darker as one realizes their strong psychokinetic powers.
-* [Blade Runner / Do Androids Dream of Electric Sheep?](https://www.amazon.com/Blade-Runner-Philip-K-Dick-audiobook/dp/B0010BA814/ref=sr_1_1?dchild=1&qid=1605131963&refinements=p_lbr_one_browse-bin%3APhilip+K.+Dick&s=books&sr=1-1) - Backdrop is a detective in futuristic 2019 charged with killing replicants. Contrasts human vs artificial intelligence (AI), the central theme is to examine humanity.
+* [Akira](https://www.amazon.com/Akira-Vol-1-Katsuhiro-Otomo/dp/1935429000) - In the backdrop of post-WWIII Neo-Tokyo, two friends relationship becomes darker as one realizes their strong psychokinetic powers.
+* [Blade Runner / Do Androids Dream of Electric Sheep?](https://www.amazon.com/Blade-Runner-Philip-K-Dick-audiobook/dp/B0010BA814/ref=sr_1_1?dchild=1&qid=1605131963&refinements=p_lbr_one_browse-bin%3APhilip+K.+Dick&s=books&sr=1-1) - Backdrop is a detective in futuristic 2019 charged with killing replicants. Contrasts human vs artificial intelligence (AI), the central theme is the examination of humanity.
 * [The Ghost in the Shell](http://www.amazon.com/Ghost-Shell-SAC/dp/1935429019) - In the near future, humans are augmented with cybernetic improvements to traits such as vision, strength, and intelligence. Story follows, counter terrorism operative and cyborg, Killian. 
 * [MaddAddam Trilogy](https://www.amazon.com/dp/0804172315?tag=nemu08-20&linkCode=ogi&th=1&psc=1) - A corporate dystopian future where civil society doesn't exist, just the corps. The story follows multiple characters involved in a bio attack.
 * [Neuromancer](https://www.amazon.com/dp/B000O76ON6?ref=KC_GS_GB_US) - Set in the future, a washed-up computer hacker, Henry Case is hired for one last job. This brings him up against a powerful AI.
