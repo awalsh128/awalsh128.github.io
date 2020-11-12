@@ -1,6 +1,6 @@
 <!doctype html>
 <!--
-  Minimal Mistakes Jekyll Theme 4.20.2 by Michael Rose
+  Minimal Mistakes Jekyll Theme 4.21.0 by Michael Rose
   Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
   Free for personal and commercial use under the MIT license
   https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
@@ -385,7 +385,7 @@
 
 <h2 id="the-literal-approach-aka-wrong-approach">The Literal Approach (AKA Wrong Approach)</h2>
 
-<p>Let’s start with a common misconception. Memory semantics and how the language approaches it are important. We can’t just take our understanding from C# and literally apply it to C++.</p>
+<p>Let’s start with a common misconception that memory semantics are interchageable with all other languages. Memory semantics and how the language approaches it are important. We can’t just take our understanding from C# and literally apply it to C++.</p>
 
 <p>For example:</p>
 <div class="language-cs highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Object</span> <span class="p">{</span>
@@ -647,7 +647,7 @@
 
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;memory&gt;
 </span>
-<span class="kt">void</span> <span class="nf">Foo</span><span class="p">()</span> <span class="p">{</span>
+<span class="kt">void</span> <span class="nf">Baz</span><span class="p">()</span> <span class="p">{</span>
   <span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">LargeObject</span><span class="o">&gt;</span> <span class="n">o</span><span class="p">(</span><span class="cm">/*...*/</span><span class="p">);</span>
   <span class="n">Foo</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">o</span><span class="p">));</span>  
   <span class="kt">int</span> <span class="n">y</span> <span class="o">=</span> <span class="n">o</span><span class="o">-&gt;</span><span class="n">x</span><span class="p">;</span>   <span class="c1">// ERROR: Undefined behavior.</span>
@@ -712,7 +712,14 @@
 
 <p>An example of using a type of shared smart pointer called <a href="https://en.cppreference.com/w/cpp/memory/shared_ptr"><code class="language-plaintext highlighter-rouge">std::shared_ptr</code></a>.</p>
 
-<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">Bar</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">LargeObject</span><span class="o">&gt;</span> <span class="n">o</span><span class="p">)</span> <span class="p">{</span>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Construction and copy operations.</span>
+<span class="kt">void</span> <span class="nf">Bar</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">LargeObject</span><span class="o">&gt;</span> <span class="n">o</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">LargeObject</span><span class="o">&gt;</span> <span class="n">ctor_shared</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">make_unique</span><span class="o">&lt;</span><span class="n">LargeObject</span><span class="o">&gt;</span><span class="p">(</span><span class="cm">/*...*/</span><span class="p">);</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">LargeObject</span><span class="o">&gt;</span> <span class="n">moved_shared</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">o</span><span class="p">);</span>   <span class="c1">// moved_shared takes ownership</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">LargeObject</span><span class="o">&gt;</span> <span class="n">copied_shared</span> <span class="o">=</span> <span class="n">moved_shared</span><span class="p">;</span>  <span class="c1">// shared pointer reference count is 2</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">Bar</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">LargeObject</span><span class="o">&gt;</span> <span class="n">o</span><span class="p">)</span> <span class="p">{</span>
   <span class="c1">// Do stuff with o all in scope. No passing to objects that outlive Bar.  </span>
 <span class="p">}</span> <span class="c1">// Decrement reference count as std::shared_ptr is destructed.</span>
 
@@ -841,6 +848,8 @@
 
 <h3 id="dependency-injection-di-container">Dependency Injection (DI) Container</h3>
 
+<p><a href="https://en.wikipedia.org/wiki/Dependency_injection">DI</a> containers can hold all the components necessary to maintain a service. If created at the code entry point it is best to share by reference in a top don way.</p>
+
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Component1</span> <span class="p">{</span>
  <span class="nl">public:</span>
   <span class="k">explicit</span> <span class="n">Component1</span><span class="p">(</span><span class="kt">bool</span> <span class="n">production</span><span class="p">)</span> <span class="o">:</span> <span class="n">production_</span><span class="p">(</span><span class="n">production</span><span class="p">)</span> <span class="p">{}</span>
@@ -881,8 +890,8 @@
   <span class="p">}</span>
 
   <span class="c1">// Never expose the pointer, just the value pointed to.</span>
-  <span class="n">Component1</span><span class="o">&amp;</span> <span class="n">component1</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="n">component1_</span><span class="p">;</span> <span class="p">}</span>
-  <span class="n">Component2</span><span class="o">&amp;</span> <span class="n">component2</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="n">component2_</span><span class="p">;</span> <span class="p">}</span>
+  <span class="n">Component1</span><span class="o">&amp;</span> <span class="n">component1</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="o">*</span><span class="n">component1_</span><span class="p">;</span> <span class="p">}</span>
+  <span class="n">Component2</span><span class="o">&amp;</span> <span class="n">component2</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="o">*</span><span class="n">component2_</span><span class="p">;</span> <span class="p">}</span>
 
  <span class="nl">private:</span>
   <span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">Component1</span><span class="o">&gt;</span> <span class="n">component1_</span><span class="p">;</span>
@@ -891,10 +900,34 @@
 
 <span class="kt">void</span> <span class="nf">DoStuff</span><span class="p">(</span><span class="n">Component1</span><span class="o">&amp;</span> <span class="n">component</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/*...*/</span> <span class="p">}</span>
 
-<span class="kt">void</span> <span class="nf">Foo</span><span class="p">()</span> <span class="p">{</span>
+<span class="kt">void</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
   <span class="k">auto</span> <span class="n">prod_container</span> <span class="o">=</span> <span class="n">Container</span><span class="o">::</span><span class="n">CreateProd</span><span class="p">();</span>
   <span class="n">DoStuff</span><span class="p">(</span><span class="n">prod_container</span><span class="p">.</span><span class="n">component1</span><span class="p">());</span>
 <span class="p">}</span>
+</code></pre></div></div>
+
+<p>If used in a separate thread or allocation is very large, prefer <code class="language-plaintext highlighter-rouge">std::shared_ptr</code> instead. Below is a modification of the previous class layout.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Container</span> <span class="p">{</span>
+ <span class="nl">public:</span>
+  <span class="c1">// Consume only unique pointers since no other object should hold the dependencies</span>
+  <span class="k">explicit</span> <span class="n">Container</span><span class="p">(</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">Component1</span><span class="o">&gt;</span> <span class="n">component1</span><span class="p">,</span> 
+    <span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">Component2</span><span class="o">&gt;</span> <span class="n">component2</span><span class="p">)</span>
+    <span class="c1">// Release ownership to the shared pointers.</span>
+    <span class="o">:</span> <span class="n">component1_</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">component1</span><span class="p">)),</span> 
+      <span class="n">component2_</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">component2</span><span class="p">))</span> <span class="p">{}</span>
+
+  <span class="c1">// ...</span>
+
+  <span class="c1">// Never expose the pointer, just the value pointed to.</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Component1</span><span class="o">&gt;</span> <span class="n">component1</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="n">component1_</span><span class="p">;</span> <span class="p">}</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Component2</span><span class="o">&gt;</span> <span class="n">component2</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="n">component2_</span><span class="p">;</span> <span class="p">}</span>
+
+ <span class="nl">private:</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Component1</span><span class="o">&gt;</span> <span class="n">component1_</span><span class="p">;</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Component2</span><span class="o">&gt;</span> <span class="n">component2_</span><span class="p">;</span>
+<span class="p">};</span>
 </code></pre></div></div>
 
 <h2 id="rules-of-thumb">Rules of Thumb</h2>
