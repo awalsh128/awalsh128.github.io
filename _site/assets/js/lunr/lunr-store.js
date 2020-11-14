@@ -6,9 +6,21 @@ var store = [{
         "teaser": null
       },{
         "title": "Git Notes",
-        "excerpt":"Common Commands Short Description Command Description Add git add &lt;pattern&gt;   Add All git add -u Add all pending changes. Clean git clean Clean all untracked changes. Clean Preview git clean -n   Clone Repository git clong &lt;project ULR&gt;   Commit Pending git commit -m \"&lt;message&gt;\"   Move git mv...","categories": [],
+        "excerpt":"Common Commands Short Description Command Description Add git add &lt;pattern&gt;   Add All git add -u Add all pending changes. Clean git clean Clean all untracked changes. Clean Preview git clean -n   Clone Repository git clone &lt;project URL&gt;   Commit Pending git commit -m \"&lt;message&gt;\"   Initialize Repository git...","categories": [],
         "tags": ["git"],
         "url": "https://awalsh128.com/notes/git/",
+        "teaser": null
+      },{
+        "title": "Bash Notes",
+        "excerpt":"Build and Test #!/bin/bash set -e # exit on error src_path=$1 build_targets=($(find \"$src_path\" -type f \\( -name \"*.h\" -o -wholename \"${src_path}\\/main.cc\" \\) | sed 's/\\.h//; s/\\.cc//; s/\\(.*\\)\\//\\1\\:/' | sort)) test_targets=($(find \"$src_path\" -type f -name \"*_test.cc\" | sed 's/\\.cc//; s/\\(.*\\)\\//\\1\\:/' | sort)) build_cleaner g4fix for target in \"${build_targets[@]}\"; do blaze build...","categories": [],
+        "tags": ["git"],
+        "url": "https://awalsh128.com/notes/bash/",
+        "teaser": null
+      },{
+        "title": "Fish Notes",
+        "excerpt":"Bash Differences These are differences between Bash and Fish in terms of syntax. Below are links and a reference table. Fish translation table Action / Thing Bash Fish Brace literal {} '{}' Command substitution $(command) (command) Exit code of last command $? $status Logical AND between commands command1 &amp;&amp; command2...","categories": [],
+        "tags": ["git"],
+        "url": "https://awalsh128.com/notes/fish/",
         "teaser": null
       },{
         "title": "Using Ubuntu 10.04 with SVN+HTTP.",
