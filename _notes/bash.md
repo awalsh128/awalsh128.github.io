@@ -8,42 +8,6 @@ excerpt: "Bash notes giving commonly used commands and some handy special workfl
 toc: true
 ---
 
-## Build and Test
-
-```bash
-#!/bin/bash
-
-set -e  # exit on error
-
-src_path=$1
-
-build_targets=($(find "$src_path" -type f \( -name "*.h" -o -wholename "${src_path}\/main.cc" \) | 
-  sed 's/\.h//; s/\.cc//; s/\(.*\)\//\1\:/' | sort))
-
-test_targets=($(find "$src_path" -type f -name "*_test.cc" | sed 's/\.cc//; s/\(.*\)\//\1\:/' | sort))
-
-build_cleaner
-g4fix
-
-for target in "${build_targets[@]}"; do
-  blaze build "$target"
-done
-for target in "${test_targets[@]}"; do
-  blaze test "$target"
-done
-
-build_cleaner
-g4fix
-
-# Ensure they can still build.
-for target in "${build_targets[@]}"; do
-  blaze build "$target"
-done
-for target in "${test_targets[@]}"; do
-  blaze build "$target"
-done
-```
-
 ## Beep Music
 
 Github repositories with beep codes for songs:
