@@ -26,7 +26,7 @@ T DoSomething(T value) {
 template <typename T>
 T DoSomething(T value) {
   static_assert(std::is_floating_point<T>::value,
-                "value must be an integer type.");
+                "value must be an floating type.");
   // ...
 }
 ```
@@ -43,7 +43,7 @@ T DoSomething(T value) {
 ```cpp
 int DoSomething(int even, int odd) {
   static_assert(even % 2 == 0 "even value must be an even number.");
-  static_assert(odd % 2 != 0 "od value must be an odd number.");
+  static_assert(odd % 2 != 0 "odd value must be an odd number.");
   // ...
 }
 ```
