@@ -5,6 +5,7 @@ author: awalsh128
 tags: C++ cpp fluent fluentcpp
 modified_time: "2021-10-09T00:00:00.001-07:00"
 excerpt: "Initial release of Fluent C++. A library that can be used to express information in a functional way that allows for easy auto-complete and shorter expressions."
+toc_icon: "columns"
 ---
 
 ## Motivation
