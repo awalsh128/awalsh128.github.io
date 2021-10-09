@@ -1,0 +1,13 @@
+{
+  "editor.wordWrap": "wordWrapColumn",
+  "editor.tabSize": 2,
+  "editor.wrappingIndent": "same",
+  "editor.wordWrapColumn": 120,
+  "editor.rulers": [120],
+  "editor.formatOnSave": true,
+  "editor.insertSpaces": true,
+  "[markdown]": {
+    "editor.wordWrap": "wordWrapColumn",
+    "editor.wordWrapColumn": 120
+  }
+}
