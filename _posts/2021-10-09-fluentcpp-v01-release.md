@@ -1,15 +1,16 @@
 ---
+layout: posts
 title: Fluent C++ v0.1 Release
-date: "2021-10-09T00:00:00.001-07:00"
-author: awalsh128
-tags: C++ cpp fluent fluentcpp
-modified_time: "2021-10-09T00:00:00.001-07:00"
-excerpt: "Initial release of Fluent C++. A library that can be used to express information in a functional way that allows for easy auto-complete and shorter expressions."
+last_modified_at: 2021-10-10 00:00:01 -0700
+tags:
+- Fluent C++
+- C++
+- fluent programming
 ---
 
 ## Motivation
 
-I had been wanting to make a library to express data transformation in a fluent way. The STL already has some functions for this. For example...
+I had been wanting to make a library to express data transformation in a fluent way. The STL already has some functions for this. For example, if I wanted to transform a sequence and then filter based on a conditional I would do this.
 
 ```cpp
 std::vector<int> xs;
