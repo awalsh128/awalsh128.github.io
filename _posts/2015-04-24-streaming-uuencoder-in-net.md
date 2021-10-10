@@ -3,7 +3,8 @@ layout: posts
 title: Streaming UUEncoder in .NET.
 date: '2015-04-24T17:09:00.001-07:00'
 author: awalsh128
-tags: 
+tags:
+- Encoding
 modified_time: '2015-04-24T17:09:22.379-07:00'
 blogger_id: tag:blogger.com,1999:blog-6363087137667886940.post-7225106951260315303
 blogger_orig_url: https://awalsh128.blogspot.com/2015/04/streaming-uuencoder-in-net.html
