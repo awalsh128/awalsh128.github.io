@@ -14,7 +14,8 @@ When I first started using C++, I was really confused as to how to pass things a
 This post is a simplified approach to helping C# and Java devs get an introductory understanding of C++ memory semantics so they can confidently create signatures correctly and use it as a stepping stone for more advances techniques. In the following post we will compare C++ against C# for simplicity so we don't have to constantly bring up both C# and Java.
 
 The layout of this post will follow:
-* An example of a non-idiomatic approach to C++ and show why it is inefficient. 
+
+* An example of a non-idiomatic approach to C++ and show why it is inefficient.
 * Define the storage durations so that we can understand how C++ handles objects in memory.
 * Define the types used to communicate the memory semantics involved.
 * Walk through examples, styles and use of the different types described.
@@ -26,6 +27,7 @@ The layout of this post will follow:
 Let's start with a common misconception that memory semantics are interchageable with all other languages. Memory semantics and how the language approaches it are important. We can't just take our understanding from C# and literally apply it to C++.
 
 For example:
+
 ```cs
 class Object {
   public int x;
@@ -37,6 +39,7 @@ Foo(o);
 ```
 
 Could literally be transformed into:
+
 ```cpp
 class Object {
  public:
@@ -51,12 +54,14 @@ void Bar() {
 }
 ```
 
-This is a terrible idea, don't do this. The main mistake is confusing C# class memory semantics with C++'s. 
+This is a terrible idea, don't do this. The main mistake is confusing C# class memory semantics with C++'s.
+
 * You just can't change the C# reference to a C++ pointer and be done. This go against the C++ philosophy to prefer the stack. Especially since this is an option not available in C# due to the division between value and reference types
 * `Object` is very small (about 8 bytes) and is best allocated on the stack since it is faster (see [gotw/009](http://www.gotw.ca/gotw/009.htm)).
 * The scope of the `Object` instance isn't well defined but if we assume it is short lived there is no need for [dynamic allocation](https://en.cppreference.com/w/cpp/language/storage_duration).
 
 Here is a better way to do it:
+
 ```cpp
 Object o;
 FooReadOnly(o); // Simple and fast copy.
@@ -410,7 +415,7 @@ void Foo() {
 
 ## Examples
 
-Below are some different ways to think about how to provide your signatures and what they convey. 
+Below are some different ways to think about how to provide your signatures and what they convey.
 
 {% include warning.html content="Note in each section how pointer can be ambiguous and possibly result in multiple ownership. Most of the time you never really want two objects holding on to the same pointer unless they are well coordinated. If one deletes the pointer you will get a segmentation fault upon further access." %}
 
@@ -601,7 +606,7 @@ class Container {
 ## Rules of Thumb
 
 * Copies can be a faster operation for small objects.
-* Only use smart pointers when the object is very large or needs to be shared outside the scope it was created in. 
+* Only use smart pointers when the object is very large or needs to be shared outside the scope it was created in.
 * Avoid raw pointers whenever possible.
 * Prefer references over raw or smart pointers where available.
 
