@@ -1,6 +1,6 @@
 <!doctype html>
 <!--
-  Minimal Mistakes Jekyll Theme 4.21.0 by Michael Rose
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
   Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
   Free for personal and commercial use under the MIT license
   https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
@@ -23,7 +23,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Andrew Walsh's Website">
 <meta property="og:title" content="C++ Examples">
-<meta property="og:url" content="https://awalsh128.com/notes/cpp/">
+<meta property="og:url" content="http://localhost:4000/notes/cpp/">
 
 
   <meta property="og:description" content="C++ notes giving short examples on commonly used data structures and patterns.">
@@ -45,7 +45,7 @@
   
 
 
-<link rel="canonical" href="https://awalsh128.com/notes/cpp/">
+<link rel="canonical" href="http://localhost:4000/notes/cpp/">
 
 
 
@@ -56,7 +56,7 @@
     
       "@type": "Person",
       "name": "Andrew Walsh",
-      "url": "https://awalsh128.com/"
+      "url": "http://localhost:4000/"
     
   }
 </script>
@@ -66,10 +66,13 @@
 
 
 
+
 <!-- end _includes/seo.html -->
 
 
-<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Andrew Walsh's Website Feed">
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Andrew Walsh's Website Feed">
+
 
 <!-- https://t.co/dKP3o1e -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -80,22 +83,8 @@
 
 <!-- For all browsers -->
 <link rel="stylesheet" href="/assets/css/main.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
-
-<!--[if IE]>
-  <style>
-    /* old IE unsupported flexbox fixes */
-    .greedy-nav .site-title {
-      padding-right: 3em;
-    }
-    .greedy-nav button {
-      position: absolute;
-      top: 0;
-      right: 0;
-      height: 100%;
-    }
-  </style>
-<![endif]-->
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
 
 
 
@@ -109,7 +98,6 @@
 
   <body class="layout--single">
     <nav class="skip-links">
-  <h2 class="screen-reader-text">Skip links</h2>
   <ul>
     <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
     <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
@@ -144,9 +132,7 @@
         
         <button class="search__toggle" type="button">
           <span class="visually-hidden">Toggle search</span>
-          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
-            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
-          </svg>
+          <i class="fas fa-search"></i>
         </button>
         
         <button class="greedy-nav__toggle hidden" type="button">
@@ -171,22 +157,22 @@
   
 
 
-<div itemscope itemtype="https://schema.org/Person">
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
 
   
     <div class="author__avatar">
-      
-        <img src="/assets/img/avatar_lowres.png" alt="Andrew Walsh" itemprop="image">
-      
+      <a href="http://localhost:4000/">
+        <img src="/assets/img/avatar_lowres.png" alt="Andrew Walsh" itemprop="image" class="u-photo">
+      </a>
     </div>
   
 
   <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Andrew Walsh</a>
+    </h3>
     
-      <h3 class="author__name" itemprop="name">Andrew Walsh</h3>
-    
-    
-      <div class="author__bio" itemprop="description">
+      <div class="author__bio p-note" itemprop="description">
         <p>Coder with a passion for data privacy.</p>
 
       </div>
@@ -198,18 +184,18 @@
     <ul class="author__urls social-icons">
       
         <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
-          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">US</span>
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">US</span>
         </li>
       
 
       
         
           
-            <li><a href="https://github.com/awalsh128" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+            <li><a href="https://github.com/awalsh128" rel="nofollow noopener noreferrer me"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
           
         
           
-            <li><a href="https://www.linkedin.com/in/andrew-walsh-a235787/" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">Linkedin</span></a></li>
+            <li><a href="https://www.linkedin.com/in/andrew-walsh-a235787/" rel="nofollow noopener noreferrer me"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">Linkedin</span></a></li>
           
         
       
@@ -218,7 +204,7 @@
 
       
         <li>
-          <a href="mailto:awalsh128@gmail.com">
+          <a href="mailto:awalsh128@gmail.com" rel="me" class="u-email">
             <meta itemprop="email" content="awalsh128@gmail.com" />
             <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span>
           </a>
@@ -271,7 +257,7 @@
 
       <!--
   <li>
-    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
       <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
     </a>
   </li>
@@ -279,13 +265,12 @@
     </ul>
   </div>
 </div>
-
   
   </div>
 
 
 
-  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
     <meta itemprop="headline" content="C++ Examples">
     <meta itemprop="description" content="C++ notes giving short examples on commonly used data structures and patterns.">
     <meta itemprop="datePublished" content="2020-09-07T21:46:00-07:00">
@@ -294,95 +279,22 @@
     <div class="page__inner-wrap">
       
         <header>
-          <h1 id="page-title" class="page__title" itemprop="headline">C++ Examples
-</h1>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4000/notes/cpp/" class="u-url" itemprop="url">C++ Examples
+</a>
+          </h1>
           
 
 
         </header>
       
 
-      <section class="page__content" itemprop="text">
+      <section class="page__content e-content" itemprop="text">
         
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
-              <ul class="toc__menu">
-  <li><a href="#asserts-static">Asserts (Static)</a></li>
-  <li><a href="#fibers">Fibers</a></li>
-  <li><a href="#file">File</a>
-    <ul>
-      <li><a href="#write">Write</a></li>
-      <li><a href="#read">Read</a></li>
-      <li><a href="#join-paths">Join Paths</a></li>
-      <li><a href="#list-directory">List Directory</a></li>
-      <li><a href="#create--remove-directory">Create &amp; Remove Directory</a></li>
-      <li><a href="#copy">Copy</a></li>
-      <li><a href="#permissions">Permissions</a></li>
-      <li><a href="#path-parts">Path Parts</a></li>
-    </ul>
-  </li>
-  <li><a href="#hashed">Hashed</a>
-    <ul>
-      <li><a href="#map">Map</a></li>
-      <li><a href="#set">Set</a></li>
-    </ul>
-  </li>
-  <li><a href="#iterators">Iterators</a>
-    <ul>
-      <li><a href="#copy-1">Copy</a></li>
-      <li><a href="#filter">Filter</a></li>
-      <li><a href="#find">Find</a></li>
-      <li><a href="#loop">Loop</a></li>
-    </ul>
-  </li>
-  <li><a href="#macros">Macros</a></li>
-  <li><a href="#protocol-buffers">Protocol Buffers</a>
-    <ul>
-      <li><a href="#differencer">Differencer</a></li>
-      <li><a href="#repeated-fields">Repeated Fields</a></li>
-      <li><a href="#parse-file">Parse File</a></li>
-      <li><a href="#parse-text">Parse Text</a></li>
-    </ul>
-  </li>
-  <li><a href="#random">Random</a></li>
-  <li><a href="#strings">Strings</a>
-    <ul>
-      <li><a href="#case">Case</a></li>
-      <li><a href="#concatenate">Concatenate</a></li>
-      <li><a href="#contains">Contains</a></li>
-      <li><a href="#format">Format</a></li>
-      <li><a href="#join">Join</a></li>
-      <li><a href="#replace">Replace</a></li>
-      <li><a href="#regex">RegEx</a></li>
-      <li><a href="#split">Split</a></li>
-      <li><a href="#starts-with">Starts With</a></li>
-      <li><a href="#string-view-materialize">String View Materialize</a></li>
-      <li><a href="#strip-prefix">Strip Prefix</a></li>
-    </ul>
-  </li>
-  <li><a href="#structs">Structs</a>
-    <ul>
-      <li><a href="#unpack">Unpack</a></li>
-    </ul>
-  </li>
-  <li><a href="#templates">Templates</a></li>
-  <li><a href="#time">Time</a></li>
-  <li><a href="#tuple">Tuple</a>
-    <ul>
-      <li><a href="#unpack-1">Unpack</a></li>
-    </ul>
-  </li>
-  <li><a href="#unique-pointer">Unique Pointer</a></li>
-  <li><a href="#vector">Vector</a>
-    <ul>
-      <li><a href="#concat">Concat</a></li>
-      <li><a href="#iterate">Iterate</a></li>
-      <li><a href="#copy-2">Copy</a></li>
-      <li><a href="#appends">Appends</a></li>
-    </ul>
-  </li>
-</ul>
+              <ul class="toc__menu"><li><a href="#asserts-static">Asserts (Static)</a></li><li><a href="#fibers">Fibers</a></li><li><a href="#file">File</a><ul><li><a href="#write">Write</a></li><li><a href="#read">Read</a></li><li><a href="#join-paths">Join Paths</a></li><li><a href="#list-directory">List Directory</a></li><li><a href="#create--remove-directory">Create &amp; Remove Directory</a></li><li><a href="#copy">Copy</a></li><li><a href="#permissions">Permissions</a></li><li><a href="#path-parts">Path Parts</a></li></ul></li><li><a href="#hashed">Hashed</a><ul><li><a href="#map">Map</a></li><li><a href="#set">Set</a></li></ul></li><li><a href="#iterators">Iterators</a><ul><li><a href="#copy-1">Copy</a></li><li><a href="#filter">Filter</a></li><li><a href="#find">Find</a></li><li><a href="#loop">Loop</a></li></ul></li><li><a href="#macros">Macros</a></li><li><a href="#protocol-buffers">Protocol Buffers</a><ul><li><a href="#differencer">Differencer</a></li><li><a href="#repeated-fields">Repeated Fields</a></li><li><a href="#parse-file">Parse File</a></li><li><a href="#parse-text">Parse Text</a></li></ul></li><li><a href="#random">Random</a></li><li><a href="#strings">Strings</a><ul><li><a href="#case">Case</a></li><li><a href="#concatenate">Concatenate</a></li><li><a href="#contains">Contains</a></li><li><a href="#format">Format</a></li><li><a href="#join">Join</a></li><li><a href="#replace">Replace</a></li><li><a href="#regex">RegEx</a></li><li><a href="#split">Split</a></li><li><a href="#starts-with">Starts With</a></li><li><a href="#string-view-materialize">String View Materialize</a></li><li><a href="#strip-prefix">Strip Prefix</a></li></ul></li><li><a href="#structs">Structs</a><ul><li><a href="#unpack">Unpack</a></li></ul></li><li><a href="#templates">Templates</a></li><li><a href="#time">Time</a></li><li><a href="#tuple">Tuple</a><ul><li><a href="#unpack-1">Unpack</a></li></ul></li><li><a href="#unique-pointer">Unique Pointer</a></li><li><a href="#vector">Vector</a><ul><li><a href="#concat">Concat</a></li><li><a href="#iterate">Iterate</a></li><li><a href="#copy-2">Copy</a></li><li><a href="#appends">Appends</a></li></ul></li></ul>
 
             </nav>
           </aside>
@@ -403,7 +315,7 @@ exhaustive list.</p>
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
 <span class="n">T</span> <span class="nf">DoSomething</span><span class="p">(</span><span class="n">T</span> <span class="n">value</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">static_assert</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">is_floating_point</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">value</span><span class="p">,</span>
-                <span class="s">"value must be an integer type."</span><span class="p">);</span>
+                <span class="s">"value must be an floating type."</span><span class="p">);</span>
   <span class="c1">// ...</span>
 <span class="p">}</span>
 </code></pre></div></div>
@@ -418,7 +330,7 @@ exhaustive list.</p>
 
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">DoSomething</span><span class="p">(</span><span class="kt">int</span> <span class="n">even</span><span class="p">,</span> <span class="kt">int</span> <span class="n">odd</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">static_assert</span><span class="p">(</span><span class="n">even</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="s">"even value must be an even number."</span><span class="p">);</span>
-  <span class="k">static_assert</span><span class="p">(</span><span class="n">odd</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">!=</span> <span class="mi">0</span> <span class="s">"od value must be an odd number."</span><span class="p">);</span>
+  <span class="k">static_assert</span><span class="p">(</span><span class="n">odd</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">!=</span> <span class="mi">0</span> <span class="s">"odd value must be an odd number."</span><span class="p">);</span>
   <span class="c1">// ...</span>
 <span class="p">}</span>
 </code></pre></div></div>
@@ -1309,16 +1221,12 @@ int Get##func_name##n##m(VAR_ARGS) {                      \
 
 
   
-  
-  
 
   <p class="page__taxonomy">
     <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
     <span itemprop="keywords">
     
-      
-      
-      <a href="/tags/#c" class="page__taxonomy-item" rel="tag">C++</a>
+      <a href="/tags/#c" class="page__taxonomy-item p-category" rel="tag">C++</a>
     
     </span>
   </p>
@@ -1327,8 +1235,8 @@ int Get##func_name##n##m(VAR_ARGS) {                      \
 
 
         
-  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2020-09-07T21:46:00-07:00">September 7, 2020</time></p>
 
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2020-09-07T21:46:00-07:00">September 7, 2020</time></p>
 
       </footer>
 
@@ -1337,11 +1245,11 @@ int Get##func_name##n##m(VAR_ARGS) {                      \
     <h4 class="page__share-title">Share on</h4>
   
 
-  <a href="https://twitter.com/intent/tweet?text=C%2B%2B+Examples%20https%3A%2F%2Fawalsh128.com%2Fnotes%2Fcpp%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+  <a href="https://twitter.com/intent/tweet?text=C%2B%2B+Examples%20http%3A%2F%2Flocalhost%3A4000%2Fnotes%2Fcpp%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
 
-  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fawalsh128.com%2Fnotes%2Fcpp%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fnotes%2Fcpp%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
 
-  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fawalsh128.com%2Fnotes%2Fcpp%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fnotes%2Fcpp%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
 </section>
 
 
@@ -1364,12 +1272,11 @@ int Get##func_name##n##m(VAR_ARGS) {                      \
   
   
 </div>
-
     </div>
 
     
       <div class="search-content">
-        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';" role="search">
     <label class="sr-only" for="search">
       Enter your search term...
     </label>
@@ -1407,11 +1314,13 @@ int Get##func_name##n##m(VAR_ARGS) {                      \
       
     
 
-    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
   </ul>
 </div>
 
-<div class="page__footer-copyright">&copy; 2020 Andrew Walsh. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+<div class="page__footer-copyright">&copy; 2021 Andrew Walsh. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
 
       </footer>
     </div>
@@ -1432,7 +1341,7 @@ int Get##func_name##n##m(VAR_ARGS) {                      \
     
   <script>
     var disqus_config = function () {
-      this.page.url = "https://awalsh128.com/notes/cpp/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.url = "http://localhost:4000/notes/cpp/";  /* Replace PAGE_URL with your page's canonical URL variable */
       this.page.identifier = "/notes/cpp"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
     };
     (function() { /* DON'T EDIT BELOW THIS LINE */
