@@ -1,6 +1,6 @@
 <!doctype html>
 <!--
-  Minimal Mistakes Jekyll Theme 4.21.0 by Michael Rose
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
   Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
   Free for personal and commercial use under the MIT license
   https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
@@ -23,7 +23,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Andrew Walsh's Website">
 <meta property="og:title" content="C++ Memory Semantics for C# and Java Devs">
-<meta property="og:url" content="https://awalsh128.com/cpp-memory-semantic-for-csharp-java-devs/">
+<meta property="og:url" content="http://localhost:4000/cpp-memory-semantic-for-csharp-java-devs/">
 
 
   <meta property="og:description" content="Understanding how memory semantics works in C++ from the perspective of a C# or Java dev.">
@@ -45,7 +45,7 @@
   
 
 
-<link rel="canonical" href="https://awalsh128.com/cpp-memory-semantic-for-csharp-java-devs/">
+<link rel="canonical" href="http://localhost:4000/cpp-memory-semantic-for-csharp-java-devs/">
 
 
 
@@ -56,7 +56,7 @@
     
       "@type": "Person",
       "name": "Andrew Walsh",
-      "url": "https://awalsh128.com/"
+      "url": "http://localhost:4000/"
     
   }
 </script>
@@ -66,10 +66,13 @@
 
 
 
+
 <!-- end _includes/seo.html -->
 
 
-<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Andrew Walsh's Website Feed">
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Andrew Walsh's Website Feed">
+
 
 <!-- https://t.co/dKP3o1e -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -80,22 +83,8 @@
 
 <!-- For all browsers -->
 <link rel="stylesheet" href="/assets/css/main.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
-
-<!--[if IE]>
-  <style>
-    /* old IE unsupported flexbox fixes */
-    .greedy-nav .site-title {
-      padding-right: 3em;
-    }
-    .greedy-nav button {
-      position: absolute;
-      top: 0;
-      right: 0;
-      height: 100%;
-    }
-  </style>
-<![endif]-->
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
 
 
 
@@ -109,7 +98,6 @@
 
   <body class="layout--single wide">
     <nav class="skip-links">
-  <h2 class="screen-reader-text">Skip links</h2>
   <ul>
     <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
     <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
@@ -144,9 +132,7 @@
         
         <button class="search__toggle" type="button">
           <span class="visually-hidden">Toggle search</span>
-          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
-            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
-          </svg>
+          <i class="fas fa-search"></i>
         </button>
         
         <button class="greedy-nav__toggle hidden" type="button">
@@ -171,22 +157,22 @@
   
 
 
-<div itemscope itemtype="https://schema.org/Person">
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
 
   
     <div class="author__avatar">
-      
-        <img src="/assets/img/avatar_lowres.png" alt="Andrew Walsh" itemprop="image">
-      
+      <a href="http://localhost:4000/">
+        <img src="/assets/img/avatar_lowres.png" alt="Andrew Walsh" itemprop="image" class="u-photo">
+      </a>
     </div>
   
 
   <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Andrew Walsh</a>
+    </h3>
     
-      <h3 class="author__name" itemprop="name">Andrew Walsh</h3>
-    
-    
-      <div class="author__bio" itemprop="description">
+      <div class="author__bio p-note" itemprop="description">
         <p>Coder with a passion for data privacy.</p>
 
       </div>
@@ -198,18 +184,18 @@
     <ul class="author__urls social-icons">
       
         <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
-          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">US</span>
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">US</span>
         </li>
       
 
       
         
           
-            <li><a href="https://github.com/awalsh128" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+            <li><a href="https://github.com/awalsh128" rel="nofollow noopener noreferrer me"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
           
         
           
-            <li><a href="https://www.linkedin.com/in/andrew-walsh-a235787/" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">Linkedin</span></a></li>
+            <li><a href="https://www.linkedin.com/in/andrew-walsh-a235787/" rel="nofollow noopener noreferrer me"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">Linkedin</span></a></li>
           
         
       
@@ -218,7 +204,7 @@
 
       
         <li>
-          <a href="mailto:awalsh128@gmail.com">
+          <a href="mailto:awalsh128@gmail.com" rel="me" class="u-email">
             <meta itemprop="email" content="awalsh128@gmail.com" />
             <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span>
           </a>
@@ -271,7 +257,7 @@
 
       <!--
   <li>
-    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
       <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
     </a>
   </li>
@@ -279,13 +265,12 @@
     </ul>
   </div>
 </div>
-
   
   </div>
 
 
 
-  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
     <meta itemprop="headline" content="C++ Memory Semantics for C# and Java Devs">
     <meta itemprop="description" content="Understanding how memory semantics works in C++ from the perspective of a C# or Java dev.">
     <meta itemprop="datePublished" content="2020-10-15T00:00:00-07:00">
@@ -294,8 +279,10 @@
     <div class="page__inner-wrap">
       
         <header>
-          <h1 id="page-title" class="page__title" itemprop="headline">C++ Memory Semantics for C# and Java Devs
-</h1>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4000/cpp-memory-semantic-for-csharp-java-devs/" class="u-url" itemprop="url">C++ Memory Semantics for C# and Java Devs
+</a>
+          </h1>
           
 
   <p class="page__meta">
@@ -320,51 +307,12 @@
         </header>
       
 
-      <section class="page__content" itemprop="text">
+      <section class="page__content e-content" itemprop="text">
         
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-columns"></i> On this page</h4></header>
-              <ul class="toc__menu">
-  <li><a href="#the-literal-approach-aka-wrong-approach">The Literal Approach (AKA Wrong Approach)</a></li>
-  <li><a href="#storage-duration">Storage Duration</a>
-    <ul>
-      <li><a href="#automatic">Automatic</a></li>
-      <li><a href="#dynamic">Dynamic</a></li>
-      <li><a href="#thread">Thread</a></li>
-      <li><a href="#static">Static</a></li>
-    </ul>
-  </li>
-  <li><a href="#types">Types</a>
-    <ul>
-      <li><a href="#fundamental-types">Fundamental Types</a></li>
-      <li><a href="#objects">Objects</a></li>
-      <li><a href="#references--pointers">References &amp; Pointers</a></li>
-      <li><a href="#smart-pointers">Smart Pointers</a>
-        <ul>
-          <li><a href="#unique-pointer">Unique Pointer</a></li>
-          <li><a href="#shared-pointer">Shared Pointer</a></li>
-          <li><a href="#weak-pointer">Weak Pointer</a></li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-  <li><a href="#examples">Examples</a>
-    <ul>
-      <li><a href="#inputs">Inputs</a></li>
-      <li><a href="#outputs">Outputs</a>
-        <ul>
-          <li><a href="#outputs-as-return-value">Outputs as Return Value</a></li>
-          <li><a href="#outputs-as-arguments">Outputs as Arguments</a></li>
-          <li><a href="#readability">Readability</a></li>
-        </ul>
-      </li>
-      <li><a href="#dependency-injection-di-container">Dependency Injection (DI) Container</a></li>
-    </ul>
-  </li>
-  <li><a href="#rules-of-thumb">Rules of Thumb</a></li>
-  <li><a href="#conclusion">Conclusion</a></li>
-</ul>
+              <ul class="toc__menu"><li><a href="#the-literal-approach-aka-wrong-approach">The Literal Approach (AKA Wrong Approach)</a></li><li><a href="#storage-duration">Storage Duration</a><ul><li><a href="#automatic">Automatic</a></li><li><a href="#dynamic">Dynamic</a></li><li><a href="#thread">Thread</a></li><li><a href="#static">Static</a></li></ul></li><li><a href="#types">Types</a><ul><li><a href="#fundamental-types">Fundamental Types</a></li><li><a href="#objects">Objects</a></li><li><a href="#references--pointers">References &amp; Pointers</a></li><li><a href="#smart-pointers">Smart Pointers</a><ul><li><a href="#unique-pointer">Unique Pointer</a></li><li><a href="#shared-pointer">Shared Pointer</a></li><li><a href="#weak-pointer">Weak Pointer</a></li></ul></li></ul></li><li><a href="#examples">Examples</a><ul><li><a href="#inputs">Inputs</a></li><li><a href="#outputs">Outputs</a><ul><li><a href="#outputs-as-return-value">Outputs as Return Value</a></li><li><a href="#outputs-as-arguments">Outputs as Arguments</a></li><li><a href="#readability">Readability</a></li></ul></li><li><a href="#dependency-injection-di-container">Dependency Injection (DI) Container</a></li></ul></li><li><a href="#rules-of-thumb">Rules of Thumb</a></li><li><a href="#conclusion">Conclusion</a></li></ul>
 
             </nav>
           </aside>
@@ -374,6 +322,7 @@
 <p>This post is a simplified approach to helping C# and Java devs get an introductory understanding of C++ memory semantics so they can confidently create signatures correctly and use it as a stepping stone for more advances techniques. In the following post we will compare C++ against C# for simplicity so we don’t have to constantly bring up both C# and Java.</p>
 
 <p>The layout of this post will follow:</p>
+
 <ul>
   <li>An example of a non-idiomatic approach to C++ and show why it is inefficient.</li>
   <li>Define the storage durations so that we can understand how C++ handles objects in memory.</li>
@@ -388,6 +337,7 @@
 <p>Let’s start with a common misconception that memory semantics are interchageable with all other languages. Memory semantics and how the language approaches it are important. We can’t just take our understanding from C# and literally apply it to C++.</p>
 
 <p>For example:</p>
+
 <div class="language-cs highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Object</span> <span class="p">{</span>
   <span class="k">public</span> <span class="kt">int</span> <span class="n">x</span><span class="p">;</span>
 <span class="p">}</span>
@@ -398,6 +348,7 @@
 </code></pre></div></div>
 
 <p>Could literally be transformed into:</p>
+
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Object</span> <span class="p">{</span>
  <span class="nl">public:</span>
   <span class="kt">int</span> <span class="n">x</span><span class="p">;</span>
@@ -412,6 +363,7 @@
 </code></pre></div></div>
 
 <p>This is a terrible idea, don’t do this. The main mistake is confusing C# class memory semantics with C++’s.</p>
+
 <ul>
   <li>You just can’t change the C# reference to a C++ pointer and be done. This go against the C++ philosophy to prefer the stack. Especially since this is an option not available in C# due to the division between value and reference types</li>
   <li><code class="language-plaintext highlighter-rouge">Object</code> is very small (about 8 bytes) and is best allocated on the stack since it is faster (see <a href="http://www.gotw.ca/gotw/009.htm">gotw/009</a>).</li>
@@ -419,6 +371,7 @@
 </ul>
 
 <p>Here is a better way to do it:</p>
+
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Object</span> <span class="n">o</span><span class="p">;</span>
 <span class="n">FooReadOnly</span><span class="p">(</span><span class="n">o</span><span class="p">);</span> <span class="c1">// Simple and fast copy.</span>
 <span class="n">FooWrite</span><span class="p">(</span><span class="o">&amp;</span><span class="n">o</span><span class="p">);</span>   <span class="c1">// Simple and fast copy of stack address pointer.</span>
@@ -953,16 +906,12 @@
 
 
   
-  
-  
 
   <p class="page__taxonomy">
     <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
     <span itemprop="keywords">
     
-      
-      
-      <a href="/tags/#c" class="page__taxonomy-item" rel="tag">C++</a>
+      <a href="/tags/#c" class="page__taxonomy-item p-category" rel="tag">C++</a>
     
     </span>
   </p>
@@ -971,8 +920,8 @@
 
 
         
-  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2020-10-15T00:00:00-07:00">October 15, 2020</time></p>
 
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2020-10-15T00:00:00-07:00">October 15, 2020</time></p>
 
       </footer>
 
@@ -981,11 +930,11 @@
     <h4 class="page__share-title">Share on</h4>
   
 
-  <a href="https://twitter.com/intent/tweet?text=C%2B%2B+Memory+Semantics+for+C%23+and+Java+Devs%20https%3A%2F%2Fawalsh128.com%2Fcpp-memory-semantic-for-csharp-java-devs%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+  <a href="https://twitter.com/intent/tweet?text=C%2B%2B+Memory+Semantics+for+C%23+and+Java+Devs%20http%3A%2F%2Flocalhost%3A4000%2Fcpp-memory-semantic-for-csharp-java-devs%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
 
-  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fawalsh128.com%2Fcpp-memory-semantic-for-csharp-java-devs%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fcpp-memory-semantic-for-csharp-java-devs%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
 
-  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fawalsh128.com%2Fcpp-memory-semantic-for-csharp-java-devs%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fcpp-memory-semantic-for-csharp-java-devs%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
 </section>
 
 
@@ -996,7 +945,8 @@
 ">Previous</a>
     
     
-      <a href="#" class="pagination--pager disabled">Next</a>
+      <a href="/validate-and-throw-with-multi-type-message/" class="pagination--pager" title="C++ validate and throw with a dynamic message in a single line.
+">Next</a>
     
   </nav>
 
@@ -1008,7 +958,7 @@
   
   
     <div class="page__related">
-      <h4 class="page__related-title">You may also enjoy</h4>
+      <h2 class="page__related-title">You may also enjoy</h2>
       <div class="grid__wrapper">
         
           
@@ -1020,7 +970,87 @@
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/streaming-uuencoder-in-net/" rel="permalink">Streaming UUEncoder in .NET.
+        <a href="/create-github-action-automated-testing/" rel="permalink">Code Analysis for GitHub Projects
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Integrate your GitHub projects with a code analysis tool.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/integrating-lgtm/" rel="permalink">Code Analysis for GitHub Projects
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Integrate your GitHub projects with a code analysis tool.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/fluentcpp-v01-release/" rel="permalink">Fluent C++ v0.1 Release
 </a>
       
     </h2>
@@ -1045,8 +1075,7 @@
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">Flashback
-
+    <p class="archive__item-excerpt" itemprop="description">Fluent style querying for C++.
 </p>
   </article>
 </div>
@@ -1061,48 +1090,7 @@
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/get-windows-service-name-from/" rel="permalink">Get Windows Service name from executable in PowerShell.
-</a>
-      
-    </h2>
-    
-
-  <p class="page__meta">
-    
-
-    
-
-    
-      
-      
-
-      <span class="page__meta-readtime">
-        <i class="far fa-clock" aria-hidden="true"></i>
-        
-          less than 1 minute read
-        
-      </span>
-    
-  </p>
-
-
-    <p class="archive__item-excerpt" itemprop="description">I was recently putting some PowerShell scripts together for deployment
-and maintenance of software to our machine instances. One of the
-requirements was to b...</p>
-  </article>
-</div>
-
-        
-          
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title no_toc" itemprop="headline">
-      
-        <a href="/log-per-class-pattern/" rel="permalink">Log per class pattern.
+        <a href="/cmake-simple-library/" rel="permalink">CMake Simple Library Example
 </a>
       
     </h2>
@@ -1127,49 +1115,7 @@ requirements was to b...</p>
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">Rookie Moves
-
-</p>
-  </article>
-</div>
-
-        
-          
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title no_toc" itemprop="headline">
-      
-        <a href="/creating-xml-based-templates-in-log4net/" rel="permalink">Creating XML based templates in log4net.
-</a>
-      
-    </h2>
-    
-
-  <p class="page__meta">
-    
-
-    
-
-    
-      
-      
-
-      <span class="page__meta-readtime">
-        <i class="far fa-clock" aria-hidden="true"></i>
-        
-          3 minute read
-        
-      </span>
-    
-  </p>
-
-
-    <p class="archive__item-excerpt" itemprop="description">Motivation
-
+    <p class="archive__item-excerpt" itemprop="description">An example of a simple library using CMake.
 </p>
   </article>
 </div>
@@ -1180,12 +1126,11 @@ requirements was to b...</p>
   
   
 </div>
-
     </div>
 
     
       <div class="search-content">
-        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';" role="search">
     <label class="sr-only" for="search">
       Enter your search term...
     </label>
@@ -1223,11 +1168,13 @@ requirements was to b...</p>
       
     
 
-    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
   </ul>
 </div>
 
-<div class="page__footer-copyright">&copy; 2020 Andrew Walsh. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+<div class="page__footer-copyright">&copy; 2021 Andrew Walsh. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
 
       </footer>
     </div>
@@ -1248,7 +1195,7 @@ requirements was to b...</p>
     
   <script>
     var disqus_config = function () {
-      this.page.url = "https://awalsh128.com/cpp-memory-semantic-for-csharp-java-devs/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.url = "http://localhost:4000/cpp-memory-semantic-for-csharp-java-devs/";  /* Replace PAGE_URL with your page's canonical URL variable */
       this.page.identifier = "/cpp-memory-semantic-for-csharp-java-devs"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
     };
     (function() { /* DON'T EDIT BELOW THIS LINE */
