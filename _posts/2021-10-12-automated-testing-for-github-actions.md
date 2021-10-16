@@ -64,7 +64,7 @@ In order for the action repository to publish the event to the test repository, 
 
 To create a scecret, you can use a URL like below. Replace the ``cache-apt-pkgs-action-ci`` repository with your own test repository name.
 
-https://github.com/awalsh128/cache-apt-pkgs-action-ci/settings/secrets/actions/new
+<https://github.com/awalsh128/cache-apt-pkgs-action-ci/settings/secrets/actions/new>
 
 Use the arguments below when creating the secret.
 
