@@ -10,14 +10,14 @@ toc: true
 toc_icon: "columns"
 ---
 
-GitHub actions don't support running tests on created actions from the same repository. In order to do this, another repository needs to be created. There is a way to test locally using [nektos/act](https://github.com/nektos/act) but this doesn't address code being committed upstream and continuously integrated.
+GitHub actions don't support running tests on created actions from the same repository. In order to do this, another repository needs to be created. There is a way to test locally using [nektos/act](https://github.com/nektos/act) but this doesn't address code being committed upstream and continuously integrated. Let's get to it.
 
-There will be two endpoints:
+For this walkthrough, there will be two endpoints:
 
-* Action repository when your created action under test lives.
+* Action repository where your created action under test lives.
 * Test repository that houses the tests.
 
-The general idea is to have your action repository publish an event that a push has occurred, relay it to the test repository which triggers tests on the test repository. For this example I am using my own recently published action ``awalsh128/cache-apt-pkgs-action``. Feel free to swap out this with your equivalent action.
+The general idea is to have your action repository publish an event that says a push has occurred, relay it to the test repository which triggers tests on the test repository. For this example I am using my own recently published action ``awalsh128/cache-apt-pkgs-action``. Feel free to swap out this with your equivalent action.
 
 The steps needed are to create:
 
@@ -36,27 +36,25 @@ A Personal Access Token (PAT) will allow the publisher (action repository) to tr
 
 [Instructions to setup your PAT. Use the arguments below.](https://github.com/settings/tokens)
 
-``Settings > Developer settings > Personal Access Token > Generate New Token``
+``Profile > Settings > Developer settings > Personal Access Token > Generate New Token``
 
 | Field      | Value                                                       |
 | ---------- | ----------------------------------------------------------- |
-| Note       | Publish pull requests to awalsh128/cache-apt-pkgs-action-ci |
+| Note       | Publish push requests to awalsh128/cache-apt-pkgs-action-ci |
 | Expiration | (whatever you choose this to be)                            |
 | Access:    | ``repo_public``                                             |
 
+![Example PAT Config Screen](/assets/img/2021-10-12-automated-testing-for-github-actions/personal_access_token.png)
+
+Once you complete the configuration it will then show you what the value is. Note this isn't my actual value, so don't get any ideas. >:\|
+
+![Example PAT Value Screen](/assets/img/2021-10-12-automated-testing-for-github-actions/personal_access_token_value.png)
+
+We can now share this PAT / secret with the publisher.
+
 ## Publisher
 
-Now the publisher side (action repository) of the event that will trigger the tests.
-
-### Create a ``staging`` branch in ``awalsh128/cache-apt-pkgs-action``
-
-This will be used as a testing branch. Broken code can live here without going to ``master``. It doesn't have to be called ``staging``, call it whatever you want (e.g. ``dev``, ``whatever``).
-
-```sh
-git checkout -b staging
-git push origin staging
-git push --set-upstream origin staging
-```
+Turning our attention to the publisher side (action repository) of the event that will trigger the tests on the test repository.
 
 ### Store Shared Secret on Publisher
 
@@ -75,6 +73,20 @@ Use the arguments below when creating the secret.
 | Name   | TRIGGER_PUBLISH_STAGING_PR_TOKEN        |
 | Secret | (value taken from Create Shared Secret) |
 
+Here's an example of the PAT we generated before.
+
+![Example PAT Value Screen](/assets/img/2021-10-12-automated-testing-for-github-actions/secret.png)
+
+### Create a ``staging`` branch in ``awalsh128/cache-apt-pkgs-action``
+
+This will be used as a testing branch. Broken code can live here without going to ``master``. It doesn't have to be called ``staging``, call it whatever you want (e.g. ``dev``, ``whatever``).
+
+```sh
+git checkout -b staging
+git push origin staging
+git push --set-upstream origin staging
+```
+
 ### Create Publish Action
 
 In the action repository, create ``.github/workflows/staging_push.yml`` workflow that will trigger on any push to staging.
@@ -92,7 +104,7 @@ on:
 jobs:
   publish_event:
     runs-on: ubuntu-latest
-    name: Publish staging pull request.
+    name: Publish staging push
     steps:
       # Note the event_type and URL secrets passed so the action repository 
       # is allowed to post to the test repository.
@@ -100,7 +112,7 @@ jobs:
           curl -i \
             -X POST \
             -H "Accept: application/vnd.github.v3+json" \
-            -H "Authorization: token ${{ secrets.TRIGGER_PUBLISH_STAGING_PR_TOKEN }}" \
+            -H "Authorization: token {% raw %}${{ secrets.PUBLISH_PUSH_TOKEN }}{% endraw %}" \
             https://api.github.com/repos/awalsh128/cache-apt-pkgs-action-ci/dispatches \
             -d '{"event_type":"staging_push"}'
 ```
@@ -112,16 +124,16 @@ Now on the subscriber (test repository), setup the tests and trigger to respond 
 ### Create Repository and Test
 
 * Create ``awalsh128/cache-apt-pkgs-action-ci`` repository (ci = continuous integration) for testing.
-* Create a workflow ``.github/workflows/tests.yml`` that subscribes to ``staging_pull_request`` events and runs tests.
+* Create a workflow ``.github/workflows/tests.yml`` that subscribes to ``staging_push`` events and runs tests.
 
 ```yml
-name: Staging Pull Request Tests
+name: Staging Push Tests
 on:
   # Allow for manual dispatches so we can test the workflow if needed.
   workflow_dispatch:
   repository_dispatch:
     # Name of the event that will by pubsub'd.
-    types: [staging_pull_request]
+    types: [staging_push]
 
 jobs:
   install:
@@ -133,7 +145,6 @@ jobs:
       # Allows testing to happen on that branch so it can get pulled into master once it passes.
       - uses: awalsh128/cache-apt-pkgs-action@staging
         with:
-          cache_key: ${{ github.run_id }}
           packages: xdot rolldice
 ```
 
