@@ -104,19 +104,9 @@ author:
     - label: "Linkedin"
       icon: "fab fa-fw fa-linkedin"
       url: "https://www.linkedin.com/in/andrew-walsh-a235787/"
-    - label: " "
     - label: "Buy me a Coffee?"
-      icon: "fab fa-fw fa-coffee"
+      icon: "fas fa-coffee"
       url: https://www.buymeacoffee.com/awalsh128
-
-sidebar:
-  - title: "Title"
-    image: "/assets/images/your-image.jpg"
-    image_alt: "image"
-    text: "Some text here."
-  - title: "Another Title"
-    text: "More text here."
-    nav: sidebar-sample
 
 # Site Footer
 footer:
@@ -200,7 +190,7 @@ sass:
 permalink: /:categories/:title/
 # paginate: 5 # amount of posts to show
 # paginate_path: /page:num/
-timezone: # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+timezone: US # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 
 # Plugins (previously gems:)
 plugins:
