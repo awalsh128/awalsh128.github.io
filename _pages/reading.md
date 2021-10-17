@@ -22,8 +22,8 @@ Some computer based reading I have enjoyed over the years.
 
 ## Computer History
 
-* [The Cathedral &amp; the Bazaar: Musings on Linux and Open Source by an Accidental Revolutionary](https://www.amazon.com/dp/B0026OR3LM) - Observations by Eric S. Raymond of Linux development and Open Source projects in general while managing his own (i.e. fetchmail).  
-* [Cult of the Dead Cow: How the Original Hacking Supergroup Might Just Save the World](https://www.amazon.com/Cult-of-Dead-Cow-Joseph-Menn-audiobook/dp/B07RX456JM/ref=zg_bs_3573_6?_encoding=UTF8&psc=1&refRID=86XCT8CGTYH8X7H7KJ6S) 
+* [The Cathedral &amp; the Bazaar: Musings on Linux and Open Source by an Accidental Revolutionary](https://www.amazon.com/dp/B0026OR3LM) - Observations by Eric S. Raymond of Linux development and Open Source projects in general while managing his own (i.e. fetchmail).
+* [Cult of the Dead Cow: How the Original Hacking Supergroup Might Just Save the World](https://www.amazon.com/Cult-of-Dead-Cow-Joseph-Menn-audiobook/dp/B07RX456JM/ref=zg_bs_3573_6?_encoding=UTF8&psc=1&refRID=86XCT8CGTYH8X7H7KJ6S)
   * Synopsis: Hacktivism where its followers are battling electoral misinformation, making personal data safer, and battling to keep technology a force for good instead of for surveillance and oppression.
   * Opinion: As a 90's kid of the nascent personal Internet this is very nostalgic for me. Great read if you want to get a sense of the hacking ethos at the time.
 * [The Dream Machine: J.C.R. Licklider and the Revolution That Made Computing Personal](https://www.amazon.com/exec/obidos/ASIN/0670899763/acmorg-20) - Outlines Licklider's visionary dream of a "human-computer symbiosis" transforming the course of modern science and led to the development of the personal computer.
@@ -74,6 +74,6 @@ Ordered chronologicaly.
 
 * [Akira](https://www.amazon.com/Akira-Vol-1-Katsuhiro-Otomo/dp/1935429000) - In the backdrop of post-WWIII Neo-Tokyo, two friends relationship becomes darker as one realizes their strong psychokinetic powers.
 * [Blade Runner / Do Androids Dream of Electric Sheep?](https://www.amazon.com/Blade-Runner-Philip-K-Dick-audiobook/dp/B0010BA814/ref=sr_1_1?dchild=1&qid=1605131963&refinements=p_lbr_one_browse-bin%3APhilip+K.+Dick&s=books&sr=1-1) - Backdrop is a detective in futuristic 2019 charged with killing replicants. Contrasts human vs artificial intelligence (AI), the central theme is the examination of humanity.
-* [The Ghost in the Shell](http://www.amazon.com/Ghost-Shell-SAC/dp/1935429019) - In the near future, humans are augmented with cybernetic improvements to traits such as vision, strength, and intelligence. Story follows, counter terrorism operative and cyborg, Killian. 
+* [The Ghost in the Shell](http://www.amazon.com/Ghost-Shell-SAC/dp/1935429019) - In the near future, humans are augmented with cybernetic improvements to traits such as vision, strength, and intelligence. Story follows, counter terrorism operative and cyborg, Killian.
 * [MaddAddam Trilogy](https://www.amazon.com/dp/0804172315?tag=nemu08-20&linkCode=ogi&th=1&psc=1) - A corporate dystopian future where civil society doesn't exist, just the corps. The story follows multiple characters involved in a bio attack.
 * [Neuromancer](https://www.amazon.com/dp/B000O76ON6?ref=KC_GS_GB_US) - Set in the future, a washed-up computer hacker, Henry Case is hired for one last job. This brings him up against a powerful AI.

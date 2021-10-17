@@ -110,7 +110,5 @@ implementation.
 
 ### More Resources & Reading
 
--   [Github: Awalsh128.Text Library (contains UUEncoder
-    implementation)](https://github.com/awalsh128/Awalsh128.Text)
--   [GNU Lesser General Public License, version
-    2.1](https://www.gnu.org/licenses/lgpl-2.1.html)
+- [Github: Awalsh128.Text Library (contains UUEncoder implementation)](https://github.com/awalsh128/Awalsh128.Text)
+- [GNU Lesser General Public License, version 2.1](https://www.gnu.org/licenses/lgpl-2.1.html)
