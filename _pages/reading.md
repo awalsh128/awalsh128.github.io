@@ -52,22 +52,22 @@ An archive of past to present awarded by the ACM can be found in [Turing Lecture
 
 ### Computation
 
-Ordered chronologicaly.
-
-* [Leibniz, Gottfried Wilhelm. "Explaination of Binary Arithmetic"](/assets/text/leibniz_binary.pdf)
-* [Babbage, Charles. "Note on the Application of Machinery to the Computation of Astronomical and Mathematical"](/assets/text/PPN618299726.pdf)
-* [Bool, George. "An Investigation of the Laws of Thought on Which are Founded the Mathematical Theories of Logic and Probabilities"](/assets/text/The_Laws_of_Thought.pdf)
-* [Cantor, Georg. "On a Property of the Collection of All Real Algebraic Numbers"](/assets/text/Cantors1874Paper.pdf)
-* [Hilbert, David. "Mathematical Problems"](/assets/text/S0002-9904-1902-00923-3.pdf)
-* [Turing, A.M. "On Computable Numbers, With an Application to the Entscheidungsproblem"](/assets/text/Turing_Paper_1936.pdf)
-* [Neumann, János Lajos. "First Draft of a Report on the EDVAC"](/assets/text/vnedvac.pdf)
+* [Leibniz, Gottfried Wilhelm (1703). "Explaination of Binary Arithmetic"](/assets/text/leibniz_binary.pdf)
+* [Babbage, Charles (1824). "Note on the Application of Machinery to the Computation of Astronomical and Mathematical"](/assets/text/PPN618299726.pdf)
+* [Bool, George (1854). "The Laws of Thought: Chapter V"](/assets/text/The_Laws_of_Thought.pdf)
+* [Cantor, Georg (1874). "On a Property of the Collection of All Real Algebraic Numbers"](/assets/text/Cantors1874Paper.pdf)
+* [Hilbert, David (1900). "Mathematical Problems"](/assets/text/S0002-9904-1902-00923-3.pdf)
+* [Gödel, Kurt (1931). "On formally undecidable propositions of Principia Mathematica and related systems I"](/assets/text/canon00-goedel.pdf)
+* [Turing, A.M (1936). "On Computable Numbers, With an Application to the Entscheidungsproblem"](/assets/text/Turing_Paper_1936.pdf)
+* [Neumann, János Lajos (1945). "First Draft of a Report on the EDVAC"](/assets/text/vnedvac.pdf)
+* [Cook, Stephen (1971). "The complexity of theorem proving procedures".](/assets/text/p_vs_np_1971.pdf)
 
 ### Engineering
 
-* [Can Programming Be Liberated From the von Neumann Style?](http://www.thocp.net/biographies/papers/backus_turingaward_lecture.pdf)
+* [Codd, E.F. (1970). "A Relational Model of Data for Large Shared Data Banks"](/assets/text/codd.pdf)
+* [Backus, John. "Can Programming Be Liberated From the von Neumann Style?"](http://www.thocp.net/biographies/papers/backus_turingaward_lecture.pdf)
 * [Dynamo: Amazon’s Highly Available Key-value Store](https://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf)
 * [MapReduce: Simplified Data Processing on Large Clusters](https://static.googleusercontent.com/media/research.google.com/en//archive/mapreduce-osdi04.pdf)
-* [A Relational Model of Data for Large Shared Data Banks](https://www.seas.upenn.edu/~zives/03f/cis550/codd.pdf)
 * [REST Dissertation](https://oleb.net/2018/rest/)
 
 ## Cyber Punk Fiction
