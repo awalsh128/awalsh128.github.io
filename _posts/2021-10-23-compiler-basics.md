@@ -284,11 +284,11 @@ e:  89 4d fc                mov    DWORD PTR [ebp-0x4],ecx
 
 The byte layout from left to right is opcode, control bits, data. Imagine being the person that had to execute all of this manually.
 
-![DEC PDP-8](https://simple.wikipedia.org/wiki/Machine_code#/media/File:Digital_PDP-8F.jpg)
+![DEC PDP-8](https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Digital_PDP-8F.jpg/1920px-Digital_PDP-8F.jpg)
 
 This was considered a step up from this.
 
-![IBM Punch Card](https://en.wikipedia.org/wiki/Punched_card#/media/File:Used_Punchcard_(5151286161).jpg)
+![IBM Punch Card](https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Used_Punchcard_%285151286161%29.jpg/1920px-Used_Punchcard_%285151286161%29.jpg)
 
 Because they didn't want to do this.
 
