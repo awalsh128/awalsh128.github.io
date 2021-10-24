@@ -350,7 +350,7 @@ The compiler is a great thing, it allows us to use abstractions that make develo
 
 * To start exploring on how to create a language for yourself, check out [Antlr](https://www.antlr.org/) (lexer) and [Bison](https://www.gnu.org/software/bison/) (parser).
 * [My First Language Frontend with LLVM Tutorial](https://llvm.org/docs/tutorial/MyFirstLanguageFrontend/index.html) - Exactly what it says.
-* Lecture notes on how [Writing a Toy Compiler](https://cop3402fall20.github.io/lectures/03_toy_compiler.html).
+* Lecture notes on [Writing a Toy Compiler](https://cop3402fall20.github.io/lectures/03_toy_compiler.html).
 * [ASTs - What they are and how to use them](https://www.twilio.com/blog/abstract-syntax-trees) - Engaging blog post on how ASTs work and dives further into other topics also covered here.
 * [GodBolt: Compiler Explorer](https://godbolt.org/) - Fantastic online IDE to view compiled assembly from high level languages.
 * [Let's make a Teeny Tiny compiler, part 1](http://web.eecs.utk.edu/~azh/blog/teenytinycompiler1.html) - First part of a series showing how to make a compiler using Python. Trivial but approachable and demonstrative to learning compilers.
