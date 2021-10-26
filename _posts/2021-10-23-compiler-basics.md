@@ -1,12 +1,10 @@
 ---
-layout: posts
 title: Compiler Basics
 excerpt: "Introduction of compiler basics using a toy example."
-last_modified_at: 2021-10-10 00:00:01 -0700
+last_modified_at: 2021-10-25 00:00:01 -0700
 tags:
 - Compilers
 toc: true
-toc_icon: "columns"
 ---
 
 Compilers was one of my favorite classes in school alongside OS and architecture. It gave me a deeper understanding of what happened with my code behind the scenes and insight into how to create my own [domain specific language](https://en.wikipedia.org/wiki/Domain-specific_language). Knowing how compilers work create the link between the abstractions that developers use everyday and the machine executing them below.
