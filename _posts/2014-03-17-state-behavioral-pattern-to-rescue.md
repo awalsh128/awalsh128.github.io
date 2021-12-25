@@ -1,5 +1,4 @@
 ---
-layout: posts
 title: State behavioral pattern to the rescue.
 date: '2014-03-17T22:27:00.000-07:00'
 author: awalsh128

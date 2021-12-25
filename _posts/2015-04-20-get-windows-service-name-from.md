@@ -1,5 +1,4 @@
 ---
-layout: posts
 title: Get Windows Service name from executable in PowerShell.
 date: '2015-04-20T22:50:00.002-07:00'
 author: awalsh128

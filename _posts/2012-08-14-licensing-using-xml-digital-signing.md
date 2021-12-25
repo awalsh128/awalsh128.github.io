@@ -1,5 +1,4 @@
 ---
-layout: posts
 title: Licensing using XML digital signing.
 date: '2012-08-14T09:00:00.000-07:00'
 author: awalsh128

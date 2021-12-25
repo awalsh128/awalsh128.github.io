@@ -257,13 +257,13 @@ defaults:
       path: ""
       type: posts
     values:
-      author_profile: true
       layout: single
-      classes: wide
+      author_profile: true
       read_time: true
-      comments: true
       share: true
-      related: true
+      comments: true
+      toc: true
+      toc_icon: "columns" # corresponding Font Awesome icon name (without fa prefix)
   # _pages
   - scope:
       path: "_pages"

@@ -1,5 +1,4 @@
 ---
-layout: posts
 title: IMAPI version 2 managed wrapper.
 date: '2012-09-18T10:03:00.000-07:00'
 author: awalsh128
