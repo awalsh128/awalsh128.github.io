@@ -1,5 +1,4 @@
 ---
-layout: posts
 title: Fluent C++ v0.1 Release
 excerpt: "Fluent style querying for C++."
 last_modified_at: 2021-10-10 00:00:01 -0700

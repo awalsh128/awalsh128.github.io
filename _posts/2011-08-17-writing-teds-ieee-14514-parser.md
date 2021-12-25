@@ -1,5 +1,4 @@
 ---
-layout: posts
 title: Writing a TEDS (IEEE 1451.4) parser.
 date: '2011-08-17T12:59:00.000-07:00'
 author: awalsh128

@@ -1,5 +1,4 @@
 ---
-layout: posts
 title: Log per class pattern.
 date: '2015-03-29T14:12:00.002-07:00'
 author: awalsh128

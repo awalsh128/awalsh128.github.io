@@ -1,5 +1,4 @@
 ---
-layout: posts
 title: GitHub Actions - Cache APT Packages v1 Released
 excerpt: "A GitHub action to cache APT packages for future workflow runs.."
 last_modified_at: 2021-10-10 00:00:01 -0700

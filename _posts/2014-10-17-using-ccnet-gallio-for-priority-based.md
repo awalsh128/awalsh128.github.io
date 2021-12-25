@@ -1,5 +1,4 @@
 ---
-layout: posts
 title: Using CC.NET & Gallio for priority based smoke testing.
 date: '2014-10-17T11:07:00.002-07:00'
 author: awalsh128

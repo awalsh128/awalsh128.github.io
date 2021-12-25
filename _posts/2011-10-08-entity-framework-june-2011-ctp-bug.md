@@ -1,5 +1,4 @@
 ---
-layout: posts
 title: Entity Framework June 2011 CTP Bug
 date: '2011-10-08T17:22:00.000-07:00'
 author: awalsh128

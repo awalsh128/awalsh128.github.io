@@ -1,5 +1,4 @@
 ---
-layout: posts
 title: Automated combinatorial and spot testing of web service operations.
 date: '2013-03-26T21:21:00.003-07:00'
 author: awalsh128

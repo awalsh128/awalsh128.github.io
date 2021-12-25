@@ -1,5 +1,4 @@
 ---
-layout: posts
 title: Reentrant lock acquires in CLR.
 date: '2011-07-29T10:41:00.000-07:00'
 author: awalsh128

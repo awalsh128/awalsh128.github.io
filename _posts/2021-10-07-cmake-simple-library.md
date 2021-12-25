@@ -1,5 +1,4 @@
 ---
-layout: posts
 title: CMake Simple Library Example
 excerpt: "An example of a simple library using CMake."
 last_modified_at: 2021-10-10 00:00:01 -0700

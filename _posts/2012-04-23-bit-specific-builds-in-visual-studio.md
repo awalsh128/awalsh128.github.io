@@ -1,5 +1,4 @@
 ---
-layout: posts
 title: Bit specific builds in Visual Studio 2010.
 date: '2012-04-23T11:41:00.001-07:00'
 author: awalsh128

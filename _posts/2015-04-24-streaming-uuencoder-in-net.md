@@ -1,5 +1,4 @@
 ---
-layout: posts
 title: Streaming UUEncoder in .NET.
 date: '2015-04-24T17:09:00.001-07:00'
 author: awalsh128

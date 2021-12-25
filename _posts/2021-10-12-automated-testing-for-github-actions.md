@@ -1,5 +1,4 @@
 ---
-layout: posts
 title: Automated Testing for GitHub Actions
 excerpt: "Create a testing harness for your created GitHub Actions."
 last_modified_at: 2021-10-16 00:00:01 -0700

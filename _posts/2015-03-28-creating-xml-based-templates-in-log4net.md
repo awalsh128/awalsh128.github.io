@@ -1,5 +1,4 @@
 ---
-layout: posts
 title: Creating XML based templates in log4net.
 date: '2015-03-28T23:51:00.002-07:00'
 author: awalsh128

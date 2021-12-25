@@ -1,5 +1,4 @@
 ---
-layout: posts
 title: Reading and writing large binary data in T-SQL and ADO.NET.
 date: '2012-10-03T13:40:00.000-07:00'
 author: awalsh128

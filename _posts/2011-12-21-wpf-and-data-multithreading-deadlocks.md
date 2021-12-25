@@ -1,5 +1,4 @@
 ---
-layout: posts
 title: WPF and data multithreading deadlocks.
 date: '2011-12-21T10:38:00.000-08:00'
 author: awalsh128

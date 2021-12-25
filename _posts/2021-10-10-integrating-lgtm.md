@@ -1,5 +1,4 @@
 ---
-layout: posts
 title: Code Analysis for GitHub Projects
 excerpt: "Integrate your GitHub projects with a code analysis tool."
 last_modified_at: 2021-10-10 00:00:01 -0700
