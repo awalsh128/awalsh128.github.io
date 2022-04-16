@@ -5,11 +5,11 @@ tags:
 - Interview
 ---
 
-If you have experience in the software engineering field, an interview process can test the experience you have; projects, production scenarios, designs. Unfortunately, for junior positions and those out of college, there isn't much to test for. Since most are computer scientists, you could test knowledge of algorithms and data structures but does that really prove the ability of a candidate? Knowing the upper bound complexity of an algorithm's runtime is important but what about when a constant multiplying factor means the difference between production being up and down. We don't have a solution for the Travelling Salesman Problem but we have very good and practical approximations (e.g. flight scheduling).
+If you have experience in the software engineering field, an interview process can test the experience you have; projects, production scenarios, designs. Unfortunately, for junior positions and those out of college, there isn't much to test for. Since most are computer scientists, you could test knowledge of algorithms and data structures but does that really prove the ability of a candidate? Knowing the upper bound complexity of an algorithm's runtime is important but what about when a constant multiplying factor means the difference between production being up and down. We don't have a solution for the Traveling Salesman Problem but we have very good and practical approximations (e.g. flight scheduling).
 
 As an engineer, we have to think about what is the best approximation and trade offs among different solutions when posed with a hard problem. While the CS field greatly informs software engineering and provides it with a fundamental basis to extend from, it doesn't wholly prepare a junior software engineer for working in the field, especially in the parts that matter the most.
 
-So what does this have to do with interviewing software engineers? Well it's hard because they have little to no experience. That isn't their fault. It is just the difficult situation that interviewers and interivewees find themselves in. What's worse is that there are good jobs out there but the candidate ends up having a terrible interviewer.
+So what does this have to do with interviewing software engineers? Well it's hard because they have little to no experience. That isn't their fault. It is just the difficult situation that interviewers and interviewees find themselves in. What's worse is that there are good jobs out there but the candidate ends up having a terrible interviewer.
 
 ## Dynamics
 
@@ -21,7 +21,7 @@ As someone that has given many interviews, my worst nightmare is leading the can
 
 I have had interviewers go out of the room to take a bathroom break, sit on their phones, or just stare silently while I worked on the problem. An interview is just as much a chance to see how the candidate would work with you as you them. It is also an opportunity to evaluate their teamwork skills. This kind of work is not an island and having a poor team dynamic can ruin projects.
 
-Another problem is when the interviewer lets you hang yourself with your own solution. It is important that the interviewer provide guidance and redirection. Not doing so wastes the entire time left instead of giving a candidate an opportunity to show what they can do after correction. I had an interview with a principle engineer once for their architecture interview (they break them up into categories). In it they asked me to find a way to count the number of unique exceptions in a production system. I went right into showing an architecture of designing a logging system and how the processing would work at scale. They had a line of questioning talking about the logging system itself and then at the end told me I could just hash the exceptions. I was pissed. If the interviewer had told me it would be a simple data structures question I would have answered it right away but was completely misled about the parameters of the interview. It was my fault that I made a simple solution a complex one, but the opportunity was completely missed on seeing what I could do, even if that meant I got marked down.
+Another problem is when the interviewer lets you hang yourself with your own solution. It is important that the interviewer provide guidance and redirection. Not doing so wastes the entire time left instead of giving a candidate an opportunity to show what they can do after correction. I had an interview with a principal engineer once for their architecture interview (they break them up into categories). In it they asked me to find a way to count the number of unique exceptions in a production system. I went right into showing an architecture of designing a logging system and how the processing would work at scale. They had a line of questioning talking about the logging system itself and then at the end told me I could just hash the exceptions. I was pissed. If the interviewer had told me it would be a simple data structures question I would have answered it right away but was completely misled about the parameters of the interview. It was my fault that I made a simple solution a complex one, but the opportunity was completely missed on seeing what I could do, even if that meant I got marked down.
 
 ### Toy Questions
 
@@ -39,13 +39,13 @@ If you have an interviewer like this don't be afraid to call it out afterwards. 
 
 ## It's Not All Bad
 
-For the bad interviews that I have had or heard about, there are plenty of, if not more, good ones too. The interviewers were attentive, guiding and gave problems that were multi layered and facetted. Some of them I came out wanting to be on their team because the collaboration went so well.
+For the bad interviews that I have had or heard about, there are plenty of, if not more, good ones too. The interviewers were attentive, guiding and gave problems that were multi layered and faceted. Some of them I came out wanting to be on their team because the collaboration went so well.
 
 The reason I call out the bad interviewers is because candidates tend to put the blame on themselves. There is plenty that can be done to make sure you pass an interview but it is important to know what to look for too. Who wants to work for a company whose values are reflected in their employees this way? The process is as much about you evaluating them as they you and a good interviewer should know this. Although this isn't a blame game either. Even a bad interviewer could be the gatekeeper to a great job and you will never have to see them again after being hired.
 
 ## How Should I Prepare
 
-The bad interviewer is a caracature. An embodiment of all the things that could go wrong. Really most have a mix of qualities both positive and negative, intentional and not. You will just have to make sure you do well in spite of the circumstances given.
+The bad interviewer is a caricature. An embodiment of all the things that could go wrong. Really most have a mix of qualities both positive and negative, intentional and not. You will just have to make sure you do well in spite of the circumstances given.
 
 **Become a data structures and algorithms gymnast.** I call it this because it is the most rote part. It bites some candidates because they just didn't do the work. Like a gymnast you need a bunch of practice and be able to contort yourself in different ways because every problem will be some variation.
 
@@ -57,7 +57,7 @@ What is the problem that is trying to be solved more generally speaking? A probl
 
 [Google Search](https://www.google.com/search?q=string+interview+questions) - string interview questions
 
-For example, in bio-informatic key sequencing, the problem space is in looking for specific patterns (e.g. genome sequencing). Most all sequences can be represented using a string abstraction. While the example of key sequencing is a real world example, in can be generalized to ask questions about strings. The generalized problem space would be strings. By strings I don't mean words or text, I mean a sequence of symbols in the most abstract way.
+For example, in bio-informatic key sequencing, the problem space is in looking for specific patterns (e.g. genome sequencing). Most all sequences can be represented using a string abstraction. While the example of key sequencing is a real world example, it can be generalized to ask questions about strings. The generalized problem space would be strings. By strings I don't mean words or text, I mean a sequence of symbols in the most abstract way.
 
 ![Gene Sequence](/assets/img/2022-02-14-interviews-are-the-worst/gene-sequence.png)
 *Excerpt of a Gene Sequence*
@@ -161,7 +161,7 @@ Really ask them. The worst scenario is that you assume too much and go down a ba
 
 ### Think Before You Type
 
-Maybe you're nervous, maybe you think you know the answer and you go straight to typing. Stop! Don't do it. I have been guilty of this myself. Writing code is a matter of self expression for me, a way of speaking. Although I have learned in time that it can also be a way to code yourself into a corner or hit a dead end that requires lots of back tracking and deletion of code. It can also be a bad sign that you are a coder that doesn't think before you act and can potentially waste large hours of time on bad paths. This is why design is highly valued in software engineering. It forces people to think about the hard problems before they run up against them in code. Same applies to an interview. I have seen candidates rush into a problem only to stop and realize they really didn't understand it. Don't do this. Stop and go over your design with the interviewer. Walk through the different approaches, considering each and the selecting the route you want to take. This complements the idea of thinking out loud.
+Maybe you're nervous, maybe you think you know the answer and you go straight to typing. Stop! Don't do it. I have been guilty of this myself. Writing code is a matter of self expression for me, a way of speaking. Although I have learned in time that it can also be a way to code yourself into a corner or hit a dead end that requires lots of back tracking and deletion of code. It can also be a bad sign that you are a coder that doesn't think before you act and can potentially waste large hours of time on bad paths. This is why design is highly valued in software engineering. It forces people to think about the hard problems before they run up against them in code. Same applies to an interview. I have seen candidates rush into a problem only to stop and realize they really didn't understand it. Don't do this. Stop and go over your design with the interviewer. Walk through the different approaches, considering each and then selecting the route you want to take. This complements the idea of thinking out loud.
 
 ### Practice Coding .. A LOT
 
@@ -169,7 +169,7 @@ When walking through mock interviews, always write out your solutions. In this C
 
 #### Pick a Language
 
-Don't pick a language you think they would want you to write, pick one you are good at and know how to use both syntactically and idiomatically. Unfortunately there are companies that want you to code in a specific languages. Personally I think that is a poor choice on the company since they should be looking for talent but sometimes that's just the way it goes. For me, I would pick Python because it is the easiest to write IMO.
+Don't pick a language you think they would want you to write, pick one you are good at and know how to use both syntactically and idiomatically. Unfortunately there are companies that want you to code in a specific languages. Personally I think that is a poor choice for the company since they should be looking for talent but sometimes that's just the way it goes. For me, I would pick Python because it is the easiest to write IMO.
 
 For the language you use, make sure you know:
 
@@ -199,12 +199,12 @@ An additional upside to this is that if you don't complete the solution in time,
 
 ### Manage Your Emotions
 
-For some, interviewing is not emotionally taxing but for others it can be debilitating. Personally this is a big problem for me. I froze up completely for an interview once. I couldn't even answer a trivial problem. I was so panicked that I couldn't even think straight. The interviewer was very kind about it all but there was nothing to evaluate, I failed. Some things that helped me:
+For some, interviewing is not emotionally taxing but for others it can be debilitating. Personally, this is a big problem for me. I froze up completely for an interview once. I couldn't even answer a trivial problem. I was so panicked that I couldn't even think straight. The interviewer was very kind about it all but there was nothing to evaluate, I failed. Some things that helped me:
 
 * **Practice until it is instinctual.** Do gymnastics until you can cooly answer any interview question or at least get close to it. Interview problems are just combinations; if you learn the fundamentals and apply them in different arrangements, they aren't so surprising.
 * **Mock interview a lot.** Have a friend or use an online resource to constantly perform mock interviews. It will help you with anxiety if you have it and keep you accustomed to the interview format. When I have held mock interviews I have intentionally been cold but polite. It wasn't to be mean but to prepare them. If you have different tiers of jobs you are interested in, interview with the lowest ones first. Less is on the line if you fail and it is the best thing because it is real.
 * **You can always try again.** Most companies allow a candidate to try again after some time has passed. Just because you failed an interview doesn't mean you are a bad candidate. It just means you were off or weren't prepared enough. I'll be honest, I failed my first interview with Google, and thought I wasn't good enough. Five years later I tried again and got the job.
-* **You are good enough.** Imposter syndrome is a big thing. Especially when you work with people that you perceive to be intelligent and/or well accomplished. Sure there are people that have an obvious raw high intelligence but in my experience that is not the majority, and even then, very incongruant. Many intelligent people who I have met are highly driven. Education is a large factor in intelligence. Also intelligence is not some monolith; people express their intelligence through different characteristics as I alluded to with the word incongruant. In other words, intelligence is fluid and if you are driven, you are good enough.
+* **You are good enough.** Imposter syndrome is a big thing. Especially when you work with people that you perceive to be intelligent and/or well accomplished. Sure there are people that have an obvious raw high intelligence but in my experience that is not the majority, and even then, very incongruent. Many intelligent people who I have met are highly driven. Education is a large factor in intelligence. Also intelligence is not some monolith; people express their intelligence through different characteristics as I alluded to with the word incongruent. In other words, intelligence is fluid and if you are driven, you are good enough.
 
 ## Resources To Use
 
