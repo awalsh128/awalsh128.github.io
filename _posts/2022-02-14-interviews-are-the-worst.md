@@ -55,6 +55,8 @@ What is the problem that is trying to be solved more generally speaking? A probl
 
 #### Strings
 
+[Google Search](https://www.google.com/search?q=string+interview+questions) - string interview questions
+
 For example, in bio-informatic key sequencing, the problem space is in looking for specific patterns (e.g. genome sequencing). Most all sequences can be represented using a string abstraction. While the example of key sequencing is a real world example, in can be generalized to ask questions about strings. The generalized problem space would be strings. By strings I don't mean words or text, I mean a sequence of symbols in the most abstract way.
 
 ![Gene Sequence](/assets/img/2022-02-14-interviews-are-the-worst/gene-sequence.png)
@@ -73,6 +75,8 @@ This is just a small example. Least common subsequence is a popular one but why 
 
 #### Encoding
 
+[Google Search](https://www.google.com/search?q=data+compression+interview+questions) - data compression interview questions
+
 ![Founder of Information Theory](/assets/img/2022-02-14-interviews-are-the-worst/claude-shannon.jpg)
 *Claude Shannon - The OG of Information Theory*
 
@@ -84,7 +88,10 @@ How would you represent data in memory? Combinatorial factors could be cardinali
 * Compression for bounded data.
 * Record a sequence of values containing A, B and C.
 
-#### Lookup
+#### Lookup &amp; Counting
+
+* [Google Search](https://www.google.com/search?q=hashing+interview+questions) - hashing interview questions
+* [Google Search](https://www.google.com/search?q=computer+counting+interview+questions) - computer counting interview questions
 
 What is the best way to lookup data with the constraints given? Combinatorial factors could be cardinality, length, and match type (whole, partial).
 
@@ -96,6 +103,8 @@ What is the best way to lookup data with the constraints given? Combinatorial fa
 Notice how there is some overlap here with strings, that is because lookup frequently is a subset of the string problem space. We could easily apply common solutions from the string problem space to these as well as hashing and graphs (i.e. trie).
 
 #### Graphs
+
+[Google Search](https://www.google.com/search?q=graph+interview+questions) - graph interview questions
 
 ![Spotting Spammers in Social Graphs](/assets/img/2022-02-14-interviews-are-the-worst/spammers-in-social-graphs.jpg)
 *Spotting Spammers in Social Graphs*
@@ -113,6 +122,8 @@ Keep in mind that a linked list and tree are just graphs with constraints. If yo
 
 #### Sorting
 
+[Google Search](https://www.google.com/search?q=sorting+interview+questions) - sorting interview questions
+
 How do you derive meaning (how is it practical?) by ordering some collections of values? Combinatorial factors could be value cardinality, stability, partiality, and comparability.
 
 * Group cards by color.
@@ -129,9 +140,16 @@ I find a better approach is to work a real world problem from several solution a
 
 #### Space &amp; Runtime Are Cross Cutting
 
+[Google Search](https://www.google.com/search?q=space+and+time+complexity+analysis+exercises) - space and time complexity analysis exercises
+
 For all of these problem spaces, it is important to factor in time and space complexity as well. For example, merge sort is best suited for space because the re-ordering happens in blocks. However quick sort is considered the most performant for in-memory on average even though quick sort has the largest worst case. For lookups a bounded set of keys could just use an array (e.g. frequency counting letters).
 
 Bonus points for pointing out engineering ramifications for choosing a solution even if it has the same complexity. It may be just a constant multiplier difference (e.g. 4n and n) but it could mean the difference of thousands of dollars in a production system's resource usage.
+
+Some tips when analyzing complexity.
+
+* How do the variables grow as you take them to infinity? If given `m` and `n`, does one become insignificant / constant. Sometimes a candidate will give something like `O(m*n)` when in reality it is just `O(m)`. Another way to look at it below. 
+* Think of complexity on average but be explicit. Maybe you are dealing with a set of strings. Let's say the size of the set is `m` and the largest length of a string is `n`, is the space complexity really `O(m*n)`. Possibly in a theoretical sense but realistically `m` will be the overwhelming factor; it would be `O(m)` on average. Tell the interviewer this though, don't just give them the answer `O(m)`
 
 ### Think Out Loud
 
@@ -143,7 +161,7 @@ Really ask them. The worst scenario is that you assume too much and go down a ba
 
 ### Think Before You Type
 
-Maybe you're nervous, maybe you think you know the answer and you go straight to typing. Stop! Don't do it. I have been guilty of this myself. Writing code is a matter of self expression for me, a way of speaking. Although I have learned in time that it can also be a way to code yourself into a corner or hit a dead end that requires lots of back tracking and deletion of code. It can also be a bad sign that you are a coder that doesn't think before you act and can potentially waste large hours of time on bad paths. This is why design is highly valued in software engineering. It forces people to think about the hard problems before they run up against them in code. Same applies to an interview. I have seen candidates rush into a problem only to stop and realize they really didn't understand it. Don't do this. Stop and go over you design with the interviewer. Walk through the different approaches, considering each and the selecting the route you want to take. This complements the idea of thinking out loud.
+Maybe you're nervous, maybe you think you know the answer and you go straight to typing. Stop! Don't do it. I have been guilty of this myself. Writing code is a matter of self expression for me, a way of speaking. Although I have learned in time that it can also be a way to code yourself into a corner or hit a dead end that requires lots of back tracking and deletion of code. It can also be a bad sign that you are a coder that doesn't think before you act and can potentially waste large hours of time on bad paths. This is why design is highly valued in software engineering. It forces people to think about the hard problems before they run up against them in code. Same applies to an interview. I have seen candidates rush into a problem only to stop and realize they really didn't understand it. Don't do this. Stop and go over your design with the interviewer. Walk through the different approaches, considering each and the selecting the route you want to take. This complements the idea of thinking out loud.
 
 ### Practice Coding .. A LOT
 
@@ -151,7 +169,15 @@ When walking through mock interviews, always write out your solutions. In this C
 
 #### Pick a Language
 
-Don't pick a language you think they would want you to write, pick one you are good at and know how to use both syntactically and idiomatically. Unfortunately there are companies that want you to code in a specific languages. Personally I think that is a poor choice on the company since they should be looking for talent but sometimes that's just the way it goes. Personally I would pick Python because it is the easiest to write IMO. Whatever language you end up picking, always code out the solution. It will build up that muscle so you can easily translate your ideas to code quickly.
+Don't pick a language you think they would want you to write, pick one you are good at and know how to use both syntactically and idiomatically. Unfortunately there are companies that want you to code in a specific languages. Personally I think that is a poor choice on the company since they should be looking for talent but sometimes that's just the way it goes. For me, I would pick Python because it is the easiest to write IMO.
+
+For the language you use, make sure you know:
+
+* the syntax of the language,
+* the idioms used, and
+* the framework functions / classes involved.
+
+For example, know how to work with sequences (e.g. lists), manipulate symbols (e.g. casing strings), and things similar. This will come up naturally as you work on solutions. Whatever language you end up picking, always code out the solution in it. It will build up that muscle so you can easily translate your ideas to code quickly.
 
 #### Break Up the Problem
 
@@ -173,7 +199,7 @@ An additional upside to this is that if you don't complete the solution in time,
 
 ### Manage Your Emotions
 
-For some interviewing is not emotionally taxing but for others it can be debilitating. Personally this is a big problem for me. I froze up completely for an interview once. I couldn't even answer a trivial problem. I was so panicked that I couldn't even think straight. The interviewer was very kind about it all but there was nothing to evaluate, I failed. Some things that helped me:
+For some, interviewing is not emotionally taxing but for others it can be debilitating. Personally this is a big problem for me. I froze up completely for an interview once. I couldn't even answer a trivial problem. I was so panicked that I couldn't even think straight. The interviewer was very kind about it all but there was nothing to evaluate, I failed. Some things that helped me:
 
 * **Practice until it is instinctual.** Do gymnastics until you can cooly answer any interview question or at least get close to it. Interview problems are just combinations; if you learn the fundamentals and apply them in different arrangements, they aren't so surprising.
 * **Mock interview a lot.** Have a friend or use an online resource to constantly perform mock interviews. It will help you with anxiety if you have it and keep you accustomed to the interview format. When I have held mock interviews I have intentionally been cold but polite. It wasn't to be mean but to prepare them. If you have different tiers of jobs you are interested in, interview with the lowest ones first. Less is on the line if you fail and it is the best thing because it is real.
@@ -193,3 +219,14 @@ This pertains to sites like CareerCup where questions are posted that came from 
 ### Online Exercises
 
 Online IDEs and sets of exercises that you can drill on are useful (e.g. GeeksForGeeks, HackerRank). I usually pick the data structures and algorithms exercises and just grind on them several times until it becomes second nature. Experiment with different sites and see which one works best for you. The key is that you are able to get through the exercises fairly quickly. A good site should be able to build you up by difficulty so that you can get muscle strength.
+
+## Conclusion
+
+That was a lot but I hope it helps. This is rather a brain dump for me of all the thoughts I have had on interviewing in my career. If I were to summarize in just a few points, it would be to:
+
+* Drill and drill and drill everyday for several weeks.
+* Go through all the data structures and algos.
+* Go through all the problem spaces and make up combinations.
+* Mock interview and challenge yourself to socially uncomfortable situations.
+
+Lastly and most importantly is to know that you can do this. In my experience, lack of preparation has been the biggest hit on candidates not getting a job. Put in the time and it will help a lot in getting there. Good luck!
