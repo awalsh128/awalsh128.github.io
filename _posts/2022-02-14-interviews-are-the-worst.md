@@ -106,8 +106,8 @@ Notice how there is some overlap here with strings, that is because lookup frequ
 
 [Google Search](https://www.google.com/search?q=graph+interview+questions) - graph interview questions
 
-![Spotting Spammers in Social Graphs](/assets/img/2022-02-14-interviews-are-the-worst/spammers-in-social-graphs.jpg)
-*Spotting Spammers in Social Graphs*
+![Spotting Spammers in Social Graph](/assets/img/2022-02-14-interviews-are-the-worst/spammers-in-social-graph.jpg)
+*Spotting Spammers in Social Graph*
 
 How do you find specific relationships between entities? Combinatorial factors could be value cardinality, size, edge direction, edge weights and cycles.
 
