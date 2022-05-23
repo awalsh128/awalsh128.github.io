@@ -210,7 +210,7 @@ For some, interviewing is not emotionally taxing but for others it can be debili
 
 ### Competitive Programming
 
-Sites like TopCoder are nice and a way for you to get your chops solving different problems but it is first and foremost a competitive programming site. It is meant to present challenges that are new and novel, eliciting the tersest amount of code in the smallest amount of time. This isn't to say if you got good at this you wouldn't do well in an interview, the opposite, but it requires you to inuit the ability to solve based on working through a lot of problems rather than learning the underlying problem spaces.
+Sites like TopCoder are nice and a way for you to get your chops solving different problems but it is first and foremost a competitive programming site. It is meant to present challenges that are new and novel, eliciting the tersest amount of code in the smallest amount of time. This isn't to say if you got good at this you wouldn't do well in an interview, the opposite, but it requires you to intuit the ability to solve based on working through a lot of problems rather than learning the underlying problem spaces.
 
 ### Interview Question Databases
 
