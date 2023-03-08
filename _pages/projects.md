@@ -37,7 +37,7 @@ int main()
 Reads PCAP Next Generation files and generates CLR objects from its data. Implemented according to the draft specification at <http://www.winpcap.org/ntar/draft/PCAP-DumpFileFormat.html>.
 
 * [Nuget](https://www.nuget.org/packages/PcapngFile/)
-* [Source Code](https://github.com/awalsh128/cache-apt-pkgs-action)
+* [Source Code](https://github.com/awalsh128/PcapngFile)
 
 ```csharp
 using (var reader = new Reader("myfile.pcapng"))
