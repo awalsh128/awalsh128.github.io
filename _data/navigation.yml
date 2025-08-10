@@ -1,9 +1,11 @@
 main:
-  - title: "Reading"
-    url:  /reading/
-  - title: "Notes"
-    url: /notes
+  - title: "My Projects"
+    url: /projects
   - title: "Posts"
     url: /posts/
   - title: "Tags"
     url: /tags/
+  - title: "Notes"
+    url: /notes
+  - title: "Reading"
+    url: /reading/

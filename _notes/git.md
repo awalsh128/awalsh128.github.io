@@ -44,6 +44,31 @@ git branch -m master
 git push -f origin master
 ```
 
+```
+rm -rf .git;
+git init;
+git add .;
+git commit -m "Initial commit";
+git remote add origin https://github.com/<username>/<repo>.git;
+git push -u --force origin master;
+```
+
+### Delete Tag
+
+Can be used to delete tags upstream (e.g. GitHub).
+
+```bash
+git push --delete origin v1.0
+```
+
+## Other Options
+
+Cache credentials for a day.
+
+```bash
+git config credential.helper 'cache --timeout 86400'
+```
+
 ## Resources
 
 * [GitLab: Git Cheat Sheet](https://about.gitlab.com/images/press/git-cheat-sheet.pdf) - Larger font in landscape.

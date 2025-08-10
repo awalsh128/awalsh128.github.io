@@ -1,5 +1,4 @@
 ---
-layout: posts
 title: Representing scientific units in code.
 date: '2011-07-13T15:44:00.000-07:00'
 author: awalsh128

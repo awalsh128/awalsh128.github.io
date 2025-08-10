@@ -1,5 +1,4 @@
 ---
-layout: posts
 title: Delete long file path names.
 date: '2011-07-19T09:38:00.000-07:00'
 author: awalsh128

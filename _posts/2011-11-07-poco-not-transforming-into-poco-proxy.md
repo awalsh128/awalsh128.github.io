@@ -1,5 +1,4 @@
 ---
-layout: posts
 title: POCO not transforming into a POCO proxy.
 date: '2011-11-07T14:19:00.000-08:00'
 author: awalsh128

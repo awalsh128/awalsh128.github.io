@@ -1,5 +1,4 @@
 ---
-layout: posts
 title: PCAP-NG reader for .NET.
 date: '2013-04-10T18:46:00.000-07:00'
 author: awalsh128

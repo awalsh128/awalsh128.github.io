@@ -1,9 +1,9 @@
 ---
-layout: posts
 title: Streaming UUEncoder in .NET.
 date: '2015-04-24T17:09:00.001-07:00'
 author: awalsh128
-tags: 
+tags:
+- Encoding
 modified_time: '2015-04-24T17:09:22.379-07:00'
 blogger_id: tag:blogger.com,1999:blog-6363087137667886940.post-7225106951260315303
 blogger_orig_url: https://awalsh128.blogspot.com/2015/04/streaming-uuencoder-in-net.html
@@ -109,7 +109,5 @@ implementation.
 
 ### More Resources & Reading
 
--   [Github: Awalsh128.Text Library (contains UUEncoder
-    implementation)](https://github.com/awalsh128/Awalsh128.Text)
--   [GNU Lesser General Public License, version
-    2.1](https://www.gnu.org/licenses/lgpl-2.1.html)
+- [Github: Awalsh128.Text Library (contains UUEncoder implementation)](https://github.com/awalsh128/Awalsh128.Text)
+- [GNU Lesser General Public License, version 2.1](https://www.gnu.org/licenses/lgpl-2.1.html)

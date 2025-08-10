@@ -1,5 +1,4 @@
 ---
-layout: posts
 title: Implementing a bit reader/writer in C.
 date: '2012-09-13T16:30:00.000-07:00'
 author: awalsh128

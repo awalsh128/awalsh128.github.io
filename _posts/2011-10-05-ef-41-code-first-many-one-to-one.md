@@ -1,5 +1,4 @@
 ---
-layout: posts
 title: 'EF 4.1 Code First: Many one-to-one properties for same class type on an object.'
 date: '2011-10-05T15:00:00.000-07:00'
 tags:

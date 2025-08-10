@@ -1,5 +1,4 @@
 ---
-layout: posts
 title: Pseudo random proportional scheduling in games.
 date: '2011-09-02T14:10:00.000-07:00'
 author: awalsh128

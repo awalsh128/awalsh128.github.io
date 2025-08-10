@@ -1,5 +1,4 @@
 ---
-layout: posts
 title: Automate IIS enable on Windows 7.
 date: '2012-07-30T11:33:00.000-07:00'
 author: awalsh128

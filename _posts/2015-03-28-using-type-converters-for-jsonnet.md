@@ -1,5 +1,4 @@
 ---
-layout: posts
 title: Using type converters for JSON.NET.
 date: '2015-03-28T22:10:00.000-07:00'
 author: awalsh128

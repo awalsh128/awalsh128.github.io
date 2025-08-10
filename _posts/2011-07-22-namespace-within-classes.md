@@ -1,5 +1,4 @@
 ---
-layout: posts
 title: Namespaces for classes.
 date: '2011-07-22T09:34:00.000-07:00'
 author: awalsh128
