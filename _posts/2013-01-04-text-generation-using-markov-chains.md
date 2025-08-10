@@ -1,5 +1,4 @@
 ---
-layout: posts
 title: Text generation using Markov chains.
 date: '2013-01-04T19:11:00.002-08:00'
 author: awalsh128

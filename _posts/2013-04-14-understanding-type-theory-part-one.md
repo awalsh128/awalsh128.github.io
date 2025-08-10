@@ -1,5 +1,4 @@
 ---
-layout: posts
 title: 'Understanding type theory (Part one: Lambda Calculus).'
 date: '2013-04-14T20:57:00.002-07:00'
 author: awalsh128

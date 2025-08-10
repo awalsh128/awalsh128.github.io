@@ -1,5 +1,4 @@
 ---
-layout: posts
 title: Converting thermocouple voltages to temperature.
 date: '2012-07-25T13:23:00.000-07:00'
 author: awalsh128

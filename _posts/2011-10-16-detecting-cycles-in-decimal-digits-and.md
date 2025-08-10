@@ -1,5 +1,4 @@
 ---
-layout: posts
 title: Detecting cycles in decimal digits and lists.
 date: '2011-10-16T02:25:00.000-07:00'
 author: awalsh128

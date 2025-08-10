@@ -1,5 +1,4 @@
 ---
-layout: posts
 title: Using Ubuntu 10.04 with SVN+HTTP.
 date: '2011-07-13T09:38:00.000-07:00'
 author: awalsh128

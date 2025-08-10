@@ -1,5 +1,4 @@
 ---
-layout: posts
 title: Tips for Java performance on Android.
 date: '2011-12-16T11:32:00.000-08:00'
 author: awalsh128

@@ -1,5 +1,4 @@
 ---
-layout: posts
 title: Understanding compression and Huffman Coding.
 date: '2012-09-20T00:29:00.000-07:00'
 author: awalsh128

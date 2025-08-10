@@ -10,16 +10,26 @@ Some computer based reading I have enjoyed over the years.
 
 ## Computer Science
 
-* [Art of Programming](https://www.amazon.com/Computer-Programming-Volumes-1-4A-Boxed/dp/0321751043) - Multi volume books meant to cover all the different mathematics used to write algorithms. Volumes are separated based on math concept.
-* [Introduction to Algorithms (CLRS)](https://www.amazon.com/Introduction-Algorithms-3rd-MIT-Press/dp/0262033844) - Canonical Algorithmns teaching book.
-* [Compilers: Principles, Techniques, and Tools (Dragon Book)](https://www.amazon.com/Compilers-Principles-Techniques-Tools-2nd/dp/0321486811) - Provides information for building a compiler and the different features involved.
+* [Art of Programming](https://www.amazon.com/Computer-Programming-Volumes-1-4A-Boxed/dp/0321751043)
+  * Synopsis: Multi volume books meant to cover all the different mathematics used to write algorithms. Volumes are separated based on math concept.
+  * Opinion: Don't expect to read these back to back. Take it in parts and for topics that you are interested in. For example I found the section on hashing interesting when I was trying to understand it better.
+* [Introduction to Algorithms (CLRS)](https://www.amazon.com/Introduction-Algorithms-3rd-MIT-Press/dp/0262033844)
+  * Synopsis: Canonical Algorithmns teaching book.
+  * Opinion: I have a personal affinity for this book due to its simplicity in format and diagrams. IMO it isn't too wordy like other books and gives me what I need to know quickly.
+* [Compilers: Principles, Techniques, and Tools (Dragon Book)](https://www.amazon.com/Compilers-Principles-Techniques-Tools-2nd/dp/0321486811)
+  * Synopsis: Provides information for building a compiler and the different features involved.
+  * Opinion: Really loved this book in school. Gave me a good sense of compiler basics. Unfortunately it doesn't cover more advanced topics like type reification but it shouldn't be expected as starter book.
 
 ## Computer History
 
 * [The Cathedral &amp; the Bazaar: Musings on Linux and Open Source by an Accidental Revolutionary](https://www.amazon.com/dp/B0026OR3LM) - Observations by Eric S. Raymond of Linux development and Open Source projects in general while managing his own (i.e. fetchmail).
-* [Cult of the Dead Cow: How the Original Hacking Supergroup Might Just Save the World](https://www.amazon.com/Cult-of-Dead-Cow-Joseph-Menn-audiobook/dp/B07RX456JM/ref=zg_bs_3573_6?_encoding=UTF8&psc=1&refRID=86XCT8CGTYH8X7H7KJ6S) - Hacktivism where its followers are battling electoral misinformation, making personal data safer, and battling to keep technology a force for good instead of for surveillance and oppression.
+* [Cult of the Dead Cow: How the Original Hacking Supergroup Might Just Save the World](https://www.amazon.com/Cult-of-Dead-Cow-Joseph-Menn-audiobook/dp/B07RX456JM/ref=zg_bs_3573_6?_encoding=UTF8&psc=1&refRID=86XCT8CGTYH8X7H7KJ6S)
+  * Synopsis: Hacktivism where its followers are battling electoral misinformation, making personal data safer, and battling to keep technology a force for good instead of for surveillance and oppression.
+  * Opinion: As a 90's kid of the nascent personal Internet this is very nostalgic for me. Great read if you want to get a sense of the hacking ethos at the time.
 * [The Dream Machine: J.C.R. Licklider and the Revolution That Made Computing Personal](https://www.amazon.com/exec/obidos/ASIN/0670899763/acmorg-20) - Outlines Licklider's visionary dream of a "human-computer symbiosis" transforming the course of modern science and led to the development of the personal computer.
-* [Turing's Cathedral: The Origins of the Digital Universe](https://www.amazon.com/Turings-Cathedral-Origins-Digital-Universe/dp/1400075998) - A history of computation spanning from Leibneiz to Turing, and the creation of the computer.
+* [Turing's Cathedral: The Origins of the Digital Universe](https://www.amazon.com/Turings-Cathedral-Origins-Digital-Universe/dp/1400075998)
+  * Synopsis: A history of computation and the creation of the computer.
+  * Opinion: Gave me a deep sense of the contribution that philosphy and mathemetics had on computers, and a new appreciation of its history.
 
 ## Software
 
@@ -34,7 +44,7 @@ Some computer based reading I have enjoyed over the years.
 ### Maintenance &amp; Management
 
 * [Mythical Man-Month](https://www.amazon.com/dp/B00B8USS14?ref=KC_GS_GB_US) - Presents the multiple ideas of Fred Brooks with the central theme that "adding manpower to a late software project makes it later" (Brook's Law).
-* [Site Reliability Engineering](https://landing.google.com/sre/books/) - Outlines concepts used by Google SRE for managing large scale systems.
+* [Site Reliability Engineering](https://landing.google.com/sre/books/) - Outlines concepts used by Google SRE for managing large scale systems. These convcept have served me very well in my time at Google. If you want a good sense of devops posture, this is a must read.
 
 ## Landmark Papers
 
@@ -48,11 +58,32 @@ Some computer based reading I have enjoyed over the years.
 * [Dynamo: Amazon’s Highly Available Key-value Store](https://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf)
 * [MapReduce: Simplified Data Processing on Large Clusters](https://static.googleusercontent.com/media/research.google.com/en//archive/mapreduce-osdi04.pdf)
 * [Can Programming Be Liberated From the Von Neumann Style?](http://www.thocp.net/biographies/papers/backus_turingaward_lecture.pdf)
+An archive of past to present awarded by the ACM can be found in [Turing Lecture Award Papers](https://amturing.acm.org/lectures.cfm).
+
+### Computation
+
+* [Leibniz, Gottfried Wilhelm (1703). "Explaination of Binary Arithmetic"](/assets/text/leibniz_binary.pdf)
+* [Babbage, Charles (1824). "Note on the Application of Machinery to the Computation of Astronomical and Mathematical"](/assets/text/PPN618299726.pdf)
+* [Bool, George (1854). "The Laws of Thought: Chapter V"](/assets/text/The_Laws_of_Thought.pdf)
+* [Cantor, Georg (1874). "On a Property of the Collection of All Real Algebraic Numbers"](/assets/text/Cantors1874Paper.pdf)
+* [Hilbert, David (1900). "Mathematical Problems"](/assets/text/S0002-9904-1902-00923-3.pdf)
+* [Gödel, Kurt (1931). "On formally undecidable propositions of Principia Mathematica and related systems I"](/assets/text/canon00-goedel.pdf)
+* [Turing, A.M (1936). "On Computable Numbers, With an Application to the Entscheidungsproblem"](/assets/text/Turing_Paper_1936.pdf)
+* [Neumann, János Lajos (1945). "First Draft of a Report on the EDVAC"](/assets/text/vnedvac.pdf)
+* [Cook, Stephen (1971). "The complexity of theorem proving procedures".](/assets/text/p_vs_np_1971.pdf)
+
+### Engineering
+
+* [Codd, E.F. (1970). "A Relational Model of Data for Large Shared Data Banks"](/assets/text/codd.pdf)
+* [Backus, John. "Can Programming Be Liberated From the von Neumann Style?"](http://www.thocp.net/biographies/papers/backus_turingaward_lecture.pdf)
+* [Dynamo: Amazon’s Highly Available Key-value Store](https://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf)
+* [MapReduce: Simplified Data Processing on Large Clusters](https://static.googleusercontent.com/media/research.google.com/en//archive/mapreduce-osdi04.pdf)
+* [REST Dissertation](https://oleb.net/2018/rest/)
 
 ## Cyber Punk Fiction
 
 * [Akira](https://www.amazon.com/Akira-Vol-1-Katsuhiro-Otomo/dp/1935429000) - In the backdrop of post-WWIII Neo-Tokyo, two friends relationship becomes darker as one realizes their strong psychokinetic powers.
 * [Blade Runner / Do Androids Dream of Electric Sheep?](https://www.amazon.com/Blade-Runner-Philip-K-Dick-audiobook/dp/B0010BA814/ref=sr_1_1?dchild=1&qid=1605131963&refinements=p_lbr_one_browse-bin%3APhilip+K.+Dick&s=books&sr=1-1) - Backdrop is a detective in futuristic 2019 charged with killing replicants. Contrasts human vs artificial intelligence (AI), the central theme is the examination of humanity.
-* [The Ghost in the Shell](http://www.amazon.com/Ghost-Shell-SAC/dp/1935429019) - In the near future, humans are augmented with cybernetic improvements to traits such as vision, strength, and intelligence. Story follows, counter terrorism operative and cyborg, Killian. 
+* [The Ghost in the Shell](http://www.amazon.com/Ghost-Shell-SAC/dp/1935429019) - In the near future, humans are augmented with cybernetic improvements to traits such as vision, strength, and intelligence. Story follows, counter terrorism operative and cyborg, Killian.
 * [MaddAddam Trilogy](https://www.amazon.com/dp/0804172315?tag=nemu08-20&linkCode=ogi&th=1&psc=1) - A corporate dystopian future where civil society doesn't exist, just the corps. The story follows multiple characters involved in a bio attack.
 * [Neuromancer](https://www.amazon.com/dp/B000O76ON6?ref=KC_GS_GB_US) - Set in the future, a washed-up computer hacker, Henry Case is hired for one last job. This brings him up against a powerful AI.
