@@ -2,7 +2,7 @@
 permalink: /reading/
 title: "Reading"
 excerpt: "Reading list for topics related to Software."
-last_modified_at: 2020-09-15T00:00:00-07:00
+last_modified_at: 2021-05-01T00:00:00-07:00
 toc: true
 ---
 
@@ -38,12 +38,16 @@ Some computer based reading I have enjoyed over the years.
 
 ## Landmark Papers
 
-* [Can Programming Be Liberated From the von Neumann Style?](http://www.thocp.net/biographies/papers/backus_turingaward_lecture.pdf)
-* [Dynamo: Amazon’s Highly Available Key-value Store](https://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf)
-* [MapReduce: Simplified Data Processing on Large Clusters](https://static.googleusercontent.com/media/research.google.com/en//archive/mapreduce-osdi04.pdf)
+* [On Computable Numbers, with an application to the Entscheidungsproblem](https://www.cs.virginia.edu/~robins/Turing_Paper_1936.pdf)
+* [A Mathematical Theory of Communication](http://math.harvard.edu/~ctm/home/text/others/shannon/entropy/entropy.pdf)
+* [A Proposal for the Dartmouth Summer Research Project on Artificial Intelligence](http://jmc.stanford.edu/articles/dartmouth/dartmouth.pdf)
+* [A Protocol for Packet Network Intercommunication](http://education.sigcomm.org/papers/ck74.pdf)
 * [A Relational Model of Data for Large Shared Data Banks](https://www.seas.upenn.edu/~zives/03f/cis550/codd.pdf)
 * [REST Dissertation](https://oleb.net/2018/rest/)
 * [Turing Lecture Award Papers](https://amturing.acm.org/lectures.cfm)
+* [Dynamo: Amazon’s Highly Available Key-value Store](https://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf)
+* [MapReduce: Simplified Data Processing on Large Clusters](https://static.googleusercontent.com/media/research.google.com/en//archive/mapreduce-osdi04.pdf)
+* [Can Programming Be Liberated From the Von Neumann Style?](http://www.thocp.net/biographies/papers/backus_turingaward_lecture.pdf)
 
 ## Cyber Punk Fiction
 
