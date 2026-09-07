@@ -1,0 +1,72 @@
+<p>LGTM is a nice little integration for your GitHub projects that performs code analysis and alerts if any violations are found. And example of what an alert screen looks like on the LGTM site below (using my fluentcpp project as a demonstration).</p>
+
+<p><img src="/assets/img/2021-10-10-integrating-lgtm/alert_screen.png" alt="Example LGTM Alert Screen" /></p>
+
+<p>You will need to grant the application access to your repositories using their guide <a href="https://lgtm.com/help/lgtm/github-apps-integration">Integration with GitHub Apps</a>.</p>
+
+<p>You can then setup badges on your project site that show the status of your code quality.</p>
+
+<p><a href="https://lgtm.com/projects/g/awalsh128/fluentcpp/context:cpp"><img src="https://img.shields.io/lgtm/grade/cpp/g/awalsh128/fluentcpp.svg?logo=lgtm&amp;logoWidth=18" alt="Code Grade" /></a>
+<a href="https://lgtm.com/projects/g/awalsh128/fluentcpp/alerts/"><img src="https://img.shields.io/lgtm/alerts/g/awalsh128/fluentcpp.svg?logo=lgtm&amp;logoWidth=18" alt="Code Alerts" /></a></p>
+
+<p>If more customization is needed, an <code class="language-plaintext highlighter-rouge">.lgtml.yml</code> file can be created in the root of the repository per <a href="https://lgtm.com/help/lgtm/lgtm.yml-configuration-file">their instructions</a>. You can also download <a href="https://lgtm.com/static/downloads/lgtm.template.yml">their canonical template</a> too to get started.</p>
+
+<p>Here’s <a href="https://github.com/search?q=filename%3A.lgtm.yml&amp;type=Code">a search of GitHub</a> to look at other example configuration files. For example in my project I needed a more recent version of CMake. This is what mine looks like so it is in the environment before LGTM performs its analysis.</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">extraction</span><span class="pi">:</span>
+  <span class="na">cpp</span><span class="pi">:</span>
+    <span class="na">after_prepare</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">mkdir</span><span class="nv"> </span><span class="s">custom_cmake"</span>
+      <span class="c1"># Need later version of CMake than lgtm has.</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">wget</span><span class="nv"> </span><span class="s">--quiet</span><span class="nv"> </span><span class="s">-O</span><span class="nv"> </span><span class="s">-</span><span class="nv"> </span><span class="s">https://cmake.org/files/v3.16/cmake-3.16.3-Linux-x86_64.tar.gz</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">tar</span><span class="nv"> </span><span class="s">--strip-components=1</span><span class="nv"> </span><span class="s">-xz</span><span class="nv"> </span><span class="s">-C</span><span class="nv"> </span><span class="s">custom_cmake"</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">export</span><span class="nv"> </span><span class="s">PATH=$(pwd)/custom_cmake/bin:${PATH}"</span>
+    <span class="na">index</span><span class="pi">:</span>
+      <span class="na">build_command</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">cd $LGTM_SRC</span>
+        <span class="pi">-</span> <span class="s">mkdir build; cd build</span>
+        <span class="pi">-</span> <span class="s">cmake .. -DCMAKE_BUILD_TYPE=RELWITHDEBINFO</span>
+        <span class="pi">-</span> <span class="s">make</span>
+</code></pre></div></div>
+
+<p>Here’s another <a href="https://github.com/rafifm/olshop_ci4/blob/ce1b0095ab3e45e373f05d143374ad9a941054f4/public/themes/.lgtm.yml">taken from GitHub</a> that excludes specified directories from analysis.</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">path_classifiers</span><span class="pi">:</span>
+  <span class="na">plugins</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">plugins/</span>
+
+<span class="na">extraction</span><span class="pi">:</span>
+  <span class="na">javascript</span><span class="pi">:</span>
+    <span class="c1"># https://lgtm.com/help/lgtm/javascript-extraction#customizing-index</span>
+    <span class="c1"># The `index` step extracts information from the files in the codebase.</span>
+    <span class="na">index</span><span class="pi">:</span>
+      <span class="c1"># Specify a list of files and folders to exclude from extraction.</span>
+      <span class="na">exclude</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">bower_components/</span>
+        <span class="pi">-</span> <span class="s">docs/assets/js/plugins/</span>
+        <span class="pi">-</span> <span class="s">plugins/</span>
+</code></pre></div></div>
+
+<p>… or <a href="https://github.com/Johncrown56/News-App/blob/d7c3255d744036cf4d73655b2f3e3723cad3bdff/node_modules/regextras/lgtm.yml">from another repository</a> more simply.</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">extraction</span><span class="pi">:</span>
+  <span class="na">javascript</span><span class="pi">:</span>
+    <span class="na">index</span><span class="pi">:</span>
+      <span class="na">filters</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">exclude</span><span class="pi">:</span> <span class="s2">"</span><span class="s">dist"</span>
+</code></pre></div></div>
+
+<p>Here’s yet <a href="https://github.com/CPTX1/Curl/blob/3027f06078f89232251eb1c921f6142894982ea1/curl-master/.lgtm.yml">another repository</a>. This one disables CMake and sets the configuration options before build.</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">extraction</span><span class="pi">:</span>
+  <span class="na">cpp</span><span class="pi">:</span>
+    <span class="na">prepare</span><span class="pi">:</span>
+      <span class="na">packages</span><span class="pi">:</span> <span class="c1"># to avoid confusion with libopenafs-dev which also provides a des.h</span>
+        <span class="pi">-</span> <span class="s">libssl-dev</span>
+    <span class="na">after_prepare</span><span class="pi">:</span> <span class="c1"># make sure lgtm.com doesn't use CMake (which generates and runs tests)</span>
+      <span class="pi">-</span> <span class="s">rm -f CMakeLists.txt</span>
+      <span class="pi">-</span> <span class="s">./buildconf</span>
+    <span class="na">configure</span><span class="pi">:</span> <span class="c1"># enable as many optional features as possible</span>
+      <span class="na">command</span><span class="pi">:</span> <span class="s">./configure --enable-ares --with-libssh2 --with-gssapi --with-librtmp --with-libmetalink --with-libmetalink</span>
+</code></pre></div></div>
+
+<p>I think you get the point. Just give the app permission, customize as needed with the <code class="language-plaintext highlighter-rouge">.lgtml.yml</code> and setup your cute badges.</p>

@@ -1,0 +1,8 @@
+{
+  "name": "awalsh128-github-io",
+  "private": true,
+  "scripts": {
+    "preview": "bash ./scripts/local-preview.sh serve",
+    "build:local": "bash ./scripts/local-preview.sh build"
+  }
+}
