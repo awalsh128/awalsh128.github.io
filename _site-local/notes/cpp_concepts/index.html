@@ -1,0 +1,56 @@
+<p>https://www.youtube.com/watch?v=wkWtRDrjEH4&amp;ab_channel=CopperSpice</p>
+
+<p>Website:  http://www.copperspice.com
+Downloads:  http://download.copperspice.com</p>
+
+<ul>
+  <li>Data Type: Values and operations on those values.</li>
+  <li>Expression
+    <ul>
+      <li>Sequence of operators and operands.</li>
+      <li>Involves same or different data types.</li>
+      <li>Semantics include value categories.</li>
+    </ul>
+  </li>
+  <li>Value Categories
+    <ul>
+      <li>It is either an lvalue or an rvalue</li>
+      <li>lvalue
+        <ul>
+          <li>Can be taken by address.</li>
+        </ul>
+      </li>
+      <li>rvalue
+        <ul>
+          <li>Cannot be taken by address.</li>
+          <li>Usually temporary, lifetime in block scope, and/or a literal (12, nullptr, ‘a’)</li>
+        </ul>
+
+        <p>int x = 12    x is an lvalue and 12 is an rvalue
+12 = x        is illegal because rvalue cannot be used as an assignment</p>
+
+        <p>caller see changes, callee can change data</p>
+
+        <p>f(T&amp;)     takes an lvalue reference
+f(t)      legal because t is an lvalue
+f(T())    illegal because T() is an rvalue and is temporary</p>
+
+        <p>callee cannot change data</p>
+
+        <p>f(const T&amp;) takes an lvalue or rvalue reference
+f(t)        legal because t is an lvalue
+f(T())      legal because the param is immutable and guarantees that the arg won’t change</p>
+
+        <p>caller cannot see changes, callee can change data</p>
+
+        <p>f(T&amp;&amp;)      takes an rvalue reference
+f(t)        illegal because t is an lvalue
+f(T())      legal because T() is an rvalue</p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="traits">Traits</h2>
+
+<p>Whether in a template or elsewhere, ::* is a C++ token, only usable in a type expression, in the context class_name::*. It declares a pointer to member.</p>

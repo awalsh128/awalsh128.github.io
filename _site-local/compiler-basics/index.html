@@ -1,0 +1,402 @@
+<p>Compilers was one of my favorite classes in school alongside OS and architecture. It gave me a deeper understanding of what happened with my code behind the scenes and insight into how to create my own <a href="https://en.wikipedia.org/wiki/Domain-specific_language">domain specific language</a>. Knowing how compilers work create the link between the abstractions that developers use everyday and the machine executing them below.</p>
+
+<h2 id="phases">Phases</h2>
+
+<p>Compilation comes into five phases.</p>
+
+<ul>
+  <li>Scanner - Breaks up text into tokens.</li>
+  <li>Parser - Arranges the tokens into relationships that form a tree.</li>
+  <li>Symbol Table - Attributes metadata like type and scope to identifiers (e.g. variables, functions, classes).</li>
+  <li>Intermediate Representation (IR) - Representation of the code that is typically a series of statements / commands that can be optimized before becoming the assembly code.</li>
+  <li>Compiled Code - The actual assembly code that gets generated at the end as a series of <a href="https://en.wikipedia.org/wiki/Opcode">opcodes</a> with their corresponding data and control bits.</li>
+</ul>
+
+<p>Of course this description makes a lot of assumptions and doesn’t account for different approaches to compilation but serves well for the purpose of learning and demonstration. For the following phase breakdowns we will use a C like language with a simple set of constructs as a toy use case. Let’s get started…</p>
+
+<h2 id="scanner">Scanner</h2>
+
+<p>This is also known as the lexer or tokenizer. It’s responsibility is to take text and create indivisible units / tokens out of it. For example, the following…</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">123</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>…would be tokenized as <code class="language-plaintext highlighter-rouge">int</code>, <code class="language-plaintext highlighter-rouge">x</code>, <code class="language-plaintext highlighter-rouge">=</code>, <code class="language-plaintext highlighter-rouge">123</code>, and <code class="language-plaintext highlighter-rouge">;</code>.</p>
+
+<p>Let’s take a more complex example.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">foo</span><span class="p">(</span><span class="kt">int</span><span class="o">&amp;</span> <span class="n">bar</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">bar</span> <span class="o">=</span> <span class="mi">123</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This would be tokenized as <code class="language-plaintext highlighter-rouge">int</code>, <code class="language-plaintext highlighter-rouge">foo</code>, <code class="language-plaintext highlighter-rouge">(</code>, <code class="language-plaintext highlighter-rouge">int</code>, <code class="language-plaintext highlighter-rouge">&amp;</code>, <code class="language-plaintext highlighter-rouge">bar</code>, <code class="language-plaintext highlighter-rouge">)</code>, <code class="language-plaintext highlighter-rouge">{</code>, <code class="language-plaintext highlighter-rouge">bar</code>, <code class="language-plaintext highlighter-rouge">=</code>, <code class="language-plaintext highlighter-rouge">123</code>, <code class="language-plaintext highlighter-rouge">;</code>, and <code class="language-plaintext highlighter-rouge">}</code>.</p>
+
+<p>As a contrast, let’s look at a Python like snippet…</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="n">bar</span><span class="p">):</span>
+  <span class="n">bar</span> <span class="o">=</span> <span class="mi">123</span>
+</code></pre></div></div>
+
+<p>Since these languages treat spaces as part of the language (unlike C-like ones), this would be tokenized as <code class="language-plaintext highlighter-rouge">def</code>, <code class="language-plaintext highlighter-rouge">foo</code>, <code class="language-plaintext highlighter-rouge">(</code>, <code class="language-plaintext highlighter-rouge">bar</code>, <code class="language-plaintext highlighter-rouge">)</code>, <code class="language-plaintext highlighter-rouge">:</code>, <code class="language-plaintext highlighter-rouge">\n</code>, <code class="language-plaintext highlighter-rouge">\s</code>, <code class="language-plaintext highlighter-rouge">\s</code>, <code class="language-plaintext highlighter-rouge">bar</code>, <code class="language-plaintext highlighter-rouge">=</code>, and <code class="language-plaintext highlighter-rouge">123</code>. This approach is a bit nuanced though as any spaces after <code class="language-plaintext highlighter-rouge">:</code> and before newline are not tokenized since they have no meaning for the compiled language (same goes for extraneous newlines). This is why the last C-like example could be expressed as.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">foo</span><span class="p">(</span><span class="kt">int</span><span class="o">&amp;</span><span class="n">bar</span><span class="p">){</span><span class="n">bar</span><span class="o">=</span><span class="mi">123</span><span class="p">;}</span>
+</code></pre></div></div>
+
+<p>The only case where spaces have any meaning is to separate identifiers.</p>
+
+<p>Now let’s take an example we will use going forward for all the phases.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">y</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+  <span class="n">y</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="parser">Parser</h2>
+
+<p>The parser phase transforms the tokens into relationships between them (semantical) where it takes the flat list of tokens and puts them into a tree structure (i.e. <a href="https://en.wikipedia.org/wiki/Abstract_syntax_tree">Abstract Syntax Tree (AST)</a>). Here is what our example looks like.</p>
+
+<p align="center">
+  <img src="/assets/img/2021-10-23-compiler-basics/parser.png" width="400" />
+</p>
+
+<p>Something useful to know is the difference between the scanner and parser phase.</p>
+
+<ul>
+  <li>The scanner phase is the lexical component, it is concerned with the structure of symbols / tokens (in this case a combination of letters, numbers and punctuation).</li>
+  <li>The parser phase is the semantic component, it is concerned with the meaning of symbols as they relate in the context of one another. For example…</li>
+</ul>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">foo</span><span class="p">()</span> <span class="p">{</span> <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<p>The parenthesis are the symbols present in the function declaration and the function body but they have completely different meaning in their relationship with the rest of the symbols.</p>
+
+<ul>
+  <li>One is in the context of a function declaration <code class="language-plaintext highlighter-rouge">foo</code> and denotes the start and end of declared parameters.</li>
+  <li>The other imposes order of operation on the expression assigned to the variable <code class="language-plaintext highlighter-rouge">x</code>.</li>
+</ul>
+
+<p>This is what makes the parsing / semantic phase different than the scanner / lexical phase.</p>
+
+<h2 id="symbol-table">Symbol Table</h2>
+
+<p>The <a href="https://en.wikipedia.org/wiki/Symbol_table">symbol table</a> provides information about the identifiers such as type and scope. Let’s take the canonical example we have been using and encapsulate it into a function so we can give it some scope.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">foo</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kt">int</span> <span class="n">y</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The code gets stored in the symbol table as…</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Symbol</th>
+      <th>Type</th>
+      <th>Scope</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>foo</td>
+      <td>function, void</td>
+      <td>global</td>
+    </tr>
+    <tr>
+      <td>x</td>
+      <td>int</td>
+      <td>function parameter</td>
+    </tr>
+    <tr>
+      <td>y</td>
+      <td>int</td>
+      <td>block scope</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>A symbol table is defined and typically stored in each <a href="https://en.wikipedia.org/wiki/Single_Compilation_Unit">compilation unit</a> that corresponds to an object file (e.g. <code class="language-plaintext highlighter-rouge">*.o</code>, <code class="language-plaintext highlighter-rouge">*.obj</code>). These tables are not only used for metadata but will also serve as lookups for other object files that are trying to resolve their own symbols in the linker phase.</p>
+
+<h3 id="slight-detour-to-undefined-reference">Slight Detour to Undefined Reference</h3>
+
+<p>Note this is around the phase where you will get errors like <code class="language-plaintext highlighter-rouge">undefined reference</code>. The <a href="https://en.wikipedia.org/wiki/Linker_(computing)">linker</a> in these cases is trying to link the symbol references between the object files. An example of an <code class="language-plaintext highlighter-rouge">undefined reference</code>.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// This says, I promise this thing exists. Just keep compiling and </span>
+<span class="c1">// it will show up when the linker searches for it.</span>
+<span class="k">extern</span> <span class="kt">int</span> <span class="nf">foo</span><span class="p">();</span>
+
+<span class="kt">int</span> <span class="nf">bar</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="n">foo</span><span class="p">();</span>
+  <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">2</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The symbol table will be generated as…</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Symbol</th>
+      <th>Type</th>
+      <th>Scope</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>foo</td>
+      <td>function, void</td>
+      <td>extern (note this)</td>
+    </tr>
+    <tr>
+      <td>bar</td>
+      <td>function, int</td>
+      <td>global</td>
+    </tr>
+    <tr>
+      <td>x</td>
+      <td>int</td>
+      <td>block scope</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>If <code class="language-plaintext highlighter-rouge">foo</code> isn’t included anywhere either directly or indirectly through headers, an <code class="language-plaintext highlighter-rouge">undefined reference</code> will get reported. In these cases, the linker couldn’t resolve the symbol scope, which has an <code class="language-plaintext highlighter-rouge">extern</code> placemarker waiting for linkage.</p>
+
+<h3 id="back-on-track">Back on Track</h3>
+
+<p>Let’s now assume the <code class="language-plaintext highlighter-rouge">extern int foo();</code> is defined in another file. The resolved symbol table becomes.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Symbol</th>
+      <th>Type</th>
+      <th>Scope</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>foo</td>
+      <td>function, void</td>
+      <td>int (note this has changed)</td>
+    </tr>
+    <tr>
+      <td>bar</td>
+      <td>function, int</td>
+      <td>global</td>
+    </tr>
+    <tr>
+      <td>x</td>
+      <td>int</td>
+      <td>block scope</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="intermediate-representation-ir">Intermediate Representation (IR)</h2>
+
+<p>Generated from the parser graph and symbol table is the <a href="https://en.wikipedia.org/wiki/Intermediate_representation">intermediate code / representation</a>. It is the code that gets generated before translating to assembly. The reason this exists as opposed to direct assembly translation is so that optimizations can be made before final code expression.</p>
+
+<p>IR generators come in different types and take on different degrees of responsibility. Examples of IRs are <a href="https://en.wikipedia.org/wiki/LLVM">LLVM</a>, <a href="https://en.wikipedia.org/wiki/Java_bytecode">Java bytecode</a>, and <a href="https://en.wikipedia.org/wiki/Common_Intermediate_Language">Microsoft CIL</a>.</p>
+
+<h3 id="net-cil">.NET CIL</h3>
+
+<p>Applying the .NET <a href="https://docs.microsoft.com/en-us/dotnet/core/tools/">Common Intermediate Language (CIL)</a> to our canonical example below…</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">void</span> <span class="nf">foo</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kt">int</span> <span class="n">y</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="p">&gt;</span> <span class="m">2</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">y</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="n">y</span> <span class="p">=</span> <span class="m">2</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>…becomes…</p>
+
+<pre><code class="language-cil">.method private hidebysig instance void 
+          foo(int32 x) cil managed
+{
+  .maxstack  2
+  .locals init (int32 V_0, bool V_1)
+  IL_0000:  nop
+  IL_0001:  ldarg.1
+  IL_0002:  ldc.i4.2
+  IL_0003:  cgt
+  IL_0005:  ldc.i4.0
+  IL_0006:  ceq
+  IL_0008:  stloc.1
+  IL_0009:  ldloc.1
+  IL_000a:  brtrue.s   IL_0012
+
+  IL_000c:  nop
+  IL_000d:  ldc.i4.1
+  IL_000e:  stloc.0
+  IL_000f:  nop
+  IL_0010:  br.s       IL_0016
+
+  IL_0012:  nop
+  IL_0013:  ldc.i4.2
+  IL_0014:  stloc.0
+  IL_0015:  nop
+  IL_0016:  ret
+}
+</code></pre>
+
+<p>This is an instance of a <a href="https://en.wikipedia.org/wiki/Stack_machine">stack based</a> <a href="https://en.wikipedia.org/wiki/Bytecode">bytecode</a> representation as opposed to a <a href="https://en.wikipedia.org/wiki/Register_machine">register based approach</a>. The two approaches are not strictly one or the other, but typically a virtual machine uses one predominantly. The more popular <a href="https://en.wikipedia.org/wiki/Java_virtual_machine">JVM</a> and CIL are stack based but sometimes leverage registers. For example, the CIL will store simple constants like integers or perform calculations using registers since it <a href="https://www.intel.com/content/www/us/en/developer/articles/technical/memory-performance-in-a-nutshell.html">is faster in terms of memory access than the L1+ cache</a>.</p>
+
+<h2 id="compiled-code">Compiled Code</h2>
+
+<p>The last and final step is the machine code itself. This is usually the assembly code that gets ran. Using our previous example for the CIL code. This bytecode gets translated into x86 code as…</p>
+
+<pre><code class="language-asm">C.foo(Int32)
+  L0000: push ebp
+  L0001: mov ebp, esp
+  L0003: sub esp, 0x10
+  L0006: xor eax, eax
+  L0008: mov [ebp-0xc], eax
+  L000b: mov [ebp-0x10], eax
+  L000e: mov [ebp-4], ecx
+  L0011: mov [ebp-8], edx
+  L0014: cmp dword ptr [0x1adec1a8], 0
+  L001b: je short L0022
+  L001d: call 0x661dfc10
+  L0022: nop
+  L0023: cmp dword ptr [ebp-8], 2
+  L0027: setg al
+  L002a: movzx eax, al
+  L002d: mov [ebp-0x10], eax
+  L0030: cmp dword ptr [ebp-0x10], 0
+  L0034: je short L0042
+  L0036: nop
+  L0037: mov dword ptr [ebp-0xc], 1
+  L003e: nop
+  L003f: nop
+  L0040: jmp short L004b
+  L0042: nop
+  L0043: mov dword ptr [ebp-0xc], 2
+  L004a: nop
+  L004b: nop
+  L004c: mov esp, ebp
+  L004e: pop ebp
+  L004f: ret
+</code></pre>
+
+<h2 id="into-the-abyss">Into the Abyss</h2>
+
+<p>Let’s go even further now and see what the encoded values look like in the <a href="https://en.wikipedia.org/wiki/Instruction_register">instruction register</a> of an x86 CPU. On the left are the line numbers and the contents of the register, and on the right is the assembly equivalent. Notice how some of the hex matches value to the right.</p>
+
+<pre><code class="language-asm">0:  55                      push   ebp
+1:  89 e5                   mov    ebp,esp
+3:  83 ec 10                sub    esp,0x10
+6:  31 c0                   xor    eax,eax
+8:  89 45 f4                mov    DWORD PTR [ebp-0xc],eax
+b:  89 45 f0                mov    DWORD PTR [ebp-0x10],eax
+e:  89 4d fc                mov    DWORD PTR [ebp-0x4],ecx
+11: 89 55 f8                mov    DWORD PTR [ebp-0x8],edx
+14: 83 3d a8 c1 de 1a 00    cmp    DWORD PTR ds:0x1adec1a8,0x0
+1b: 74 05                   je     22 &lt;L0022&gt;
+1d: e8 0c fc 1d 66          call   661dfc2e &lt;L004f+0x661dfbdf&gt;
+22: 90                      nop
+23: 83 7d f8 02             cmp    DWORD PTR [ebp-0x8],0x2
+27: 0f 9f c0                setg   al
+2a: 0f b6 c0                movzx  eax,al
+2d: 89 45 f0                mov    DWORD PTR [ebp-0x10],eax
+30: 83 7d f0 00             cmp    DWORD PTR [ebp-0x10],0x0
+34: 74 0c                   je     42 &lt;L0042&gt;
+36: 90                      nop
+37: c7 45 f4 01 00 00 00    mov    DWORD PTR [ebp-0xc],0x1
+3e: 90                      nop
+3f: 90                      nop
+40: eb 09                   jmp    4b &lt;L004b&gt;
+42: 90                      nop
+43: c7 45 f4 02 00 00 00    mov    DWORD PTR [ebp-0xc],0x2
+4a: 90                      nop
+4b: 90                      nop
+4c: 89 ec                   mov    esp,ebp
+4e: 5d                      pop    ebp
+4f: c3                      ret
+</code></pre>
+
+<p>The byte layout from left to right is opcode, control bits, data. Imagine being the person that had to execute all of this manually.</p>
+
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Digital_PDP-8F.jpg/1920px-Digital_PDP-8F.jpg" alt="DEC PDP-8" /></p>
+
+<p>This was considered a step up from this.</p>
+
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Used_Punchcard_%285151286161%29.jpg/1920px-Used_Punchcard_%285151286161%29.jpg" alt="IBM Punch Card" /></p>
+
+<p>Because they didn’t want to do this.</p>
+
+<pre><code class="language-txt">01010101
+1000100111100101
+100000111110110000010000
+11000111000000
+100010010100010111110100
+100010010100010111110000
+100010010100110111111100
+100010010101010111111000
+10000011001111011010100011000001110111100001101000000000
+111010000000101
+1110100000001100111111000001110101100110
+10010000
+10000011011111011111100000000010
+11111001111111000000
+11111011011011000000
+100010010100010111110000
+10000011011111011111000000000000
+111010000001100
+10010000
+11000111010001011111010000000001000000000000000000000000
+10010000
+10010000
+1110101100001001
+10010000
+11000111010001011111010000000010000000000000000000000000
+10010000
+10010000
+1000100111101100
+01011101
+11000011
+</code></pre>
+
+<p>In fact the whole concept of an assembler was once considered by some as a wasteful endevour. It was using computational resources to create instructions to use computational resources. The whole point is that it used computational resources! In today’s world where we are pretty wasteful of computational resources by orders of magnitude, this was not taken for granted back then when the idea of <a href="https://en.wikipedia.org/wiki/Time-sharing">computational time sharing</a> was a thing. We have come a long way.</p>
+
+<h2 id="closing-thoughts">Closing Thoughts</h2>
+
+<p>So now we have come full circle from…</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">void</span> <span class="nf">foo</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kt">int</span> <span class="n">y</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="p">&gt;</span> <span class="m">2</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">y</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="n">y</span> <span class="p">=</span> <span class="m">2</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>…to the binary seen above.</p>
+
+<p>The compiler is a great thing, it allows us to use abstractions that make development much easier and express ideas in ways that humans are more able to grasp. Turning the realm of controlled electrons into that of the symbolic and philosophical, permitting us to process and interpret the world around us.</p>
+
+<h2 id="references--more-reading">References &amp; More Reading</h2>
+
+<ul>
+  <li>To start exploring on how to create a language for yourself, check out <a href="https://www.antlr.org/">Antlr</a> (lexer) and <a href="https://www.gnu.org/software/bison/">Bison</a> (parser).</li>
+  <li><a href="https://llvm.org/docs/tutorial/MyFirstLanguageFrontend/index.html">My First Language Frontend with LLVM Tutorial</a> - Exactly what it says.</li>
+  <li>Lecture notes on <a href="https://cop3402fall20.github.io/lectures/03_toy_compiler.html">Writing a Toy Compiler</a>.</li>
+  <li><a href="https://www.twilio.com/blog/abstract-syntax-trees">ASTs - What they are and how to use them</a> - Engaging blog post on how ASTs work and dives further into other topics also covered here.</li>
+  <li><a href="https://godbolt.org/">GodBolt: Compiler Explorer</a> - Fantastic online IDE to view compiled assembly from high level languages.</li>
+  <li><a href="http://web.eecs.utk.edu/~azh/blog/teenytinycompiler1.html">Let’s make a Teeny Tiny compiler, part 1</a> - First part of a series showing how to make a compiler using Python. Trivial but approachable and demonstrative to learning compilers.</li>
+</ul>

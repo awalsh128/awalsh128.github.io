@@ -1,0 +1,181 @@
+<p>GitHub actions don’t support running tests on created actions from the same repository. In order to do this, another repository needs to be created. There is a way to test locally using <a href="https://github.com/nektos/act">nektos/act</a> but this doesn’t address code being committed upstream and continuously integrated. Let’s get to it.</p>
+
+<p>For this walkthrough, there will be two endpoints:</p>
+
+<ul>
+  <li>Action repository where your created action under test lives.</li>
+  <li>Test repository that houses the tests.</li>
+</ul>
+
+<p>The general idea is to have your action repository publish an event that says a push has occurred, relay it to the test repository which triggers tests on the test repository. For this example I am using my own recently published action <code class="language-plaintext highlighter-rouge">awalsh128/cache-apt-pkgs-action</code>. Feel free to swap out this with your equivalent action.</p>
+
+<p>The steps needed are to create:</p>
+
+<ul>
+  <li>a shared secret,</li>
+  <li>a staging (or another) branch besides master on the action repository,</li>
+  <li>a repository to run tests on your action code,</li>
+  <li>tests in your test repository,</li>
+  <li>a publish action in your action repository,</li>
+  <li>a subscriber action in your test repository.</li>
+</ul>
+
+<p>More details on each step below.</p>
+
+<h2 id="create-shared-secret">Create Shared Secret</h2>
+
+<p>A Personal Access Token (PAT) will allow the publisher (action repository) to trigger the event that the subscriber (test repository) will then act on. This shared secret will be needed so they can interact.</p>
+
+<p><a href="https://github.com/settings/tokens">Instructions to setup your PAT. Use the arguments below.</a></p>
+
+<p><code class="language-plaintext highlighter-rouge">Profile &gt; Settings &gt; Developer settings &gt; Personal Access Token &gt; Generate New Token</code></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Note</td>
+      <td>Publish push requests to awalsh128/cache-apt-pkgs-action-ci</td>
+    </tr>
+    <tr>
+      <td>Expiration</td>
+      <td>(whatever you choose this to be)</td>
+    </tr>
+    <tr>
+      <td>Access:</td>
+      <td><code class="language-plaintext highlighter-rouge">repo_public</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p><img src="/assets/img/2021-10-12-automated-testing-for-github-actions/personal_access_token.png" alt="Example PAT Config Screen" /></p>
+
+<p>Once you complete the configuration it will then show you what the value is. Note this isn’t my actual value, so don’t get any ideas. &gt;:|</p>
+
+<p><img src="/assets/img/2021-10-12-automated-testing-for-github-actions/personal_access_token_value.png" alt="Example PAT Value Screen" /></p>
+
+<p>We can now share this PAT / secret with the publisher.</p>
+
+<h2 id="publisher">Publisher</h2>
+
+<p>Turning our attention to the publisher side (action repository) of the event that will trigger the tests on the test repository.</p>
+
+<h3 id="store-shared-secret-on-publisher">Store Shared Secret on Publisher</h3>
+
+<p>In order for the action repository to publish the event to the test repository, it will need access to it. The PAT will need to be stored in a variable so it can be used in the action without actually revealing it’s value.</p>
+
+<p>To create a scecret, you can use a URL like below. Replace the <code class="language-plaintext highlighter-rouge">cache-apt-pkgs-action-ci</code> repository with your own test repository name.</p>
+
+<p><a href="https://github.com/awalsh128/cache-apt-pkgs-action-ci/settings/secrets/actions/new">https://github.com/awalsh128/cache-apt-pkgs-action-ci/settings/secrets/actions/new</a></p>
+
+<p>Use the arguments below when creating the secret.</p>
+
+<p><code class="language-plaintext highlighter-rouge">Settings &gt; Secrets &gt; New repository secret</code></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Name</td>
+      <td>TRIGGER_PUBLISH_STAGING_PR_TOKEN</td>
+    </tr>
+    <tr>
+      <td>Secret</td>
+      <td>(value taken from Create Shared Secret)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Here’s an example of the PAT we generated before.</p>
+
+<p><img src="/assets/img/2021-10-12-automated-testing-for-github-actions/secret.png" alt="Example PAT Value Screen" /></p>
+
+<h3 id="create-a-staging-branch-in-awalsh128cache-apt-pkgs-action">Create a <code class="language-plaintext highlighter-rouge">staging</code> branch in <code class="language-plaintext highlighter-rouge">awalsh128/cache-apt-pkgs-action</code></h3>
+
+<p>This will be used as a testing branch. Broken code can live here without going to <code class="language-plaintext highlighter-rouge">master</code>. It doesn’t have to be called <code class="language-plaintext highlighter-rouge">staging</code>, call it whatever you want (e.g. <code class="language-plaintext highlighter-rouge">dev</code>, <code class="language-plaintext highlighter-rouge">whatever</code>).</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git checkout <span class="nt">-b</span> staging
+git push origin staging
+git push <span class="nt">--set-upstream</span> origin staging
+</code></pre></div></div>
+
+<h3 id="create-publish-action">Create Publish Action</h3>
+
+<p>In the action repository, create <code class="language-plaintext highlighter-rouge">.github/workflows/staging_push.yml</code> workflow that will trigger on any push to staging.</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">name</span><span class="pi">:</span> <span class="s">Publish Staging Push Event</span>
+<span class="na">on</span><span class="pi">:</span>
+  <span class="c1"># Allow manual triggering for debugging.</span>
+  <span class="na">workflow_dispatch</span><span class="pi">:</span>
+  <span class="c1"># Publish when we see a push to staging.</span>
+  <span class="na">push</span><span class="pi">:</span>
+    <span class="na">branches</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">staging</span>
+
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">publish_event</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">Publish staging push</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="c1"># Note the event_type and URL secrets passed so the action repository </span>
+      <span class="c1"># is allowed to post to the test repository.</span>
+      <span class="pi">-</span> <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
+          <span class="s">curl -i \</span>
+            <span class="s">-X POST \</span>
+            <span class="s">-H "Accept: application/vnd.github.v3+json" \</span>
+            <span class="s">-H "Authorization: token ${{ secrets.PUBLISH_PUSH_TOKEN }}" \</span>
+            <span class="s">https://api.github.com/repos/awalsh128/cache-apt-pkgs-action-ci/dispatches \</span>
+            <span class="s">-d '{"event_type":"staging_push"}'</span>
+</code></pre></div></div>
+
+<h2 id="subscriber">Subscriber</h2>
+
+<p>Now on the subscriber (test repository), setup the tests and trigger to respond to the staging push.</p>
+
+<h3 id="create-repository-and-test">Create Repository and Test</h3>
+
+<ul>
+  <li>Create <code class="language-plaintext highlighter-rouge">awalsh128/cache-apt-pkgs-action-ci</code> repository (ci = continuous integration) for testing.</li>
+  <li>Create a workflow <code class="language-plaintext highlighter-rouge">.github/workflows/tests.yml</code> that subscribes to <code class="language-plaintext highlighter-rouge">staging_push</code> events and runs tests.</li>
+</ul>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">name</span><span class="pi">:</span> <span class="s">Staging Push Tests</span>
+<span class="na">on</span><span class="pi">:</span>
+  <span class="c1"># Allow for manual dispatches so we can test the workflow if needed.</span>
+  <span class="na">workflow_dispatch</span><span class="pi">:</span>
+  <span class="na">repository_dispatch</span><span class="pi">:</span>
+    <span class="c1"># Name of the event that will by pubsub'd.</span>
+    <span class="na">types</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">staging_push</span><span class="pi">]</span>
+
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">install</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">Install and cache.</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v2</span>
+      <span class="c1"># Note that the action uses the @staging version.</span>
+      <span class="c1"># Allows testing to happen on that branch so it can get pulled into master once it passes.</span>
+      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">awalsh128/cache-apt-pkgs-action@staging</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">packages</span><span class="pi">:</span> <span class="s">xdot rolldice</span>
+</code></pre></div></div>
+
+<p>That’s it. Now anytime code is pushed to staging on your action repository, it will trigger tests on your test repository.</p>
+
+<h2 id="more-resources">More Resources</h2>
+
+<ul>
+  <li><a href="https://docs.github.com/en/rest/reference/repos#create-a-repository-dispatch-event">Github: Create Repository Dispatch Event</a></li>
+  <li><a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token">Github: Create Personal Access Token</a></li>
+  <li><a href="https://blog.m157q.tw/posts/2020/07/16/make-one-github-actions-workflow-trigger-another-github-actions-workflow">Trigger Github Actions between Repositories</a></li>
+</ul>

@@ -1,0 +1,21 @@
+<p>I was recently putting some PowerShell scripts together for deployment
+and maintenance of software to our machine instances. One of the
+requirements was to be able to discover the service name from a Windows
+Service executable that uses
+<a href="https://msdn.microsoft.com/en-us/library/system.serviceprocess.serviceinstaller%28v=vs.110%29.aspx">ServiceInstaller</a>.
+I needed to be able to extract this value in a generic way in order to
+query the service and stop it if running. Here is what I was able to put
+together.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">Function</span><span class="w"> </span><span class="nf">Get-WindowsServiceName</span><span class="p">([</span><span class="n">string</span><span class="p">]</span><span class="nv">$exePath</span><span class="p">)</span><span class="w">
+</span><span class="p">{</span><span class="w">
+    </span><span class="nv">$assembly</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">System.Reflection.Assembly</span><span class="p">]::</span><span class="n">LoadFrom</span><span class="p">(</span><span class="nv">$exePath</span><span class="p">)</span><span class="w">
+    </span><span class="nv">$type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$assembly</span><span class="o">.</span><span class="nf">GetTypes</span><span class="p">()</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Where</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="bp">$_</span><span class="o">.</span><span class="nf">GetCustomAttributes</span><span class="p">([</span><span class="n">System.ComponentModel.RunInstallerAttribute</span><span class="p">],</span><span class="w"> </span><span class="nx">0</span><span class="p">)</span><span class="o">.</span><span class="nf">Length</span><span class="w"> </span><span class="o">-gt</span><span class="w"> </span><span class="nx">0</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Select</span><span class="w"> </span><span class="nt">-First</span><span class="w"> </span><span class="nx">1</span><span class="w">
+    </span><span class="nv">$installer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">System.Configuration.Install.Installer</span><span class="p">][</span><span class="n">Activator</span><span class="p">]::</span><span class="n">CreateInstance</span><span class="p">(</span><span class="nv">$type</span><span class="p">)</span><span class="w">
+    </span><span class="nv">$serviceInstaller</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">System.ServiceProcess.ServiceInstaller</span><span class="p">]</span><span class="nv">$installer</span><span class="o">.</span><span class="n">Installers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w">
+    </span><span class="nv">$serviceInstaller</span><span class="o">.</span><span class="nf">ServiceName</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Note that this doesn't support multiple installers in a single
+executable.</p>

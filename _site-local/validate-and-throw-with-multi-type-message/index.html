@@ -1,0 +1,136 @@
+<p>I was looking to validate and throw on invalid arguments in my code. This meant I had to write something like.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">foo</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">size</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">size</span> <span class="o">&gt;</span> <span class="k">this</span><span class="p">.</span><span class="n">current_size</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">invalid_argument</span><span class="p">(</span><span class="s">"Size cannot be greater than current size."</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="p">...</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Not so bad really but I also wanted to create a dynamically created message.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">foo</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">size</span><span class="p">)</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">size</span> <span class="o">&gt;</span> <span class="k">this</span><span class="p">.</span><span class="n">current_size</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">stringstream</span> <span class="n">text</span><span class="p">;</span>
+    <span class="n">text</span> <span class="o">&lt;&lt;</span> <span class="s">"Size "</span> <span class="o">&lt;&lt;</span> <span class="n">size</span> <span class="o">&lt;&lt;</span> <span class="s">" cannot be greater than current size of "</span> <span class="o">&lt;&lt;</span> <span class="k">this</span><span class="p">.</span><span class="n">current_size</span> <span class="o">&lt;&lt;</span> <span class="s">"."</span><span class="p">;</span>
+    <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">invalid_argument</span><span class="p">(</span><span class="n">text</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+  <span class="p">}</span>
+  <span class="p">...</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>We could shorten it…</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">validate</span><span class="p">(</span><span class="kt">bool</span> <span class="n">condition</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">condition</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">stringstream</span> <span class="n">text</span><span class="p">;</span>
+  <span class="n">text</span> <span class="o">&lt;&lt;</span> <span class="s">"Size "</span> <span class="o">&lt;&lt;</span> <span class="n">size</span> <span class="o">&lt;&lt;</span> <span class="s">" cannot be greater than current size of "</span> <span class="o">&lt;&lt;</span> <span class="k">this</span><span class="p">.</span><span class="n">current_size</span> <span class="o">&lt;&lt;</span> <span class="s">"."</span><span class="p">;</span>
+  <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">invalid_argument</span><span class="p">(</span><span class="n">text</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+<span class="p">}</span>
+<span class="kt">void</span> <span class="nf">foo</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">size</span><span class="p">)</span>
+  <span class="n">validate</span><span class="p">(</span><span class="n">size</span> <span class="o">&gt;</span> <span class="k">this</span><span class="p">.</span><span class="n">current_size</span><span class="p">);</span>
+  <span class="p">...</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>… but it isn’t very re-usable since the message is hardcoded.</p>
+
+<p>C++20 offers the ability to use <a href="https://en.cppreference.com/w/cpp/utility/format/format">std::format</a>.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">foo</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">size</span><span class="p">)</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">size</span> <span class="o">&gt;</span> <span class="k">this</span><span class="p">.</span><span class="n">current_size</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">invalid_argument</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">format</span><span class="p">(</span><span class="s">"Size {} cannot be greater than current size of {}."</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="n">current_size</span><span class="p">));</span>
+  <span class="p">}</span>
+  <span class="p">...</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Pretty nice, although for people not on that standard they are left with the previous validation approach. There is a different way to do it however.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">foo</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">size</span><span class="p">)</span>
+  <span class="n">invariant</span><span class="o">::</span><span class="n">eval</span><span class="p">(</span><span class="n">size</span> <span class="o">&gt;</span> <span class="k">this</span><span class="p">.</span><span class="n">current_size</span><span class="p">)</span> <span class="o">&lt;&lt;</span> 
+    <span class="s">"Size "</span> <span class="o">&lt;&lt;</span> <span class="n">size</span> <span class="o">&lt;&lt;</span> <span class="s">" cannot be greater than current size of "</span> <span class="o">&lt;&lt;</span> <span class="k">this</span><span class="p">.</span><span class="n">current_size</span> <span class="o">&lt;&lt;</span> <span class="s">"."</span><span class="p">;</span> 
+  <span class="p">...</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Here is how it is implemented.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">invariant</span>
+<span class="p">{</span>
+ <span class="nl">private:</span>
+  <span class="k">const</span> <span class="kt">bool</span> <span class="n">condition_</span><span class="p">;</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">stringstream</span> <span class="n">message_</span><span class="p">;</span>
+
+  <span class="n">invariant</span><span class="p">(</span><span class="kt">bool</span> <span class="n">condition</span><span class="p">)</span> <span class="o">:</span> <span class="n">condition_</span><span class="p">(</span><span class="n">condition</span><span class="p">),</span> <span class="n">message_</span><span class="p">()</span> <span class="p">{}</span>  
+  <span class="n">invariant</span><span class="p">()</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+  <span class="n">invariant</span><span class="p">(</span><span class="k">const</span> <span class="n">invariant</span> <span class="o">&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+
+ <span class="k">public</span><span class="o">:</span>
+  <span class="o">~</span><span class="n">invariant</span><span class="p">()</span> <span class="k">noexcept</span><span class="p">(</span><span class="nb">false</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">condition_</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="c1">// Living dangerously, guaranteed not to live on the stack though.</span>
+      <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">invalid_argument</span><span class="p">(</span><span class="n">message_</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">Text</span><span class="p">&gt;</span>
+  <span class="k">friend</span> <span class="n">invariant</span> <span class="o">&amp;&amp;</span><span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="n">invariant</span> <span class="o">&amp;&amp;</span><span class="n">item</span><span class="p">,</span> <span class="k">const</span> <span class="n">Text</span> <span class="o">&amp;</span><span class="n">text</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="n">item</span><span class="p">.</span><span class="n">message_</span> <span class="o">&lt;&lt;</span> <span class="n">text</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">item</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="k">static</span> <span class="n">invariant</span> <span class="nf">eval</span><span class="p">(</span><span class="kt">bool</span> <span class="n">condition</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="k">return</span> <span class="n">invariant</span><span class="p">(</span><span class="n">condition</span><span class="p">,</span> <span class="s">""</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>Not so bad maybe for pre C++20 but why have a throw in the destructor? This <a href="https://wiki.c2.com/?BewareOfExceptionsInTheDestructor">can be dangerous</a> since it is called when the stack unwinds.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="o">~</span><span class="n">invariant</span><span class="p">()</span> <span class="k">noexcept</span><span class="p">(</span><span class="nb">false</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">condition_</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="c1">// Living dangerously, guaranteed not to live on the stack though.</span>
+      <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">invalid_argument</span><span class="p">(</span><span class="n">message_</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+</code></pre></div></div>
+
+<p>The key is to make sure it never gets on the stack in the first place. This means making it never becomes an lvalue. <a href="https://herbsutter.com/2014/05/03/reader-qa-how-can-i-prevent-a-type-from-being-instantiated-on-the-stack/">Herb Sutter discusses this</a> strategy by ensuring that the object only ever can be an rvalue reference than cannot be copied or constructed. Here are the pieces that make this possible.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">invariant</span><span class="p">(</span><span class="kt">bool</span> <span class="n">condition</span><span class="p">)</span> <span class="o">:</span> <span class="n">condition_</span><span class="p">(</span><span class="n">condition</span><span class="p">),</span> <span class="n">message_</span><span class="p">()</span> <span class="p">{}</span>  
+  <span class="n">invariant</span><span class="p">()</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+  <span class="n">invariant</span><span class="p">(</span><span class="k">const</span> <span class="n">invariant</span> <span class="o">&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Lastly is getting the dynamic message input.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">Text</span><span class="p">&gt;</span>
+  <span class="k">friend</span> <span class="n">invariant</span> <span class="o">&amp;&amp;</span><span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="n">invariant</span> <span class="o">&amp;&amp;</span><span class="n">item</span><span class="p">,</span> <span class="k">const</span> <span class="n">Text</span> <span class="o">&amp;</span><span class="n">text</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="n">item</span><span class="p">.</span><span class="n">message_</span> <span class="o">&lt;&lt;</span> <span class="n">text</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">item</span><span class="p">);</span>
+  <span class="p">}</span>
+</code></pre></div></div>
+
+<p>Note how an rvalue reference is passed in and out. This ensures that it is never copied while also modifying the object’s <code class="language-plaintext highlighter-rouge">message</code> state.</p>
+
+<p>This exercise was fun and informative for myself but can be quite dangerous if not understood well and modified without such knowledge. There is also a safer alternative (well why didn’t you say so?!) using a variadic template via <a href="https://en.cppreference.com/w/cpp/language/parameter_pack">parameter pack</a>. You can find the answers to string concatenation on <a href="https://stackoverflow.com/questions/21806561/concatenating-strings-and-numbers-in-variadic-template-function">this StackOverflow post</a>. An adaptation from the top answer would look like.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span><span class="o">&lt;</span> <span class="k">typename</span> <span class="o">...</span><span class="nc">Args</span><span class="p">&gt;</span>
+<span class="kt">void</span> <span class="nf">invariant</span><span class="p">(</span><span class="kt">bool</span> <span class="n">condition</span><span class="p">,</span> <span class="k">const</span> <span class="n">Args</span><span class="o">&amp;</span><span class="p">...</span> <span class="n">args</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">condition</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">stringstream</span> <span class="n">message</span><span class="p">;</span>
+  <span class="k">using</span> <span class="n">List</span><span class="o">=</span> <span class="kt">int</span><span class="p">[];</span>
+  <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">List</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="p">((</span><span class="kt">void</span><span class="p">)(</span><span class="n">message</span> <span class="o">&lt;&lt;</span> <span class="n">args</span><span class="p">),</span> <span class="mi">0</span> <span class="p">)</span> <span class="p">...};</span>
+  <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">invalid_argument</span><span class="p">(</span><span class="n">message</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>   
+<span class="p">}</span>
+</code></pre></div></div>

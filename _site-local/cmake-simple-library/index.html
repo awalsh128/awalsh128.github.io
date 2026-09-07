@@ -1,0 +1,120 @@
+<h2 id="motivation">Motivation</h2>
+
+<p>There are already some tutorials and examples of setting up a CMake project already but I work very much ny example and then deep dive later. It’s just how my brain works I guess. So let’s skim the waters.</p>
+
+<h2 id="assumptions">Assumptions</h2>
+
+<p>This example uses the follow dev stack.</p>
+
+<ul>
+  <li>CMake (obviously)</li>
+  <li>C++ code.</li>
+  <li>Catch2 testing framework (<a href="https://github.com/catchorg/Catch2">GitHub</a>).</li>
+</ul>
+
+<p>The file layout has subdirectory for source code and tests, each with their own CMake file and one at the root level.</p>
+
+<pre><code class="language-txt">CMakeLists.txt
+tests
+├── CMakeLists.txt
+└── mylib_test.cpp
+src
+├── CMakeLists.txt
+├── mylib.h
+└── mylib.h
+</code></pre>
+
+<h2 id="configuration">Configuration</h2>
+
+<p>Here is the whole configuration in its respective files.</p>
+
+<p><code class="language-plaintext highlighter-rouge">/CMakeLists.txt</code></p>
+
+<div class="language-cmake highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cmake_minimum_required</span><span class="p">(</span>VERSION 3.16.3<span class="p">)</span>
+
+<span class="nb">include</span><span class="p">(</span>GNUInstallDirs<span class="p">)</span>     <span class="c1"># Make CMAKE_INSTALL_*DIR variables available.</span>
+<span class="nb">set</span><span class="p">(</span>CMAKE_CXX_STANDARD 20<span class="p">)</span>  <span class="c1"># Use standard C++20 for compilation.</span>
+
+<span class="nb">project</span><span class="p">(</span>mylib VERSION 0.1 DESCRIPTION <span class="s2">"My library is a library that you can use as a library."</span><span class="p">)</span>
+
+<span class="c1"># Make the src directory available for include lookup.</span>
+<span class="nb">include_directories</span><span class="p">(</span>src<span class="p">)</span>
+
+<span class="c1"># Tell CMake to include the /src/CMakeLists.txt file in the build.</span>
+<span class="nb">add_subdirectory</span><span class="p">(</span>src<span class="p">)</span>
+
+<span class="c1"># Must live in the top level file or tests won't be found.</span>
+<span class="nb">include</span><span class="p">(</span>CTest<span class="p">)</span>  <span class="c1"># Automatically invokes enable_testing()</span>
+<span class="c1"># Tell CMake to include the /tests/CMakeLists.txt file in the build.</span>
+<span class="nb">add_subdirectory</span><span class="p">(</span>tests<span class="p">)</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">/src/CMakeLists.txt</code></p>
+
+<div class="language-cmake highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">message</span><span class="p">(</span>STATUS <span class="s2">"Building and installing library."</span><span class="p">)</span>
+
+<span class="c1"># Add library to build.</span>
+<span class="c1">#</span>
+<span class="c1"># STATIC rolls all code (including related includes) into a single compiled object.</span>
+<span class="c1"># SHARED rolls only mylib code into a single compiled object.</span>
+<span class="c1">#</span>
+<span class="c1"># https://stackoverflow.com/questions/2649334/difference-between-static-and-shared-libraries</span>
+<span class="c1">#</span>
+<span class="c1"># If you are using a different type of library than STATIC, make sure to look into how the target properties and </span>
+<span class="c1"># install will be different. For example https://cmake.org/cmake/help/latest/command/install.html</span>
+<span class="c1">#</span>
+<span class="nb">add_library</span><span class="p">(</span>mylib STATIC mylib.h mylib.cpp<span class="p">)</span>
+
+<span class="nb">set_target_properties</span><span class="p">(</span>mylib PROPERTIES
+  VERSION <span class="si">${</span><span class="nv">PROJECT_VERSION</span><span class="si">}</span>  <span class="c1"># Already set in the parent CMakeLists.txt via 'project'.</span>
+  PUBLIC_HEADER mylib.h       <span class="c1"># Pulic headers you intend other projects to include.</span>
+  CXX_STANDARD_REQUIRED 20<span class="p">)</span>   <span class="c1"># Enforce the C++20 standard to compile against.</span>
+
+<span class="nb">install</span><span class="p">(</span>TARGETS mylib
+  <span class="c1"># Used for STATIC library headers.</span>
+  ARCHIVE DESTINATION <span class="si">${</span><span class="nv">CMAKE_INSTALL_LIBDIR</span><span class="si">}</span> COMPONENT lib
+  <span class="c1"># Rolled code lives here.</span>
+  PUBLIC_HEADER DESTINATION <span class="si">${</span><span class="nv">CMAKE_INSTALL_INCLUDEDIR</span><span class="si">}</span>/mylib COMPONENT dev<span class="p">)</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">/tests/CMakeLists.txt</code></p>
+
+<div class="language-cmake highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">include</span><span class="p">(</span>FetchContent<span class="p">)</span>
+
+<span class="nb">message</span><span class="p">(</span>STATUS <span class="s2">"Building tests."</span><span class="p">)</span>
+
+<span class="c1"># Pull in the Catch2 framework.</span>
+<span class="nf">FetchContent_Declare</span><span class="p">(</span>
+  Catch2
+  GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+  GIT_TAG        v3.0.0-preview3<span class="p">)</span>
+<span class="nf">FetchContent_MakeAvailable</span><span class="p">(</span>Catch2<span class="p">)</span>
+
+<span class="c1"># Most all test frameworks create a binary that then runs the tests.</span>
+<span class="c1"># This is a simple expression of that and nothing special to tests themselves.</span>
+<span class="c1">#</span>
+<span class="c1"># In this framework, Catch2 provides a main function as executable entry point.</span>
+<span class="nb">add_executable</span><span class="p">(</span>query_tests mylib_test.cpp<span class="p">)</span>
+
+<span class="c1"># Link the included libraries in for the tests.</span>
+<span class="nb">target_link_libraries</span><span class="p">(</span>my_tests PUBLIC Catch2 Catch2WithMain mylib<span class="p">)</span>
+
+<span class="nb">add_test</span><span class="p">(</span>NAME tests COMMAND query_tests<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="more-resources">More Resources</h2>
+
+<p>Here are some more examples to help you along.</p>
+
+<ul>
+  <li><a href="https://github.com/dev-cafe/cmake-cookbook">Dev Cafe: CMake Cookbook Examples</a></li>
+  <li><a href="https://github.com/search?q=filename%3ACMakeLists.txt">GitHub: CMakeLists.txt Search</a></li>
+  <li>CMake Documentation
+    <ul>
+      <li><a href="https://cmake.org/cmake/help/latest/command/add_library.html">add_library</a></li>
+      <li><a href="https://cmake.org/cmake/help/latest/command/add_test.html">add_test</a></li>
+      <li><a href="https://cmake.org/cmake/help/latest/command/install.html">install</a></li>
+      <li><a href="https://cmake.org/cmake/help/latest/command/set_target_properties.html">set_target_properties</a></li>
+    </ul>
+  </li>
+</ul>

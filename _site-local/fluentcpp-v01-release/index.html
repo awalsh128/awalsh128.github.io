@@ -1,0 +1,60 @@
+<h2 id="motivation">Motivation</h2>
+
+<p>I had been wanting to make a library to express data transformation in a fluent way. The STL already has some functions for this. For example, if I wanted to transform a sequence and then filter based on a conditional I would do this.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">xs</span><span class="p">;</span>
+<span class="c1">// Add int to xs.</span>
+<span class="n">std</span><span class="o">::</span><span class="n">transform</span><span class="p">(</span>
+  <span class="n">xs</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">xs</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span>
+  <span class="p">[](</span><span class="k">auto</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="o">++</span><span class="n">x</span><span class="p">;</span> <span class="p">});</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">filtered</span><span class="p">;</span>
+<span class="n">filtered</span><span class="p">.</span><span class="n">reserve</span><span class="p">(</span><span class="n">xs</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
+<span class="n">std</span><span class="o">::</span><span class="n">copy_if</span><span class="p">(</span>
+  <span class="n">xs</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">xs</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">back_inserter</span><span class="p">(</span><span class="n">filtered</span><span class="p">),</span>
+  <span class="p">[](</span><span class="k">auto</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">;</span> <span class="p">});</span>
+</code></pre></div></div>
+
+<p>This is indeed a functional approach to expressing data transformations. It applies functions to data sets and without side effects (as long as you don’t cause any in the lambda). Although, there can also be a lot of boilerplate if you just wants the entire range of the container. Also, it is not always obvious from first glance what the inputs and outputs are to the function because it doesn’t follow the typical <code class="language-plaintext highlighter-rouge">f(a,b) = c</code> mathematical format. This doesn’t make it less functional but perhaps less readable.</p>
+
+<p>The library that I put together uses a different approach that addresses some of these concerns.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;fluentcpp/query.h&gt;</span><span class="cp">
+</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">xs</span><span class="p">;</span>
+<span class="c1">// Add int to xs.</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">filtered</span> <span class="o">=</span>
+  <span class="n">fcpp</span><span class="o">::</span><span class="n">query</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">xs</span><span class="p">))</span>
+    <span class="p">.</span><span class="n">select</span><span class="p">([](</span><span class="k">auto</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="o">++</span><span class="n">x</span><span class="p">;</span> <span class="p">})</span>
+    <span class="p">.</span><span class="n">where</span><span class="p">([](</span><span class="k">auto</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">;</span> <span class="p">});</span>
+</code></pre></div></div>
+
+<p>This style is patterned after the <a href="https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/">.NET LINQ framework</a> something I had become very accustomed to before programming in C++ full time.</p>
+
+<h2 id="initial-release">Initial Release</h2>
+
+<p><a href="https://github.com/awalsh128/fluentcpp/releases/tag/v0.1">Version 0.1 is now available on GitHub</a>. As mentioned in the repository <a href="https://github.com/awalsh128/fluentcpp#installing">README.md</a>, you can easily install the library with the instructions below.</p>
+
+<ul>
+  <li>Go to <a href="https://github.com/awalsh128/fluentcpp/releases">the release</a> you want to install.</li>
+  <li>Download the <code class="language-plaintext highlighter-rouge">fluentcpp-&lt;tag&gt;.tar.gz</code> file.</li>
+  <li>Decompress the file in the directory <code class="language-plaintext highlighter-rouge">tar -xvzf fluentcpp-&lt;tag&gt;.tar.gz</code>.</li>
+  <li>Run the install command <code class="language-plaintext highlighter-rouge">sudo ./install.sh</code>.</li>
+  <li>The library files are now installed on your system and can be used as in the examples.</li>
+</ul>
+
+<h2 id="caveats">Caveats</h2>
+
+<p>Since this is an initial release, there are some drawbacks to using this over the STL functional library or just older C++ constructs (e.g. for-loops).</p>
+
+<ul>
+  <li>Memory semantics are strictly by reference and move. This is intentional to accomodate the strictest object constructor and assignment declarations (i.e. no copy and move).</li>
+  <li>Strict memory semantics has implications for fundamental types where copy is more efficient.</li>
+  <li>Performance has not been benchmarked yet so it is unknown how it performs against the alternatives.</li>
+  <li>Static analysis hints can still seem obscure. While they depend on the STL <a href="https://en.cppreference.com/w/cpp/concepts">concepts</a> enforced, the wording can be confusing across the interface.</li>
+</ul>
+
+<h2 id="feedback">Feedback</h2>
+
+<p>I hope this proves useful to people and can become a wider community effort. It is primarily a proof of concept work and needs more to demonstrate it can be used in production code with similar performance to the status quo.</p>
