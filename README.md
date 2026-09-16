@@ -13,29 +13,6 @@ This site is intended for local preview and static generation, not for GitHub Pa
 
 On Debian/Ubuntu, the local helper script can install the required packages if missing:
 
-```bash
-./scripts/local-preview.sh
-```
-
-### Commands
-
-```bash
-# run local preview server
-npm run preview
-
-# build static output locally without deploying
-npm run build:local
-```
-
-You can also run the script directly:
-
-```bash
-./scripts/local-preview.sh serve
-./scripts/local-preview.sh build
-```
-
-The local build output is written to `_site-local`.
-
 ## Notes
 
 - The build uses a repo-local Bundler cache under `.bundle` to avoid system gem permission issues.
