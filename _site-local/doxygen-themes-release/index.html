@@ -1,0 +1,70 @@
+<p>I just released a new project on GitHub called <a href="https://github.com/awalsh128/doxygen-themes">doxygen-themes</a> which allows users to customize Doxygen styling and colors using some example templates, including a stylesheet boiled down to a few color variables.</p>
+
+<p><a href="https://github.com/awalsh128/doxygen-themes/CONTRIBUTING.md">Contributions</a> are definitely welcome. For the lazy, here is the README.md below.</p>
+
+<p>Some sample Doxygen themes using Bootstrap 5 with different approaches to CSS use. Not all of the HTML is Bootstrap though, just the header and footer with Bootstrap like coloring applied to the body elements.</p>
+
+<hr />
+
+<p><a href="https://www.awalsh128.com/doxygen-themes/">Click here for the demo landing page.</a>.</p>
+
+<hr />
+
+<h2 id="documentation">Documentation</h2>
+
+<p>This project is a demonstration of possible approaches to theming Doxygen generated websites. Frameworks other than Bootstrap can be used, this is just an example of what is possible.</p>
+
+<ul>
+  <li>Applied directly.</li>
+  <li>Root variables applied.</li>
+  <li>Simple color palette propagated.</li>
+</ul>
+
+<h2 id="pre-requisites">Pre-requisites</h2>
+
+<ul>
+  <li>CMake - Build the project and create the website.</li>
+  <li>Doxygen - Create the website documentation.</li>
+</ul>
+
+<h2 id="components">Components</h2>
+
+<p>All components use CDN links to keep project file overhead low.</p>
+
+<ul>
+  <li>Bootstrap - Styles the header and footer. Also provides the primary colors for the Doxygen classes.</li>
+  <li>Font Awesome - Header icons.</li>
+  <li>jQuery - Required by Bootstrap and used for the custom palette picker.</li>
+</ul>
+
+<h2 id="sample-css">Sample CSS</h2>
+
+<p>Below is the CSS used for the Neon Pink theme.</p>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">:root</span> <span class="p">{</span>
+  <span class="py">--color-body</span><span class="p">:</span> <span class="nx">#bda9a9</span><span class="p">;</span>
+  <span class="py">--color-hyperlink</span><span class="p">:</span> <span class="nx">#ffffff</span><span class="p">;</span>
+  <span class="py">--color-title-background</span><span class="p">:</span> <span class="nx">#8a1253</span><span class="p">;</span>
+  <span class="py">--color-title-text</span><span class="p">:</span> <span class="nx">#ffffff</span><span class="p">;</span>
+  <span class="py">--color-footer-header-background</span><span class="p">:</span> <span class="nx">#c51350</span><span class="p">;</span>
+  <span class="py">--color-footer-header-text</span><span class="p">:</span> <span class="nx">#ffffff</span><span class="p">;</span>
+  <span class="py">--color-section-header-background</span><span class="p">:</span> <span class="nx">#e8751a</span><span class="p">;</span>
+  <span class="py">--color-section-header-text</span><span class="p">:</span> <span class="nx">#ffffff</span><span class="p">;</span>
+  <span class="py">--color-section-subheader-background</span><span class="p">:</span> <span class="nx">#fda403</span><span class="p">;</span>
+  <span class="py">--color-section-subheader-text</span><span class="p">:</span> <span class="nx">#ffffff</span><span class="p">;</span>
+  <span class="py">--color-section-text</span><span class="p">:</span> <span class="nx">#ffffff</span><span class="p">;</span>
+  <span class="py">--color-section-background</span><span class="p">:</span> <span class="nx">#bd9a9a</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Notice how there is a lot of <code class="language-plaintext highlighter-rouge">#ffffff</code> in there. This could probably be further simplified.</p>
+
+<h3 id="future-ideas">Future Ideas</h3>
+
+<p>There are a lot of CSS features <a href="https://developer.mozilla.org/en-US/docs/Web/CSS">that can be found</a>. Some ways to simplify the palette even more.</p>
+
+<ul>
+  <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/filter-function">Filter Functions</a> - Allows for different affects and interesting functions like <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/filter-function/brightness()">brightness</a>.</li>
+  <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/hsl()">HSL Scheme</a> - Makes darkening and lightening easier.</li>
+  <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/calc()">Arithmetic</a> - Useful for modifying color values.</li>
+</ul>
