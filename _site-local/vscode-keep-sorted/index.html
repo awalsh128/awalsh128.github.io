@@ -1,0 +1,380 @@
+<table width="100%">
+  <tr>
+    <td width="48"><img src="/assets/img/2025-12-25-vscode-keep-sorted/logo.png" alt="Logo" width="48" height="48" /></td>
+    <td style="padding-left:1em"><h1>VSCode Keep Sorted Extension 0.0.1 Released</h1></td>
+  </tr>
+</table>
+
+<p>I recently released lightweight VS Code extension that automatically keeps sorted blocks in your code organized using
+<strong><a href="https://github.com/google/keep-sorted">Google’s Keep Sorted</a></strong> formatter, seeing a gap in an available extension that
+handles code blocks generically and with options to modify behavior.</p>
+
+<p>The extension has pretty comprehensive code coverage, diagnostics and error handling to create a more reliable
+extension.</p>
+
+<p>It is a language agnostic sorting tool, working in any programming language or file type that provides:</p>
+
+<ul>
+  <li>🔍 <strong>Automatic Detection</strong>: Recognizes <code class="language-plaintext highlighter-rouge">// keep-sorted start</code> and <code class="language-plaintext highlighter-rouge">// keep-sorted end</code> blocks in any file type</li>
+  <li>💡 <strong>Quick Fix Actions</strong>: To sort just the block, the entire file or the entire workspace.</li>
+  <li>✨ <strong>Autocomplete for Options</strong>: Get intelligent suggestions for keep-sorted options when typing on a
+<code class="language-plaintext highlighter-rouge">keep-sorted start</code> line</li>
+  <li>📊 <strong>Real-time Diagnostics</strong>
+    <ul>
+      <li>Shows warnings with squiggly underlines for unsorted content</li>
+      <li>Logging integration with VSCode with severity levels for general information and debugging</li>
+    </ul>
+  </li>
+  <li>⚡ <strong>Performance Optimized</strong>
+    <ul>
+      <li>Uses native binaries for fast sorting operations for x86, ARM, Darwin and Windows</li>
+      <li>No outside libraries required to be brought into the development environment (i.e. Go compiler).</li>
+    </ul>
+  </li>
+  <li>🎛️ <strong>Flexible Configuration</strong>: File exclusion patterns, enable/disable toggle, and optional file logging</li>
+</ul>
+
+<p>See http://github.com/awalsh128/vscode-keep-sorted/README.md for the complete documentation of the extension.</p>
+
+<h2 id="examples">Examples</h2>
+
+<h3 id="basic-sorting">Basic Sorting</h3>
+
+<h4 id="javascripttypescript-imports">JavaScript/TypeScript Imports</h4>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// keep-sorted start</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Component</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@angular/core</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">HttpClient</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@angular/common/http</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Observable</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">rxjs</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">fs</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">fs</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">path</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">path</span><span class="dl">"</span><span class="p">;</span>
+<span class="c1">// keep-sorted end</span>
+</code></pre></div></div>
+
+<h4 id="python-imports">Python Imports</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># keep-sorted start
+</span><span class="kn">import</span> <span class="n">json</span>
+<span class="kn">import</span> <span class="n">os</span>
+<span class="kn">import</span> <span class="n">sys</span>
+<span class="kn">from</span> <span class="n">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="n">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span>
+<span class="c1"># keep-sorted end
+</span></code></pre></div></div>
+
+<h3 id="case-insensitive-sorting">Case-Insensitive Sorting</h3>
+
+<p>Use <code class="language-plaintext highlighter-rouge">case=no</code> to sort without considering case:</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// keep-sorted start case=no</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">ComponentA</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./components</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">utilityB</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./utils</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">ServiceC</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./services</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">helperD</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./helpers</span><span class="dl">"</span><span class="p">;</span>
+<span class="c1">// keep-sorted end</span>
+</code></pre></div></div>
+
+<h3 id="numeric-sorting">Numeric Sorting</h3>
+
+<p>Use <code class="language-plaintext highlighter-rouge">numeric=yes</code> to sort numbers by their numeric value instead of lexically:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># keep-sorted start numeric=yes
+</span><span class="n">item_1</span> <span class="o">=</span> <span class="sh">"</span><span class="s">first</span><span class="sh">"</span>
+<span class="n">item_5</span> <span class="o">=</span> <span class="sh">"</span><span class="s">fifth</span><span class="sh">"</span>
+<span class="n">item_10</span> <span class="o">=</span> <span class="sh">"</span><span class="s">tenth</span><span class="sh">"</span>
+<span class="n">item_50</span> <span class="o">=</span> <span class="sh">"</span><span class="s">fiftieth</span><span class="sh">"</span>
+<span class="n">item_100</span> <span class="o">=</span> <span class="sh">"</span><span class="s">hundredth</span><span class="sh">"</span>
+<span class="c1"># keep-sorted end
+</span></code></pre></div></div>
+
+<h3 id="block-sorting">Block Sorting</h3>
+
+<p>Use <code class="language-plaintext highlighter-rouge">block=yes</code> to sort complex multi-line blocks like structs or objects:</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// keep-sorted start block=yes</span>
+<span class="kd">const</span> <span class="nx">widgets</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="p">{</span>
+    <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">alpha</span><span class="dl">"</span><span class="p">,</span>
+    <span class="na">value</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">beta</span><span class="dl">"</span><span class="p">,</span>
+    <span class="na">value</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">delta</span><span class="dl">"</span><span class="p">,</span>
+    <span class="na">value</span><span class="p">:</span> <span class="mi">150</span><span class="p">,</span>
+  <span class="p">},</span>
+<span class="p">];</span>
+<span class="c1">// keep-sorted end</span>
+</code></pre></div></div>
+
+<h3 id="prefix-ordering">Prefix Ordering</h3>
+
+<p>Use <code class="language-plaintext highlighter-rouge">prefix_order</code> to control the order of specific prefixes:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// keep-sorted start prefix_order=INIT_,,FINAL_</span>
+<span class="nx">INIT_DATABASE</span><span class="p">,</span> <span class="nx">INIT_LOGGING</span><span class="p">,</span> <span class="nx">PROCESS_DATA</span><span class="p">,</span> <span class="nx">VALIDATE_INPUT</span><span class="p">,</span> <span class="nx">FINAL_CLEANUP</span><span class="p">,</span> <span class="nx">FINAL_SHUTDOWN</span><span class="p">;</span>
+<span class="c1">// keep-sorted end</span>
+</code></pre></div></div>
+
+<h3 id="ignore-prefixes">Ignore Prefixes</h3>
+
+<p>Use <code class="language-plaintext highlighter-rouge">ignore_prefixes</code> to ignore certain prefixes when sorting:</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// keep-sorted start ignore_prefixes=const,let,var</span>
+<span class="kd">const</span> <span class="nx">apple</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="kd">let</span> <span class="nx">banana</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">cherry</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">date</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+<span class="c1">// keep-sorted end</span>
+</code></pre></div></div>
+
+<h3 id="custom-grouping">Custom Grouping</h3>
+
+<p>Use <code class="language-plaintext highlighter-rouge">group_prefixes</code> to keep related lines together:</p>
+
+<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!-- keep-sorted start group_prefixes=and,with --&gt;</span>
+
+hamburger with lettuce and tomatoes peanut butter and jelly spaghetti with meatballs
+
+<span class="c">&lt;!-- keep-sorted end --&gt;</span>
+</code></pre></div></div>
+
+<h3 id="newline-separated">Newline Separated</h3>
+
+<p>Use <code class="language-plaintext highlighter-rouge">newline_separated=yes</code> to add blank lines between sorted items:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># keep-sorted start newline_separated=yes
+</span><span class="k">def</span> <span class="nf">calculate_total</span><span class="p">():</span>
+    <span class="k">pass</span>
+
+<span class="k">def</span> <span class="nf">process_data</span><span class="p">():</span>
+    <span class="k">pass</span>
+
+<span class="k">def</span> <span class="nf">validate_input</span><span class="p">():</span>
+    <span class="k">pass</span>
+<span class="c1"># keep-sorted end
+</span></code></pre></div></div>
+
+<h3 id="skip-lines">Skip Lines</h3>
+
+<p>Use <code class="language-plaintext highlighter-rouge">skip_lines=N</code> to skip header lines (useful for tables):</p>
+
+<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!-- keep-sorted start skip_lines=2 --&gt;</span>
+
+| Name  | Value |
+| ----- | ----- |
+| Alpha | 100   |
+| Beta  | 200   |
+| Delta | 150   |
+| Gamma | 175   |
+
+<span class="c">&lt;!-- keep-sorted end --&gt;</span>
+</code></pre></div></div>
+
+<h3 id="sticky-comments">Sticky Comments</h3>
+
+<p>Comments stick with the line below them by default:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># keep-sorted start
+# Configuration for production
+</span><span class="n">PROD_URL</span> <span class="o">=</span> <span class="sh">"</span><span class="s">https://prod.example.com</span><span class="sh">"</span>
+<span class="c1"># Configuration for staging
+</span><span class="n">STAGING_URL</span> <span class="o">=</span> <span class="sh">"</span><span class="s">https://staging.example.com</span><span class="sh">"</span>
+<span class="c1"># Configuration for development
+</span><span class="n">DEV_URL</span> <span class="o">=</span> <span class="sh">"</span><span class="s">http://localhost:3000</span><span class="sh">"</span>
+<span class="c1"># keep-sorted end
+</span></code></pre></div></div>
+
+<h3 id="regular-expression-sorting">Regular Expression Sorting</h3>
+
+<p>Use <code class="language-plaintext highlighter-rouge">by_regex</code> to sort based on specific patterns:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// keep-sorted start by_regex=\w+;</span>
+<span class="nc">String</span> <span class="n">bar</span><span class="o">;</span>
+<span class="nc">Object</span> <span class="n">baz</span><span class="o">;</span>
+<span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">foo</span><span class="o">;</span>
+<span class="c1">// keep-sorted end</span>
+</code></pre></div></div>
+
+<h3 id="remove-duplicates">Remove Duplicates</h3>
+
+<p>Duplicates are removed by default, but you can disable it:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># keep-sorted start remove_duplicates=no</span>
+<span class="pi">-</span> <span class="s">apple</span>
+<span class="pi">-</span> <span class="s">apple</span>
+<span class="pi">-</span> <span class="s">banana</span>
+<span class="pi">-</span> <span class="s">banana</span>
+<span class="pi">-</span> <span class="s">cherry</span>
+<span class="c1"># keep-sorted end</span>
+</code></pre></div></div>
+
+<h2 id="usage">Usage</h2>
+
+<p>IMPORTANT: See <a href="https://github.com/google/keep-sorted?tab=readme-ov-file#options">google/keep-sorted#options</a> for
+complete documentation on all the options that are available.</p>
+
+<h3 id="setting-up-keep-sorted-blocks">Setting Up Keep Sorted Blocks</h3>
+
+<p>Add keep-sorted markers around the content you want to keep sorted:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// keep-sorted start</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">zebra</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./animals</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">apple</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./fruits</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">car</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./vehicles</span><span class="dl">"</span><span class="p">;</span>
+<span class="c1">// keep-sorted end</span>
+</code></pre></div></div>
+
+<p>The extension will detect when these blocks are not properly sorted and provide automatic fixes.</p>
+
+<h3 id="sorting-methods">Sorting Methods</h3>
+
+<h4 id="1-quick-fixes-lightbulb">1. Quick Fixes (Lightbulb)</h4>
+
+<p>When the extension detects unsorted content:</p>
+
+<ol>
+  <li>A warning squiggle appears under the unsorted block</li>
+  <li>Click the lightbulb 💡 icon or press <code class="language-plaintext highlighter-rouge">Ctrl+.</code> / <code class="language-plaintext highlighter-rouge">Cmd+.</code></li>
+  <li>Choose from available actions:
+    <ul>
+      <li><strong>“Sort all lines in block (keep-sorted)”</strong> - Sorts just the selected block</li>
+      <li><strong>“Sort all lines in file (keep-sorted)”</strong> - Sorts all keep-sorted blocks in the file</li>
+    </ul>
+  </li>
+</ol>
+
+<h4 id="2-command-palette">2. Command Palette</h4>
+
+<p>Use <code class="language-plaintext highlighter-rouge">Ctrl+Shift+P</code> / <code class="language-plaintext highlighter-rouge">Cmd+Shift+P</code> and search for:</p>
+
+<ul>
+  <li><strong>“Keep Sorted: Fix Current File”</strong> - Sort all keep-sorted blocks in the active file</li>
+  <li><strong>“Keep Sorted: Fix Entire Workspace”</strong> - Sort all keep-sorted blocks across all workspace files</li>
+</ul>
+
+<h4 id="3-problems-panel">3. Problems Panel</h4>
+
+<ol>
+  <li>Open the Problems panel (<code class="language-plaintext highlighter-rouge">Ctrl+Shift+M</code> / <code class="language-plaintext highlighter-rouge">Cmd+Shift+M</code>)</li>
+  <li>Look for keep-sorted warnings</li>
+  <li>Use “Quick Fix” or “Fix All” options directly from the panel</li>
+</ol>
+
+<h3 id="supported-file-types">Supported File Types</h3>
+
+<p>Keep Sorted works with any file type and is language agnostic. Common use cases include:</p>
+
+<ul>
+  <li>import statements,</li>
+  <li>lists,</li>
+  <li>top level file types and classes, and</li>
+  <li>many more.</li>
+</ul>
+
+<h2 id="troubleshooting">Troubleshooting</h2>
+
+<h3 id="extension-not-working">Extension Not Working?</h3>
+
+<ol>
+  <li>
+    <p><strong>Check Extension Status</strong></p>
+
+    <ul>
+      <li>Ensure the extension is enabled in VS Code</li>
+      <li>Verify <code class="language-plaintext highlighter-rouge">keep-sorted.enabled</code> is set to <code class="language-plaintext highlighter-rouge">true</code> in settings</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>No Diagnostics Appearing?</strong></p>
+
+    <ul>
+      <li>Make sure your blocks use the correct syntax: <code class="language-plaintext highlighter-rouge">// keep-sorted start</code> and <code class="language-plaintext highlighter-rouge">// keep-sorted end</code></li>
+      <li>Check if files are excluded via <code class="language-plaintext highlighter-rouge">keep-sorted.exclude</code> patterns</li>
+      <li>Verify the file is saved (diagnostics appear after save)</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Commands Not Available?</strong></p>
+
+    <ul>
+      <li>Open Command Palette (<code class="language-plaintext highlighter-rouge">Ctrl+Shift+P</code> / <code class="language-plaintext highlighter-rouge">Cmd+Shift+P</code>) and search for “Keep Sorted”</li>
+      <li>If commands don’t appear, try reloading VS Code (<code class="language-plaintext highlighter-rouge">Developer: Reload Window</code>)</li>
+      <li>Verify the extension is activated (check status bar or Extensions view)</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Performance Issues?</strong></p>
+
+    <ul>
+      <li>Add problematic file patterns to <code class="language-plaintext highlighter-rouge">keep-sorted.exclude</code></li>
+      <li>Check VS Code’s Output panel (select “Keep Sorted” from dropdown) for error messages</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Viewing Extension Logs</strong></p>
+    <ul>
+      <li>Open the Output panel: <code class="language-plaintext highlighter-rouge">View</code> → <code class="language-plaintext highlighter-rouge">Output</code> or <code class="language-plaintext highlighter-rouge">Ctrl+Shift+U</code> / <code class="language-plaintext highlighter-rouge">Cmd+Shift+U</code></li>
+      <li>Select “Keep Sorted” from the dropdown menu</li>
+      <li>Logs show extension activity, errors, and diagnostic information</li>
+      <li>For persistent logs, configure <code class="language-plaintext highlighter-rouge">keep-sorted.logFilepath</code> in settings</li>
+    </ul>
+  </li>
+</ol>
+
+<h3 id="fixes-are-malformed">Fixes Are Malformed</h3>
+
+<p>This is usually due to the underlying Google <code class="language-plaintext highlighter-rouge">keep-sorted</code> command itself and have an incorrect block setup.</p>
+
+<p>An example where the block isn’t inside the list.</p>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># keep-sorted start
+</span><span class="n">items</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="sh">'</span><span class="s">zebra</span><span class="sh">'</span><span class="p">,</span>
+  <span class="sh">'</span><span class="s">alpha</span><span class="sh">'</span><span class="p">,</span>
+  <span class="sh">'</span><span class="s">delta</span><span class="sh">'</span><span class="p">,</span>
+  <span class="sh">'</span><span class="s">beta</span><span class="sh">'</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="c1"># keep-sorted end
+</span></code></pre></div></div>
+
+<p>Breaks the syntax because non-alphanumeric characters have precedence in the sort order.</p>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># keep-sorted start
+</span><span class="p">],</span>
+<span class="n">items</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="sh">'</span><span class="s">zebra</span><span class="sh">'</span><span class="p">,</span>
+  <span class="sh">'</span><span class="s">alpha</span><span class="sh">'</span><span class="p">,</span>
+  <span class="sh">'</span><span class="s">delta</span><span class="sh">'</span><span class="p">,</span>
+  <span class="sh">'</span><span class="s">beta</span><span class="sh">'</span>
+<span class="c1"># keep-sorted end
+</span></code></pre></div></div>
+
+<p>The command is working correctly but the declaration is incorrect. The correct block setup should be.</p>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">items</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="c1"># keep-sorted start
+</span>  <span class="sh">'</span><span class="s">zebra</span><span class="sh">'</span><span class="p">,</span>
+  <span class="sh">'</span><span class="s">alpha</span><span class="sh">'</span><span class="p">,</span>
+  <span class="sh">'</span><span class="s">delta</span><span class="sh">'</span><span class="p">,</span>
+  <span class="sh">'</span><span class="s">beta</span><span class="sh">'</span><span class="p">,</span>
+  <span class="c1"># keep-sorted end
+</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>To ensure your statements are correct see
+<a href="https://github.com/google/keep-sorted?tab=readme-ov-file#options">google/keep-sorted#options</a> for more information.</p>
+
+<h3 id="getting-help">Getting Help</h3>
+
+<ul>
+  <li><strong>Report Issues</strong>: <a href="https://github.com/awalsh128/vscode-keep-sorted/issues">GitHub Issues</a></li>
+  <li><strong>Feature Requests</strong>: <a href="https://github.com/awalsh128/vscode-keep-sorted/discussions">GitHub Discussions</a></li>
+  <li><strong>Documentation</strong>: <a href="https://github.com/google/keep-sorted">Keep Sorted Project</a></li>
+</ul>
+
+<h2 id="license">License</h2>
+
+<p>This project is licensed under the Apache 2.0 License - see the <a href="LICENSE.md">LICENSE.md</a> file for details.</p>
