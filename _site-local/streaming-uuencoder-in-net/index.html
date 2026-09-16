@@ -1,0 +1,101 @@
+<h3 id="flashback">Flashback</h3>
+
+<p>The last time I used Unix-to-Unix format (AKA
+<a href="http://en.wikipedia.org/wiki/Uuencoding">UUEncoding</a>) was when
+<a href="http://en.wikipedia.org/wiki/Usenet">USENET</a> was still the big thing
+and <a href="http://en.wikipedia.org/wiki/Mosaic_%28web_browser%29">Mosaic web
+browser</a> was just
+coming out. That was until recently, when I had a requirement to encode
+and decode this file type.</p>
+
+<h3 id="searching-for-an-implementation">Searching for an Implementation</h3>
+
+<p>Since <a href="http://en.wikipedia.org/wiki/Base64">Base64</a> has largely replaced
+this older format, it was hard to find a current implementation for the
+.NET platform. I did run across <a href="http://geekswithblogs.net/kobush/archive/2005/12/18/63486.aspx">a port
+of</a>
+<a href="http://websvn.kde.org/trunk/KDE/kdelibs/kdecore/kcodecs.cpp?view=markup&amp;pathrev=486059">KDE's
+kcodecs</a>.
+Although the port wasn't a streaming solution in the context of
+implementing the Stream class. Also, it allocated a lot of one item byte
+arrays using the
+<a href="https://msdn.microsoft.com/en-us/library/system.io.stream.readbyte%28v=vs.110%29.aspx">ReadByte</a>
+call for each character.</p>
+
+<h3 id="creating-an-implementation">Creating an Implementation</h3>
+
+<p>Originally I tried to create my own solution by implementing the .NET
+<a href="https://msdn.microsoft.com/en-us/library/system.text.encoder%28v=vs.110%29.aspx">Encoder</a>
+class but the interface didn't fit the requirements of UUEncoding. For
+example, the GetBytes call works on a per character basis whereas
+UUEncoding takes 3 characters at a time. Also, a header and footer needs
+to be written, and the encoded payload is segmented into lines prefixed
+by encoded line lengths.</p>
+
+<p>I ended up creating my own encoder class that was scoped to only handle
+data line by line.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">static</span> <span class="k">class</span> <span class="nc">UUEncoder</span>
+<span class="p">{</span>
+  <span class="c1">// Assumes the current position is at the start of a new line.</span>
+  <span class="k">public</span> <span class="k">static</span> <span class="n">byte</span><span class="p">[]</span> <span class="n">DecodeLine</span><span class="p">(</span><span class="n">Stream</span> <span class="n">buffer</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="c1">// ...</span>
+  <span class="p">}</span>  
+  <span class="k">public</span> <span class="k">static</span> <span class="n">byte</span><span class="p">[]</span> <span class="n">EncodeLine</span><span class="p">(</span><span class="n">byte</span><span class="p">[]</span> <span class="n">buffer</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="c1">// ...</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>I then created encode and decode Stream classes that depended on the
+encoder. Having the encoding and decoding happening in a Stream based
+way was critical for my requirements since I was lazily evaluating the
+data and wouldn't just read it all up front. This was important since
+some of the files tended to be Gigabytes in size and an in-memory
+solution would have created an unacceptable memory footprint. Along with
+the nastiness that potentially comes with it like
+<a href="http://en.wikipedia.org/wiki/Thrashing_%28computer_science%29">thrashing</a>.</p>
+
+<h3 id="using-the-code">Using the Code</h3>
+
+<p>You can find my implementation, with tests, on Github
+<a href="https://github.com/awalsh128/Awalsh128.Text">here</a>.</p>
+
+<p>To decode any stream:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">using</span> <span class="p">(</span><span class="n">Stream</span> <span class="n">encodedStream</span> <span class="o">=</span> <span class="cm">/* Any readable stream. */</span><span class="p">)</span>
+<span class="k">using</span> <span class="p">(</span><span class="n">Stream</span> <span class="n">decodedStream</span> <span class="o">=</span> <span class="cm">/* Any writeable stream. */</span><span class="p">)</span>
+<span class="k">using</span> <span class="p">(</span><span class="n">var</span> <span class="n">decodeStream</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">UUDecodeStream</span><span class="p">(</span><span class="n">encodedStream</span><span class="p">))</span>
+<span class="p">{</span> 
+  <span class="n">decodeStream</span><span class="p">.</span><span class="n">CopyTo</span><span class="p">(</span><span class="n">decodedStream</span><span class="p">);</span>
+  <span class="c1">// Decoded contents are now in decodedStream.</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>To encode any stream:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">unixLineEnding</span> <span class="o">=</span> <span class="c1">// True if encoding with Unix line endings, otherwise false.</span>
+<span class="k">using</span> <span class="p">(</span><span class="n">Stream</span> <span class="n">encodedStream</span> <span class="o">=</span> <span class="cm">/* Any readable stream. */</span><span class="p">)</span>
+<span class="k">using</span> <span class="p">(</span><span class="n">Stream</span> <span class="n">decodedStream</span> <span class="o">=</span> <span class="cm">/* Any writeable stream. */</span><span class="p">)</span>
+<span class="k">using</span> <span class="p">(</span><span class="n">var</span> <span class="n">encodeStream</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">UUEncodeStream</span><span class="p">(</span><span class="n">encodedStream</span><span class="p">,</span> <span class="n">unixLineEnding</span><span class="p">))</span>
+<span class="p">{</span>
+  <span class="n">decodedStream</span><span class="p">.</span><span class="n">CopyTo</span><span class="p">(</span><span class="n">encodeStream</span><span class="p">);</span>
+  <span class="c1">// Encoded contents are now in encodedStream.</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="note-on-licensing">Note on Licensing</h3>
+
+<p>I published the code under version 2 (not 2.1) of the
+<a href="http://en.wikipedia.org/wiki/GNU_Lesser_General_Public_License">LGPL</a>
+since I took the bit twiddling and encoder maps from KDE's
+implementation.</p>
+
+<h3 id="more-resources--reading">More Resources &amp; Reading</h3>
+
+<ul>
+  <li><a href="https://github.com/awalsh128/Awalsh128.Text">Github: Awalsh128.Text Library (contains UUEncoder implementation)</a></li>
+  <li><a href="https://www.gnu.org/licenses/lgpl-2.1.html">GNU Lesser General Public License, version 2.1</a></li>
+</ul>

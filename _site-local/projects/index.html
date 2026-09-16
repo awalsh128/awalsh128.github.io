@@ -1,0 +1,90 @@
+<h2 id="fluent-c">Fluent C++</h2>
+
+<p>Fluent C++ is a library that can be used to express information in a functional way that allows for easy auto-complete and shorter expressions.</p>
+
+<ul>
+  <li><a href="https://github.com/awalsh128/fluentcpp/releases">Releases</a></li>
+  <li><a href="https://github.com/awalsh128/fluentcpp">Source Code</a></li>
+</ul>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;fluentcpp/query.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp">
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">xs</span><span class="p">;</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">;</span> <span class="n">x</span><span class="o">++</span><span class="p">)</span> <span class="n">xs</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+
+  <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">queried</span> <span class="o">=</span> <span class="n">fcpp</span><span class="o">::</span><span class="n">query</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span>
+      <span class="p">.</span><span class="n">where</span><span class="p">(</span><span class="n">EXPR</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">500</span><span class="p">))</span>
+      <span class="p">.</span><span class="n">shuffle</span><span class="p">()</span>
+      <span class="p">.</span><span class="n">skip</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+      <span class="p">.</span><span class="n">select</span><span class="p">(</span><span class="n">EXPR</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">10</span><span class="p">))</span>
+      <span class="p">.</span><span class="n">distinct</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="pcap-ng-file-reader">PCAP-NG File Reader</h2>
+
+<p>Reads PCAP Next Generation files and generates CLR objects from its data. Implemented according to the draft specification at <a href="http://www.winpcap.org/ntar/draft/PCAP-DumpFileFormat.html">http://www.winpcap.org/ntar/draft/PCAP-DumpFileFormat.html</a>.</p>
+
+<ul>
+  <li><a href="https://www.nuget.org/packages/PcapngFile/">Nuget</a></li>
+  <li><a href="https://github.com/awalsh128/PcapngFile">Source Code</a></li>
+</ul>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">using</span> <span class="p">(</span><span class="kt">var</span> <span class="n">reader</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">Reader</span><span class="p">(</span><span class="s">"myfile.pcapng"</span><span class="p">))</span>
+<span class="p">{</span>
+   <span class="n">BlockBase</span> <span class="n">block</span><span class="p">;</span>
+   <span class="k">while</span> <span class="p">((</span><span class="n">block</span> <span class="p">=</span> <span class="n">reader</span><span class="p">.</span><span class="nf">ReadBlock</span><span class="p">())</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
+   <span class="p">{</span>
+      <span class="c1">// Act on received block. It's cast will be BlockBase </span>
+      <span class="c1">// but its true underlying type will be any of BlockBase's</span>
+      <span class="c1">// children.</span>
+   <span class="p">}</span>
+
+   <span class="n">reader</span><span class="p">.</span><span class="nf">Reset</span><span class="p">();</span>
+
+   <span class="c1">// Which is equivalent to.</span>
+   <span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">readBlock</span> <span class="k">in</span> <span class="n">reader</span><span class="p">.</span><span class="n">AllBlocks</span><span class="p">)</span>
+   <span class="p">{</span>
+      <span class="c1">// ...</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="github-actions-cache-apt-packages">Github Actions: Cache APT Packages</h2>
+
+<p>This <a href="https://docs.github.com/en/actions">Github action</a> allows caching of Advanced Package Tool (APT) package dependencies to improve workflow execution time instead of installing the packages on every run.</p>
+
+<ul>
+  <li><a href="https://github.com/marketplace/actions/cache-apt-packages">Marketplace</a></li>
+  <li><a href="https://github.com/awalsh128/cache-apt-pkgs-action">Source Code</a></li>
+</ul>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">name</span><span class="pi">:</span> <span class="s">Create Documentation</span>
+<span class="na">on</span><span class="pi">:</span> <span class="s">push</span>
+<span class="na">jobs</span><span class="pi">:</span>
+  
+  <span class="na">build_and_deploy_docs</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">Build Doxygen documentation and deploy</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v2</span>
+      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">awalsh128/cache-apt-pkgs-action@v1</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">packages</span><span class="pi">:</span> <span class="s">dia doxygen doxygen-doc doxygen-gui doxygen-latex graphviz mscgen</span>
+          <span class="na">version</span><span class="pi">:</span> <span class="m">1.0</span>
+
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Build</span>        
+        <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
+          <span class="s">cmake -B $/build -DCMAKE_BUILD_TYPE=$      </span>
+          <span class="s">cmake --build $/build --config $</span>
+
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Deploy</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">JamesIves/github-pages-deploy-action@4.1.5</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">branch</span><span class="pi">:</span> <span class="s">gh-pages</span>
+          <span class="na">folder</span><span class="pi">:</span> <span class="s">$/build/website</span>
+</code></pre></div></div>

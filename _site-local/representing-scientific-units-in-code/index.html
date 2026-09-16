@@ -1,0 +1,11 @@
+<p>I have been working on implementing a stream reader for <a href="http://standards.ieee.org/develop/regauth/tut/teds.pdf">IEEE 1451.4
+TEDS</a> and came
+across this interesting
+<a href="http://www.hpl.hp.com/techreports/96/HPL-96-61.pdf">paper</a> regarding
+representation of scientific units in code. It provides solutions to
+determining unit equivalency (eg. V/(m•kg/s²) = m/(s•A)). Also
+discovered some indivisible base units that can represent any unit (amp,
+candela, kelvin, gram, meter, mole, radian, second). With a bit to
+represent the placement (high for numerator, low for denominator) and a
+bit for presence, a unit storage type can be derived that only occupies
+2 bytes.</p>
