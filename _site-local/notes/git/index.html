@@ -1,0 +1,131 @@
+<h2 id="common-commands">Common Commands</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Short Description</th>
+      <th>Command</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Add</td>
+      <td><code class="language-plaintext highlighter-rouge">git add &lt;pattern&gt;</code></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Add All</td>
+      <td><code class="language-plaintext highlighter-rouge">git add -u</code></td>
+      <td>Add all pending changes.</td>
+    </tr>
+    <tr>
+      <td>Clean</td>
+      <td><code class="language-plaintext highlighter-rouge">git clean</code></td>
+      <td>Clean all untracked changes.</td>
+    </tr>
+    <tr>
+      <td>Clean Preview</td>
+      <td><code class="language-plaintext highlighter-rouge">git clean -n</code></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Clone Repository</td>
+      <td><code class="language-plaintext highlighter-rouge">git clone &lt;project URL&gt;</code></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Commit Pending</td>
+      <td><code class="language-plaintext highlighter-rouge">git commit -m "&lt;message&gt;"</code></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Initialize Repository</td>
+      <td><code class="language-plaintext highlighter-rouge">git init &lt;project name&gt;</code></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Move</td>
+      <td><code class="language-plaintext highlighter-rouge">git mv &lt;source&gt; &lt;target&gt;</code></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Pull from Master</td>
+      <td><code class="language-plaintext highlighter-rouge">git pull origin master</code></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Push to Master</td>
+      <td><code class="language-plaintext highlighter-rouge">git push origin master</code></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Remove</td>
+      <td><code class="language-plaintext highlighter-rouge">git rm &lt;target&gt;</code></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Revert</td>
+      <td><code class="language-plaintext highlighter-rouge">git revert &lt;version&gt;</code></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Repository Status</td>
+      <td><code class="language-plaintext highlighter-rouge">git status</code></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>View Pending</td>
+      <td><code class="language-plaintext highlighter-rouge">git log origin/master..HEAD</code></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>View Pending Diff</td>
+      <td><code class="language-plaintext highlighter-rouge">git diff origin/master..HEAD</code></td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="special-workflows">Special Workflows</h2>
+
+<h3 id="reset-history">Reset History</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+
+git checkout <span class="nt">--orphan</span> latest_branch
+git add <span class="nt">-A</span>
+git commit <span class="nt">-am</span> <span class="s2">"Initial commit."</span>
+git branch <span class="nt">-D</span> master
+git branch <span class="nt">-m</span> master
+git push <span class="nt">-f</span> origin master
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rm -rf .git;
+git init;
+git add .;
+git commit -m "Initial commit";
+git remote add origin https://github.com/&lt;username&gt;/&lt;repo&gt;.git;
+git push -u --force origin master;
+</code></pre></div></div>
+
+<h3 id="delete-tag">Delete Tag</h3>
+
+<p>Can be used to delete tags upstream (e.g. GitHub).</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git push <span class="nt">--delete</span> origin v1.0
+</code></pre></div></div>
+
+<h2 id="other-options">Other Options</h2>
+
+<p>Cache credentials for a day.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git config credential.helper <span class="s1">'cache --timeout 86400'</span>
+</code></pre></div></div>
+
+<h2 id="resources">Resources</h2>
+
+<ul>
+  <li><a href="https://about.gitlab.com/images/press/git-cheat-sheet.pdf">GitLab: Git Cheat Sheet</a> - Larger font in landscape.</li>
+  <li><a href="https://education.github.com/git-cheat-sheet-education.pdf">GitHub: Git Cheat Sheet</a> - Only 2 pages as smaller font in potrait.</li>
+</ul>

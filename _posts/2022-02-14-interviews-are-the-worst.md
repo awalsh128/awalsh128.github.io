@@ -106,8 +106,8 @@ Notice how there is some overlap here with strings, that is because lookup frequ
 
 [Google Search](https://www.google.com/search?q=graph+interview+questions) - graph interview questions
 
-![Spotting Spammers in Social Graphs](/assets/img/2022-02-14-interviews-are-the-worst/spammers-in-social-graphs.jpg)
-*Spotting Spammers in Social Graphs*
+![Spotting Spammers in Social Graph](/assets/img/2022-02-14-interviews-are-the-worst/spammers-in-social-graph.jpg)
+*Spotting Spammers in Social Graph*
 
 How do you find specific relationships between entities? Combinatorial factors could be value cardinality, size, edge direction, edge weights and cycles.
 
@@ -210,7 +210,7 @@ For some, interviewing is not emotionally taxing but for others it can be debili
 
 ### Competitive Programming
 
-Sites like TopCoder are nice and a way for you to get your chops solving different problems but it is first and foremost a competitive programming site. It is meant to present challenges that are new and novel, eliciting the tersest amount of code in the smallest amount of time. This isn't to say if you got good at this you wouldn't do well in an interview, the opposite, but it requires you to inuit the ability to solve based on working through a lot of problems rather than learning the underlying problem spaces.
+Sites like TopCoder are nice and a way for you to get your chops solving different problems but it is first and foremost a competitive programming site. It is meant to present challenges that are new and novel, eliciting the tersest amount of code in the smallest amount of time. This isn't to say if you got good at this you wouldn't do well in an interview, the opposite, but it requires you to intuit the ability to solve based on working through a lot of problems rather than learning the underlying problem spaces.
 
 ### Interview Question Databases
 
