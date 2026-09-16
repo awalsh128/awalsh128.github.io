@@ -1,0 +1,30 @@
+<p>I created a GitHub action <a href="https://github.com/marketplace/actions/cache-apt-packages">awalsh128/cache-apt-packages</a> that allows caching of Advanced Package Tool (APT) package dependencies to improve workflow execution time instead of installing the packages on every run.</p>
+
+<p>Here is an example using it to cache Doxygen dependencies.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">name</span><span class="pi">:</span> <span class="s">Create Documentation</span>
+<span class="na">on</span><span class="pi">:</span> <span class="s">push</span>
+<span class="na">jobs</span><span class="pi">:</span>
+
+  <span class="na">build_and_deploy_docs</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">Build Doxygen documentation and deploy</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v2</span>
+      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">awalsh128/cache-apt-pkgs-action-action@v1</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">packages</span><span class="pi">:</span> <span class="s">dia doxygen doxygen-doc doxygen-gui doxygen-latex graphviz mscgen</span>
+
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Build</span>        
+        <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
+          <span class="s">cmake -B $/build -DCMAKE_BUILD_TYPE=$      </span>
+          <span class="s">cmake --build $/build --config $</span>
+
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Deploy</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">JamesIves/github-pages-deploy-action@4.1.5</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">branch</span><span class="pi">:</span> <span class="s">gh-pages</span>
+          <span class="na">folder</span><span class="pi">:</span> <span class="s">$/build/website</span>
+</code></pre></div></div>
+
+<p>This action is a composition of <a href="https://github.com/actions/cache/README.md">actions/cache</a> and the <code class="language-plaintext highlighter-rouge">apt</code> utility. For more information, see <a href="https://github.com/awalsh128/cache-apt-pkgs-action#readme">the repository README on GitHub</a>.</p>
