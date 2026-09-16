@@ -8,17 +8,18 @@ source "https://rubygems.org"
 # This will help ensure the proper Jekyll version is running.
 # Happy Jekylling!
 
-# This is the default theme for new Jekyll sites. You may change this to anything you like.
-gem "minimal-mistakes-jekyll"
+# Keep the site purely local-preview friendly and avoid the GitHub Pages stack,
+# which is pinned to older Jekyll releases and breaks under Ruby 3.3.
+gem "jekyll", "~> 4.3.4"
+gem "minimal-mistakes-jekyll", "~> 4.24.0"
+gem "rubyzip", "~> 2.3.0"
+gem "webrick", "~> 1.8"
 
-# If you want to use GitHub Pages, remove the "gem "jekyll"" above and
-# uncomment the line below. To upgrade, run `bundle update github-pages`.
-gem "github-pages", group: :jekyll_plugins
 # If you have any plugins, put them here!
 group :jekyll_plugins do
-  gem "jekyll-paginate"
-  gem "jekyll-sitemap"
-  gem "jekyll-gist"
-  gem "jekyll-feed"
-  gem "jekyll-include-cache"
+  gem "jekyll-paginate", "~> 1.1.0"
+  gem "jekyll-sitemap", "~> 1.4.0"
+  gem "jekyll-gist", "~> 1.5.0"
+  gem "jekyll-feed", "~> 0.15.1"
+  gem "jekyll-include-cache", "~> 0.2.1"
 end

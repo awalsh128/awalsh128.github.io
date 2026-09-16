@@ -1,0 +1,1686 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.4">Jekyll</generator><link href="https://awalsh128.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://awalsh128.com/" rel="alternate" type="text/html" /><updated>2026-09-07T23:39:09+00:00</updated><id>https://awalsh128.com/feed.xml</id><title type="html">Andrew Walsh’s Website</title><subtitle>Thoughts on Software Engineering.</subtitle><author><name>Andrew Walsh</name><email>awalsh128@gmail.com</email></author><entry><title type="html">VSCode Keep Sorted Extension 0.0.1</title><link href="https://awalsh128.com/vscode-keep-sorted/" rel="alternate" type="text/html" title="VSCode Keep Sorted Extension 0.0.1" /><published>2025-12-25T00:00:00+00:00</published><updated>2025-12-25T07:00:01+00:00</updated><id>https://awalsh128.com/vscode-keep-sorted</id><content type="html" xml:base="https://awalsh128.com/vscode-keep-sorted/">&lt;table width=&quot;100%&quot;&gt;
+  &lt;tr&gt;
+    &lt;td width=&quot;48&quot;&gt;&lt;img src=&quot;/assets/img/2025-12-25-vscode-keep-sorted/logo.png&quot; alt=&quot;Logo&quot; width=&quot;48&quot; height=&quot;48&quot; /&gt;&lt;/td&gt;
+    &lt;td style=&quot;padding-left:1em&quot;&gt;&lt;h1&gt;VSCode Keep Sorted Extension 0.0.1 Released&lt;/h1&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;p&gt;I recently released lightweight VS Code extension that automatically keeps sorted blocks in your code organized using
+&lt;strong&gt;&lt;a href=&quot;https://github.com/google/keep-sorted&quot;&gt;Google’s Keep Sorted&lt;/a&gt;&lt;/strong&gt; formatter, seeing a gap in an available extension that
+handles code blocks generically and with options to modify behavior.&lt;/p&gt;
+
+&lt;p&gt;The extension has pretty comprehensive code coverage, diagnostics and error handling to create a more reliable
+extension.&lt;/p&gt;
+
+&lt;p&gt;It is a language agnostic sorting tool, working in any programming language or file type that provides:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;🔍 &lt;strong&gt;Automatic Detection&lt;/strong&gt;: Recognizes &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;// keep-sorted start&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;// keep-sorted end&lt;/code&gt; blocks in any file type&lt;/li&gt;
+  &lt;li&gt;💡 &lt;strong&gt;Quick Fix Actions&lt;/strong&gt;: To sort just the block, the entire file or the entire workspace.&lt;/li&gt;
+  &lt;li&gt;✨ &lt;strong&gt;Autocomplete for Options&lt;/strong&gt;: Get intelligent suggestions for keep-sorted options when typing on a
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;keep-sorted start&lt;/code&gt; line&lt;/li&gt;
+  &lt;li&gt;📊 &lt;strong&gt;Real-time Diagnostics&lt;/strong&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Shows warnings with squiggly underlines for unsorted content&lt;/li&gt;
+      &lt;li&gt;Logging integration with VSCode with severity levels for general information and debugging&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;⚡ &lt;strong&gt;Performance Optimized&lt;/strong&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Uses native binaries for fast sorting operations for x86, ARM, Darwin and Windows&lt;/li&gt;
+      &lt;li&gt;No outside libraries required to be brought into the development environment (i.e. Go compiler).&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;🎛️ &lt;strong&gt;Flexible Configuration&lt;/strong&gt;: File exclusion patterns, enable/disable toggle, and optional file logging&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;See http://github.com/awalsh128/vscode-keep-sorted/README.md for the complete documentation of the extension.&lt;/p&gt;
+
+&lt;h2 id=&quot;examples&quot;&gt;Examples&lt;/h2&gt;
+
+&lt;h3 id=&quot;basic-sorting&quot;&gt;Basic Sorting&lt;/h3&gt;
+
+&lt;h4 id=&quot;javascripttypescript-imports&quot;&gt;JavaScript/TypeScript Imports&lt;/h4&gt;
+
+&lt;div class=&quot;language-typescript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// keep-sorted start&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Component&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;@angular/core&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;HttpClient&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;@angular/common/http&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Observable&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;rxjs&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fs&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;fs&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;path&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// keep-sorted end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;python-imports&quot;&gt;Python Imports&lt;/h4&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# keep-sorted start
+&lt;/span&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;json&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;os&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sys&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;datetime&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;datetime&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;typing&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Dict&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# keep-sorted end
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;case-insensitive-sorting&quot;&gt;Case-Insensitive Sorting&lt;/h3&gt;
+
+&lt;p&gt;Use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;case=no&lt;/code&gt; to sort without considering case:&lt;/p&gt;
+
+&lt;div class=&quot;language-typescript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// keep-sorted start case=no&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ComponentA&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;./components&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;utilityB&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;./utils&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ServiceC&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;./services&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;helperD&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;./helpers&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// keep-sorted end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;numeric-sorting&quot;&gt;Numeric Sorting&lt;/h3&gt;
+
+&lt;p&gt;Use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;numeric=yes&lt;/code&gt; to sort numbers by their numeric value instead of lexically:&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# keep-sorted start numeric=yes
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;item_1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;first&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;item_5&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;fifth&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;item_10&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;tenth&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;item_50&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;fiftieth&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;item_100&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;hundredth&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# keep-sorted end
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;block-sorting&quot;&gt;Block Sorting&lt;/h3&gt;
+
+&lt;p&gt;Use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;block=yes&lt;/code&gt; to sort complex multi-line blocks like structs or objects:&lt;/p&gt;
+
+&lt;div class=&quot;language-typescript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// keep-sorted start block=yes&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;widgets&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;alpha&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;beta&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;200&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;delta&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;150&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// keep-sorted end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;prefix-ordering&quot;&gt;Prefix Ordering&lt;/h3&gt;
+
+&lt;p&gt;Use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;prefix_order&lt;/code&gt; to control the order of specific prefixes:&lt;/p&gt;
+
+&lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// keep-sorted start prefix_order=INIT_,,FINAL_&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;INIT_DATABASE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;INIT_LOGGING&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;PROCESS_DATA&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;VALIDATE_INPUT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;FINAL_CLEANUP&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;FINAL_SHUTDOWN&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// keep-sorted end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;ignore-prefixes&quot;&gt;Ignore Prefixes&lt;/h3&gt;
+
+&lt;p&gt;Use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ignore_prefixes&lt;/code&gt; to ignore certain prefixes when sorting:&lt;/p&gt;
+
+&lt;div class=&quot;language-typescript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// keep-sorted start ignore_prefixes=const,let,var&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;apple&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;banana&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;cherry&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;date&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// keep-sorted end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;custom-grouping&quot;&gt;Custom Grouping&lt;/h3&gt;
+
+&lt;p&gt;Use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;group_prefixes&lt;/code&gt; to keep related lines together:&lt;/p&gt;
+
+&lt;div class=&quot;language-markdown highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;&amp;lt;!-- keep-sorted start group_prefixes=and,with --&amp;gt;&lt;/span&gt;
+
+hamburger with lettuce and tomatoes peanut butter and jelly spaghetti with meatballs
+
+&lt;span class=&quot;c&quot;&gt;&amp;lt;!-- keep-sorted end --&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;newline-separated&quot;&gt;Newline Separated&lt;/h3&gt;
+
+&lt;p&gt;Use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;newline_separated=yes&lt;/code&gt; to add blank lines between sorted items:&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# keep-sorted start newline_separated=yes
+&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;calculate_total&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;pass&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;process_data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;pass&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;validate_input&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;pass&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# keep-sorted end
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;skip-lines&quot;&gt;Skip Lines&lt;/h3&gt;
+
+&lt;p&gt;Use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;skip_lines=N&lt;/code&gt; to skip header lines (useful for tables):&lt;/p&gt;
+
+&lt;div class=&quot;language-markdown highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;&amp;lt;!-- keep-sorted start skip_lines=2 --&amp;gt;&lt;/span&gt;
+
+| Name  | Value |
+| ----- | ----- |
+| Alpha | 100   |
+| Beta  | 200   |
+| Delta | 150   |
+| Gamma | 175   |
+
+&lt;span class=&quot;c&quot;&gt;&amp;lt;!-- keep-sorted end --&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;sticky-comments&quot;&gt;Sticky Comments&lt;/h3&gt;
+
+&lt;p&gt;Comments stick with the line below them by default:&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# keep-sorted start
+# Configuration for production
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;PROD_URL&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;https://prod.example.com&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# Configuration for staging
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;STAGING_URL&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;https://staging.example.com&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# Configuration for development
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DEV_URL&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;http://localhost:3000&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# keep-sorted end
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;regular-expression-sorting&quot;&gt;Regular Expression Sorting&lt;/h3&gt;
+
+&lt;p&gt;Use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;by_regex&lt;/code&gt; to sort based on specific patterns:&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// keep-sorted start by_regex=\w+;&lt;/span&gt;
+&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bar&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;nc&quot;&gt;Object&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;baz&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;nc&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// keep-sorted end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;remove-duplicates&quot;&gt;Remove Duplicates&lt;/h3&gt;
+
+&lt;p&gt;Duplicates are removed by default, but you can disable it:&lt;/p&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# keep-sorted start remove_duplicates=no&lt;/span&gt;
+&lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;apple&lt;/span&gt;
+&lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;apple&lt;/span&gt;
+&lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;banana&lt;/span&gt;
+&lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;banana&lt;/span&gt;
+&lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;cherry&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# keep-sorted end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;usage&quot;&gt;Usage&lt;/h2&gt;
+
+&lt;p&gt;IMPORTANT: See &lt;a href=&quot;https://github.com/google/keep-sorted?tab=readme-ov-file#options&quot;&gt;google/keep-sorted#options&lt;/a&gt; for
+complete documentation on all the options that are available.&lt;/p&gt;
+
+&lt;h3 id=&quot;setting-up-keep-sorted-blocks&quot;&gt;Setting Up Keep Sorted Blocks&lt;/h3&gt;
+
+&lt;p&gt;Add keep-sorted markers around the content you want to keep sorted:&lt;/p&gt;
+
+&lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// keep-sorted start&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;zebra&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;./animals&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;apple&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;./fruits&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;car&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;./vehicles&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// keep-sorted end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The extension will detect when these blocks are not properly sorted and provide automatic fixes.&lt;/p&gt;
+
+&lt;h3 id=&quot;sorting-methods&quot;&gt;Sorting Methods&lt;/h3&gt;
+
+&lt;h4 id=&quot;1-quick-fixes-lightbulb&quot;&gt;1. Quick Fixes (Lightbulb)&lt;/h4&gt;
+
+&lt;p&gt;When the extension detects unsorted content:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;A warning squiggle appears under the unsorted block&lt;/li&gt;
+  &lt;li&gt;Click the lightbulb 💡 icon or press &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Ctrl+.&lt;/code&gt; / &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Cmd+.&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Choose from available actions:
+    &lt;ul&gt;
+      &lt;li&gt;&lt;strong&gt;“Sort all lines in block (keep-sorted)”&lt;/strong&gt; - Sorts just the selected block&lt;/li&gt;
+      &lt;li&gt;&lt;strong&gt;“Sort all lines in file (keep-sorted)”&lt;/strong&gt; - Sorts all keep-sorted blocks in the file&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;2-command-palette&quot;&gt;2. Command Palette&lt;/h4&gt;
+
+&lt;p&gt;Use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Ctrl+Shift+P&lt;/code&gt; / &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Cmd+Shift+P&lt;/code&gt; and search for:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;“Keep Sorted: Fix Current File”&lt;/strong&gt; - Sort all keep-sorted blocks in the active file&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;“Keep Sorted: Fix Entire Workspace”&lt;/strong&gt; - Sort all keep-sorted blocks across all workspace files&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;3-problems-panel&quot;&gt;3. Problems Panel&lt;/h4&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Open the Problems panel (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Ctrl+Shift+M&lt;/code&gt; / &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Cmd+Shift+M&lt;/code&gt;)&lt;/li&gt;
+  &lt;li&gt;Look for keep-sorted warnings&lt;/li&gt;
+  &lt;li&gt;Use “Quick Fix” or “Fix All” options directly from the panel&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;supported-file-types&quot;&gt;Supported File Types&lt;/h3&gt;
+
+&lt;p&gt;Keep Sorted works with any file type and is language agnostic. Common use cases include:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;import statements,&lt;/li&gt;
+  &lt;li&gt;lists,&lt;/li&gt;
+  &lt;li&gt;top level file types and classes, and&lt;/li&gt;
+  &lt;li&gt;many more.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;troubleshooting&quot;&gt;Troubleshooting&lt;/h2&gt;
+
+&lt;h3 id=&quot;extension-not-working&quot;&gt;Extension Not Working?&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Check Extension Status&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;Ensure the extension is enabled in VS Code&lt;/li&gt;
+      &lt;li&gt;Verify &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;keep-sorted.enabled&lt;/code&gt; is set to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;true&lt;/code&gt; in settings&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;No Diagnostics Appearing?&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;Make sure your blocks use the correct syntax: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;// keep-sorted start&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;// keep-sorted end&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;Check if files are excluded via &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;keep-sorted.exclude&lt;/code&gt; patterns&lt;/li&gt;
+      &lt;li&gt;Verify the file is saved (diagnostics appear after save)&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Commands Not Available?&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;Open Command Palette (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Ctrl+Shift+P&lt;/code&gt; / &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Cmd+Shift+P&lt;/code&gt;) and search for “Keep Sorted”&lt;/li&gt;
+      &lt;li&gt;If commands don’t appear, try reloading VS Code (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Developer: Reload Window&lt;/code&gt;)&lt;/li&gt;
+      &lt;li&gt;Verify the extension is activated (check status bar or Extensions view)&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Performance Issues?&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;Add problematic file patterns to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;keep-sorted.exclude&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;Check VS Code’s Output panel (select “Keep Sorted” from dropdown) for error messages&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Viewing Extension Logs&lt;/strong&gt;&lt;/p&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Open the Output panel: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;View&lt;/code&gt; → &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Output&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Ctrl+Shift+U&lt;/code&gt; / &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Cmd+Shift+U&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;Select “Keep Sorted” from the dropdown menu&lt;/li&gt;
+      &lt;li&gt;Logs show extension activity, errors, and diagnostic information&lt;/li&gt;
+      &lt;li&gt;For persistent logs, configure &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;keep-sorted.logFilepath&lt;/code&gt; in settings&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;fixes-are-malformed&quot;&gt;Fixes Are Malformed&lt;/h3&gt;
+
+&lt;p&gt;This is usually due to the underlying Google &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;keep-sorted&lt;/code&gt; command itself and have an incorrect block setup.&lt;/p&gt;
+
+&lt;p&gt;An example where the block isn’t inside the list.&lt;/p&gt;
+
+&lt;div class=&quot;language-py highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# keep-sorted start
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;items&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+  &lt;span class=&quot;sh&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;zebra&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;sh&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;alpha&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;sh&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;delta&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;sh&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;beta&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# keep-sorted end
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Breaks the syntax because non-alphanumeric characters have precedence in the sort order.&lt;/p&gt;
+
+&lt;div class=&quot;language-py highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# keep-sorted start
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;items&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+  &lt;span class=&quot;sh&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;zebra&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;sh&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;alpha&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;sh&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;delta&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;sh&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;beta&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&apos;&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# keep-sorted end
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The command is working correctly but the declaration is incorrect. The correct block setup should be.&lt;/p&gt;
+
+&lt;div class=&quot;language-py highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;items&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# keep-sorted start
+&lt;/span&gt;  &lt;span class=&quot;sh&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;zebra&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;sh&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;alpha&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;sh&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;delta&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;sh&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;beta&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# keep-sorted end
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;To ensure your statements are correct see
+&lt;a href=&quot;https://github.com/google/keep-sorted?tab=readme-ov-file#options&quot;&gt;google/keep-sorted#options&lt;/a&gt; for more information.&lt;/p&gt;
+
+&lt;h3 id=&quot;getting-help&quot;&gt;Getting Help&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Report Issues&lt;/strong&gt;: &lt;a href=&quot;https://github.com/awalsh128/vscode-keep-sorted/issues&quot;&gt;GitHub Issues&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Feature Requests&lt;/strong&gt;: &lt;a href=&quot;https://github.com/awalsh128/vscode-keep-sorted/discussions&quot;&gt;GitHub Discussions&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Documentation&lt;/strong&gt;: &lt;a href=&quot;https://github.com/google/keep-sorted&quot;&gt;Keep Sorted Project&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;license&quot;&gt;License&lt;/h2&gt;
+
+&lt;p&gt;This project is licensed under the Apache 2.0 License - see the &lt;a href=&quot;LICENSE.md&quot;&gt;LICENSE.md&lt;/a&gt; file for details.&lt;/p&gt;</content><author><name>Andrew Walsh</name><email>awalsh128@gmail.com</email></author><category term="VSCode" /><category term="vscode" /><category term="vscode extension" /><category term="keep-sorted" /><summary type="html">VSCode Keep Sorted Extension 0.0.1 Released</summary></entry><entry><title type="html">Interviews are the Worst</title><link href="https://awalsh128.com/interviews-are-the-worst/" rel="alternate" type="text/html" title="Interviews are the Worst" /><published>2022-02-14T00:00:00+00:00</published><updated>2022-02-14T07:00:01+00:00</updated><id>https://awalsh128.com/interviews-are-the-worst</id><content type="html" xml:base="https://awalsh128.com/interviews-are-the-worst/">&lt;p&gt;If you have experience in the software engineering field, an interview process can test the experience you have; projects, production scenarios, designs. Unfortunately, for junior positions and those out of college, there isn’t much to test for. Since most are computer scientists, you could test knowledge of algorithms and data structures but does that really prove the ability of a candidate? Knowing the upper bound complexity of an algorithm’s runtime is important but what about when a constant multiplying factor means the difference between production being up and down. We don’t have a solution for the Traveling Salesman Problem but we have very good and practical approximations (e.g. flight scheduling).&lt;/p&gt;
+
+&lt;p&gt;As an engineer, we have to think about what is the best approximation and trade offs among different solutions when posed with a hard problem. While the CS field greatly informs software engineering and provides it with a fundamental basis to extend from, it doesn’t wholly prepare a junior software engineer for working in the field, especially in the parts that matter the most.&lt;/p&gt;
+
+&lt;p&gt;So what does this have to do with interviewing software engineers? Well it’s hard because they have little to no experience. That isn’t their fault. It is just the difficult situation that interviewers and interviewees find themselves in. What’s worse is that there are good jobs out there but the candidate ends up having a terrible interviewer.&lt;/p&gt;
+
+&lt;h2 id=&quot;dynamics&quot;&gt;Dynamics&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/2022-02-14-interviews-are-the-worst/job-interview-stackoverflow.jpg&quot; alt=&quot;Stackoverflow Job Interview&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;As someone that has given many interviews, my worst nightmare is leading the candidate down a road I can’t pull them out of due to a bad question or guidance. For me the worst feeling is holding an interview that wastes the candidate’s time and the opportunity to accomplish their career goals. As an interviewer it is my responsibility that the problem be clear to the candidate and something that reflects actual skills needed.&lt;/p&gt;
+
+&lt;h3 id=&quot;lack-of-consistent-feedback&quot;&gt;Lack of Consistent Feedback&lt;/h3&gt;
+
+&lt;p&gt;I have had interviewers go out of the room to take a bathroom break, sit on their phones, or just stare silently while I worked on the problem. An interview is just as much a chance to see how the candidate would work with you as you them. It is also an opportunity to evaluate their teamwork skills. This kind of work is not an island and having a poor team dynamic can ruin projects.&lt;/p&gt;
+
+&lt;p&gt;Another problem is when the interviewer lets you hang yourself with your own solution. It is important that the interviewer provide guidance and redirection. Not doing so wastes the entire time left instead of giving a candidate an opportunity to show what they can do after correction. I had an interview with a principal engineer once for their architecture interview (they break them up into categories). In it they asked me to find a way to count the number of unique exceptions in a production system. I went right into showing an architecture of designing a logging system and how the processing would work at scale. They had a line of questioning talking about the logging system itself and then at the end told me I could just hash the exceptions. I was pissed. If the interviewer had told me it would be a simple data structures question I would have answered it right away but was completely misled about the parameters of the interview. It was my fault that I made a simple solution a complex one, but the opportunity was completely missed on seeing what I could do, even if that meant I got marked down.&lt;/p&gt;
+
+&lt;h3 id=&quot;toy-questions&quot;&gt;Toy Questions&lt;/h3&gt;
+
+&lt;p&gt;IMO the worst kind of questions are the ones that don’t reflect real work at all. How is reversing a linked list or rotating a matrix going to show that I am a good engineer? Some people say that this just reveals how you think about things and while there is some merit to that, it can be very perilous. It requires the candidate to be well studied in these problem spaces first. A better question reflects not only how they approach something but the problem they are trying to solve. What compounds this problem is when an interviewer has a single toy question they ask all the time and evaluates performance based on their own long time familiarity with the problem. The worst is when the problem requires just one key observation to solving it.&lt;/p&gt;
+
+&lt;h3 id=&quot;poor-personality&quot;&gt;Poor Personality&lt;/h3&gt;
+
+&lt;p&gt;I have high anxiety and have had interviews go terribly wrong. This is also why I try really hard to improve myself in the process and be an interviewer that gives the candidate the best opportunity of proving themselves. I have co-workers and friends that I consider to be very high quality engineers that would never had the chance if someone didn’t accommodate them in terms of personality.&lt;/p&gt;
+
+&lt;p&gt;So what do I mean by poor personality? The interviewer has the power to make or break in these situations. Imagine some of the difficult people that you had to deal with in your life. Now have them be your interviewer. Dispassionate, judgemental, uncooperative, critical, the stuff of nightmares.&lt;/p&gt;
+
+&lt;h3 id=&quot;feedback-goes-both-ways&quot;&gt;Feedback Goes Both Ways&lt;/h3&gt;
+
+&lt;p&gt;If you have an interviewer like this don’t be afraid to call it out afterwards. Some of these kind of interviewers may score you well but they should be getting feedback that this isn’t how to handle it. Be polite but be pointed about the behavior. It may not matter but many companies want this kind of feedback. At the end of the day, any person committed to wanting great candidates cares about the process that gets them to that.&lt;/p&gt;
+
+&lt;h2 id=&quot;its-not-all-bad&quot;&gt;It’s Not All Bad&lt;/h2&gt;
+
+&lt;p&gt;For the bad interviews that I have had or heard about, there are plenty of, if not more, good ones too. The interviewers were attentive, guiding and gave problems that were multi layered and faceted. Some of them I came out wanting to be on their team because the collaboration went so well.&lt;/p&gt;
+
+&lt;p&gt;The reason I call out the bad interviewers is because candidates tend to put the blame on themselves. There is plenty that can be done to make sure you pass an interview but it is important to know what to look for too. Who wants to work for a company whose values are reflected in their employees this way? The process is as much about you evaluating them as they you and a good interviewer should know this. Although this isn’t a blame game either. Even a bad interviewer could be the gatekeeper to a great job and you will never have to see them again after being hired.&lt;/p&gt;
+
+&lt;h2 id=&quot;how-should-i-prepare&quot;&gt;How Should I Prepare&lt;/h2&gt;
+
+&lt;p&gt;The bad interviewer is a caricature. An embodiment of all the things that could go wrong. Really most have a mix of qualities both positive and negative, intentional and not. You will just have to make sure you do well in spite of the circumstances given.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Become a data structures and algorithms gymnast.&lt;/strong&gt; I call it this because it is the most rote part. It bites some candidates because they just didn’t do the work. Like a gymnast you need a bunch of practice and be able to contort yourself in different ways because every problem will be some variation.&lt;/p&gt;
+
+&lt;h3 id=&quot;problem-spaces&quot;&gt;Problem Spaces&lt;/h3&gt;
+
+&lt;p&gt;What is the problem that is trying to be solved more generally speaking? A problem space doesn’t refer to any specific solution but rather the end goal that needs to be met. If you become familiar with these, you can also identify some of the common components that are used to solve them. Below is an approximate sample of the problem spaces out there.&lt;/p&gt;
+
+&lt;h4 id=&quot;strings&quot;&gt;Strings&lt;/h4&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.google.com/search?q=string+interview+questions&quot;&gt;Google Search&lt;/a&gt; - string interview questions&lt;/p&gt;
+
+&lt;p&gt;For example, in bio-informatic key sequencing, the problem space is in looking for specific patterns (e.g. genome sequencing). Most all sequences can be represented using a string abstraction. While the example of key sequencing is a real world example, it can be generalized to ask questions about strings. The generalized problem space would be strings. By strings I don’t mean words or text, I mean a sequence of symbols in the most abstract way.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/2022-02-14-interviews-are-the-worst/gene-sequence.png&quot; alt=&quot;Gene Sequence&quot; /&gt;
+&lt;em&gt;Excerpt of a Gene Sequence&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Given the string problem space, some combinatorial factors, with examples, could be length, affix, repetition, similarity, and cardinality. Combinations of those being:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Least common subsequence.&lt;/li&gt;
+  &lt;li&gt;Largest common prefix.&lt;/li&gt;
+  &lt;li&gt;Most unique string.&lt;/li&gt;
+  &lt;li&gt;Longest repeated string.&lt;/li&gt;
+  &lt;li&gt;Number of unique characters (i.e. cardinality).&lt;/li&gt;
+  &lt;li&gt;Words that share the most characters.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This is just a small example. Least common subsequence is a popular one but why stop there? If you can do the combinations then you will have mastery. Just remember an interviewer is trying to mix it up too.&lt;/p&gt;
+
+&lt;h4 id=&quot;encoding&quot;&gt;Encoding&lt;/h4&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.google.com/search?q=data+compression+interview+questions&quot;&gt;Google Search&lt;/a&gt; - data compression interview questions&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/2022-02-14-interviews-are-the-worst/claude-shannon.jpg&quot; alt=&quot;Founder of Information Theory&quot; /&gt;
+&lt;em&gt;Claude Shannon - The OG of Information Theory&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;How would you represent data in memory? Combinatorial factors could be cardinality, word size, and direction. Some combinations:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Number of unique values encountered.&lt;/li&gt;
+  &lt;li&gt;Counters of letters encountered.&lt;/li&gt;
+  &lt;li&gt;Compression for streaming data.&lt;/li&gt;
+  &lt;li&gt;Compression for bounded data.&lt;/li&gt;
+  &lt;li&gt;Record a sequence of values containing A, B and C.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;lookup--counting&quot;&gt;Lookup &amp;amp; Counting&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.google.com/search?q=hashing+interview+questions&quot;&gt;Google Search&lt;/a&gt; - hashing interview questions&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.google.com/search?q=computer+counting+interview+questions&quot;&gt;Google Search&lt;/a&gt; - computer counting interview questions&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;What is the best way to lookup data with the constraints given? Combinatorial factors could be cardinality, length, and match type (whole, partial).&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Specific string of unbounded length.&lt;/li&gt;
+  &lt;li&gt;Strings that share the first 3 characters.&lt;/li&gt;
+  &lt;li&gt;Specific count of a single character in a corpus.&lt;/li&gt;
+  &lt;li&gt;Words who share the same 3 letters.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Notice how there is some overlap here with strings, that is because lookup frequently is a subset of the string problem space. We could easily apply common solutions from the string problem space to these as well as hashing and graphs (i.e. trie).&lt;/p&gt;
+
+&lt;h4 id=&quot;graphs&quot;&gt;Graphs&lt;/h4&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.google.com/search?q=graph+interview+questions&quot;&gt;Google Search&lt;/a&gt; - graph interview questions&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/2022-02-14-interviews-are-the-worst/spammers-in-social-graph.jpg&quot; alt=&quot;Spotting Spammers in Social Graph&quot; /&gt;
+&lt;em&gt;Spotting Spammers in Social Graph&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;How do you find specific relationships between entities? Combinatorial factors could be value cardinality, size, edge direction, edge weights and cycles.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Least cost path between two points.&lt;/li&gt;
+  &lt;li&gt;Detect all cycles.&lt;/li&gt;
+  &lt;li&gt;All paths to a point from all other points.&lt;/li&gt;
+  &lt;li&gt;Paths that never leads to a cycle.&lt;/li&gt;
+  &lt;li&gt;Reverse direction to every odd numbered node and detect all cycles.&lt;/li&gt;
+  &lt;li&gt;Remove edges in a cycle that would have the most cost.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Keep in mind that a linked list and tree are just graphs with constraints. If you learn graphs, you learn trees and linked lists. It’s just with trees their is direction so it can be flipped.&lt;/p&gt;
+
+&lt;h4 id=&quot;sorting&quot;&gt;Sorting&lt;/h4&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.google.com/search?q=sorting+interview+questions&quot;&gt;Google Search&lt;/a&gt; - sorting interview questions&lt;/p&gt;
+
+&lt;p&gt;How do you derive meaning (how is it practical?) by ordering some collections of values? Combinatorial factors could be value cardinality, stability, partiality, and comparability.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Group cards by color.&lt;/li&gt;
+  &lt;li&gt;Sort integers by partial order where some integer k can be 4 positions away from k+1 and k-1.&lt;/li&gt;
+  &lt;li&gt;Sort a stream of natural numbers.&lt;/li&gt;
+  &lt;li&gt;Group floats by their whole number and the order they appear (stable).&lt;/li&gt;
+  &lt;li&gt;Order a deck of cards by rank, color and suit.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;dynamic-programming&quot;&gt;Dynamic Programming&lt;/h4&gt;
+
+&lt;p&gt;Honestly I don’t study this and despise its use in interviews. Rather jadedly I would speculate that most interviewers wouldn’t even be able to come up with a DP solution from first principles. Identifying optimal sub-structure really just takes a lot of experience IMO. Much like induction proofs.&lt;/p&gt;
+
+&lt;p&gt;I find a better approach is to work a real world problem from several solution approaches and then use the DP method intuitively. This comes after really understanding the problem and consequently its sub-structure when applied in successive steps (either iteratively or recursively).&lt;/p&gt;
+
+&lt;h4 id=&quot;space--runtime-are-cross-cutting&quot;&gt;Space &amp;amp; Runtime Are Cross Cutting&lt;/h4&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.google.com/search?q=space+and+time+complexity+analysis+exercises&quot;&gt;Google Search&lt;/a&gt; - space and time complexity analysis exercises&lt;/p&gt;
+
+&lt;p&gt;For all of these problem spaces, it is important to factor in time and space complexity as well. For example, merge sort is best suited for space because the re-ordering happens in blocks. However quick sort is considered the most performant for in-memory on average even though quick sort has the largest worst case. For lookups a bounded set of keys could just use an array (e.g. frequency counting letters).&lt;/p&gt;
+
+&lt;p&gt;Bonus points for pointing out engineering ramifications for choosing a solution even if it has the same complexity. It may be just a constant multiplier difference (e.g. 4n and n) but it could mean the difference of thousands of dollars in a production system’s resource usage.&lt;/p&gt;
+
+&lt;p&gt;Some tips when analyzing complexity.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;How do the variables grow as you take them to infinity? If given &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;m&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;n&lt;/code&gt;, does one become insignificant / constant. Sometimes a candidate will give something like &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;O(m*n)&lt;/code&gt; when in reality it is just &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;O(m)&lt;/code&gt;. Another way to look at it below.&lt;/li&gt;
+  &lt;li&gt;Think of complexity on average but be explicit. Maybe you are dealing with a set of strings. Let’s say the size of the set is &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;m&lt;/code&gt; and the largest length of a string is &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;n&lt;/code&gt;, is the space complexity really &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;O(m*n)&lt;/code&gt;. Possibly in a theoretical sense but realistically &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;m&lt;/code&gt; will be the overwhelming factor; it would be &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;O(m)&lt;/code&gt; on average. Tell the interviewer this though, don’t just give them the answer &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;O(m)&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;think-out-loud&quot;&gt;Think Out Loud&lt;/h3&gt;
+
+&lt;p&gt;While going through your thought process, make sure you share it with the interviewer like you would in a job. It’s like spreading out your ideas on a table, picking each one up, investigating it, saying what the pros and cons are, and then going with the best candidate at the moment while also being open to improvement. Maybe your idea isn’t the best one but put something out there that you can execute on and refine later. This will give an opportunity for the interviewer to see how you approach problems and judge the qualities of it.&lt;/p&gt;
+
+&lt;h3 id=&quot;ask-a-lot-of-questions&quot;&gt;Ask A Lot Of Questions&lt;/h3&gt;
+
+&lt;p&gt;Really ask them. The worst scenario is that you assume too much and go down a bad path. Probing the problem shows that you are thinking about all the possible aspects and applying critical thinking. I have had candidates ask questions that I didn’t even ask myself about the problem (impressive). In my experience, the better candidates were very inquisitive. Be curious and learn more.&lt;/p&gt;
+
+&lt;h3 id=&quot;think-before-you-type&quot;&gt;Think Before You Type&lt;/h3&gt;
+
+&lt;p&gt;Maybe you’re nervous, maybe you think you know the answer and you go straight to typing. Stop! Don’t do it. I have been guilty of this myself. Writing code is a matter of self expression for me, a way of speaking. Although I have learned in time that it can also be a way to code yourself into a corner or hit a dead end that requires lots of back tracking and deletion of code. It can also be a bad sign that you are a coder that doesn’t think before you act and can potentially waste large hours of time on bad paths. This is why design is highly valued in software engineering. It forces people to think about the hard problems before they run up against them in code. Same applies to an interview. I have seen candidates rush into a problem only to stop and realize they really didn’t understand it. Don’t do this. Stop and go over your design with the interviewer. Walk through the different approaches, considering each and then selecting the route you want to take. This complements the idea of thinking out loud.&lt;/p&gt;
+
+&lt;h3 id=&quot;practice-coding--a-lot&quot;&gt;Practice Coding .. A LOT&lt;/h3&gt;
+
+&lt;p&gt;When walking through mock interviews, always write out your solutions. In this COVID world, that means typing on a keyboard but it doesn’t hurt to do both. Especially if you get called up for an in-person interview.&lt;/p&gt;
+
+&lt;h4 id=&quot;pick-a-language&quot;&gt;Pick a Language&lt;/h4&gt;
+
+&lt;p&gt;Don’t pick a language you think they would want you to write, pick one you are good at and know how to use both syntactically and idiomatically. Unfortunately there are companies that want you to code in a specific languages. Personally I think that is a poor choice for the company since they should be looking for talent but sometimes that’s just the way it goes. For me, I would pick Python because it is the easiest to write IMO.&lt;/p&gt;
+
+&lt;p&gt;For the language you use, make sure you know:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;the syntax of the language,&lt;/li&gt;
+  &lt;li&gt;the idioms used, and&lt;/li&gt;
+  &lt;li&gt;the framework functions / classes involved.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;For example, know how to work with sequences (e.g. lists), manipulate symbols (e.g. casing strings), and things similar. This will come up naturally as you work on solutions. Whatever language you end up picking, always code out the solution in it. It will build up that muscle so you can easily translate your ideas to code quickly.&lt;/p&gt;
+
+&lt;h4 id=&quot;break-up-the-problem&quot;&gt;Break Up the Problem&lt;/h4&gt;
+
+&lt;p&gt;Start top down. Meaning start with the top level function and then break up the problem into sub functions. Deal with easy ones first and then slowly work your way towards the hardest. A divide and conquer approach shows you can compartmentalize and break out the problem into sub problems. It is something that is impressive and a lot of candidates don’t do.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;solve_problem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;easy_values&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;solve_easy_subproblem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;hard_values&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;solve_hard_subproblem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;do_trivial_thing&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;easy_values&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hard_values&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;solve_hard_subproblem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;easypartofhard_values&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;solve_easypartofhard_subproblem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;somewhathard_values&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;solve_somewhathard_subproblem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;do_code_timeconsuming_thing&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;easypartofhard_values&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;somewhathard_values&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;An additional upside to this is that if you don’t complete the solution in time, the interviewer is able to at least evaluate the parts that you wholly finished. This is especially helpful if you solved the most conceptually hard parts but just didn’t have enough time for the time consuming code part.&lt;/p&gt;
+
+&lt;h3 id=&quot;manage-your-emotions&quot;&gt;Manage Your Emotions&lt;/h3&gt;
+
+&lt;p&gt;For some, interviewing is not emotionally taxing but for others it can be debilitating. Personally, this is a big problem for me. I froze up completely for an interview once. I couldn’t even answer a trivial problem. I was so panicked that I couldn’t even think straight. The interviewer was very kind about it all but there was nothing to evaluate, I failed. Some things that helped me:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Practice until it is instinctual.&lt;/strong&gt; Do gymnastics until you can cooly answer any interview question or at least get close to it. Interview problems are just combinations; if you learn the fundamentals and apply them in different arrangements, they aren’t so surprising.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Mock interview a lot.&lt;/strong&gt; Have a friend or use an online resource to constantly perform mock interviews. It will help you with anxiety if you have it and keep you accustomed to the interview format. When I have held mock interviews I have intentionally been cold but polite. It wasn’t to be mean but to prepare them. If you have different tiers of jobs you are interested in, interview with the lowest ones first. Less is on the line if you fail and it is the best thing because it is real.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;You can always try again.&lt;/strong&gt; Most companies allow a candidate to try again after some time has passed. Just because you failed an interview doesn’t mean you are a bad candidate. It just means you were off or weren’t prepared enough. I’ll be honest, I failed my first interview with Google, and thought I wasn’t good enough. Five years later I tried again and got the job.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;You are good enough.&lt;/strong&gt; Imposter syndrome is a big thing. Especially when you work with people that you perceive to be intelligent and/or well accomplished. Sure there are people that have an obvious raw high intelligence but in my experience that is not the majority, and even then, very incongruent. Many intelligent people who I have met are highly driven. Education is a large factor in intelligence. Also intelligence is not some monolith; people express their intelligence through different characteristics as I alluded to with the word incongruent. In other words, intelligence is fluid and if you are driven, you are good enough.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;resources-to-use&quot;&gt;Resources To Use&lt;/h2&gt;
+
+&lt;h3 id=&quot;competitive-programming&quot;&gt;Competitive Programming&lt;/h3&gt;
+
+&lt;p&gt;Sites like TopCoder are nice and a way for you to get your chops solving different problems but it is first and foremost a competitive programming site. It is meant to present challenges that are new and novel, eliciting the tersest amount of code in the smallest amount of time. This isn’t to say if you got good at this you wouldn’t do well in an interview, the opposite, but it requires you to intuit the ability to solve based on working through a lot of problems rather than learning the underlying problem spaces.&lt;/p&gt;
+
+&lt;h3 id=&quot;interview-question-databases&quot;&gt;Interview Question Databases&lt;/h3&gt;
+
+&lt;p&gt;This pertains to sites like CareerCup where questions are posted that came from actual interviews with tech companies. Keep in mind that a lot of these get posted because they were difficult for the candidate. That means you are more likely to see harder questions and have false expectations of what is required from you. Take these sites with a grain of salt.&lt;/p&gt;
+
+&lt;h3 id=&quot;online-exercises&quot;&gt;Online Exercises&lt;/h3&gt;
+
+&lt;p&gt;Online IDEs and sets of exercises that you can drill on are useful (e.g. GeeksForGeeks, HackerRank). I usually pick the data structures and algorithms exercises and just grind on them several times until it becomes second nature. Experiment with different sites and see which one works best for you. The key is that you are able to get through the exercises fairly quickly. A good site should be able to build you up by difficulty so that you can get muscle strength.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;That was a lot but I hope it helps. This is rather a brain dump for me of all the thoughts I have had on interviewing in my career. If I were to summarize in just a few points, it would be to:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Drill and drill and drill everyday for several weeks.&lt;/li&gt;
+  &lt;li&gt;Go through all the data structures and algos.&lt;/li&gt;
+  &lt;li&gt;Go through all the problem spaces and make up combinations.&lt;/li&gt;
+  &lt;li&gt;Mock interview and challenge yourself to socially uncomfortable situations.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Lastly and most importantly is to know that you can do this. In my experience, lack of preparation has been the biggest hit on candidates not getting a job. Put in the time and it will help a lot in getting there. Good luck!&lt;/p&gt;</content><author><name>Andrew Walsh</name><email>awalsh128@gmail.com</email></author><category term="Interview" /><summary type="html">If you have experience in the software engineering field, an interview process can test the experience you have; projects, production scenarios, designs. Unfortunately, for junior positions and those out of college, there isn’t much to test for. Since most are computer scientists, you could test knowledge of algorithms and data structures but does that really prove the ability of a candidate? Knowing the upper bound complexity of an algorithm’s runtime is important but what about when a constant multiplying factor means the difference between production being up and down. We don’t have a solution for the Traveling Salesman Problem but we have very good and practical approximations (e.g. flight scheduling).</summary></entry><entry><title type="html">Compiler Basics</title><link href="https://awalsh128.com/compiler-basics/" rel="alternate" type="text/html" title="Compiler Basics" /><published>2021-10-23T00:00:00+00:00</published><updated>2021-10-25T07:00:01+00:00</updated><id>https://awalsh128.com/compiler-basics</id><content type="html" xml:base="https://awalsh128.com/compiler-basics/">&lt;p&gt;Compilers was one of my favorite classes in school alongside OS and architecture. It gave me a deeper understanding of what happened with my code behind the scenes and insight into how to create my own &lt;a href=&quot;https://en.wikipedia.org/wiki/Domain-specific_language&quot;&gt;domain specific language&lt;/a&gt;. Knowing how compilers work create the link between the abstractions that developers use everyday and the machine executing them below.&lt;/p&gt;
+
+&lt;h2 id=&quot;phases&quot;&gt;Phases&lt;/h2&gt;
+
+&lt;p&gt;Compilation comes into five phases.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Scanner - Breaks up text into tokens.&lt;/li&gt;
+  &lt;li&gt;Parser - Arranges the tokens into relationships that form a tree.&lt;/li&gt;
+  &lt;li&gt;Symbol Table - Attributes metadata like type and scope to identifiers (e.g. variables, functions, classes).&lt;/li&gt;
+  &lt;li&gt;Intermediate Representation (IR) - Representation of the code that is typically a series of statements / commands that can be optimized before becoming the assembly code.&lt;/li&gt;
+  &lt;li&gt;Compiled Code - The actual assembly code that gets generated at the end as a series of &lt;a href=&quot;https://en.wikipedia.org/wiki/Opcode&quot;&gt;opcodes&lt;/a&gt; with their corresponding data and control bits.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Of course this description makes a lot of assumptions and doesn’t account for different approaches to compilation but serves well for the purpose of learning and demonstration. For the following phase breakdowns we will use a C like language with a simple set of constructs as a toy use case. Let’s get started…&lt;/p&gt;
+
+&lt;h2 id=&quot;scanner&quot;&gt;Scanner&lt;/h2&gt;
+
+&lt;p&gt;This is also known as the lexer or tokenizer. It’s responsibility is to take text and create indivisible units / tokens out of it. For example, the following…&lt;/p&gt;
+
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;123&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;…would be tokenized as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;int&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;x&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;=&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;123&lt;/code&gt;, and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;;&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Let’s take a more complex example.&lt;/p&gt;
+
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;bar&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;123&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This would be tokenized as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;int&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;foo&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;(&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;int&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&amp;amp;&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bar&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;)&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;{&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bar&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;=&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;123&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;;&lt;/code&gt;, and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;}&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;As a contrast, let’s look at a Python like snippet…&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;bar&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;123&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Since these languages treat spaces as part of the language (unlike C-like ones), this would be tokenized as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;def&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;foo&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;(&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bar&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;)&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;:&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;\n&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;\s&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;\s&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bar&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;=&lt;/code&gt;, and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;123&lt;/code&gt;. This approach is a bit nuanced though as any spaces after &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;:&lt;/code&gt; and before newline are not tokenized since they have no meaning for the compiled language (same goes for extraneous newlines). This is why the last C-like example could be expressed as.&lt;/p&gt;
+
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bar&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;123&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The only case where spaces have any meaning is to separate identifiers.&lt;/p&gt;
+
+&lt;p&gt;Now let’s take an example we will use going forward for all the phases.&lt;/p&gt;
+
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;parser&quot;&gt;Parser&lt;/h2&gt;
+
+&lt;p&gt;The parser phase transforms the tokens into relationships between them (semantical) where it takes the flat list of tokens and puts them into a tree structure (i.e. &lt;a href=&quot;https://en.wikipedia.org/wiki/Abstract_syntax_tree&quot;&gt;Abstract Syntax Tree (AST)&lt;/a&gt;). Here is what our example looks like.&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;
+  &lt;img src=&quot;/assets/img/2021-10-23-compiler-basics/parser.png&quot; width=&quot;400&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;Something useful to know is the difference between the scanner and parser phase.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;The scanner phase is the lexical component, it is concerned with the structure of symbols / tokens (in this case a combination of letters, numbers and punctuation).&lt;/li&gt;
+  &lt;li&gt;The parser phase is the semantic component, it is concerned with the meaning of symbols as they relate in the context of one another. For example…&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The parenthesis are the symbols present in the function declaration and the function body but they have completely different meaning in their relationship with the rest of the symbols.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;One is in the context of a function declaration &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;foo&lt;/code&gt; and denotes the start and end of declared parameters.&lt;/li&gt;
+  &lt;li&gt;The other imposes order of operation on the expression assigned to the variable &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;x&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This is what makes the parsing / semantic phase different than the scanner / lexical phase.&lt;/p&gt;
+
+&lt;h2 id=&quot;symbol-table&quot;&gt;Symbol Table&lt;/h2&gt;
+
+&lt;p&gt;The &lt;a href=&quot;https://en.wikipedia.org/wiki/Symbol_table&quot;&gt;symbol table&lt;/a&gt; provides information about the identifiers such as type and scope. Let’s take the canonical example we have been using and encapsulate it into a function so we can give it some scope.&lt;/p&gt;
+
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The code gets stored in the symbol table as…&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Symbol&lt;/th&gt;
+      &lt;th&gt;Type&lt;/th&gt;
+      &lt;th&gt;Scope&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;foo&lt;/td&gt;
+      &lt;td&gt;function, void&lt;/td&gt;
+      &lt;td&gt;global&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;x&lt;/td&gt;
+      &lt;td&gt;int&lt;/td&gt;
+      &lt;td&gt;function parameter&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;y&lt;/td&gt;
+      &lt;td&gt;int&lt;/td&gt;
+      &lt;td&gt;block scope&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;A symbol table is defined and typically stored in each &lt;a href=&quot;https://en.wikipedia.org/wiki/Single_Compilation_Unit&quot;&gt;compilation unit&lt;/a&gt; that corresponds to an object file (e.g. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;*.o&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;*.obj&lt;/code&gt;). These tables are not only used for metadata but will also serve as lookups for other object files that are trying to resolve their own symbols in the linker phase.&lt;/p&gt;
+
+&lt;h3 id=&quot;slight-detour-to-undefined-reference&quot;&gt;Slight Detour to Undefined Reference&lt;/h3&gt;
+
+&lt;p&gt;Note this is around the phase where you will get errors like &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;undefined reference&lt;/code&gt;. The &lt;a href=&quot;https://en.wikipedia.org/wiki/Linker_(computing)&quot;&gt;linker&lt;/a&gt; in these cases is trying to link the symbol references between the object files. An example of an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;undefined reference&lt;/code&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// This says, I promise this thing exists. Just keep compiling and &lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// it will show up when the linker searches for it.&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;extern&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;bar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The symbol table will be generated as…&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Symbol&lt;/th&gt;
+      &lt;th&gt;Type&lt;/th&gt;
+      &lt;th&gt;Scope&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;foo&lt;/td&gt;
+      &lt;td&gt;function, void&lt;/td&gt;
+      &lt;td&gt;extern (note this)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;bar&lt;/td&gt;
+      &lt;td&gt;function, int&lt;/td&gt;
+      &lt;td&gt;global&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;x&lt;/td&gt;
+      &lt;td&gt;int&lt;/td&gt;
+      &lt;td&gt;block scope&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;If &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;foo&lt;/code&gt; isn’t included anywhere either directly or indirectly through headers, an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;undefined reference&lt;/code&gt; will get reported. In these cases, the linker couldn’t resolve the symbol scope, which has an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;extern&lt;/code&gt; placemarker waiting for linkage.&lt;/p&gt;
+
+&lt;h3 id=&quot;back-on-track&quot;&gt;Back on Track&lt;/h3&gt;
+
+&lt;p&gt;Let’s now assume the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;extern int foo();&lt;/code&gt; is defined in another file. The resolved symbol table becomes.&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Symbol&lt;/th&gt;
+      &lt;th&gt;Type&lt;/th&gt;
+      &lt;th&gt;Scope&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;foo&lt;/td&gt;
+      &lt;td&gt;function, void&lt;/td&gt;
+      &lt;td&gt;int (note this has changed)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;bar&lt;/td&gt;
+      &lt;td&gt;function, int&lt;/td&gt;
+      &lt;td&gt;global&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;x&lt;/td&gt;
+      &lt;td&gt;int&lt;/td&gt;
+      &lt;td&gt;block scope&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&quot;intermediate-representation-ir&quot;&gt;Intermediate Representation (IR)&lt;/h2&gt;
+
+&lt;p&gt;Generated from the parser graph and symbol table is the &lt;a href=&quot;https://en.wikipedia.org/wiki/Intermediate_representation&quot;&gt;intermediate code / representation&lt;/a&gt;. It is the code that gets generated before translating to assembly. The reason this exists as opposed to direct assembly translation is so that optimizations can be made before final code expression.&lt;/p&gt;
+
+&lt;p&gt;IR generators come in different types and take on different degrees of responsibility. Examples of IRs are &lt;a href=&quot;https://en.wikipedia.org/wiki/LLVM&quot;&gt;LLVM&lt;/a&gt;, &lt;a href=&quot;https://en.wikipedia.org/wiki/Java_bytecode&quot;&gt;Java bytecode&lt;/a&gt;, and &lt;a href=&quot;https://en.wikipedia.org/wiki/Common_Intermediate_Language&quot;&gt;Microsoft CIL&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;net-cil&quot;&gt;.NET CIL&lt;/h3&gt;
+
+&lt;p&gt;Applying the .NET &lt;a href=&quot;https://docs.microsoft.com/en-us/dotnet/core/tools/&quot;&gt;Common Intermediate Language (CIL)&lt;/a&gt; to our canonical example below…&lt;/p&gt;
+
+&lt;div class=&quot;language-csharp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;…becomes…&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-cil&quot;&gt;.method private hidebysig instance void 
+          foo(int32 x) cil managed
+{
+  .maxstack  2
+  .locals init (int32 V_0, bool V_1)
+  IL_0000:  nop
+  IL_0001:  ldarg.1
+  IL_0002:  ldc.i4.2
+  IL_0003:  cgt
+  IL_0005:  ldc.i4.0
+  IL_0006:  ceq
+  IL_0008:  stloc.1
+  IL_0009:  ldloc.1
+  IL_000a:  brtrue.s   IL_0012
+
+  IL_000c:  nop
+  IL_000d:  ldc.i4.1
+  IL_000e:  stloc.0
+  IL_000f:  nop
+  IL_0010:  br.s       IL_0016
+
+  IL_0012:  nop
+  IL_0013:  ldc.i4.2
+  IL_0014:  stloc.0
+  IL_0015:  nop
+  IL_0016:  ret
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This is an instance of a &lt;a href=&quot;https://en.wikipedia.org/wiki/Stack_machine&quot;&gt;stack based&lt;/a&gt; &lt;a href=&quot;https://en.wikipedia.org/wiki/Bytecode&quot;&gt;bytecode&lt;/a&gt; representation as opposed to a &lt;a href=&quot;https://en.wikipedia.org/wiki/Register_machine&quot;&gt;register based approach&lt;/a&gt;. The two approaches are not strictly one or the other, but typically a virtual machine uses one predominantly. The more popular &lt;a href=&quot;https://en.wikipedia.org/wiki/Java_virtual_machine&quot;&gt;JVM&lt;/a&gt; and CIL are stack based but sometimes leverage registers. For example, the CIL will store simple constants like integers or perform calculations using registers since it &lt;a href=&quot;https://www.intel.com/content/www/us/en/developer/articles/technical/memory-performance-in-a-nutshell.html&quot;&gt;is faster in terms of memory access than the L1+ cache&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;compiled-code&quot;&gt;Compiled Code&lt;/h2&gt;
+
+&lt;p&gt;The last and final step is the machine code itself. This is usually the assembly code that gets ran. Using our previous example for the CIL code. This bytecode gets translated into x86 code as…&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-asm&quot;&gt;C.foo(Int32)
+  L0000: push ebp
+  L0001: mov ebp, esp
+  L0003: sub esp, 0x10
+  L0006: xor eax, eax
+  L0008: mov [ebp-0xc], eax
+  L000b: mov [ebp-0x10], eax
+  L000e: mov [ebp-4], ecx
+  L0011: mov [ebp-8], edx
+  L0014: cmp dword ptr [0x1adec1a8], 0
+  L001b: je short L0022
+  L001d: call 0x661dfc10
+  L0022: nop
+  L0023: cmp dword ptr [ebp-8], 2
+  L0027: setg al
+  L002a: movzx eax, al
+  L002d: mov [ebp-0x10], eax
+  L0030: cmp dword ptr [ebp-0x10], 0
+  L0034: je short L0042
+  L0036: nop
+  L0037: mov dword ptr [ebp-0xc], 1
+  L003e: nop
+  L003f: nop
+  L0040: jmp short L004b
+  L0042: nop
+  L0043: mov dword ptr [ebp-0xc], 2
+  L004a: nop
+  L004b: nop
+  L004c: mov esp, ebp
+  L004e: pop ebp
+  L004f: ret
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;into-the-abyss&quot;&gt;Into the Abyss&lt;/h2&gt;
+
+&lt;p&gt;Let’s go even further now and see what the encoded values look like in the &lt;a href=&quot;https://en.wikipedia.org/wiki/Instruction_register&quot;&gt;instruction register&lt;/a&gt; of an x86 CPU. On the left are the line numbers and the contents of the register, and on the right is the assembly equivalent. Notice how some of the hex matches value to the right.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-asm&quot;&gt;0:  55                      push   ebp
+1:  89 e5                   mov    ebp,esp
+3:  83 ec 10                sub    esp,0x10
+6:  31 c0                   xor    eax,eax
+8:  89 45 f4                mov    DWORD PTR [ebp-0xc],eax
+b:  89 45 f0                mov    DWORD PTR [ebp-0x10],eax
+e:  89 4d fc                mov    DWORD PTR [ebp-0x4],ecx
+11: 89 55 f8                mov    DWORD PTR [ebp-0x8],edx
+14: 83 3d a8 c1 de 1a 00    cmp    DWORD PTR ds:0x1adec1a8,0x0
+1b: 74 05                   je     22 &amp;lt;L0022&amp;gt;
+1d: e8 0c fc 1d 66          call   661dfc2e &amp;lt;L004f+0x661dfbdf&amp;gt;
+22: 90                      nop
+23: 83 7d f8 02             cmp    DWORD PTR [ebp-0x8],0x2
+27: 0f 9f c0                setg   al
+2a: 0f b6 c0                movzx  eax,al
+2d: 89 45 f0                mov    DWORD PTR [ebp-0x10],eax
+30: 83 7d f0 00             cmp    DWORD PTR [ebp-0x10],0x0
+34: 74 0c                   je     42 &amp;lt;L0042&amp;gt;
+36: 90                      nop
+37: c7 45 f4 01 00 00 00    mov    DWORD PTR [ebp-0xc],0x1
+3e: 90                      nop
+3f: 90                      nop
+40: eb 09                   jmp    4b &amp;lt;L004b&amp;gt;
+42: 90                      nop
+43: c7 45 f4 02 00 00 00    mov    DWORD PTR [ebp-0xc],0x2
+4a: 90                      nop
+4b: 90                      nop
+4c: 89 ec                   mov    esp,ebp
+4e: 5d                      pop    ebp
+4f: c3                      ret
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The byte layout from left to right is opcode, control bits, data. Imagine being the person that had to execute all of this manually.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Digital_PDP-8F.jpg/1920px-Digital_PDP-8F.jpg&quot; alt=&quot;DEC PDP-8&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This was considered a step up from this.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Used_Punchcard_%285151286161%29.jpg/1920px-Used_Punchcard_%285151286161%29.jpg&quot; alt=&quot;IBM Punch Card&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Because they didn’t want to do this.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-txt&quot;&gt;01010101
+1000100111100101
+100000111110110000010000
+11000111000000
+100010010100010111110100
+100010010100010111110000
+100010010100110111111100
+100010010101010111111000
+10000011001111011010100011000001110111100001101000000000
+111010000000101
+1110100000001100111111000001110101100110
+10010000
+10000011011111011111100000000010
+11111001111111000000
+11111011011011000000
+100010010100010111110000
+10000011011111011111000000000000
+111010000001100
+10010000
+11000111010001011111010000000001000000000000000000000000
+10010000
+10010000
+1110101100001001
+10010000
+11000111010001011111010000000010000000000000000000000000
+10010000
+10010000
+1000100111101100
+01011101
+11000011
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In fact the whole concept of an assembler was once considered by some as a wasteful endevour. It was using computational resources to create instructions to use computational resources. The whole point is that it used computational resources! In today’s world where we are pretty wasteful of computational resources by orders of magnitude, this was not taken for granted back then when the idea of &lt;a href=&quot;https://en.wikipedia.org/wiki/Time-sharing&quot;&gt;computational time sharing&lt;/a&gt; was a thing. We have come a long way.&lt;/p&gt;
+
+&lt;h2 id=&quot;closing-thoughts&quot;&gt;Closing Thoughts&lt;/h2&gt;
+
+&lt;p&gt;So now we have come full circle from…&lt;/p&gt;
+
+&lt;div class=&quot;language-csharp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;…to the binary seen above.&lt;/p&gt;
+
+&lt;p&gt;The compiler is a great thing, it allows us to use abstractions that make development much easier and express ideas in ways that humans are more able to grasp. Turning the realm of controlled electrons into that of the symbolic and philosophical, permitting us to process and interpret the world around us.&lt;/p&gt;
+
+&lt;h2 id=&quot;references--more-reading&quot;&gt;References &amp;amp; More Reading&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;To start exploring on how to create a language for yourself, check out &lt;a href=&quot;https://www.antlr.org/&quot;&gt;Antlr&lt;/a&gt; (lexer) and &lt;a href=&quot;https://www.gnu.org/software/bison/&quot;&gt;Bison&lt;/a&gt; (parser).&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://llvm.org/docs/tutorial/MyFirstLanguageFrontend/index.html&quot;&gt;My First Language Frontend with LLVM Tutorial&lt;/a&gt; - Exactly what it says.&lt;/li&gt;
+  &lt;li&gt;Lecture notes on &lt;a href=&quot;https://cop3402fall20.github.io/lectures/03_toy_compiler.html&quot;&gt;Writing a Toy Compiler&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.twilio.com/blog/abstract-syntax-trees&quot;&gt;ASTs - What they are and how to use them&lt;/a&gt; - Engaging blog post on how ASTs work and dives further into other topics also covered here.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://godbolt.org/&quot;&gt;GodBolt: Compiler Explorer&lt;/a&gt; - Fantastic online IDE to view compiled assembly from high level languages.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://web.eecs.utk.edu/~azh/blog/teenytinycompiler1.html&quot;&gt;Let’s make a Teeny Tiny compiler, part 1&lt;/a&gt; - First part of a series showing how to make a compiler using Python. Trivial but approachable and demonstrative to learning compilers.&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Andrew Walsh</name><email>awalsh128@gmail.com</email></author><category term="Compilers" /><summary type="html">Introduction of compiler basics using a toy example.</summary></entry><entry><title type="html">Doxygen Themes</title><link href="https://awalsh128.com/doxygen-themes-release/" rel="alternate" type="text/html" title="Doxygen Themes" /><published>2021-10-23T00:00:00+00:00</published><updated>2021-10-23T07:00:01+00:00</updated><id>https://awalsh128.com/doxygen-themes-release</id><content type="html" xml:base="https://awalsh128.com/doxygen-themes-release/">&lt;p&gt;I just released a new project on GitHub called &lt;a href=&quot;https://github.com/awalsh128/doxygen-themes&quot;&gt;doxygen-themes&lt;/a&gt; which allows users to customize Doxygen styling and colors using some example templates, including a stylesheet boiled down to a few color variables.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/awalsh128/doxygen-themes/CONTRIBUTING.md&quot;&gt;Contributions&lt;/a&gt; are definitely welcome. For the lazy, here is the README.md below.&lt;/p&gt;
+
+&lt;p&gt;Some sample Doxygen themes using Bootstrap 5 with different approaches to CSS use. Not all of the HTML is Bootstrap though, just the header and footer with Bootstrap like coloring applied to the body elements.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.awalsh128.com/doxygen-themes/&quot;&gt;Click here for the demo landing page.&lt;/a&gt;.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;documentation&quot;&gt;Documentation&lt;/h2&gt;
+
+&lt;p&gt;This project is a demonstration of possible approaches to theming Doxygen generated websites. Frameworks other than Bootstrap can be used, this is just an example of what is possible.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Applied directly.&lt;/li&gt;
+  &lt;li&gt;Root variables applied.&lt;/li&gt;
+  &lt;li&gt;Simple color palette propagated.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;pre-requisites&quot;&gt;Pre-requisites&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;CMake - Build the project and create the website.&lt;/li&gt;
+  &lt;li&gt;Doxygen - Create the website documentation.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;components&quot;&gt;Components&lt;/h2&gt;
+
+&lt;p&gt;All components use CDN links to keep project file overhead low.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Bootstrap - Styles the header and footer. Also provides the primary colors for the Doxygen classes.&lt;/li&gt;
+  &lt;li&gt;Font Awesome - Header icons.&lt;/li&gt;
+  &lt;li&gt;jQuery - Required by Bootstrap and used for the custom palette picker.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;sample-css&quot;&gt;Sample CSS&lt;/h2&gt;
+
+&lt;p&gt;Below is the CSS used for the Neon Pink theme.&lt;/p&gt;
+
+&lt;div class=&quot;language-css highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;:root&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;py&quot;&gt;--color-body&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;#bda9a9&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;py&quot;&gt;--color-hyperlink&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;#ffffff&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;py&quot;&gt;--color-title-background&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;#8a1253&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;py&quot;&gt;--color-title-text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;#ffffff&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;py&quot;&gt;--color-footer-header-background&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;#c51350&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;py&quot;&gt;--color-footer-header-text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;#ffffff&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;py&quot;&gt;--color-section-header-background&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;#e8751a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;py&quot;&gt;--color-section-header-text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;#ffffff&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;py&quot;&gt;--color-section-subheader-background&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;#fda403&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;py&quot;&gt;--color-section-subheader-text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;#ffffff&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;py&quot;&gt;--color-section-text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;#ffffff&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;py&quot;&gt;--color-section-background&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;#bd9a9a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Notice how there is a lot of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;#ffffff&lt;/code&gt; in there. This could probably be further simplified.&lt;/p&gt;
+
+&lt;h3 id=&quot;future-ideas&quot;&gt;Future Ideas&lt;/h3&gt;
+
+&lt;p&gt;There are a lot of CSS features &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/CSS&quot;&gt;that can be found&lt;/a&gt;. Some ways to simplify the palette even more.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/CSS/filter-function&quot;&gt;Filter Functions&lt;/a&gt; - Allows for different affects and interesting functions like &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/CSS/filter-function/brightness()&quot;&gt;brightness&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/hsl()&quot;&gt;HSL Scheme&lt;/a&gt; - Makes darkening and lightening easier.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/CSS/calc()&quot;&gt;Arithmetic&lt;/a&gt; - Useful for modifying color values.&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Andrew Walsh</name><email>awalsh128@gmail.com</email></author><category term="Bootstrap" /><category term="Doxygen" /><summary type="html">Customizable and modernized Doxygen themes.</summary></entry><entry><title type="html">Automated Testing for GitHub Actions</title><link href="https://awalsh128.com/automated-testing-for-github-actions/" rel="alternate" type="text/html" title="Automated Testing for GitHub Actions" /><published>2021-10-12T00:00:00+00:00</published><updated>2021-10-16T07:00:01+00:00</updated><id>https://awalsh128.com/automated-testing-for-github-actions</id><content type="html" xml:base="https://awalsh128.com/automated-testing-for-github-actions/">&lt;p&gt;GitHub actions don’t support running tests on created actions from the same repository. In order to do this, another repository needs to be created. There is a way to test locally using &lt;a href=&quot;https://github.com/nektos/act&quot;&gt;nektos/act&lt;/a&gt; but this doesn’t address code being committed upstream and continuously integrated. Let’s get to it.&lt;/p&gt;
+
+&lt;p&gt;For this walkthrough, there will be two endpoints:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Action repository where your created action under test lives.&lt;/li&gt;
+  &lt;li&gt;Test repository that houses the tests.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The general idea is to have your action repository publish an event that says a push has occurred, relay it to the test repository which triggers tests on the test repository. For this example I am using my own recently published action &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;awalsh128/cache-apt-pkgs-action&lt;/code&gt;. Feel free to swap out this with your equivalent action.&lt;/p&gt;
+
+&lt;p&gt;The steps needed are to create:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;a shared secret,&lt;/li&gt;
+  &lt;li&gt;a staging (or another) branch besides master on the action repository,&lt;/li&gt;
+  &lt;li&gt;a repository to run tests on your action code,&lt;/li&gt;
+  &lt;li&gt;tests in your test repository,&lt;/li&gt;
+  &lt;li&gt;a publish action in your action repository,&lt;/li&gt;
+  &lt;li&gt;a subscriber action in your test repository.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;More details on each step below.&lt;/p&gt;
+
+&lt;h2 id=&quot;create-shared-secret&quot;&gt;Create Shared Secret&lt;/h2&gt;
+
+&lt;p&gt;A Personal Access Token (PAT) will allow the publisher (action repository) to trigger the event that the subscriber (test repository) will then act on. This shared secret will be needed so they can interact.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/settings/tokens&quot;&gt;Instructions to setup your PAT. Use the arguments below.&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Profile &amp;gt; Settings &amp;gt; Developer settings &amp;gt; Personal Access Token &amp;gt; Generate New Token&lt;/code&gt;&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Field&lt;/th&gt;
+      &lt;th&gt;Value&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Note&lt;/td&gt;
+      &lt;td&gt;Publish push requests to awalsh128/cache-apt-pkgs-action-ci&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Expiration&lt;/td&gt;
+      &lt;td&gt;(whatever you choose this to be)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Access:&lt;/td&gt;
+      &lt;td&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;repo_public&lt;/code&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/2021-10-12-automated-testing-for-github-actions/personal_access_token.png&quot; alt=&quot;Example PAT Config Screen&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Once you complete the configuration it will then show you what the value is. Note this isn’t my actual value, so don’t get any ideas. &amp;gt;:|&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/2021-10-12-automated-testing-for-github-actions/personal_access_token_value.png&quot; alt=&quot;Example PAT Value Screen&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;We can now share this PAT / secret with the publisher.&lt;/p&gt;
+
+&lt;h2 id=&quot;publisher&quot;&gt;Publisher&lt;/h2&gt;
+
+&lt;p&gt;Turning our attention to the publisher side (action repository) of the event that will trigger the tests on the test repository.&lt;/p&gt;
+
+&lt;h3 id=&quot;store-shared-secret-on-publisher&quot;&gt;Store Shared Secret on Publisher&lt;/h3&gt;
+
+&lt;p&gt;In order for the action repository to publish the event to the test repository, it will need access to it. The PAT will need to be stored in a variable so it can be used in the action without actually revealing it’s value.&lt;/p&gt;
+
+&lt;p&gt;To create a scecret, you can use a URL like below. Replace the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cache-apt-pkgs-action-ci&lt;/code&gt; repository with your own test repository name.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/awalsh128/cache-apt-pkgs-action-ci/settings/secrets/actions/new&quot;&gt;https://github.com/awalsh128/cache-apt-pkgs-action-ci/settings/secrets/actions/new&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Use the arguments below when creating the secret.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Settings &amp;gt; Secrets &amp;gt; New repository secret&lt;/code&gt;&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Field&lt;/th&gt;
+      &lt;th&gt;Value&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Name&lt;/td&gt;
+      &lt;td&gt;TRIGGER_PUBLISH_STAGING_PR_TOKEN&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Secret&lt;/td&gt;
+      &lt;td&gt;(value taken from Create Shared Secret)&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;Here’s an example of the PAT we generated before.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/2021-10-12-automated-testing-for-github-actions/secret.png&quot; alt=&quot;Example PAT Value Screen&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;create-a-staging-branch-in-awalsh128cache-apt-pkgs-action&quot;&gt;Create a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;staging&lt;/code&gt; branch in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;awalsh128/cache-apt-pkgs-action&lt;/code&gt;&lt;/h3&gt;
+
+&lt;p&gt;This will be used as a testing branch. Broken code can live here without going to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;master&lt;/code&gt;. It doesn’t have to be called &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;staging&lt;/code&gt;, call it whatever you want (e.g. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;dev&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;whatever&lt;/code&gt;).&lt;/p&gt;
+
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git checkout &lt;span class=&quot;nt&quot;&gt;-b&lt;/span&gt; staging
+git push origin staging
+git push &lt;span class=&quot;nt&quot;&gt;--set-upstream&lt;/span&gt; origin staging
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;create-publish-action&quot;&gt;Create Publish Action&lt;/h3&gt;
+
+&lt;p&gt;In the action repository, create &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.github/workflows/staging_push.yml&lt;/code&gt; workflow that will trigger on any push to staging.&lt;/p&gt;
+
+&lt;div class=&quot;language-yml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Publish Staging Push Event&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;on&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# Allow manual triggering for debugging.&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;workflow_dispatch&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# Publish when we see a push to staging.&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;push&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;branches&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;staging&lt;/span&gt;
+
+&lt;span class=&quot;na&quot;&gt;jobs&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;publish_event&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;runs-on&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ubuntu-latest&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Publish staging push&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;steps&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;# Note the event_type and URL secrets passed so the action repository &lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;# is allowed to post to the test repository.&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;|&lt;/span&gt;
+          &lt;span class=&quot;s&quot;&gt;curl -i \&lt;/span&gt;
+            &lt;span class=&quot;s&quot;&gt;-X POST \&lt;/span&gt;
+            &lt;span class=&quot;s&quot;&gt;-H &quot;Accept: application/vnd.github.v3+json&quot; \&lt;/span&gt;
+            &lt;span class=&quot;s&quot;&gt;-H &quot;Authorization: token ${{ secrets.PUBLISH_PUSH_TOKEN }}&quot; \&lt;/span&gt;
+            &lt;span class=&quot;s&quot;&gt;https://api.github.com/repos/awalsh128/cache-apt-pkgs-action-ci/dispatches \&lt;/span&gt;
+            &lt;span class=&quot;s&quot;&gt;-d &apos;{&quot;event_type&quot;:&quot;staging_push&quot;}&apos;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;subscriber&quot;&gt;Subscriber&lt;/h2&gt;
+
+&lt;p&gt;Now on the subscriber (test repository), setup the tests and trigger to respond to the staging push.&lt;/p&gt;
+
+&lt;h3 id=&quot;create-repository-and-test&quot;&gt;Create Repository and Test&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Create &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;awalsh128/cache-apt-pkgs-action-ci&lt;/code&gt; repository (ci = continuous integration) for testing.&lt;/li&gt;
+  &lt;li&gt;Create a workflow &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.github/workflows/tests.yml&lt;/code&gt; that subscribes to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;staging_push&lt;/code&gt; events and runs tests.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-yml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Staging Push Tests&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;on&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# Allow for manual dispatches so we can test the workflow if needed.&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;workflow_dispatch&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;repository_dispatch&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# Name of the event that will by pubsub&apos;d.&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;types&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;staging_push&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;]&lt;/span&gt;
+
+&lt;span class=&quot;na&quot;&gt;jobs&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;install&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;runs-on&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ubuntu-latest&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Install and cache.&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;steps&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;actions/checkout@v2&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;# Note that the action uses the @staging version.&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;# Allows testing to happen on that branch so it can get pulled into master once it passes.&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;awalsh128/cache-apt-pkgs-action@staging&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;packages&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;xdot rolldice&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;That’s it. Now anytime code is pushed to staging on your action repository, it will trigger tests on your test repository.&lt;/p&gt;
+
+&lt;h2 id=&quot;more-resources&quot;&gt;More Resources&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.github.com/en/rest/reference/repos#create-a-repository-dispatch-event&quot;&gt;Github: Create Repository Dispatch Event&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token&quot;&gt;Github: Create Personal Access Token&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://blog.m157q.tw/posts/2020/07/16/make-one-github-actions-workflow-trigger-another-github-actions-workflow&quot;&gt;Trigger Github Actions between Repositories&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Andrew Walsh</name><email>awalsh128@gmail.com</email></author><category term="Testing" /><category term="GitHub" /><summary type="html">Create a testing harness for your created GitHub Actions.</summary></entry><entry><title type="html">Code Analysis for GitHub Projects</title><link href="https://awalsh128.com/integrating-lgtm/" rel="alternate" type="text/html" title="Code Analysis for GitHub Projects" /><published>2021-10-10T00:00:00+00:00</published><updated>2021-10-10T07:00:01+00:00</updated><id>https://awalsh128.com/integrating-lgtm</id><content type="html" xml:base="https://awalsh128.com/integrating-lgtm/">&lt;p&gt;LGTM is a nice little integration for your GitHub projects that performs code analysis and alerts if any violations are found. And example of what an alert screen looks like on the LGTM site below (using my fluentcpp project as a demonstration).&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/2021-10-10-integrating-lgtm/alert_screen.png&quot; alt=&quot;Example LGTM Alert Screen&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;You will need to grant the application access to your repositories using their guide &lt;a href=&quot;https://lgtm.com/help/lgtm/github-apps-integration&quot;&gt;Integration with GitHub Apps&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;You can then setup badges on your project site that show the status of your code quality.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://lgtm.com/projects/g/awalsh128/fluentcpp/context:cpp&quot;&gt;&lt;img src=&quot;https://img.shields.io/lgtm/grade/cpp/g/awalsh128/fluentcpp.svg?logo=lgtm&amp;amp;logoWidth=18&quot; alt=&quot;Code Grade&quot; /&gt;&lt;/a&gt;
+&lt;a href=&quot;https://lgtm.com/projects/g/awalsh128/fluentcpp/alerts/&quot;&gt;&lt;img src=&quot;https://img.shields.io/lgtm/alerts/g/awalsh128/fluentcpp.svg?logo=lgtm&amp;amp;logoWidth=18&quot; alt=&quot;Code Alerts&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;If more customization is needed, an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.lgtml.yml&lt;/code&gt; file can be created in the root of the repository per &lt;a href=&quot;https://lgtm.com/help/lgtm/lgtm.yml-configuration-file&quot;&gt;their instructions&lt;/a&gt;. You can also download &lt;a href=&quot;https://lgtm.com/static/downloads/lgtm.template.yml&quot;&gt;their canonical template&lt;/a&gt; too to get started.&lt;/p&gt;
+
+&lt;p&gt;Here’s &lt;a href=&quot;https://github.com/search?q=filename%3A.lgtm.yml&amp;amp;type=Code&quot;&gt;a search of GitHub&lt;/a&gt; to look at other example configuration files. For example in my project I needed a more recent version of CMake. This is what mine looks like so it is in the environment before LGTM performs its analysis.&lt;/p&gt;
+
+&lt;div class=&quot;language-yml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;extraction&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;cpp&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;after_prepare&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;mkdir&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;custom_cmake&quot;&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;# Need later version of CMake than lgtm has.&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;wget&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;--quiet&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;-O&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;https://cmake.org/files/v3.16/cmake-3.16.3-Linux-x86_64.tar.gz&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;tar&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;--strip-components=1&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;-xz&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;-C&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;custom_cmake&quot;&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;export&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;PATH=$(pwd)/custom_cmake/bin:${PATH}&quot;&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;build_command&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;cd $LGTM_SRC&lt;/span&gt;
+        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;mkdir build; cd build&lt;/span&gt;
+        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;cmake .. -DCMAKE_BUILD_TYPE=RELWITHDEBINFO&lt;/span&gt;
+        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;make&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Here’s another &lt;a href=&quot;https://github.com/rafifm/olshop_ci4/blob/ce1b0095ab3e45e373f05d143374ad9a941054f4/public/themes/.lgtm.yml&quot;&gt;taken from GitHub&lt;/a&gt; that excludes specified directories from analysis.&lt;/p&gt;
+
+&lt;div class=&quot;language-yml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;path_classifiers&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;plugins&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;plugins/&lt;/span&gt;
+
+&lt;span class=&quot;na&quot;&gt;extraction&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;javascript&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# https://lgtm.com/help/lgtm/javascript-extraction#customizing-index&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# The `index` step extracts information from the files in the codebase.&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;# Specify a list of files and folders to exclude from extraction.&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;exclude&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;bower_components/&lt;/span&gt;
+        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;docs/assets/js/plugins/&lt;/span&gt;
+        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;plugins/&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;… or &lt;a href=&quot;https://github.com/Johncrown56/News-App/blob/d7c3255d744036cf4d73655b2f3e3723cad3bdff/node_modules/regextras/lgtm.yml&quot;&gt;from another repository&lt;/a&gt; more simply.&lt;/p&gt;
+
+&lt;div class=&quot;language-yml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;extraction&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;javascript&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;filters&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;exclude&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;dist&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Here’s yet &lt;a href=&quot;https://github.com/CPTX1/Curl/blob/3027f06078f89232251eb1c921f6142894982ea1/curl-master/.lgtm.yml&quot;&gt;another repository&lt;/a&gt;. This one disables CMake and sets the configuration options before build.&lt;/p&gt;
+
+&lt;div class=&quot;language-yml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;extraction&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;cpp&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;prepare&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;packages&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# to avoid confusion with libopenafs-dev which also provides a des.h&lt;/span&gt;
+        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;libssl-dev&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;after_prepare&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# make sure lgtm.com doesn&apos;t use CMake (which generates and runs tests)&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;rm -f CMakeLists.txt&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;./buildconf&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;configure&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# enable as many optional features as possible&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;command&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;./configure --enable-ares --with-libssh2 --with-gssapi --with-librtmp --with-libmetalink --with-libmetalink&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I think you get the point. Just give the app permission, customize as needed with the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.lgtml.yml&lt;/code&gt; and setup your cute badges.&lt;/p&gt;</content><author><name>Andrew Walsh</name><email>awalsh128@gmail.com</email></author><category term="Code Analysis" /><category term="GitHub" /><summary type="html">Integrate your GitHub projects with a code analysis tool.</summary></entry><entry><title type="html">Fluent C++ v0.1 Release</title><link href="https://awalsh128.com/fluentcpp-v01-release/" rel="alternate" type="text/html" title="Fluent C++ v0.1 Release" /><published>2021-10-09T00:00:00+00:00</published><updated>2021-10-10T07:00:01+00:00</updated><id>https://awalsh128.com/fluentcpp-v01-release</id><content type="html" xml:base="https://awalsh128.com/fluentcpp-v01-release/">&lt;h2 id=&quot;motivation&quot;&gt;Motivation&lt;/h2&gt;
+
+&lt;p&gt;I had been wanting to make a library to express data transformation in a fluent way. The STL already has some functions for this. For example, if I wanted to transform a sequence and then filter based on a conditional I would do this.&lt;/p&gt;
+
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vector&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// Add int to xs.&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;transform&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;xs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;begin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;end&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;[](&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;auto&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vector&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;filtered&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;filtered&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;reserve&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;xs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;copy_if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;xs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;begin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;end&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;back_inserter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;filtered&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;[](&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;auto&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This is indeed a functional approach to expressing data transformations. It applies functions to data sets and without side effects (as long as you don’t cause any in the lambda). Although, there can also be a lot of boilerplate if you just wants the entire range of the container. Also, it is not always obvious from first glance what the inputs and outputs are to the function because it doesn’t follow the typical &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;f(a,b) = c&lt;/code&gt; mathematical format. This doesn’t make it less functional but perhaps less readable.&lt;/p&gt;
+
+&lt;p&gt;The library that I put together uses a different approach that addresses some of these concerns.&lt;/p&gt;
+
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;#include&lt;/span&gt; &lt;span class=&quot;cpf&quot;&gt;&amp;lt;fluentcpp/query.h&amp;gt;&lt;/span&gt;&lt;span class=&quot;cp&quot;&gt;
+&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vector&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// Add int to xs.&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vector&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;filtered&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;fcpp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;query&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;move&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;xs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;select&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([](&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;auto&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;where&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([](&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;auto&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This style is patterned after the &lt;a href=&quot;https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/&quot;&gt;.NET LINQ framework&lt;/a&gt; something I had become very accustomed to before programming in C++ full time.&lt;/p&gt;
+
+&lt;h2 id=&quot;initial-release&quot;&gt;Initial Release&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/awalsh128/fluentcpp/releases/tag/v0.1&quot;&gt;Version 0.1 is now available on GitHub&lt;/a&gt;. As mentioned in the repository &lt;a href=&quot;https://github.com/awalsh128/fluentcpp#installing&quot;&gt;README.md&lt;/a&gt;, you can easily install the library with the instructions below.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Go to &lt;a href=&quot;https://github.com/awalsh128/fluentcpp/releases&quot;&gt;the release&lt;/a&gt; you want to install.&lt;/li&gt;
+  &lt;li&gt;Download the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fluentcpp-&amp;lt;tag&amp;gt;.tar.gz&lt;/code&gt; file.&lt;/li&gt;
+  &lt;li&gt;Decompress the file in the directory &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tar -xvzf fluentcpp-&amp;lt;tag&amp;gt;.tar.gz&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;Run the install command &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo ./install.sh&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;The library files are now installed on your system and can be used as in the examples.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;caveats&quot;&gt;Caveats&lt;/h2&gt;
+
+&lt;p&gt;Since this is an initial release, there are some drawbacks to using this over the STL functional library or just older C++ constructs (e.g. for-loops).&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Memory semantics are strictly by reference and move. This is intentional to accomodate the strictest object constructor and assignment declarations (i.e. no copy and move).&lt;/li&gt;
+  &lt;li&gt;Strict memory semantics has implications for fundamental types where copy is more efficient.&lt;/li&gt;
+  &lt;li&gt;Performance has not been benchmarked yet so it is unknown how it performs against the alternatives.&lt;/li&gt;
+  &lt;li&gt;Static analysis hints can still seem obscure. While they depend on the STL &lt;a href=&quot;https://en.cppreference.com/w/cpp/concepts&quot;&gt;concepts&lt;/a&gt; enforced, the wording can be confusing across the interface.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;feedback&quot;&gt;Feedback&lt;/h2&gt;
+
+&lt;p&gt;I hope this proves useful to people and can become a wider community effort. It is primarily a proof of concept work and needs more to demonstrate it can be used in production code with similar performance to the status quo.&lt;/p&gt;</content><author><name>Andrew Walsh</name><email>awalsh128@gmail.com</email></author><category term="Fluent C++" /><category term="C++" /><category term="fluent programming" /><summary type="html">Fluent style querying for C++.</summary></entry><entry><title type="html">CMake Simple Library Example</title><link href="https://awalsh128.com/cmake-simple-library/" rel="alternate" type="text/html" title="CMake Simple Library Example" /><published>2021-10-07T00:00:00+00:00</published><updated>2021-10-10T07:00:01+00:00</updated><id>https://awalsh128.com/cmake-simple-library</id><content type="html" xml:base="https://awalsh128.com/cmake-simple-library/">&lt;h2 id=&quot;motivation&quot;&gt;Motivation&lt;/h2&gt;
+
+&lt;p&gt;There are already some tutorials and examples of setting up a CMake project already but I work very much ny example and then deep dive later. It’s just how my brain works I guess. So let’s skim the waters.&lt;/p&gt;
+
+&lt;h2 id=&quot;assumptions&quot;&gt;Assumptions&lt;/h2&gt;
+
+&lt;p&gt;This example uses the follow dev stack.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;CMake (obviously)&lt;/li&gt;
+  &lt;li&gt;C++ code.&lt;/li&gt;
+  &lt;li&gt;Catch2 testing framework (&lt;a href=&quot;https://github.com/catchorg/Catch2&quot;&gt;GitHub&lt;/a&gt;).&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The file layout has subdirectory for source code and tests, each with their own CMake file and one at the root level.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-txt&quot;&gt;CMakeLists.txt
+tests
+├── CMakeLists.txt
+└── mylib_test.cpp
+src
+├── CMakeLists.txt
+├── mylib.h
+└── mylib.h
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;configuration&quot;&gt;Configuration&lt;/h2&gt;
+
+&lt;p&gt;Here is the whole configuration in its respective files.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/CMakeLists.txt&lt;/code&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-cmake highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cmake_minimum_required&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;VERSION 3.16.3&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;nb&quot;&gt;include&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;GNUInstallDirs&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;     &lt;span class=&quot;c1&quot;&gt;# Make CMAKE_INSTALL_*DIR variables available.&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;CMAKE_CXX_STANDARD 20&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;# Use standard C++20 for compilation.&lt;/span&gt;
+
+&lt;span class=&quot;nb&quot;&gt;project&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;mylib VERSION 0.1 DESCRIPTION &lt;span class=&quot;s2&quot;&gt;&quot;My library is a library that you can use as a library.&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Make the src directory available for include lookup.&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;include_directories&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;src&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Tell CMake to include the /src/CMakeLists.txt file in the build.&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;add_subdirectory&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;src&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Must live in the top level file or tests won&apos;t be found.&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;include&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;CTest&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;# Automatically invokes enable_testing()&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# Tell CMake to include the /tests/CMakeLists.txt file in the build.&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;add_subdirectory&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;tests&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/src/CMakeLists.txt&lt;/code&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-cmake highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;STATUS &lt;span class=&quot;s2&quot;&gt;&quot;Building and installing library.&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Add library to build.&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# STATIC rolls all code (including related includes) into a single compiled object.&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# SHARED rolls only mylib code into a single compiled object.&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# https://stackoverflow.com/questions/2649334/difference-between-static-and-shared-libraries&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# If you are using a different type of library than STATIC, make sure to look into how the target properties and &lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# install will be different. For example https://cmake.org/cmake/help/latest/command/install.html&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;add_library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;mylib STATIC mylib.h mylib.cpp&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;nb&quot;&gt;set_target_properties&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;mylib PROPERTIES
+  VERSION &lt;span class=&quot;si&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;PROJECT_VERSION&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;# Already set in the parent CMakeLists.txt via &apos;project&apos;.&lt;/span&gt;
+  PUBLIC_HEADER mylib.h       &lt;span class=&quot;c1&quot;&gt;# Pulic headers you intend other projects to include.&lt;/span&gt;
+  CXX_STANDARD_REQUIRED 20&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;   &lt;span class=&quot;c1&quot;&gt;# Enforce the C++20 standard to compile against.&lt;/span&gt;
+
+&lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;TARGETS mylib
+  &lt;span class=&quot;c1&quot;&gt;# Used for STATIC library headers.&lt;/span&gt;
+  ARCHIVE DESTINATION &lt;span class=&quot;si&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;CMAKE_INSTALL_LIBDIR&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt; COMPONENT lib
+  &lt;span class=&quot;c1&quot;&gt;# Rolled code lives here.&lt;/span&gt;
+  PUBLIC_HEADER DESTINATION &lt;span class=&quot;si&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;CMAKE_INSTALL_INCLUDEDIR&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;/mylib COMPONENT dev&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/tests/CMakeLists.txt&lt;/code&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-cmake highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;include&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;FetchContent&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;nb&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;STATUS &lt;span class=&quot;s2&quot;&gt;&quot;Building tests.&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Pull in the Catch2 framework.&lt;/span&gt;
+&lt;span class=&quot;nf&quot;&gt;FetchContent_Declare&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+  Catch2
+  GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+  GIT_TAG        v3.0.0-preview3&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nf&quot;&gt;FetchContent_MakeAvailable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;Catch2&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Most all test frameworks create a binary that then runs the tests.&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# This is a simple expression of that and nothing special to tests themselves.&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# In this framework, Catch2 provides a main function as executable entry point.&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;add_executable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;query_tests mylib_test.cpp&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Link the included libraries in for the tests.&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;target_link_libraries&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;my_tests PUBLIC Catch2 Catch2WithMain mylib&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;nb&quot;&gt;add_test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;NAME tests COMMAND query_tests&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;more-resources&quot;&gt;More Resources&lt;/h2&gt;
+
+&lt;p&gt;Here are some more examples to help you along.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/dev-cafe/cmake-cookbook&quot;&gt;Dev Cafe: CMake Cookbook Examples&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/search?q=filename%3ACMakeLists.txt&quot;&gt;GitHub: CMakeLists.txt Search&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;CMake Documentation
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;https://cmake.org/cmake/help/latest/command/add_library.html&quot;&gt;add_library&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://cmake.org/cmake/help/latest/command/add_test.html&quot;&gt;add_test&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://cmake.org/cmake/help/latest/command/install.html&quot;&gt;install&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://cmake.org/cmake/help/latest/command/set_target_properties.html&quot;&gt;set_target_properties&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Andrew Walsh</name><email>awalsh128@gmail.com</email></author><category term="CMake" /><summary type="html">An example of a simple library using CMake.</summary></entry><entry><title type="html">GitHub Actions - Cache APT Packages v1 Released</title><link href="https://awalsh128.com/github-actions-cache-apt-pkgs-v1-released/" rel="alternate" type="text/html" title="GitHub Actions - Cache APT Packages v1 Released" /><published>2021-09-18T00:00:00+00:00</published><updated>2021-10-10T07:00:01+00:00</updated><id>https://awalsh128.com/github-actions-cache-apt-pkgs-v1-released</id><content type="html" xml:base="https://awalsh128.com/github-actions-cache-apt-pkgs-v1-released/">&lt;p&gt;I created a GitHub action &lt;a href=&quot;https://github.com/marketplace/actions/cache-apt-packages&quot;&gt;awalsh128/cache-apt-packages&lt;/a&gt; that allows caching of Advanced Package Tool (APT) package dependencies to improve workflow execution time instead of installing the packages on every run.&lt;/p&gt;
+
+&lt;p&gt;Here is an example using it to cache Doxygen dependencies.&lt;/p&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Create Documentation&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;on&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;push&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;jobs&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+
+  &lt;span class=&quot;na&quot;&gt;build_and_deploy_docs&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;runs-on&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ubuntu-latest&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Build Doxygen documentation and deploy&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;steps&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;actions/checkout@v2&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;awalsh128/cache-apt-pkgs-action-action@v1&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;packages&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;dia doxygen doxygen-doc doxygen-gui doxygen-latex graphviz mscgen&lt;/span&gt;
+
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Build&lt;/span&gt;        
+        &lt;span class=&quot;na&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;|&lt;/span&gt;
+          &lt;span class=&quot;s&quot;&gt;cmake -B $/build -DCMAKE_BUILD_TYPE=$      &lt;/span&gt;
+          &lt;span class=&quot;s&quot;&gt;cmake --build $/build --config $&lt;/span&gt;
+
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Deploy&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;JamesIves/github-pages-deploy-action@4.1.5&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;branch&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;gh-pages&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;folder&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;$/build/website&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This action is a composition of &lt;a href=&quot;https://github.com/actions/cache/README.md&quot;&gt;actions/cache&lt;/a&gt; and the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;apt&lt;/code&gt; utility. For more information, see &lt;a href=&quot;https://github.com/awalsh128/cache-apt-pkgs-action#readme&quot;&gt;the repository README on GitHub&lt;/a&gt;.&lt;/p&gt;</content><author><name>Andrew Walsh</name><email>awalsh128@gmail.com</email></author><category term="GitHub" /><summary type="html">A GitHub action to cache APT packages for future workflow runs..</summary></entry><entry><title type="html">C++ validate and throw with a dynamic message in a single line.</title><link href="https://awalsh128.com/validate-and-throw-with-multi-type-message/" rel="alternate" type="text/html" title="C++ validate and throw with a dynamic message in a single line." /><published>2021-09-03T00:00:00+00:00</published><updated>2021-10-10T07:00:01+00:00</updated><id>https://awalsh128.com/validate-and-throw-with-multi-type-message</id><content type="html" xml:base="https://awalsh128.com/validate-and-throw-with-multi-type-message/">&lt;p&gt;I was looking to validate and throw on invalid arguments in my code. This meant I had to write something like.&lt;/p&gt;
+
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;size_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;current_size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;throw&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;invalid_argument&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Size cannot be greater than current size.&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Not so bad really but I also wanted to create a dynamically created message.&lt;/p&gt;
+
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;size_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;current_size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stringstream&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;text&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Size &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot; cannot be greater than current size of &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;current_size&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;.&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;throw&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;invalid_argument&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;We could shorten it…&lt;/p&gt;
+
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;validate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;bool&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;condition&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;condition&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stringstream&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;text&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Size &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot; cannot be greater than current size of &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;current_size&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;.&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;throw&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;invalid_argument&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;size_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;validate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;current_size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;… but it isn’t very re-usable since the message is hardcoded.&lt;/p&gt;
+
+&lt;p&gt;C++20 offers the ability to use &lt;a href=&quot;https://en.cppreference.com/w/cpp/utility/format/format&quot;&gt;std::format&lt;/a&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;size_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;current_size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;throw&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;invalid_argument&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Size {} cannot be greater than current size of {}.&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;current_size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Pretty nice, although for people not on that standard they are left with the previous validation approach. There is a different way to do it however.&lt;/p&gt;
+
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;size_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;invariant&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;eval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;current_size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; 
+    &lt;span class=&quot;s&quot;&gt;&quot;Size &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot; cannot be greater than current size of &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;current_size&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;.&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; 
+  &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Here is how it is implemented.&lt;/p&gt;
+
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;invariant&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+ &lt;span class=&quot;nl&quot;&gt;private:&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;bool&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;condition_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stringstream&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;message_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;invariant&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;bool&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;condition&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;condition_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;condition&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;message_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;  
+  &lt;span class=&quot;n&quot;&gt;invariant&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;delete&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;invariant&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;invariant&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;default&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+ &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;~&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;invariant&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;noexcept&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;condition_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;// Living dangerously, guaranteed not to live on the stack though.&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;throw&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;invalid_argument&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;template&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;friend&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;invariant&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;operator&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;invariant&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;item&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Text&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;item&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message_&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;move&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;item&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;invariant&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;eval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;bool&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;condition&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;invariant&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;condition&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Not so bad maybe for pre C++20 but why have a throw in the destructor? This &lt;a href=&quot;https://wiki.c2.com/?BewareOfExceptionsInTheDestructor&quot;&gt;can be dangerous&lt;/a&gt; since it is called when the stack unwinds.&lt;/p&gt;
+
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &lt;span class=&quot;o&quot;&gt;~&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;invariant&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;noexcept&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;condition_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;// Living dangerously, guaranteed not to live on the stack though.&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;throw&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;invalid_argument&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The key is to make sure it never gets on the stack in the first place. This means making it never becomes an lvalue. &lt;a href=&quot;https://herbsutter.com/2014/05/03/reader-qa-how-can-i-prevent-a-type-from-being-instantiated-on-the-stack/&quot;&gt;Herb Sutter discusses this&lt;/a&gt; strategy by ensuring that the object only ever can be an rvalue reference than cannot be copied or constructed. Here are the pieces that make this possible.&lt;/p&gt;
+
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &lt;span class=&quot;n&quot;&gt;invariant&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;bool&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;condition&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;condition_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;condition&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;message_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;  
+  &lt;span class=&quot;n&quot;&gt;invariant&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;delete&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;invariant&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;invariant&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;default&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Lastly is getting the dynamic message input.&lt;/p&gt;
+
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &lt;span class=&quot;k&quot;&gt;template&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;friend&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;invariant&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;operator&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;invariant&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;item&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Text&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;item&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message_&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;move&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;item&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Note how an rvalue reference is passed in and out. This ensures that it is never copied while also modifying the object’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;message&lt;/code&gt; state.&lt;/p&gt;
+
+&lt;p&gt;This exercise was fun and informative for myself but can be quite dangerous if not understood well and modified without such knowledge. There is also a safer alternative (well why didn’t you say so?!) using a variadic template via &lt;a href=&quot;https://en.cppreference.com/w/cpp/language/parameter_pack&quot;&gt;parameter pack&lt;/a&gt;. You can find the answers to string concatenation on &lt;a href=&quot;https://stackoverflow.com/questions/21806561/concatenating-strings-and-numbers-in-variadic-template-function&quot;&gt;this StackOverflow post&lt;/a&gt;. An adaptation from the top answer would look like.&lt;/p&gt;
+
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;template&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;invariant&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;bool&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;condition&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;...&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;condition&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stringstream&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[];&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;...};&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;throw&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;invalid_argument&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;   
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>Andrew Walsh</name><email>awalsh128@gmail.com</email></author><category term="C++" /><summary type="html">Assert a condition and throw with a dynamic message in a single line in C++.</summary></entry></feed>

@@ -104,6 +104,9 @@ author:
     - label: "Linkedin"
       icon: "fab fa-fw fa-linkedin"
       url: "https://www.linkedin.com/in/andrew-walsh-a235787/"
+    - label: "Resume"
+      icon: "fas fa-fw fa-file-alt"
+      url: "https://lykotek.com/assets/resume.html"
     - label: "Buy me a Coffee?"
       icon: "fas fa-coffee"
       url: https://www.buymeacoffee.com/awalsh128
@@ -120,6 +123,9 @@ footer:
     - label: "Linkedin"
       icon: "fab fa-linkedin"
       url: "https://www.linkedin.com/in/andrew-walsh-a235787/"
+    - label: "Resume"
+      icon: "fas fa-file-alt"
+      url: "https://lykotek.com/assets/resume.html"
     - label: "Buy me a Coffee?"
       icon: "fab fa-coffee"
       url: https://www.buymeacoffee.com/awalsh128
