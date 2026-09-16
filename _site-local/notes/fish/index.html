@@ -1,0 +1,251 @@
+<h2 id="bash-differences">Bash Differences</h2>
+
+<p>These are differences between Bash and Fish in terms of syntax. Below are links
+and a reference table.</p>
+
+<ul>
+  <li><a href="https://en.wikipedia.org/wiki/Friendly_interactive_shell#bash.2Ffish_Translation_table">Fish translation table</a></li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>Action / Thing</th>
+      <th>Bash</th>
+      <th>Fish</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Brace literal</td>
+      <td><code class="language-plaintext highlighter-rouge">{}</code></td>
+      <td><code class="language-plaintext highlighter-rouge">'{}'</code></td>
+    </tr>
+    <tr>
+      <td>Command substitution</td>
+      <td><code class="language-plaintext highlighter-rouge">$(command)</code></td>
+      <td><code class="language-plaintext highlighter-rouge">(command)</code></td>
+    </tr>
+    <tr>
+      <td>Exit code of last command</td>
+      <td><code class="language-plaintext highlighter-rouge">$?</code></td>
+      <td><code class="language-plaintext highlighter-rouge">$status</code></td>
+    </tr>
+    <tr>
+      <td>Logical AND between commands</td>
+      <td><code class="language-plaintext highlighter-rouge">command1 &amp;&amp; command2</code></td>
+      <td><code class="language-plaintext highlighter-rouge">command1; and command2</code></td>
+    </tr>
+    <tr>
+      <td>PID of self</td>
+      <td><code class="language-plaintext highlighter-rouge">$$</code></td>
+      <td><code class="language-plaintext highlighter-rouge">%self</code></td>
+    </tr>
+    <tr>
+      <td>PID of last</td>
+      <td><code class="language-plaintext highlighter-rouge">command $!</code></td>
+      <td><code class="language-plaintext highlighter-rouge">%last</code></td>
+    </tr>
+    <tr>
+      <td>Redirect STDERR command</td>
+      <td><code class="language-plaintext highlighter-rouge">2&gt;/dev/null command</code></td>
+      <td><code class="language-plaintext highlighter-rouge">^/dev/null</code></td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><code class="language-plaintext highlighter-rouge">command 2&gt;&amp;1</code></td>
+      <td><code class="language-plaintext highlighter-rouge">command 2&gt;&amp;1</code></td>
+    </tr>
+    <tr>
+      <td>Redirect STDOUT</td>
+      <td><code class="language-plaintext highlighter-rouge">command &gt;/dev/null</code></td>
+      <td><code class="language-plaintext highlighter-rouge">command &gt;/dev/null</code></td>
+    </tr>
+    <tr>
+      <td>Run command in background</td>
+      <td><code class="language-plaintext highlighter-rouge">command &amp;</code></td>
+      <td><code class="language-plaintext highlighter-rouge">command &amp;</code></td>
+    </tr>
+    <tr>
+      <td>Unset variable</td>
+      <td><code class="language-plaintext highlighter-rouge">unset foo</code></td>
+      <td><code class="language-plaintext highlighter-rouge">set -e foo</code></td>
+    </tr>
+    <tr>
+      <td>Variable assignment</td>
+      <td><code class="language-plaintext highlighter-rouge">foo=bar</code></td>
+      <td><code class="language-plaintext highlighter-rouge">set foo bar</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="if-then-else">If-Then-Else</h2>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if </span><span class="nb">test</span> <span class="s2">"</span><span class="nv">$fish</span><span class="s2">"</span> <span class="o">=</span> <span class="s2">"flounder"</span>
+  <span class="nb">echo </span>FLOUNDER
+end
+</code></pre></div></div>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if </span><span class="nb">test</span> <span class="s2">"</span><span class="nv">$number</span><span class="s2">"</span> <span class="nt">-gt</span> 5
+  <span class="nb">echo</span> <span class="nv">$number</span> is greater than five
+<span class="k">else
+  </span><span class="nb">echo</span> <span class="nv">$number</span> is five or less
+end
+</code></pre></div></div>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if </span><span class="nb">test</span> <span class="nt">-e</span> /etc/hosts  <span class="c"># -e switch is a file/directory/symlink exists test</span>
+  <span class="nb">echo </span>Positive
+<span class="k">else
+  </span><span class="nb">echo </span>Negative
+end
+</code></pre></div></div>
+
+<h2 id="for-loops">For Loops</h2>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># List file expansion</span>
+<span class="k">for </span>file <span class="k">in</span> <span class="k">*</span>.txt
+  <span class="nb">cp</span> <span class="nv">$file</span> <span class="nv">$file</span>.bak
+end
+
+<span class="c"># Number seuqnce expansion</span>
+<span class="k">for </span>x <span class="k">in</span> <span class="o">(</span><span class="nb">seq </span>5<span class="o">)</span>
+  <span class="nb">touch </span>file_<span class="nv">$x</span>.txt
+end
+
+<span class="c"># Inline</span>
+<span class="k">for </span>x <span class="k">in</span> <span class="s2">"a"</span> <span class="s2">"b"</span> <span class="s2">"c"</span><span class="p">;</span> <span class="nb">echo</span> <span class="nv">$x</span><span class="p">;</span> <span class="k">done</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h2 id="functions">Functions</h2>
+
+<p>When fish encounters a command, it attempts to autoload a function for that
+command, by looking for a file with the name of that command in
+<code class="language-plaintext highlighter-rouge">~/.config/fish/functions/</code>.</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">function </span>ll
+    <span class="nb">ls</span> <span class="nt">-lh</span> <span class="nv">$argv</span>
+end
+</code></pre></div></div>
+
+<h3 id="scope">Scope</h3>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">function </span>foo
+    <span class="nb">set </span>baz <span class="s1">'foo foo'</span>
+end
+
+<span class="k">function </span>bar
+    <span class="nb">set</span> <span class="nt">--local</span> baz <span class="s1">'bar bar'</span>
+    foo  <span class="c"># Doesn't change the value of baz; stays in its own scope.</span>
+    <span class="nb">echo</span> <span class="nv">$baz</span>
+end
+
+bar
+</code></pre></div></div>
+
+<h2 id="lists--arrays">Lists / Arrays</h2>
+
+<p>Warning: All indexing is one based.</p>
+
+<h3 id="slices">Slices</h3>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Standard</span>
+<span class="nb">echo</span> <span class="o">(</span><span class="nb">seq </span>3<span class="o">)</span>             <span class="c"># -&gt; 1 2 3</span>
+<span class="nb">echo</span> <span class="o">(</span><span class="nb">seq </span>10<span class="o">)[</span>1 2 3]     <span class="c"># -&gt; 1 2 3</span>
+<span class="nb">echo</span> <span class="o">(</span><span class="nb">seq </span>10<span class="o">)[</span>2..5]      <span class="c"># -&gt; 2 3 4 5</span>
+<span class="nb">echo</span> <span class="o">(</span><span class="nb">seq </span>10<span class="o">)[</span>2..5 1..3] <span class="c"># -&gt; 2 3 4 5 1 2 3</span>
+<span class="nb">echo</span> <span class="o">(</span><span class="nb">seq </span>4<span class="o">)[</span>2..-1]      <span class="c"># -&gt; 2 3 4</span>
+<span class="nb">echo</span> <span class="o">(</span><span class="nb">seq </span>3<span class="o">)[</span><span class="nt">-1</span>..1]      <span class="c"># -&gt; 3 2 1</span>
+<span class="nb">echo</span> <span class="o">(</span><span class="nb">seq </span>5<span class="o">)[</span><span class="nt">-3</span>..-1]     <span class="c"># -&gt; 3 4 5</span>
+</code></pre></div></div>
+
+<h3 id="variable-index">Variable Index</h3>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">set </span>i 2
+<span class="nb">echo</span> <span class="o">(</span><span class="nb">seq </span>5<span class="o">)[</span><span class="nv">$i</span><span class="o">]</span>     <span class="c"># Fails</span>
+<span class="nb">set </span>sequence <span class="o">(</span><span class="nb">seq </span>5<span class="o">)</span> <span class="c"># Must be written in 2 lines.</span>
+<span class="nb">echo</span> <span class="nv">$sequence</span><span class="o">[</span><span class="nv">$i</span><span class="o">]</span>   <span class="c"># -&gt; 2</span>
+</code></pre></div></div>
+
+<h2 id="switch">Switch</h2>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">set </span>text <span class="c"># ...</span>
+switch <span class="o">(</span>text<span class="o">)</span>
+  <span class="k">case</span> foo
+      <span class="nb">echo </span>foo foo
+  <span class="k">case</span> bar
+      <span class="nb">echo </span>bar bar
+  <span class="k">case</span> baz
+      <span class="nb">echo </span>baz baz
+  <span class="k">case</span> <span class="s1">'*'</span>
+      <span class="nb">echo </span>default
+end
+</code></pre></div></div>
+
+<h2 id="test--conditionals">Test / Conditionals</h2>
+
+<h3 id="io">I/O</h3>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">test</span> <span class="nt">-b</span> <span class="nv">$f</span>  <span class="c"># is a block device.</span>
+<span class="nb">test</span> <span class="nt">-c</span> <span class="nv">$f</span>  <span class="c"># is a character device.</span>
+<span class="nb">test</span> <span class="nt">-d</span> <span class="nv">$f</span>  <span class="c"># is a directory</span>
+<span class="nb">test</span> <span class="nt">-e</span> <span class="nv">$f</span>  <span class="c"># exists</span>
+<span class="nb">test</span> <span class="nt">-f</span> <span class="nv">$f</span>  <span class="c"># is a regular file.</span>
+<span class="nb">test</span> <span class="nt">-g</span> <span class="nv">$f</span>  <span class="c"># has the set-group-ID bit set.</span>
+<span class="nb">test</span> <span class="nt">-G</span> <span class="nv">$f</span>  <span class="c"># exists and has the same group ID as the current user.</span>
+<span class="nb">test</span> <span class="nt">-L</span> <span class="nv">$f</span>  <span class="c"># is a symbolic link.</span>
+<span class="nb">test</span> <span class="nt">-O</span> <span class="nv">$f</span>  <span class="c"># exists and is owned by the current user.</span>
+<span class="nb">test</span> <span class="nt">-p</span> <span class="nv">$f</span>  <span class="c"># is a named pipe.</span>
+<span class="nb">test</span> <span class="nt">-r</span> <span class="nv">$f</span>  <span class="c"># is marked as readable.</span>
+<span class="nb">test</span> <span class="nt">-s</span> <span class="nv">$f</span>  <span class="c"># size($f) &gt; 0</span>
+<span class="nb">test</span> <span class="nt">-S</span> <span class="nv">$f</span>  <span class="c"># is a socket.</span>
+<span class="nb">test</span> <span class="nt">-t</span> <span class="nv">$f</span>  <span class="c"># file descriptor $f is a terminal (TTY).</span>
+<span class="nb">test</span> <span class="nt">-u</span> <span class="nv">$f</span>  <span class="c"># has the set-user-ID bit set.</span>
+<span class="nb">test</span> <span class="nt">-w</span> <span class="nv">$f</span>  <span class="c"># is marked as writable; note that this does not check if the filesystem is read-only.</span>
+<span class="nb">test</span> <span class="nt">-x</span> <span class="nv">$f</span>  <span class="c"># is an executable.</span>
+</code></pre></div></div>
+
+<h3 id="logical">Logical</h3>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">test</span> <span class="nv">$cond1</span> <span class="nt">-a</span> <span class="nv">$cond2</span>  <span class="c"># AND</span>
+<span class="nb">test</span> <span class="nv">$cond1</span> <span class="nt">-o</span> <span class="nv">$cond2</span>  <span class="c"># OR</span>
+<span class="nb">test</span> <span class="o">!</span> <span class="nv">$cond1</span>          <span class="c"># NEGATE</span>
+
+<span class="c"># Requires escaping ( and ) to avoid being interpreted as command substitution.</span>
+<span class="nb">test</span> <span class="se">\(</span><span class="nv">$cond1</span> <span class="nt">-a</span> <span class="nv">$cond2</span><span class="se">\)</span> <span class="nt">-o</span> <span class="se">\(</span><span class="nv">$cond3</span> <span class="nt">-a</span> <span class="nv">$cond4</span><span class="se">\)</span>  <span class="c"># Connective</span>
+</code></pre></div></div>
+
+<h3 id="numbers">Numbers</h3>
+
+<p>Note: Only integers are supported. For more complex mathematical operations,
+including fractions, the env program may be useful. Consult the documentation
+for your operating system.</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">test</span> <span class="nv">$x</span> <span class="nt">-eq</span> <span class="nv">$y</span>  <span class="c"># ==</span>
+<span class="nb">test</span> <span class="nv">$x</span> <span class="nt">-ne</span> <span class="nv">$y</span>  <span class="c"># !=</span>
+<span class="nb">test</span> <span class="nv">$x</span> <span class="nt">-gt</span> <span class="nv">$y</span>  <span class="c"># &gt;</span>
+<span class="nb">test</span> <span class="nv">$x</span> <span class="nt">-ge</span> <span class="nv">$y</span>  <span class="c"># &gt;=</span>
+<span class="nb">test</span> <span class="nv">$x</span> <span class="nt">-lt</span> <span class="nv">$y</span>  <span class="c"># &lt;</span>
+<span class="nb">test</span> <span class="nv">$x</span> <span class="nt">-le</span> <span class="nv">$y</span>  <span class="c"># &lt;=</span>
+</code></pre></div></div>
+
+<h3 id="strings">Strings</h3>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">test</span> <span class="nv">$s</span> <span class="o">=</span> <span class="nv">$t</span>  <span class="c"># ==</span>
+<span class="nb">test</span> <span class="nv">$s</span> <span class="o">!=</span> <span class="nv">$t</span> <span class="c"># !=</span>
+<span class="nb">test</span> <span class="nt">-n</span> <span class="nv">$s</span>    <span class="c"># != 0</span>
+<span class="nb">test</span> <span class="nt">-z</span> <span class="nv">$s</span>    <span class="c"># == 0</span>
+</code></pre></div></div>
+
+<h2 id="while">While</h2>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">while </span><span class="nb">true
+  echo</span> <span class="s2">"foo forever"</span>
+end
+</code></pre></div></div>
+
+<h2 id="resources">Resources</h2>
+
+<ul>
+  <li><a href="https://fishshell.com/docs/current/">Fish Documentation</a> - The latest in
+the official documentation for the shell.</li>
+</ul>
