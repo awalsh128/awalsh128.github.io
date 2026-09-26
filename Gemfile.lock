@@ -120,7 +120,7 @@ GEM
       ffi (~> 1.0)
     rexml (3.4.4)
     rouge (4.7.0)
-    rubyzip (2.3.2)
+    rubyzip (3.4.0)
     safe_yaml (1.0.5)
     sass-embedded (1.104.1)
       google-protobuf (~> 4.31)
@@ -191,7 +191,7 @@ DEPENDENCIES
   jekyll-paginate (~> 1.1.0)
   jekyll-sitemap (~> 1.4.0)
   minimal-mistakes-jekyll (~> 4.24.0)
-  rubyzip (~> 2.3.0)
+  rubyzip (~> 3.4.0)
   webrick (~> 1.8)
 
 BUNDLED WITH

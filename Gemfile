@@ -12,7 +12,7 @@ source "https://rubygems.org"
 # which is pinned to older Jekyll releases and breaks under Ruby 3.3.
 gem "jekyll", "~> 4.3.4"
 gem "minimal-mistakes-jekyll", "~> 4.24.0"
-gem "rubyzip", "~> 2.3.0"
+gem "rubyzip", "~> 3.4.0"
 gem "webrick", "~> 1.8"
 
 # If you have any plugins, put them here!
