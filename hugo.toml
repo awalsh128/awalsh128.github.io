@@ -61,7 +61,7 @@ timeZone = "America/Los_Angeles"
       { github = "https://github.com/awalsh128" },
       { linkedin = "https://www.linkedin.com/in/andrew-walsh-a235787/" },
       { resume = "/assets/text/resume.html" },
-      { heart = "https://github.com/sponsors/awalsh128" },
+      { sponsor = "https://github.com/sponsors/awalsh128" },
     ]
 
 [[languages.en.menus.main]]
