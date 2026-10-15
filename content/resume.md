@@ -5,146 +5,125 @@ showComments: false
 showTableOfContents: false
 ---
 
-**Andrew Walsh**
-831-331-6830 | awalsh128@gmail.com | [github.com/awalsh128](http://github.com/awalsh128)
+**Senior Software Engineer** · Software Architecture · Agentic AI Tooling · Infrastructure · Privacy Engineering
 
----
+Santa Cruz, CA (Remote) | 831-331-6830 | awalsh128@gmail.com | [linkedin.com/in/andrew-walsh-a235787](https://www.linkedin.com/in/andrew-walsh-a235787/) | [github.com/awalsh128](https://github.com/awalsh128)
 
-### **Professional Summary**
+## Summary
 
-Skilled software engineer with expertise in the Software Development Life Cycle (SDLC), multiple business domains, and scalability. Technical leadership across cross-functional teams, from requirements and design through deployment and monitoring. Mentorship, code quality standards, agentic AI development, and interview pipeline contributions.
+Senior software engineer with 18 years of experience (9 at Google) building reliable, secure, and compliant production systems. Specializes in software architecture, agentic AI developer tooling, CI/CD and code health, and privacy engineering (GDPR, US state law, data residency). Leads cross-functional teams and sets engineering standards. Motivated by technology that puts people first: protecting them, respecting their privacy, and improving their lives.
 
----
+## Core Skills
 
-### **Technical Skills**
+- **Software Architecture:** Distributed systems, system and API design, service decomposition, platform integration, design docs and review, scalability and performance, modernizing legacy codebases
+- **Agentic AI Tooling:** Agent skill and workflow configuration, development automation, failure-mode debugging, performance tuning
+- **Productionization:** CI/CD (GitHub Actions), test-driven stabilization, code health and security audits, tech-debt remediation, monitoring, requirements gap analysis
+- **Privacy & Compliance:** GDPR, US state privacy law, data retention enforcement and verification, data classification, auditing, data portability, identity handling, data residency
+- **Languages:** Python, C++, Java, Kotlin, TypeScript, Go
+- **Infrastructure & Delivery:** Google Cloud, container orchestration (Borg), Bazel, Git
+- **Data & APIs:** Spanner, BigQuery, Pub/Sub, SQL, gRPC, Protocol Buffers, REST, data processor orchestration
+- **Leadership:** Tech lead for cross-functional teams, engineering standards, mentorship, technical interviewing
 
-- **AI Engineering:**  
-  Agentic AI business domain and technical skill configuration development, automation, failure mode debugging, and performance tuning.
-- **Languages:**  
-  C++ (8), Typescript (7), Python (9), Java (8), Kotlin (8), Go (6) with others available on request. Have fundamentals in language design to adapt to.
-- **Frameworks & IaaS:**  
-  (Available upon request)
-- **SDLC Expertise:**  
-  Requirements gathering, design documentation, team leadership, code standards, test coverage, deployment, and monitoring. Cross team work with PM, PgM, UX and standards working groups like security, privacy and business.
-- **Database Management:**  
-  Experience with relational and hierarchical databases, with some low-level implementation.
-- **Paradigms:**  
-  Procedural and declarative (including functional programming).
-- **Knowledge Areas:**  
-  Privacy controls, trust and safety, software-defined networking (SDN) and modeling, user engagement, distributed systems, performance optimization, APIs, structural engineering, and financial systems.
+## Professional Experience
 
----
+### Lykotek Consulting — Senior Software Engineer
 
-### **Professional Experience**
+Remote / Bay Area, CA | Sep 2026 – Present
 
-**Couloir Consulting**  
-Remote, CA Sept 2026 — Present
+*Hands-on senior engineering that hardens and scales production systems for early-stage AI companies.*
 
-- **Agentic AI tooling**, Infrastructure, deployment and development **velocity**.
-- **Cross stakeholder coordination** with startups, VCs, and other consultants
-- **Productionization**: CI/CD (web/API), code health & security audits, tech debt remediation, test-driven stabilization, and requirements gap analysis
-- **Establish best practices for software** infrastructure, coding, and platform integration
-- **Advising** on privacy compliance (GDPR, EU/US state, domiciling) and internal policy
-- **Clients**: OrderlyAI
+- Leading productionization for OrderlyAI, an AI-powered contract-to-close platform for real estate transaction coordinators, including CI/CD, a code health and security audit, and test-driven stabilization of critical paths.
+- Guiding software architecture, infrastructure, and platform integration; defining coding standards and introducing agentic AI tooling to raise development velocity.
+- Advising on privacy compliance architecture (GDPR, US state law, data residency) and internal data-handling policy, working with founders, investors, and partner consultants.
 
-**Google-wide Contributions**  
-Mountain View, CA — 2017 \- Aug 2026
+### Google — Senior Software Engineer
 
-- **Part of a working group** to update the Google interview pipeline and integrate Agentic AI skills in the process.
-- **Code readability mentor** for code quality in Java and Kotlin.
-- **Interviewer for Google** software engineering candidates for fit, team and engineering proficiency.
+Bay Area, CA | 2017 – Aug 2026
 
-**Senior Software Engineer (L5)**  
-**Google Cloud Data Center Design Engineering**  
-Sunnyvale, CA — 2025 \- Sept 2026
+*Five teams spanning infrastructure, privacy, and trust & safety.*
 
-- **Developed features for data center modeling** to meet the growth of data center deployments across Google’s SDN and hardware.
-- **Cross team collaboration to deliver and support** systems in the network planning lifecycle.
-- **Agentic AI development** to automate and increase velocity of deliverables and productivity.
+#### Google-wide Impact
 
-**Senior Software Engineer (L5)**  
-**Google Corporate Engineering Support**  
-Sunnyvale, CA — 2023 \- 2025
+- Helped redesign Google's company-wide SWE interview pipeline to assess agentic AI skills.
+- As a Java and Kotlin readability mentor, reviewed 500+ code changes and certified engineers across Google on code quality standards.
+- Interviewed 120+ software engineering candidates for engineering proficiency, team fit, and role fit.
 
-- **Developed a reporting platform** to gauge user experience across products.
-- **Engineered reporting with multi-product integrations** across multiple technology stacks involving backend and frontend features.
-- **Led a cross-functional team** to gather requirements and create engineering solutions, managing multiple products and outlining project timelines. Coordinated work across 4 different teams.
+#### Cloud Data Center Design Engineering
 
-**Senior Software Engineer (L5)**  
-**Google Corporate Engineering Privacy**  
-Sunnyvale, CA — 2021 \- 2023
+2025 – 2026
 
-- **Developed a self-service privacy platform** for third-party tools at Google, improving privacy management across products.
-- **Engineered GDPR compliance controls**, including data retention enforcement, verification, auditing, and classification.
-- **Led a cross-functional team** to gather requirements and create engineering solutions, managing multiple products and outlining project timelines.
+- Built agentic AI workflows that automated troubleshooting, knowledge discovery, and development tasks, increasing team delivery velocity by 22%.
+- Developed data center modeling features that scaled with the growth of deployments across Google's software-defined network and hardware fleet.
+- Partnered across teams to deliver and support systems throughout the network planning lifecycle.
 
-**Software Engineer (L4)**  
-**Google Ads Privacy Engineering**  
-Mountain View, CA — 2019 \- 2021
+#### Corporate Engineering Support
 
-- **Implemented privacy controls for GDPR compliance**, focusing on data retention and verification. Also compliance with law enforcement requests, identity handling and data portability.
-- **Assisted various teams** with privacy-related concerns, enhancing overall compliance across products.
+2023 – 2025
 
-**Software Engineer (L4)**  
-**YouTube Trust and Safety Engineering**  
-Mountain View, CA — 2017 \- 2019
+- Developed internal support systems for Google employees, with a primary focus on UX analytics.
+- As tech lead, built a UX analytics reporting platform measuring user experience across 5 products, integrating multiple backend and frontend technology stacks.
+- Owned requirements, design, and delivery timelines, coordinating work across 4 engineering teams.
 
-- **Built and maintained a self-service platform** to counter abuse on YouTube, significantly impacting product area safety.
-- **Collaborated with policy stakeholders** to develop workflows that combat platform abuse.
+#### Corporate Engineering Privacy
 
-**Senior Software Engineer**  
-**Xignite**  
-San Mateo, CA — 2012 \- 2017
+2021 – 2023
 
-- **Lead engineer for private label offerings**, serving clients like NASDAQ and CME.
-- **Created a white label solution** that saved Bloomberg users over 20% on data licensing; received an award for the BMO Skyway offering.
-- **Reduced operating costs by 66%** for a private label platform through strategic engineering improvements.
-- **Developed a REST-based API framework**, decoupling front-end and back-end processes, which accelerated development cycles.
+- Designed and built a self-service privacy platform governing third-party tools used across Google.
+- Extended GDPR controls to third-party tools: retention enforcement, auditing, and data classification.
+- Led the project from requirements through launch, working with product, privacy, and legal partners.
 
-**Software Engineer**  
-**Vibrant Technology, Inc.**  
-Scotts Valley, CA — 2008 \- 2012
+#### Google Ads Privacy Engineering — Software Engineer
 
-- **Architected a machine monitoring system** and data acquisition framework, significantly enhancing product capabilities.
-- **Refactored a 500,000+ line monolithic codebase** into an object-oriented library system, improving maintainability.
-- **Performed a security audit** and revamped security protocols, reducing the attack surface by 99%.
+2019 – 2021
 
-**Web Design Consultant**  
-Remote — 2006 \- 2008
+- Built GDPR retention enforcement and verification pipelines for Ads, applied to all Google users globally.
+- Implemented data portability, identity handling, and law-enforcement request compliance.
+- Served as a privacy engineering resource for adjacent teams, raising compliance across products.
 
-- **Developed static and dynamic websites**, including a CMS with user authentication and statistical analysis for concert venue ratings.
+#### YouTube Trust & Safety Engineering — Software Engineer
 
-**Senior Systems Analyst**  
-**Yum\! Brands**  
-Irvine, CA — 2001 \- 2006
+2017 – 2019
 
-- **Automated troubleshooting processes** using Bash, significantly reducing call times in help desk support.
-- **Awarded "Analyst of the Year"** for excellence in system analysis and leadership.
+- Built and maintained a self-service anti-abuse platform that fraud, copyright, legal, and regulatory compliance teams used to act on all YouTube content.
+- Partnered with policy stakeholders to translate abuse policy into enforcement workflows.
 
----
+### Xignite (financial market data APIs) — Senior Software Engineer
 
-### **Education**
+San Mateo, CA | 2012 – 2017
 
-**University of California, Santa Cruz**
+- Led engineering for private label offerings serving clients including NASDAQ and CME.
+- Cut platform operating costs by 66% through infrastructure and engineering improvements.
+- Built a white label solution that saved Bloomberg users over 20% on data licensing.
+- Received an award for the BMO Skyway offering.
+- Designed a REST API framework that decoupled front-end and back-end development, shortening release cycles.
 
-- Bachelor of Science, Computer Science, Class of 2012
-- Summa Cum Laude (3.98 GPA), High Honors in Jack Baskin School of Engineering
-- Recipient of The David S. Lee and Campus Merit Scholarships
+### Vibrant Technology — Software Engineer
 
----
+Scotts Valley, CA | 2008 – 2012
 
-### **Hobbies**
+- Performed a security audit and redesigned security protocols, reducing the attack surface by 99%.
+- Refactored a 500,000+ line monolithic codebase into a modular object-oriented library system.
+- Architected a machine monitoring system and data acquisition framework that expanded product capabilities.
 
-- Contributing to and owning several open source projects:
-  - [**Cache APT Packages Action**](https://github.com/marketplace/actions/cache-apt-packages): Caches APT packages for GitHub Actions (10k+ usages).
-  - [**Typescript APT Library**](https://github.com/awalsh128/ts-apt): Programmatic access to managing APT packages for devops.
-  - [**Google Keep Sorted VSCode Extension**](https://github.com/awalsh128/vscode-keep-sorted): Native support for [Google’s Keep Sorted linter tool](https://github.com/google/keep-sorted).
-  - [**PCAP-NG File Reader**](https://github.com/awalsh128/PcapngFile): Native C\# implementation of RFC PCAP-NG.
-  - [**Fluent C++**](https://github.com/awalsh128/fluentcpp): C++ library for functional expression and auto-complete.
-- Activities: Backpacking, hiking, bodyboarding, photography, and cooking.
+### Earlier
 
----
+- Web Design Consultant (2006 – 2008)
+- Senior Systems Analyst, Yum! Brands (2001 – 2006): automated help desk troubleshooting; named Analyst of the Year.
 
-### **References**
+## [References](https://www.linkedin.com/in/andrew-walsh-a235787/details/recommendations/?detailScreenTabIndex=0)
 
-Available upon request.
+## Open Source
+
+- **Cache APT Packages Action** (maintainer): caches APT packages for GitHub Actions CI pipelines; 10k+ usages.
+- **TypeScript APT Library:** programmatic APT package management for DevOps automation.
+- **Keep Sorted VS Code Extension:** native editor support for Google's keep-sorted linter.
+- **PCAP-NG Reader** (C#, RFC implementation) and **Fluent C++** (functional expression library).
+
+## Education
+
+### B.S. Computer Science, University of California, Santa Cruz
+
+2012
+
+- Summa Cum Laude (3.98 GPA); High Honors, Baskin School of Engineering
+- David S. Lee and Campus Merit Scholarships

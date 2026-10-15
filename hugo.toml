@@ -61,7 +61,7 @@ timeZone = "America/Los_Angeles"
     links = [
       { github = "https://github.com/awalsh128" },
       { linkedin = "https://www.linkedin.com/in/andrew-walsh-a235787/" },
-      { file-lines = "https://lykotek.com/assets/resume" },
+      { resume = "/assets/text/resume.html" },
       { heart = "https://github.com/sponsors/awalsh128" },
     ]
 
