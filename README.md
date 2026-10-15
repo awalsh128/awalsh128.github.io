@@ -3,13 +3,23 @@
 Source for [awalsh128.com](https://awalsh128.com), built with [Hugo](https://gohugo.io) and the
 [Blowfish](https://blowfish.page) theme (pulled in as a Hugo module, pinned in `go.mod`).
 
-## Local preview
+## Setup
 
-Requires [Hugo extended](https://gohugo.io/installation/) (0.165.0, matching CI) and Go.
+After cloning, run the bootstrap script once. It needs Git, Go, Python 3, and curl (plus an authenticated
+[`gh`](https://cli.github.com) CLI for the projects hook), and is safe to re-run.
 
 ```sh
-hugo server   # http://localhost:1313, live reload
-hugo --gc     # build into public/
+scripts/bootstrap.sh
+```
+
+It installs Hugo extended into `.tools/` (git-ignored) at the same version CI uses (`HUGO_VERSION` in
+`.github/workflows/hugo.yml`), enables the git hooks in `.githooks/`, and runs a test build.
+
+## Local preview
+
+```sh
+.tools/hugo server   # http://localhost:1313, live reload
+.tools/hugo --gc     # build into public/
 ```
 
 ## Layout
@@ -22,7 +32,7 @@ hugo --gc     # build into public/
 | `static/`           | Files copied as-is (`/assets/...` images and PDFs, `CNAME`)     |
 | `assets/img/`       | Images processed by the theme (avatar, homepage background)     |
 | `assets/icons/`     | Custom icons; the file name is the author-link key and tooltip  |
-| `scripts/`          | Resume export normalizer and homepage projects sync             |
+| `scripts/`          | Bootstrap, resume export normalizer, and homepage projects sync |
 | `.githooks/`        | Pre-commit hook that syncs homepage projects with GitHub pins   |
 | `hugo.toml`         | Site, theme, and menu configuration                             |
 
@@ -44,11 +54,10 @@ python3 scripts/resume_to_md.py exported.md --output - # preview
 The Projects list in `content/_index.md` mirrors the repositories pinned on
 [github.com/awalsh128](https://github.com/awalsh128), between the `projects:start` and `projects:end`
 markers. A pre-commit hook regenerates it with `scripts/update_projects.py` (via an authenticated `gh` CLI)
-and stages the result. Enable the hook once per clone:
+and stages the result. `scripts/bootstrap.sh` enables the hook. To preview the list without writing:
 
 ```sh
-git config core.hooksPath .githooks
-python3 scripts/update_projects.py --output -   # preview without writing
+python3 scripts/update_projects.py --output -
 ```
 
 If `gh` is unavailable or the query fails, the hook warns and the commit proceeds with the existing list.

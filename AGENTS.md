@@ -5,7 +5,8 @@ Instructions for AI agents (Claude Code, Codex, Copilot, Cursor, ...) working in
 
 ## Repository conventions
 
-- Hugo site with the Blowfish theme. Build with `hugo --gc`; preview with `hugo server` (Hugo extended 0.165.0).
+- Hugo site with the Blowfish theme. On a fresh clone run `scripts/bootstrap.sh`, then build with `.tools/hugo --gc`
+  and preview with `.tools/hugo server`.
 - Posts are `content/posts/YYYY-MM-DD-slug.md`; the filename sets the date and the `/slug/` URL. Don't rename
   existing posts, since that breaks published URLs and Disqus threads.
 - Callouts use GitHub alert syntax (`> [!NOTE]`, `> [!WARNING]`), not shortcodes.
