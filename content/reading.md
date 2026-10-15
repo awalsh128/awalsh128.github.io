@@ -7,6 +7,32 @@ lastmod: 2026-10-15T00:00:00-07:00
 Some computer based reading I have enjoyed over the years. For everything else I'm reading, see
 [My GoodReads](https://www.goodreads.com/user/show/136662718-andrew).
 
+## Cyberpunk &amp; Hard Sci-Fi
+
+### Cyberpunk
+
+* [Akira](https://www.amazon.com/Akira-Vol-1-Katsuhiro-Otomo/dp/1935429000) - In the backdrop of post-WWIII Neo-Tokyo, two friends' relationship becomes darker as one realizes their strong psychokinetic powers.
+* [Blade Runner / Do Androids Dream of Electric Sheep?](https://www.amazon.com/Blade-Runner-Philip-K-Dick-audiobook/dp/B0010BA814/ref=sr_1_1?dchild=1&qid=1605131963&refinements=p_lbr_one_browse-bin%3APhilip+K.+Dick&s=books&sr=1-1) - Backdrop is a detective in futuristic 2019 charged with killing replicants. Contrasts human vs artificial intelligence (AI), the central theme is the examination of humanity.
+* [CyberStorm](https://www.goodreads.com/book/show/17985262) - A massive cyberattack cuts New York off from power and communications in the middle of a blizzard, leaving one family to survive the collapse.
+* [Daemon](https://www.goodreads.com/book/show/4699575) and [Freedom™](https://www.goodreads.com/book/show/8488830) - After a legendary game designer dies, a distributed program he left behind starts dismantling and rebuilding society.
+* [The Ghost in the Shell](http://www.amazon.com/Ghost-Shell-SAC/dp/1935429019) - In the near future, humans are augmented with cybernetic improvements to traits such as vision, strength, and intelligence. Story follows counter-terrorism operative and cyborg, Major Motoko Kusanagi.
+* [MaddAddam Trilogy](https://www.amazon.com/dp/0804172315?tag=nemu08-20&linkCode=ogi&th=1&psc=1) - A corporate dystopian future where civil society doesn't exist, just the corps. The story follows multiple characters involved in a bio attack.
+* [Neuromancer](https://www.amazon.com/dp/B000O76ON6?ref=KC_GS_GB_US) - Set in the future, a washed-up computer hacker, Henry Case is hired for one last job. This brings him up against a powerful AI.
+* [Reamde](https://www.goodreads.com/book/show/10552338) - Ransomware spread through a massively multiplayer online game pulls the game creator's family into a global chase with hackers, the Russian mob, and terrorists.
+* [Service Model](https://www.goodreads.com/book/show/195790861) - A robot valet that has apparently murdered its master sets out across a collapsing world of malfunctioning automation looking for a new purpose.
+* [Ubik](https://www.goodreads.com/book/show/22590) - In a future where the dead are kept in "half-life", the reality around a team of anti-psychic agents starts to decay after a job goes wrong.
+* [Upgrade](https://www.goodreads.com/book/show/59838811) - A gene-crime investigator discovers his own genome has been upgraded, the first step in a plan to upgrade all of humanity.
+
+### Hard Sci-Fi
+
+* [Blindsight](https://www.goodreads.com/book/show/48484) - A crew of transhuman specialists makes first contact with an alien intelligence that may not be conscious at all, questioning whether consciousness is needed for intelligence.
+* [Bobiverse](https://www.goodreads.com/book/show/32109569) - A software engineer wakes up as the uploaded mind of a self-replicating Von Neumann probe and starts copying himself across the galaxy.
+* [Children of Time](https://www.goodreads.com/book/show/25499718) - Humanity's last survivors reach a terraformed planet where an uplift experiment has produced an evolving civilization of spiders.
+* [Darwin's Radio](https://www.goodreads.com/book/show/64923) - Retroviruses dormant in human DNA activate and trigger what may be the next step in human evolution.
+* [The Expanse](https://www.goodreads.com/book/show/8855321) - In a colonized solar system, a missing-person case and a destroyed ice hauler uncover an alien protomolecule, with physics and orbital mechanics kept grounded throughout the nine-book series.
+* [Project Hail Mary](https://www.goodreads.com/book/show/54493401) - A science teacher wakes alone on a spacecraft with no memory and has to work out, from first principles, how to save Earth from a star-dimming microbe.
+* [Seveneves](https://www.goodreads.com/book/show/22816087) - The Moon shatters, giving Earth two years before a debris bombardment, and humanity engineers its survival in orbit over the next five thousand years.
+
 ## Computer Science
 
 * [The Art of Computer Programming](https://www.amazon.com/Computer-Programming-Volumes-1-4A-Boxed/dp/0321751043)
@@ -72,11 +98,3 @@ An archive of lectures by ACM Turing Award recipients can be found in
 * [Fielding, Roy (2000). "Architectural Styles and the Design of Network-based Software Architectures" (REST Dissertation)](https://oleb.net/2018/rest/)
 * [Dean, Jeffrey and Ghemawat, Sanjay (2004). "MapReduce: Simplified Data Processing on Large Clusters"](https://static.googleusercontent.com/media/research.google.com/en//archive/mapreduce-osdi04.pdf)
 * [DeCandia, Giuseppe et al. (2007). "Dynamo: Amazon's Highly Available Key-value Store"](https://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf)
-
-## Cyberpunk Fiction
-
-* [Akira](https://www.amazon.com/Akira-Vol-1-Katsuhiro-Otomo/dp/1935429000) - In the backdrop of post-WWIII Neo-Tokyo, two friends' relationship becomes darker as one realizes their strong psychokinetic powers.
-* [Blade Runner / Do Androids Dream of Electric Sheep?](https://www.amazon.com/Blade-Runner-Philip-K-Dick-audiobook/dp/B0010BA814/ref=sr_1_1?dchild=1&qid=1605131963&refinements=p_lbr_one_browse-bin%3APhilip+K.+Dick&s=books&sr=1-1) - Backdrop is a detective in futuristic 2019 charged with killing replicants. Contrasts human vs artificial intelligence (AI), the central theme is the examination of humanity.
-* [The Ghost in the Shell](http://www.amazon.com/Ghost-Shell-SAC/dp/1935429019) - In the near future, humans are augmented with cybernetic improvements to traits such as vision, strength, and intelligence. Story follows counter-terrorism operative and cyborg, Major Motoko Kusanagi.
-* [MaddAddam Trilogy](https://www.amazon.com/dp/0804172315?tag=nemu08-20&linkCode=ogi&th=1&psc=1) - A corporate dystopian future where civil society doesn't exist, just the corps. The story follows multiple characters involved in a bio attack.
-* [Neuromancer](https://www.amazon.com/dp/B000O76ON6?ref=KC_GS_GB_US) - Set in the future, a washed-up computer hacker, Henry Case is hired for one last job. This brings him up against a powerful AI.
