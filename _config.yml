@@ -64,6 +64,7 @@ footer:
 # Files
 include:
   - .htaccess
+  - _pages
 exclude:
   - node_modules
   - vendor
