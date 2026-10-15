@@ -30,7 +30,7 @@ Senior software engineer with 18 years of experience (9 at Google) building reli
 
 Remote / Bay Area, CA | Sep 2026 – Present
 
-_Hands-on senior engineering that hardens and scales production systems for early-stage AI companies._
+_Hands-on senior engineering that hardens and scales production systems for startups with AI-built PoCs_
 
 - Leading productionization for OrderlyAI, an AI-powered contract-to-close platform for real estate transaction coordinators, including CI/CD, a code health and security audit, and test-driven stabilization of critical paths.
 - Guiding software architecture, infrastructure, and platform integration; defining coding standards and introducing agentic AI tooling to raise development velocity.
