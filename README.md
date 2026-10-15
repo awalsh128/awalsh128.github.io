@@ -21,9 +21,22 @@ hugo --gc     # build into public/
 | `content/*.md`   | Standalone pages (projects, reading, resume)                    |
 | `static/`        | Files copied as-is (`/assets/...` images and PDFs, `CNAME`)     |
 | `assets/img/`    | Images processed by the theme (avatar, homepage background)     |
+| `assets/icons/`  | Custom icons; the file name is the author-link key and tooltip  |
+| `scripts/`       | `resume_to_md.py`: normalizes a Google Docs resume export       |
 | `hugo.toml`      | Site, theme, and menu configuration                             |
 
 Callouts use GitHub alert syntax (`> [!NOTE]`, `> [!WARNING]`, ...).
+
+## Resume
+
+`content/resume.md` is the resume page, published at `/assets/text/resume.html` and linked
+from the homepage icon (`resume` in `hugo.toml`, icon `assets/icons/resume.svg`, tooltip
+"Resume"). To update it from a Google Doc markdown export:
+
+```sh
+python3 scripts/resume_to_md.py exported.md            # rewrites content/resume.md, keeps front matter
+python3 scripts/resume_to_md.py exported.md --output - # preview
+```
 
 ## Theme updates
 
