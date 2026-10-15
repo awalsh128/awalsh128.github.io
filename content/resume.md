@@ -7,7 +7,7 @@ showTableOfContents: false
 
 **Senior Software Engineer** · Software Architecture · Agentic AI Tooling · Infrastructure · Privacy Engineering
 
-Santa Cruz, CA (Remote) | 831-331-6830 | awalsh128@gmail.com | [linkedin.com/in/andrew-walsh-a235787](https://www.linkedin.com/in/andrew-walsh-a235787/) | [github.com/awalsh128](https://github.com/awalsh128)
+Santa Cruz, CA (Remote / Hybrid) | 831-331-6830 | awalsh128@gmail.com | [linkedin.com/in/andrew-walsh-a235787](https://www.linkedin.com/in/andrew-walsh-a235787/) | [github.com/awalsh128](https://github.com/awalsh128)
 
 ## Summary
 
@@ -30,7 +30,7 @@ Senior software engineer with 18 years of experience (9 at Google) building reli
 
 Remote / Bay Area, CA | Sep 2026 – Present
 
-*Hands-on senior engineering that hardens and scales production systems for early-stage AI companies.*
+_Hands-on senior engineering that hardens and scales production systems for early-stage AI companies._
 
 - Leading productionization for OrderlyAI, an AI-powered contract-to-close platform for real estate transaction coordinators, including CI/CD, a code health and security audit, and test-driven stabilization of critical paths.
 - Guiding software architecture, infrastructure, and platform integration; defining coding standards and introducing agentic AI tooling to raise development velocity.
@@ -40,7 +40,7 @@ Remote / Bay Area, CA | Sep 2026 – Present
 
 Bay Area, CA | 2017 – Aug 2026
 
-*Five teams spanning infrastructure, privacy, and trust & safety.*
+_Five teams spanning infrastructure, privacy, and trust & safety._
 
 #### Google-wide Impact
 
