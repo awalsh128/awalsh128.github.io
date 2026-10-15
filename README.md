@@ -14,15 +14,15 @@ hugo --gc     # build into public/
 
 ## Layout
 
-| Path             | Contents                                                        |
-| ---------------- | --------------------------------------------------------------- |
-| `content/posts/` | Blog posts; `YYYY-MM-DD-slug.md` sets the date and `/slug/` URL |
-| `content/notes/` | Reference notes, served at `/notes/<name>/`                     |
-| `content/*.md`   | Standalone pages (projects, reading)                            |
-| `static/`        | Files copied as-is (`/assets/...` images and PDFs, `CNAME`)     |
-| `assets/img/`    | Images processed by the theme (avatar, homepage background)     |
-| `assets/icons/`  | Custom icons; the file name is the author-link key and tooltip  |
-| `hugo.toml`      | Site, theme, and menu configuration                             |
+| Path                | Contents                                                        |
+| ------------------- | --------------------------------------------------------------- |
+| `content/posts/`    | Blog posts; `YYYY-MM-DD-slug.md` sets the date and `/slug/` URL |
+| `content/_index.md` | Homepage content (projects list above recent posts)             |
+| `content/*.md`      | Standalone pages (reading)                                      |
+| `static/`           | Files copied as-is (`/assets/...` images and PDFs, `CNAME`)     |
+| `assets/img/`       | Images processed by the theme (avatar, homepage background)     |
+| `assets/icons/`     | Custom icons; the file name is the author-link key and tooltip  |
+| `hugo.toml`         | Site, theme, and menu configuration                             |
 
 Callouts use GitHub alert syntax (`> [!NOTE]`, `> [!WARNING]`, ...).
 

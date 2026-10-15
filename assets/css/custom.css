@@ -1,0 +1,4 @@
+/* Let the homepage projects list span the same width as the "Recent" section below it. */
+section.prose:has(> .home-projects) {
+  max-width: none;
+}
