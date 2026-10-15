@@ -3,6 +3,13 @@ section.prose:has(> .home-projects) {
   max-width: none;
 }
 
+/* Keep the intro line above the projects list at a readable, centered width. */
+section.prose:has(> .home-projects) > p {
+  max-width: 65ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 /*
  * Wider layout on desktop. Below 1024px the theme's mobile and tablet layout is unchanged.
  * - Page container: theme caps at 80rem with 8rem side padding; widen and trim padding.
