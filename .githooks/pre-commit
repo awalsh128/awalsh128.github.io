@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# Sync the homepage project list with the repositories pinned on GitHub.
+# Enable once per clone with: git config core.hooksPath .githooks
+
+root="$(git rev-parse --show-toplevel)"
+index="content/_index.md"
+
+if ! python3 "${root}/scripts/update_projects.py"; then
+  echo "pre-commit: skipping project sync; commit continues with the existing list." >&2
+  exit 0
+fi
+
+if ! git -C "${root}" diff --quiet -- "${index}"; then
+  git -C "${root}" add -- "${index}"
+  echo "pre-commit: staged updated ${index}." >&2
+fi
