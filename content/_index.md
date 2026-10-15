@@ -2,8 +2,8 @@
 aliases: ["/projects/"]
 ---
 
-**Shipping an AI-built product?** Through my consultancy, [Lykotek](https://lykotek.com), I help startups harden
-AI-built software for production and set up AI coding agents that fit how their team works.
+**Shipping an AI-built product?** I help startups harden it for production and set up AI coding agents that fit
+how their team works. [More at Lykotek →](https://lykotek.com)
 
 <div class="home-projects text-left">
 
