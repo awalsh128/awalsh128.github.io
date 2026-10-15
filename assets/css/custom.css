@@ -8,6 +8,7 @@ section.prose:has(> .home-projects) > p {
   max-width: 65ch;
   margin-left: auto;
   margin-right: auto;
+  text-wrap: balance;
 }
 
 /*
