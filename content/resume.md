@@ -7,7 +7,7 @@ showTableOfContents: false
 
 **Senior Software Engineer** · Software Architecture · Agentic AI Tooling · Infrastructure · Privacy Engineering
 
-Santa Cruz, CA (Remote / Hybrid) | 831-331-6830 | awalsh128@gmail.com | [linkedin.com/in/andrew-walsh-a235787](https://www.linkedin.com/in/andrew-walsh-a235787/) | [github.com/awalsh128](https://github.com/awalsh128)
+Santa Cruz, CA (Remote / Hybrid) | awalsh128@gmail.com | [linkedin.com/in/andrew-walsh-a235787](https://www.linkedin.com/in/andrew-walsh-a235787/) | [github.com/awalsh128](https://github.com/awalsh128)
 
 ## Summary
 
