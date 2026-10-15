@@ -1,20 +1,19 @@
 ---
-permalink: /reading/
 title: "Reading"
 summary: "Reading list for topics related to Software."
-last_modified_at: 2021-05-01T00:00:00-07:00
-toc: true
+lastmod: 2026-10-15T00:00:00-07:00
 ---
 
-Some computer based reading I have enjoyed over the years.
+Some computer based reading I have enjoyed over the years. For everything else I'm reading, see
+[My GoodReads](https://www.goodreads.com/user/show/136662718-andrew).
 
 ## Computer Science
 
-* [Art of Programming](https://www.amazon.com/Computer-Programming-Volumes-1-4A-Boxed/dp/0321751043)
+* [The Art of Computer Programming](https://www.amazon.com/Computer-Programming-Volumes-1-4A-Boxed/dp/0321751043)
   * Synopsis: Multi volume books meant to cover all the different mathematics used to write algorithms. Volumes are separated based on math concept.
   * Opinion: Don't expect to read these back to back. Take it in parts and for topics that you are interested in. For example I found the section on hashing interesting when I was trying to understand it better.
 * [Introduction to Algorithms (CLRS)](https://www.amazon.com/Introduction-Algorithms-3rd-MIT-Press/dp/0262033844)
-  * Synopsis: Canonical Algorithmns teaching book.
+  * Synopsis: Canonical Algorithms teaching book.
   * Opinion: I have a personal affinity for this book due to its simplicity in format and diagrams. IMO it isn't too wordy like other books and gives me what I need to know quickly.
 * [Compilers: Principles, Techniques, and Tools (Dragon Book)](https://www.amazon.com/Compilers-Principles-Techniques-Tools-2nd/dp/0321486811)
   * Synopsis: Provides information for building a compiler and the different features involved.
@@ -29,7 +28,7 @@ Some computer based reading I have enjoyed over the years.
 * [The Dream Machine: J.C.R. Licklider and the Revolution That Made Computing Personal](https://www.amazon.com/exec/obidos/ASIN/0670899763/acmorg-20) - Outlines Licklider's visionary dream of a "human-computer symbiosis" transforming the course of modern science and led to the development of the personal computer.
 * [Turing's Cathedral: The Origins of the Digital Universe](https://www.amazon.com/Turings-Cathedral-Origins-Digital-Universe/dp/1400075998)
   * Synopsis: A history of computation and the creation of the computer.
-  * Opinion: Gave me a deep sense of the contribution that philosphy and mathemetics had on computers, and a new appreciation of its history.
+  * Opinion: Gave me a deep sense of the contribution that philosophy and mathematics had on computers, and a new appreciation of its history.
 
 ## Software
 
@@ -43,47 +42,41 @@ Some computer based reading I have enjoyed over the years.
 
 ### Maintenance &amp; Management
 
-* [Mythical Man-Month](https://www.amazon.com/dp/B00B8USS14?ref=KC_GS_GB_US) - Presents the multiple ideas of Fred Brooks with the central theme that "adding manpower to a late software project makes it later" (Brook's Law).
-* [Site Reliability Engineering](https://landing.google.com/sre/books/) - Outlines concepts used by Google SRE for managing large scale systems. These convcept have served me very well in my time at Google. If you want a good sense of devops posture, this is a must read.
+* [Mythical Man-Month](https://www.amazon.com/dp/B00B8USS14?ref=KC_GS_GB_US) - Presents the multiple ideas of Fred Brooks with the central theme that "adding manpower to a late software project makes it later" (Brooks's Law).
+* [Site Reliability Engineering](https://landing.google.com/sre/books/) - Outlines concepts used by Google SRE for managing large scale systems. These concepts have served me very well in my time at Google. If you want a good sense of devops posture, this is a must read.
 
 ## Landmark Papers
 
-* [On Computable Numbers, with an application to the Entscheidungsproblem](https://www.cs.virginia.edu/~robins/Turing_Paper_1936.pdf)
-* [A Mathematical Theory of Communication](http://math.harvard.edu/~ctm/home/text/others/shannon/entropy/entropy.pdf)
-* [A Proposal for the Dartmouth Summer Research Project on Artificial Intelligence](http://jmc.stanford.edu/articles/dartmouth/dartmouth.pdf)
-* [A Protocol for Packet Network Intercommunication](http://education.sigcomm.org/papers/ck74.pdf)
-* [A Relational Model of Data for Large Shared Data Banks](https://www.seas.upenn.edu/~zives/03f/cis550/codd.pdf)
-* [REST Dissertation](https://oleb.net/2018/rest/)
-* [Turing Lecture Award Papers](https://amturing.acm.org/lectures.cfm)
-* [Dynamo: Amazon’s Highly Available Key-value Store](https://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf)
-* [MapReduce: Simplified Data Processing on Large Clusters](https://static.googleusercontent.com/media/research.google.com/en//archive/mapreduce-osdi04.pdf)
-* [Can Programming Be Liberated From the Von Neumann Style?](http://www.thocp.net/biographies/papers/backus_turingaward_lecture.pdf)
-An archive of past to present awarded by the ACM can be found in [Turing Lecture Award Papers](https://amturing.acm.org/lectures.cfm).
+An archive of lectures by ACM Turing Award recipients can be found in
+[Turing Lecture Award Papers](https://amturing.acm.org/lectures.cfm).
 
 ### Computation
 
-* [Leibniz, Gottfried Wilhelm (1703). "Explaination of Binary Arithmetic"](/assets/text/leibniz_binary.pdf)
-* [Babbage, Charles (1824). "Note on the Application of Machinery to the Computation of Astronomical and Mathematical"](/assets/text/PPN618299726.pdf)
-* [Bool, George (1854). "The Laws of Thought: Chapter V"](/assets/text/The_Laws_of_Thought.pdf)
+* [Leibniz, Gottfried Wilhelm (1703). "Explanation of Binary Arithmetic"](/assets/text/leibniz_binary.pdf)
+* [Babbage, Charles (1824). "Note on the Application of Machinery to the Computation of Astronomical and Mathematical Tables"](/assets/text/PPN618299726.pdf)
+* [Boole, George (1854). "The Laws of Thought: Chapter V"](/assets/text/The_laws_of_thought.pdf)
 * [Cantor, Georg (1874). "On a Property of the Collection of All Real Algebraic Numbers"](/assets/text/Cantors1874Paper.pdf)
 * [Hilbert, David (1900). "Mathematical Problems"](/assets/text/S0002-9904-1902-00923-3.pdf)
-* [Gödel, Kurt (1931). "On formally undecidable propositions of Principia Mathematica and related systems I"](/assets/text/canon00-goedel.pdf)
-* [Turing, A.M (1936). "On Computable Numbers, With an Application to the Entscheidungsproblem"](/assets/text/Turing_Paper_1936.pdf)
-* [Neumann, János Lajos (1945). "First Draft of a Report on the EDVAC"](/assets/text/vnedvac.pdf)
-* [Cook, Stephen (1971). "The complexity of theorem proving procedures".](/assets/text/p_vs_np_1971.pdf)
+* [Gödel, Kurt (1931). "On Formally Undecidable Propositions of Principia Mathematica and Related Systems I"](/assets/text/canon00-goedel.pdf)
+* [Turing, A.M. (1936). "On Computable Numbers, With an Application to the Entscheidungsproblem"](/assets/text/Turing_Paper_1936.pdf)
+* [von Neumann, John (1945). "First Draft of a Report on the EDVAC"](/assets/text/vnedvac.pdf)
+* [Shannon, Claude (1948). "A Mathematical Theory of Communication"](https://people.math.harvard.edu/~ctm/home/text/others/shannon/entropy/entropy.pdf)
+* [McCarthy, John et al. (1955). "A Proposal for the Dartmouth Summer Research Project on Artificial Intelligence"](http://jmc.stanford.edu/articles/dartmouth/dartmouth.pdf)
+* [Cook, Stephen (1971). "The Complexity of Theorem-Proving Procedures"](/assets/text/p_vs_np_1971.pdf)
 
 ### Engineering
 
 * [Codd, E.F. (1970). "A Relational Model of Data for Large Shared Data Banks"](/assets/text/codd.pdf)
-* [Backus, John. "Can Programming Be Liberated From the von Neumann Style?"](http://www.thocp.net/biographies/papers/backus_turingaward_lecture.pdf)
-* [Dynamo: Amazon’s Highly Available Key-value Store](https://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf)
-* [MapReduce: Simplified Data Processing on Large Clusters](https://static.googleusercontent.com/media/research.google.com/en//archive/mapreduce-osdi04.pdf)
-* [REST Dissertation](https://oleb.net/2018/rest/)
+* [Cerf, Vinton and Kahn, Robert (1974). "A Protocol for Packet Network Intercommunication"](http://education.sigcomm.org/papers/ck74.pdf)
+* [Backus, John (1978). "Can Programming Be Liberated From the von Neumann Style?"](http://www.thocp.net/biographies/papers/backus_turingaward_lecture.pdf)
+* [Fielding, Roy (2000). "Architectural Styles and the Design of Network-based Software Architectures" (REST Dissertation)](https://oleb.net/2018/rest/)
+* [Dean, Jeffrey and Ghemawat, Sanjay (2004). "MapReduce: Simplified Data Processing on Large Clusters"](https://static.googleusercontent.com/media/research.google.com/en//archive/mapreduce-osdi04.pdf)
+* [DeCandia, Giuseppe et al. (2007). "Dynamo: Amazon's Highly Available Key-value Store"](https://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf)
 
-## Cyber Punk Fiction
+## Cyberpunk Fiction
 
-* [Akira](https://www.amazon.com/Akira-Vol-1-Katsuhiro-Otomo/dp/1935429000) - In the backdrop of post-WWIII Neo-Tokyo, two friends relationship becomes darker as one realizes their strong psychokinetic powers.
+* [Akira](https://www.amazon.com/Akira-Vol-1-Katsuhiro-Otomo/dp/1935429000) - In the backdrop of post-WWIII Neo-Tokyo, two friends' relationship becomes darker as one realizes their strong psychokinetic powers.
 * [Blade Runner / Do Androids Dream of Electric Sheep?](https://www.amazon.com/Blade-Runner-Philip-K-Dick-audiobook/dp/B0010BA814/ref=sr_1_1?dchild=1&qid=1605131963&refinements=p_lbr_one_browse-bin%3APhilip+K.+Dick&s=books&sr=1-1) - Backdrop is a detective in futuristic 2019 charged with killing replicants. Contrasts human vs artificial intelligence (AI), the central theme is the examination of humanity.
-* [The Ghost in the Shell](http://www.amazon.com/Ghost-Shell-SAC/dp/1935429019) - In the near future, humans are augmented with cybernetic improvements to traits such as vision, strength, and intelligence. Story follows, counter terrorism operative and cyborg, Killian.
+* [The Ghost in the Shell](http://www.amazon.com/Ghost-Shell-SAC/dp/1935429019) - In the near future, humans are augmented with cybernetic improvements to traits such as vision, strength, and intelligence. Story follows counter-terrorism operative and cyborg, Major Motoko Kusanagi.
 * [MaddAddam Trilogy](https://www.amazon.com/dp/0804172315?tag=nemu08-20&linkCode=ogi&th=1&psc=1) - A corporate dystopian future where civil society doesn't exist, just the corps. The story follows multiple characters involved in a bio attack.
 * [Neuromancer](https://www.amazon.com/dp/B000O76ON6?ref=KC_GS_GB_US) - Set in the future, a washed-up computer hacker, Henry Case is hired for one last job. This brings him up against a powerful AI.
