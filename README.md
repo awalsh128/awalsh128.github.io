@@ -1,20 +1,36 @@
 # Andrew Walsh Website
 
-This repository contains the source for a static personal website and blog built with Jekyll and the Minimal Mistakes theme.
+Source for [awalsh128.com](https://awalsh128.com), built with [Hugo](https://gohugo.io) and the
+[Blowfish](https://blowfish.page) theme (pulled in as a Hugo module, pinned in `go.mod`).
 
 ## Local preview
 
-This site is intended for local preview and static generation, not for GitHub Pages deployment.
+Requires [Hugo extended](https://gohugo.io/installation/) (0.165.0, matching CI) and Go.
 
-### Prerequisites
+```sh
+hugo server   # http://localhost:1313, live reload
+hugo --gc     # build into public/
+```
 
-- Ruby
-- Bundler
+## Layout
 
-On Debian/Ubuntu, the local helper script can install the required packages if missing:
+| Path             | Contents                                                        |
+| ---------------- | --------------------------------------------------------------- |
+| `content/posts/` | Blog posts; `YYYY-MM-DD-slug.md` sets the date and `/slug/` URL |
+| `content/notes/` | Reference notes, served at `/notes/<name>/`                     |
+| `content/*.md`   | Standalone pages (projects, reading, resume)                    |
+| `static/`        | Files copied as-is (`/assets/...` images and PDFs, `CNAME`)     |
+| `assets/img/`    | Images processed by the theme (avatar, homepage background)     |
+| `hugo.toml`      | Site, theme, and menu configuration                             |
 
-## Notes
+Callouts use GitHub alert syntax (`> [!NOTE]`, `> [!WARNING]`, ...).
 
-- The build uses a repo-local Bundler cache under `.bundle` to avoid system gem permission issues.
-- Dependency versions are intentionally pinned for compatibility with the current Jekyll stack.
-- The site is content-focused and works well as a static blog/portfolio site.
+## Theme updates
+
+```sh
+hugo mod get -u github.com/nunocoracao/blowfish/v2
+```
+
+## Deployment
+
+Pushing to `master` runs `.github/workflows/hugo.yml`, which builds and deploys to GitHub Pages.
