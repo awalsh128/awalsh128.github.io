@@ -2,3 +2,27 @@
 section.prose:has(> .home-projects) {
   max-width: none;
 }
+
+/*
+ * Wider layout on desktop. Below 1024px the theme's mobile and tablet layout is unchanged.
+ * - Page container: theme caps at 80rem with 8rem side padding; widen and trim padding.
+ * - Article and list text: theme caps at 65ch; allow longer lines so code blocks and tables have room.
+ */
+@media (min-width: 1024px) {
+  .max-w-7xl {
+    max-width: 88rem;
+  }
+  .lg\:px-32 {
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
+  .max-w-prose {
+    max-width: 80ch;
+  }
+}
+
+@media (min-width: 1536px) {
+  .max-w-prose {
+    max-width: 95ch;
+  }
+}
