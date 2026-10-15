@@ -18,25 +18,18 @@ hugo --gc     # build into public/
 | ---------------- | --------------------------------------------------------------- |
 | `content/posts/` | Blog posts; `YYYY-MM-DD-slug.md` sets the date and `/slug/` URL |
 | `content/notes/` | Reference notes, served at `/notes/<name>/`                     |
-| `content/*.md`   | Standalone pages (projects, reading, resume)                    |
+| `content/*.md`   | Standalone pages (projects, reading)                            |
 | `static/`        | Files copied as-is (`/assets/...` images and PDFs, `CNAME`)     |
 | `assets/img/`    | Images processed by the theme (avatar, homepage background)     |
 | `assets/icons/`  | Custom icons; the file name is the author-link key and tooltip  |
-| `scripts/`       | `resume_to_md.py`: normalizes a Google Docs resume export       |
 | `hugo.toml`      | Site, theme, and menu configuration                             |
 
 Callouts use GitHub alert syntax (`> [!NOTE]`, `> [!WARNING]`, ...).
 
 ## Resume
 
-`content/resume.md` is the resume page, published at `/assets/text/resume.html` and linked
-from the homepage icon (`resume` in `hugo.toml`, icon `assets/icons/resume.svg`, tooltip
-"Resume"). To update it from a Google Doc markdown export:
-
-```sh
-python3 scripts/resume_to_md.py exported.md            # rewrites content/resume.md, keeps front matter
-python3 scripts/resume_to_md.py exported.md --output - # preview
-```
+The homepage resume icon (`resume` in `hugo.toml`, icon `assets/icons/resume.svg`) links to
+https://lykotek.com/assets/resume. The resume lives only in the lykotek.com repo; don't copy it here.
 
 ## Theme updates
 
