@@ -22,7 +22,6 @@ timeZone = "America/Los_Angeles"
 # Keep the Jekyll URLs: posts at /<slug>/ with the slug taken from the dated filename.
 [permalinks]
   posts = "/:slug/"
-  notes = "/notes/:contentbasename/"
 
 [frontmatter]
   date = [":filename", ":default"]
@@ -66,10 +65,6 @@ timeZone = "America/Los_Angeles"
     ]
 
 [[languages.en.menus.main]]
-  name = "Projects"
-  pageRef = "/projects"
-  weight = 10
-[[languages.en.menus.main]]
   name = "Posts"
   pageRef = "/posts"
   weight = 20
@@ -77,10 +72,6 @@ timeZone = "America/Los_Angeles"
   name = "Tags"
   pageRef = "/tags"
   weight = 30
-[[languages.en.menus.main]]
-  name = "Notes"
-  pageRef = "/notes"
-  weight = 40
 [[languages.en.menus.main]]
   name = "Reading"
   pageRef = "/reading"
