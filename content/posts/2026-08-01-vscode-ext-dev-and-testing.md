@@ -1,5 +1,5 @@
 ---
-title: Testing VSCode extensions against the real API
+title: Testing framework for VSCode extension development
 date: "2026-08-01T09:38:00.000-07:00"
 author: awalsh128
 tags:
