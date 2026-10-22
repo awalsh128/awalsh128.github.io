@@ -10,7 +10,7 @@ tags:
 
 <table width="100%">
   <tr>
-    <td width="48"><img src="/assets/img/2025-12-25-vscode-keep-sorted/logo.png" alt="Logo" width="48" height="48"></td>
+    <td width="48"><img src="logo.png" alt="Logo" width="48" height="48"></td>
     <td style="padding-left:1em"><h1>VSCode Keep Sorted Extension 0.0.1 Released</h1></td>
   </tr>
 </table>

@@ -71,7 +71,7 @@ if (x > 2) {
 The parser phase transforms the tokens into relationships between them (semantical) where it takes the flat list of tokens and puts them into a tree structure (i.e. [Abstract Syntax Tree (AST)](https://en.wikipedia.org/wiki/Abstract_syntax_tree)). Here is what our example looks like.
 
 <p align="center">
-  <img src="/assets/img/2021-10-23-compiler-basics/parser.png" width="400"/>
+  <img src="parser.png" width="400"/>
 </P>
 
 Something useful to know is the difference between the scanner and parser phase.

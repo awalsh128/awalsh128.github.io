@@ -11,7 +11,7 @@ toc_icon: "columns"
 
 LGTM is a nice little integration for your GitHub projects that performs code analysis and alerts if any violations are found. And example of what an alert screen looks like on the LGTM site below (using my fluentcpp project as a demonstration).
 
-![Example LGTM Alert Screen](/assets/img/2021-10-10-integrating-lgtm/alert_screen.png)
+![Example LGTM Alert Screen](alert_screen.png)
 
 You will need to grant the application access to your repositories using their guide [Integration with GitHub Apps](https://lgtm.com/help/lgtm/github-apps-integration).
 

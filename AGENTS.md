@@ -9,6 +9,9 @@ Instructions for AI agents (Claude Code, Codex, Copilot, Cursor, ...) working in
   and preview with `.tools/hugo server`.
 - Posts are `content/posts/YYYY-MM-DD-slug.md`; the filename sets the date and the `/slug/` URL. Don't rename
   existing posts, since that breaks published URLs and Disqus threads.
+- A post with its own images is a page bundle instead: `content/posts/YYYY-MM-DD-slug/index.md` with the images
+  beside it, referenced by bare filename (e.g. `![alt](diagram.svg)`). The folder name sets the date and URL the same
+  way, and the images also render in the VSCode Markdown preview. Don't put post images under `static/`.
 - Math uses LaTeX: `$...$` inline and `$$...$$` on their own lines for display. Hugo renders it to KaTeX at build
   time (no shortcode or JavaScript needed). Escape a literal dollar sign in prose as `\$`. Units use siunitx-style
   macros defined in `layouts/_default/_markup/render-passthrough.html`: `\qty{43.2}{min}`, `\unit{km/h}`,
