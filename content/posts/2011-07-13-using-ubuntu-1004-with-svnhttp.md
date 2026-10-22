@@ -3,8 +3,7 @@ title: Using Ubuntu 10.04 with SVN+HTTP.
 date: '2011-07-13T09:38:00.000-07:00'
 author: awalsh128
 tags:
-- SVN
-- Apache
+- System Administration
 blogger_id: tag:blogger.com,1999:blog-6363087137667886940.post-2451860563261041626
 blogger_orig_url: https://awalsh128.blogspot.com/2011/07/using-ubuntu-1004-with-svnhttp.html
 ---

@@ -2,7 +2,7 @@
 title: Interviews are the Worst
 last_modified_at: 2022-02-14 00:00:01 -0700
 tags:
-- Interview
+- Career
 ---
 
 If you have experience in the software engineering field, an interview process can test the experience you have; projects, production scenarios, designs. Unfortunately, for junior positions and those out of college, there isn't much to test for. Since most are computer scientists, you could test knowledge of algorithms and data structures but does that really prove the ability of a candidate? Knowing the upper bound complexity of an algorithm's runtime is important but what about when a constant multiplying factor means the difference between production being up and down. We don't have a solution for the Traveling Salesman Problem but we have very good and practical approximations (e.g. flight scheduling).

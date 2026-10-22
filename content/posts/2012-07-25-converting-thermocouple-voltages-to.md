@@ -3,7 +3,8 @@ title: Converting thermocouple voltages to temperature.
 date: '2012-07-25T13:23:00.000-07:00'
 author: awalsh128
 tags:
-- data acquisition
+- C#
+- Data Acquisition
 thumbnail: http://1.bp.blogspot.com/-gaacEByTnvA/UBBLzb9lfWI/AAAAAAAAA8k/vigwBYw-Pas/s72-c/ktype.gif
 blogger_id: tag:blogger.com,1999:blog-6363087137667886940.post-2633754900089192672
 blogger_orig_url: https://awalsh128.blogspot.com/2012/07/converting-thermocouple-voltages-to.html

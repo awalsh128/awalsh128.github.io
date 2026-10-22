@@ -3,9 +3,9 @@ title: POCO not transforming into a POCO proxy.
 date: '2011-11-07T14:19:00.000-08:00'
 author: awalsh128
 tags:
-- ".NET"
+- .NET
 - Entity Framework
-- ADO.NET
+- Databases
 blogger_id: tag:blogger.com,1999:blog-6363087137667886940.post-2935694402221043627
 blogger_orig_url: https://awalsh128.blogspot.com/2011/11/poco-not-transforming-into-poco-proxy.html
 ---

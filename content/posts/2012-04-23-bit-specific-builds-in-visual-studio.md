@@ -3,7 +3,8 @@ title: Bit specific builds in Visual Studio 2010.
 date: '2012-04-23T11:41:00.001-07:00'
 author: awalsh128
 tags:
-- Visual Studio
+- .NET
+- Build Systems
 blogger_id: tag:blogger.com,1999:blog-6363087137667886940.post-5339534703502308981
 blogger_orig_url: https://awalsh128.blogspot.com/2012/04/bit-specific-builds-in-visual-studio.html
 ---

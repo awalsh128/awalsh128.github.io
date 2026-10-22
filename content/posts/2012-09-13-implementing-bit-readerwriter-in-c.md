@@ -3,11 +3,8 @@ title: Implementing a bit reader/writer in C.
 date: '2012-09-13T16:30:00.000-07:00'
 author: awalsh128
 tags:
-- entropy encoding
 - C
-- compression
-- raw text
-- bit twiddling
+- Compression
 thumbnail: http://4.bp.blogspot.com/--oQWBFnoeZs/UFIbvaS6dvI/AAAAAAAAA94/0sDK-D0rhWw/s72-c/bits1.png
 blogger_id: tag:blogger.com,1999:blog-6363087137667886940.post-5900668252323938038
 blogger_orig_url: https://awalsh128.blogspot.com/2012/09/implementing-bit-readerwriter-in-c.html

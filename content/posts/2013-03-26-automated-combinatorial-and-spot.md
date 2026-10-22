@@ -3,12 +3,8 @@ title: Automated combinatorial and spot testing of web service operations.
 date: '2013-03-26T21:21:00.003-07:00'
 author: awalsh128
 tags:
-- SOAP
-- testing
-- REST
 - Python
-- web services
-- WSDL
+- Testing
 modified_time: '2013-03-26T21:21:59.669-07:00'
 blogger_id: tag:blogger.com,1999:blog-6363087137667886940.post-2541459059581663781
 blogger_orig_url: https://awalsh128.blogspot.com/2013/03/automated-combinatorial-and-spot.html

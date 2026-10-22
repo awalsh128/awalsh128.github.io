@@ -15,6 +15,16 @@ Instructions for AI agents (Claude Code, Codex, Copilot, Cursor, ...) working in
 - Post, list, and tag pages get a background picked at random on each load from `assets/img/backgrounds/*.jpg`
   (see `layouts/partials/random-background.html`); add or remove a .jpg there to change the rotation. The homepage
   keeps `assets/img/header.jpg`.
+- Tags use a fixed vocabulary; reuse an existing tag before adding a new one, and give each post 1-4 tags. Pick the
+  language(s) shown in code, then the platform, then the topic:
+  - Languages: `C`, `C#`, `C++`, `Java`, `PowerShell`, `Python`, `TypeScript`.
+  - Platforms: `.NET`, `Android`, `Entity Framework`, `GitHub`, `VS Code`.
+  - Topics: `Algorithms`, `Build Systems`, `Career`, `Compression`, `Computer Science`, `Concurrency`,
+    `Data Acquisition`, `Databases`, `Logging`, `Open Source` (project releases), `Performance`, `Reliability`,
+    `Security`, `Software Design`, `Static Analysis`, `System Administration`, `Testing`.
+
+  Spell tags exactly as listed; Hugo merges tags case-insensitively into one URL, so `vscode` and `VSCode` would
+  collide. Add a new topic only when it is the main subject of the post.
 - Math uses LaTeX: `$...$` inline and `$$...$$` on their own lines for display. Hugo renders it to KaTeX at build
   time (no shortcode or JavaScript needed). Escape a literal dollar sign in prose as `\$`. Units use siunitx-style
   macros defined in `layouts/_default/_markup/render-passthrough.html`: `\qty{43.2}{min}`, `\unit{km/h}`,

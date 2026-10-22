@@ -3,7 +3,7 @@ title: Compiler Basics
 summary: "Introduction of compiler basics using a toy example."
 last_modified_at: 2021-10-25 00:00:01 -0700
 tags:
-- Compilers
+- Computer Science
 toc: true
 ---
 

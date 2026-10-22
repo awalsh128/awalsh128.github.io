@@ -3,11 +3,8 @@ title: PCAP-NG reader for .NET.
 date: '2013-04-10T18:46:00.000-07:00'
 author: awalsh128
 tags:
-- CLR
-- ".NET"
-- PCAP-NG
 - C#
-- networking
+- .NET
 modified_time: '2016-03-30T23:52:15.452-07:00'
 blogger_id: tag:blogger.com,1999:blog-6363087137667886940.post-8560226330820845355
 blogger_orig_url: https://awalsh128.blogspot.com/2013/04/pcap-ng-reader-for-net.html

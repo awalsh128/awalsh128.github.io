@@ -3,8 +3,7 @@ title: Automate IIS enable on Windows 7.
 date: '2012-07-30T11:33:00.000-07:00'
 author: awalsh128
 tags:
-- batch
-- IIS
+- System Administration
 modified_time: '2012-07-30T11:33:50.594-07:00'
 blogger_id: tag:blogger.com,1999:blog-6363087137667886940.post-6062967377848179277
 blogger_orig_url: https://awalsh128.blogspot.com/2012/07/automate-iis-enable-on-windows-7.html

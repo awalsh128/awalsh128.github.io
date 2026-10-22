@@ -3,9 +3,9 @@ title: Reentrant lock acquires in CLR.
 date: '2011-07-29T10:41:00.000-07:00'
 author: awalsh128
 tags:
-- CLR
-- ".NET"
-- multithreading
+- C#
+- .NET
+- Concurrency
 blogger_id: tag:blogger.com,1999:blog-6363087137667886940.post-2025164316266516224
 blogger_orig_url: https://awalsh128.blogspot.com/2011/07/reentrant-lock-acquires-in-clr.html
 ---

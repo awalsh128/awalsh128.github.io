@@ -2,10 +2,9 @@
 title: VSCode Keep Sorted Extension
 last_modified_at: 2026-10-22 00:00:01 -0700
 tags:
-  - VSCode
-  - vscode
-  - vscode extension
-  - keep-sorted
+  - VS Code
+  - TypeScript
+  - Open Source
 ---
 
 <table width="100%">

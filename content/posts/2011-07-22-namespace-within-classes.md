@@ -3,7 +3,7 @@ title: Namespaces for classes.
 date: '2011-07-22T09:34:00.000-07:00'
 author: awalsh128
 tags:
-- class namespace
+- Software Design
 modified_time: '2011-10-16T03:02:57.202-07:00'
 blogger_id: tag:blogger.com,1999:blog-6363087137667886940.post-6028902471672846604
 blogger_orig_url: https://awalsh128.blogspot.com/2011/07/namespace-within-classes.html
