@@ -109,6 +109,8 @@ timeZone = "America/Los_Angeles"
     layoutBackgroundBlur = true
 
   [params.article]
+    showHero = true
+    heroStyle = "background"
     showDateUpdated = false
     showTableOfContents = true
     showTaxonomies = true
@@ -119,8 +121,18 @@ timeZone = "America/Los_Angeles"
     showWordCount = false
 
   [params.list]
+    showHero = true
+    heroStyle = "background"
     showSummary = true
     groupByYear = true
+
+  [params.taxonomy]
+    showHero = true
+    heroStyle = "background"
+
+  [params.term]
+    showHero = true
+    heroStyle = "background"
 
 [related]
   threshold = 80
