@@ -1,6 +1,6 @@
 ---
-title: VSCode Keep Sorted Extension 0.0.1
-last_modified_at: 2025-12-25 00:00:01 -0700
+title: VSCode Keep Sorted Extension
+last_modified_at: 2026-10-22 00:00:01 -0700
 tags:
   - VSCode
   - vscode
@@ -11,32 +11,42 @@ tags:
 <table width="100%">
   <tr>
     <td width="48"><img src="logo.png" alt="Logo" width="48" height="48"></td>
-    <td style="padding-left:1em"><h1>VSCode Keep Sorted Extension 0.0.1 Released</h1></td>
+    <td style="padding-left:1em"><h1>VSCode Keep Sorted Extension</h1></td>
   </tr>
 </table>
 
-I recently released lightweight VS Code extension that automatically keeps sorted blocks in your code organized using
-**[Google's Keep Sorted](https://github.com/google/keep-sorted)** formatter, seeing a gap in an available extension that
-handles code blocks generically and with options to modify behavior.
+> [!NOTE]
+> Updated October 2026 for version 1.0.2. This post originally announced the 0.0.1 release in December 2025. Commands,
+> settings, and features below reflect the latest version.
 
-The extension has pretty comprehensive code coverage, diagnostics and error handling to create a more reliable
-extension.
+I released a lightweight VS Code extension that keeps marked blocks in your code sorted using
+**[Google's Keep Sorted](https://github.com/google/keep-sorted)** formatter. I saw a gap for an extension that handles
+blocks generically, in any language, with options to modify the sorting behavior. It is now at 1.0.2 and available on
+both the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=awalsh128.keep-sorted) and the
+[Open VSX Registry](https://open-vsx.org/extension/awalsh128/keep-sorted).
 
-It is a language agnostic sorting tool, working in any programming language or file type that provides:
+The extension has pretty comprehensive code coverage, diagnostics and error handling to make it more reliable.
 
-- 🔍 **Automatic Detection**: Recognizes `// keep-sorted start` and `// keep-sorted end` blocks in any file type
-- 💡 **Quick Fix Actions**: To sort just the block, the entire file or the entire workspace.
-- ✨ **Autocomplete for Options**: Get intelligent suggestions for keep-sorted options when typing on a
-  `keep-sorted start` line
-- 📊 **Real-time Diagnostics**
-  - Shows warnings with squiggly underlines for unsorted content
-  - Logging integration with VSCode with severity levels for general information and debugging
-- ⚡ **Performance Optimized**
-  - Uses native binaries for fast sorting operations for x86, ARM, Darwin and Windows
-  - No outside libraries required to be brought into the development environment (i.e. Go compiler).
-- 🎛️ **Flexible Configuration**: File exclusion patterns, enable/disable toggle, and optional file logging
+It is a language agnostic sorting tool that works in any programming language or file type and provides:
 
-See http://github.com/awalsh128/vscode-keep-sorted/README.md for the complete documentation of the extension.
+- ⚠️ **Real-time Diagnostics**: Warnings with squiggly underlines for unsorted blocks as you open, edit, and save files.
+- 💡 **Quick Fixes and Commands**: Sort the current file or every file with Keep Sorted warnings.
+- 💾 **Sort on Save**: Optional sorting on save through a source fix-all action.
+- ✨ **Autocomplete and Hover Docs**: Suggestions for option names and values on `keep-sorted start` lines, with
+  documentation on hover. Options that conflict with ones already on the line aren't suggested.
+- ⚡ **No Extra Installs**: Native keep-sorted v0.10.0 binaries are bundled for Windows x64, Linux x64, and macOS
+  Intel/Apple Silicon, so you don't need a separate keep-sorted install or a Go compiler.
+- 🎛️ **Flexible Configuration**: Enable/disable toggle, autocomplete toggle, file exclusion patterns, and optional
+  file logging alongside the Output panel.
+
+See the [demo video](https://github.com/user-attachments/assets/87cce237-4214-4047-a5c4-b6a4162245d2) to see it in
+action and the [README](https://github.com/awalsh128/vscode-keep-sorted#readme) for the complete documentation.
+
+## Installation
+
+Install Keep Sorted from the
+[Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=awalsh128.keep-sorted) or the
+[Open VSX Registry](https://open-vsx.org/extension/awalsh128/keep-sorted). It requires VS Code 1.100.0 or newer.
 
 ## Examples
 
@@ -93,13 +103,25 @@ item_100 = "hundredth"
 # keep-sorted end
 ```
 
+### Descending Order
+
+Use `order=desc` to sort in reverse:
+
+```python
+# keep-sorted start order=desc
+zebra = 3
+monkey = 2
+aardvark = 1
+# keep-sorted end
+```
+
 ### Block Sorting
 
 Use `block=yes` to sort complex multi-line blocks like structs or objects:
 
 ```typescript
-// keep-sorted start block=yes
 const widgets = [
+  // keep-sorted start block=yes
   {
     name: "alpha",
     value: 100,
@@ -112,18 +134,23 @@ const widgets = [
     name: "delta",
     value: 150,
   },
+  // keep-sorted end
 ];
-// keep-sorted end
 ```
 
 ### Prefix Ordering
 
-Use `prefix_order` to control the order of specific prefixes:
+Use `prefix_order` to control the order of specific prefixes. An empty entry stands for everything else:
 
-```javascript
-// keep-sorted start prefix_order=INIT_,,FINAL_
-INIT_DATABASE, INIT_LOGGING, PROCESS_DATA, VALIDATE_INPUT, FINAL_CLEANUP, FINAL_SHUTDOWN;
-// keep-sorted end
+```python
+# keep-sorted start prefix_order=INIT_,,FINAL_
+INIT_DATABASE = 1
+INIT_LOGGING = 2
+PROCESS_DATA = 3
+VALIDATE_INPUT = 4
+FINAL_CLEANUP = 5
+FINAL_SHUTDOWN = 6
+# keep-sorted end
 ```
 
 ### Ignore Prefixes
@@ -143,11 +170,15 @@ const date = 4;
 
 Use `group_prefixes` to keep related lines together:
 
-```markdown
+```text
 <!-- keep-sorted start group_prefixes=and,with -->
-
-hamburger with lettuce and tomatoes peanut butter and jelly spaghetti with meatballs
-
+hamburger
+with lettuce
+and tomatoes
+peanut butter
+and jelly
+spaghetti
+with meatballs
 <!-- keep-sorted end -->
 ```
 
@@ -172,16 +203,14 @@ def validate_input():
 
 Use `skip_lines=N` to skip header lines (useful for tables):
 
-```markdown
+```text
 <!-- keep-sorted start skip_lines=2 -->
-
 | Name  | Value |
 | ----- | ----- |
 | Alpha | 100   |
 | Beta  | 200   |
 | Delta | 150   |
 | Gamma | 175   |
-
 <!-- keep-sorted end -->
 ```
 
@@ -228,47 +257,92 @@ Duplicates are removed by default, but you can disable it:
 
 ## Usage
 
-IMPORTANT: See [google/keep-sorted#options](https://github.com/google/keep-sorted?tab=readme-ov-file#options) for
-complete documentation on all the options that are available.
+> [!IMPORTANT]
+> See [google/keep-sorted#options](https://github.com/google/keep-sorted?tab=readme-ov-file#options) for complete
+> documentation on all the options that are available.
 
 ### Setting Up Keep Sorted Blocks
 
-Add keep-sorted markers around the content you want to keep sorted:
+Place markers around only the lines that should move, using your language's comment syntax:
 
-```javascript
-// keep-sorted start
-import { zebra } from "./animals";
-import { apple } from "./fruits";
-import { car } from "./vehicles";
-// keep-sorted end
+```python
+items = [
+    # keep-sorted start
+    'zebra',
+    'alpha',
+    'delta',
+    # keep-sorted end
+]
 ```
 
-The extension will detect when these blocks are not properly sorted and provide automatic fixes.
+The extension warns when these blocks aren't sorted and offers fixes.
 
 ### Sorting Methods
 
-#### 1. Quick Fixes (Lightbulb)
-
-When the extension detects unsorted content:
-
-1. A warning squiggle appears under the unsorted block
-2. Click the lightbulb 💡 icon or press `Ctrl+.` / `Cmd+.`
-3. Choose from available actions:
-   - **"Sort all lines in block (keep-sorted)"** - Sorts just the selected block
-   - **"Sort all lines in file (keep-sorted)"** - Sorts all keep-sorted blocks in the file
-
-#### 2. Command Palette
+#### 1. Command Palette
 
 Use `Ctrl+Shift+P` / `Cmd+Shift+P` and search for:
 
-- **"Keep Sorted: Fix Current File"** - Sort all keep-sorted blocks in the active file
-- **"Keep Sorted: Fix Entire Workspace"** - Sort all keep-sorted blocks across all workspace files
+- **"Keep Sorted: Sort Current File"** - Sort all keep-sorted blocks in the active file.
+- **"Keep Sorted: Sort All Files with Problems"** - Sort every file with Keep Sorted warnings. This covers workspace
+  files scanned at startup (respecting `files.exclude` and `keep-sorted.exclude`) plus files opened or edited since.
+  All changes are applied as one edit, so review them and then use **File → Save All**.
 
-#### 3. Problems Panel
+For keybindings or automation, use the command IDs `keep-sorted.fixFile` and `keep-sorted.fixWorkspace`. The old
+`keep-sorted.sortFile` alias has been removed, so update any existing keybindings to `keep-sorted.fixFile`.
 
-1. Open the Problems panel (`Ctrl+Shift+M` / `Cmd+Shift+M`)
-2. Look for keep-sorted warnings
-3. Use "Quick Fix" or "Fix All" options directly from the panel
+#### 2. Quick Fixes (Lightbulb)
+
+When the extension detects unsorted content:
+
+1. A warning squiggle appears under the unsorted block.
+2. Put the cursor in the block and click the lightbulb 💡 icon or press `Ctrl+.` / `Cmd+.`.
+3. Choose from the available actions:
+   - **"Sort all lines in file (keep-sorted)"** - Sorts all keep-sorted blocks in the file.
+   - **"Sort all files with problems (keep-sorted)"** - Shown when other files also have warnings.
+
+Quick fixes are also available from the Problems panel (`Ctrl+Shift+M` / `Cmd+Shift+M`). Once a file is sorted, its
+resolved warnings disappear from Problems while any remaining issues stay visible.
+
+#### 3. Sort on Save
+
+Add this to your VS Code user or workspace settings:
+
+```json
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll.keepSorted": "explicit"
+  }
+}
+```
+
+- `"explicit"` - Sort on an explicit save, such as `Ctrl+S` / `Cmd+S`.
+- `"always"` - Also sort on Auto Save triggered by focus or window changes, but not after-delay Auto Save.
+- `"never"` - Disable the save action.
+
+Without this, saving refreshes diagnostics but doesn't sort. `editor.formatOnSave` isn't needed.
+
+### Autocomplete and Hover
+
+Add options after `start` and autocomplete suggests option names with documentation, then known values such as
+`yes`/`no` or `order=asc|desc` after the `=`. Hover over an option to see its documentation.
+
+### Settings
+
+| Setting                    | Default | Description                                                             |
+| -------------------------- | ------- | ----------------------------------------------------------------------- |
+| `keep-sorted.enabled`      | `true`  | Enable diagnostics, sorting commands, and code actions.                 |
+| `keep-sorted.autoComplete` | `true`  | Suggest option names and values after `start`, with documentation.      |
+| `keep-sorted.exclude`      | `[]`    | Exclude files from diagnostics and sorting; regex first, glob fallback. |
+| `keep-sorted.logFilepath`  | `""`    | Add file logging alongside Output; empty disables file logging.         |
+
+For example, to exclude generated and vendored files:
+
+```json
+{
+  "keep-sorted.exclude": ["**/node_modules/**", "**/dist/**", "**/*.min.js"]
+}
+```
 
 ### Supported File Types
 
@@ -283,39 +357,39 @@ Keep Sorted works with any file type and is language agnostic. Common use cases 
 
 ### Extension Not Working?
 
-1. **Check Extension Status**
+1. **No Warnings or Sorting?**
 
-   - Ensure the extension is enabled in VS Code
-   - Verify `keep-sorted.enabled` is set to `true` in settings
+   - Verify `keep-sorted.enabled` is set to `true` in settings.
+   - Check that the file isn't excluded via `keep-sorted.exclude` patterns.
+   - Make sure the block has matching `keep-sorted start` and `keep-sorted end` markers.
 
-2. **No Diagnostics Appearing?**
+2. **Commands Not Available?**
 
-   - Make sure your blocks use the correct syntax: `// keep-sorted start` and `// keep-sorted end`
-   - Check if files are excluded via `keep-sorted.exclude` patterns
-   - Verify the file is saved (diagnostics appear after save)
+   - Open the Command Palette (`Ctrl+Shift+P` / `Cmd+Shift+P`) and search for "Keep Sorted". The commands are hidden
+     while `keep-sorted.enabled` is off.
+   - If they still don't appear, reload VS Code (`Developer: Reload Window`).
 
-3. **Commands Not Available?**
+3. **Save Doesn't Sort?**
 
-   - Open Command Palette (`Ctrl+Shift+P` / `Cmd+Shift+P`) and search for "Keep Sorted"
-   - If commands don't appear, try reloading VS Code (`Developer: Reload Window`)
-   - Verify the extension is activated (check status bar or Extensions view)
+   - Configure `source.fixAll.keepSorted` as shown in Sort on Save. Format on save alone doesn't invoke this extension.
 
 4. **Performance Issues?**
 
-   - Add problematic file patterns to `keep-sorted.exclude`
-   - Check VS Code's Output panel (select "Keep Sorted" from dropdown) for error messages
+   - Add problematic file patterns to `keep-sorted.exclude`.
 
 5. **Viewing Extension Logs**
-   - Open the Output panel: `View` → `Output` or `Ctrl+Shift+U` / `Cmd+Shift+U`
-   - Select "Keep Sorted" from the dropdown menu
-   - Logs show extension activity, errors, and diagnostic information
-   - For persistent logs, configure `keep-sorted.logFilepath` in settings
+
+   - Open the Output panel: `View` → `Output` or `Ctrl+Shift+U` / `Cmd+Shift+U`.
+   - Select "Keep Sorted" from the dropdown menu.
+   - Logs show extension activity, errors, and diagnostic information.
+   - For persistent logs, set `keep-sorted.logFilepath` (e.g. `logs/keep-sorted.log`, which is relative to the first
+     workspace folder).
 
 ### Fixes Are Malformed
 
-This is usually due to the underlying Google `keep-sorted` command itself and have an incorrect block setup.
+This is usually due to an incorrect block setup rather than the underlying Google `keep-sorted` command itself.
 
-An example where the block isn't inside the list.
+For example, here the block wraps the whole list instead of just its items:
 
 ```py
 # keep-sorted start
@@ -328,7 +402,7 @@ items = [
 # keep-sorted end
 ```
 
-Breaks the syntax because non-alphanumeric characters have precedence in the sort order.
+Sorting it breaks the syntax because non-alphanumeric characters come first in the sort order:
 
 ```py
 # keep-sorted start
@@ -341,7 +415,8 @@ items = [
 # keep-sorted end
 ```
 
-The command is working correctly but the declaration is incorrect. The correct block setup should be.
+The command is working correctly but the declaration is wrong. Keep declarations and surrounding brackets outside the
+markers instead:
 
 ```py
 items = [
@@ -354,15 +429,15 @@ items = [
 ]
 ```
 
-To ensure your statements are correct see
-[google/keep-sorted#options](https://github.com/google/keep-sorted?tab=readme-ov-file#options) for more information.
+See [google/keep-sorted#options](https://github.com/google/keep-sorted?tab=readme-ov-file#options) for more on
+setting up blocks, including options to group multi-line entries.
 
 ### Getting Help
 
-- **Report Issues**: [GitHub Issues](https://github.com/awalsh128/vscode-keep-sorted/issues)
-- **Feature Requests**: [GitHub Discussions](https://github.com/awalsh128/vscode-keep-sorted/discussions)
+- **Report Issues and Request Features**: [GitHub Issues](https://github.com/awalsh128/vscode-keep-sorted/issues)
 - **Documentation**: [Keep Sorted Project](https://github.com/google/keep-sorted)
 
 ## License
 
-This project is licensed under the Apache 2.0 License - see the [LICENSE.md](LICENSE.md) file for details.
+This project is licensed under the Apache 2.0 License. See
+[LICENSE.md](https://github.com/awalsh128/vscode-keep-sorted/blob/main/LICENSE.md) for details.
