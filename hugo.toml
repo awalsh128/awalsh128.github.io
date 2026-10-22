@@ -39,6 +39,13 @@ timeZone = "America/Los_Angeles"
 
 [markup.goldmark.renderer]
   unsafe = true
+# LaTeX math: $...$ inline and $$...$$ block, rendered at build time by render-passthrough.html.
+# \[...\] isn't a delimiter because older posts use it for escaped brackets.
+[markup.goldmark.extensions.passthrough]
+  enable = true
+  [markup.goldmark.extensions.passthrough.delimiters]
+    block = [["$$", "$$"]]
+    inline = [["$", "$"]]
 [markup.highlight]
   noClasses = false
 [markup.tableOfContents]

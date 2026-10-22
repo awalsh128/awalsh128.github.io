@@ -9,6 +9,10 @@ Instructions for AI agents (Claude Code, Codex, Copilot, Cursor, ...) working in
   and preview with `.tools/hugo server`.
 - Posts are `content/posts/YYYY-MM-DD-slug.md`; the filename sets the date and the `/slug/` URL. Don't rename
   existing posts, since that breaks published URLs and Disqus threads.
+- Math uses LaTeX: `$...$` inline and `$$...$$` on their own lines for display. Hugo renders it to KaTeX at build
+  time (no shortcode or JavaScript needed). Escape a literal dollar sign in prose as `\$`. Units use siunitx-style
+  macros defined in `layouts/_default/_markup/render-passthrough.html`: `\qty{43.2}{min}`, `\unit{km/h}`,
+  `\num{43200}`, `\percent` (`\SI` and `\si` also work).
 - Callouts use GitHub alert syntax (`> [!NOTE]`, `> [!WARNING]`), not shortcodes.
 - The homepage project list in `content/_index.md` is generated from GitHub pins between the `projects:start` and
   `projects:end` markers by `scripts/update_projects.py`. Don't edit it by hand; change pins on GitHub instead.

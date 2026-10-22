@@ -31,43 +31,43 @@ example. Let us take the text \"abbcc\" as a sample.
 
 -   **Alphabet**: The set of symbols that we will be encoding.
     -   Form:
-        ![](http://latex.codecogs.com/gif.latex?\small%20\inline%20\sum%20=%20\%7B%20a_1,%20a_2,%20...,%20a_n\%7D "Sigma")
+        $\Sigma = \{ a_1, a_2, ..., a_n\}$
     -   Example:
-        ![](http://latex.codecogs.com/gif.latex?\small%20\inline%20\sum%20=%20\%7Ba_1,%20a_2,%20a_3\%7D "Alphabet Example")
+        $\Sigma = \{a_1, a_2, a_3\}$
         where
-        ![](http://latex.codecogs.com/gif.latex?\small%20\inline%20a_1%20=%20\mathrm%7Ba%7D,%20a_2%20=%20\mathrm%7Bb%7D,%20a_3%20=%20\mathrm%7Bc%7D "Alphabet Example")
+        $a_1 = \mathrm{a}, a_2 = \mathrm{b}, a_3 = \mathrm{c}$
 -   **String**: A permutation of symbols from our alphabet. From our
     example alphabet, strings like \"a\", \"aba\", \"abc\" or \"cccb\"
     could all be possible. Using regular expression syntax, we can
     describe this in our example.
     -   Form:
-        ![](http://latex.codecogs.com/gif.latex?\small%20\inline%20w "String")
+        $w$
     -   Example:
-        ![](http://latex.codecogs.com/gif.latex?\small%20\inline%20w%20=%20\%7Ba,%20b,%20c\%7D%5E* "String Example")
+        $w = \{a, b, c\}^*$
 -   **Probabilities**: The set of probabilities for the alphabet. This
     is also known as their weights and can sometimes be denoted as w
     instead of p.
     -   Form:
-        ![](http://latex.codecogs.com/gif.latex?\small%20\inline%20P%20=%20\%7B%20p_1,%20p_2,%20...,%20p_n\%7D "Probability")
+        $P = \{ p_1, p_2, ..., p_n\}$
     -   Example:
-        ![](http://latex.codecogs.com/gif.latex?\small%20\inline%20P%20=%20\%7Bp_1,%20p_2,%20p_3\%7D "Weights Example")
+        $P = \{p_1, p_2, p_3\}$
         where
-        ![](http://latex.codecogs.com/gif.latex?\small%20\inline%20p_1%20=%20\frac%7B1%7D%7B5%7D,%20p_2%20=%20\frac%7B2%7D%7B5%7D,%20p_3%20=%20\frac%7B2%7D%7B5%7D "Probabilities Example")
+        $p_1 = \frac{1}{5}, p_2 = \frac{2}{5}, p_3 = \frac{2}{5}$
         since \'a\' occurs once, \'b\' occurs twice and \'c\' occurs
         twice out of 5 symbols all together.
 -   **Codewords**: The set of codewords that we will create for every
     symbol in our alphabet.\
     -   Form:
-        ![](http://latex.codecogs.com/gif.latex?\small%20\inline%20C%20=%20\%7B%20c_1,%20c_2,%20...,%20c_n\%7D "Codeword")
+        $C = \{ c_1, c_2, ..., c_n\}$
     -   Example:
-        ![](http://latex.codecogs.com/gif.latex?\small%20\inline%20C%20=%20\%7B%20c_1,%20c_2,%20c_3\%7D "Codeword Example")
+        $C = \{ c_1, c_2, c_3\}$
         where
-        ![](http://latex.codecogs.com/gif.latex?\small%20\inline%20c_1%20=%2000,%20c_2%20=%2001,%20c_3%20=%201 "Codeword Example")
+        $c_1 = 00, c_2 = 01, c_3 = 1$
         for symbols
-        ![](http://latex.codecogs.com/gif.latex?\small%20\inline%20a_1,%20a_2%20a_3 "Codeword Example")
+        $a_1, a_2 a_3$
         respectively. Another way to look at it is that we are providing
         a [bijective](http://en.wikipedia.org/wiki/Bijection) function:
-        ![](http://latex.codecogs.com/gif.latex?\small%20\inline%20f:%20\Sigma%20\rightarrow%20C "Symbol to Codeword Mapping").
+        $f: \Sigma \rightarrow C$.
 
 ### Code Width
 
@@ -80,7 +80,7 @@ variable width codes, ASCII serves our purposes for this discussion.
 ASCII is considered a fixed width coding scheme:
 
 ::: {align="center"}
-![](http://latex.codecogs.com/gif.latex?\inline%20\large%20\Sigma%20=%20\%7Ba-z,A-Z,0-9,...\%7D,\;\;%20C%20=%200\%7B0,1\%7D%5E7,\;\;%7CC%7C%20=%202%5E7%20=%20128 "ASCII Codeword")
+$\Sigma = \{a-z,A-Z,0-9,...\},\;\; C = 0\{0,1\}^7,\;\;|C| = 2^7 = 128$
 :::
 
 When performance is at stake, it is best to code information atomically
@@ -93,7 +93,7 @@ along the byte boundaries and create variable width codes that do not
 byte align.
 
 ::: {align="center"}
-![](http://latex.codecogs.com/gif.latex?\inline%20\large%20\Sigma%20=%20\%7Ba-z,A-Z,0-9,...\%7D,\;\;%20C%20=%20\%7B0,1\%7D%5E+,\;\;%7CC%7C%20\leq%20n "Variable Width Codewords")
+$\Sigma = \{a-z,A-Z,0-9,...\},\;\; C = \{0,1\}^+,\;\;|C| \leq n$
 :::
 
 *Note*: The ellipses in the alphabet denote the control characters (eg.
@@ -111,7 +111,7 @@ one bit to encode our information if we assign 0 to \'a\' and 1 to
 \'b\'.
 
 ::: {align="center"}
-![](http://latex.codecogs.com/gif.latex?\inline%20\large%20\Sigma%20=%20\%7Ba,b\%7D%20\rightarrow%20C%20=%20\%7B0,1\%7D,\;\;%20w%20=%20aaabb,\;\;%20f(C,w)%20=%2000011 "String Example 1")
+$\Sigma = \{a,b\} \rightarrow C = \{0,1\},\;\; w = aaabb,\;\; f(C,w) = 00011$
 :::
 
 We just took a 5 byte ASCII encoded string and compressed it down to
@@ -120,7 +120,7 @@ under a byte. Now let us take another string, w, and give it
 least 2 bits. At first glance, this assignment would make sense:
 
 ::: {align="center"}
-![](http://latex.codecogs.com/gif.latex?\inline%20\large%20\Sigma%20=%20\%7Ba,b,c\%7D%20\rightarrow%20C%20=%20\%7B0,1,01\%7D,\;\;%20w%20=%20aaabbcc,\;\;%20w(C)%20=%20000110101 "String Example 2")
+$\Sigma = \{a,b,c\} \rightarrow C = \{0,1,01\},\;\; w = aaabbcc,\;\; w(C) = 000110101$
 :::
 
 Although this gives us an ambiguous string since it could either be
@@ -137,7 +137,7 @@ are [prefix type](http://en.wikipedia.org/wiki/Prefix_code). Something
 like this would work:
 
 ::: {align="center"}
-![](http://latex.codecogs.com/gif.latex?\inline%20\large%20\Sigma%20=%20\%7Ba,b,c\%7D%20\rightarrow%20C%20=%20\%7B0,10,11\%7D,\;\;%20w%20=%20aaabbcc,\;\;%20w(C)%20=%2000010101111 "String Example 2")
+$\Sigma = \{a,b,c\} \rightarrow C = \{0,10,11\},\;\; w = aaabbcc,\;\; w(C) = 00010101111$
 :::
 
 This ensures that we maintain the one-to-one mapping between our
@@ -203,7 +203,7 @@ algorithm on it:
     \
 4.  The final alphabet to codeword mapping is:\
     \
-    ![](http://latex.codecogs.com/gif.latex?\inline%20\large%20\Sigma%20=%20\%7Ba,b,c\%7D%20\rightarrow%20C%20=%20\%7B1,00,01\%7D "Algorithm Results")
+    $\Sigma = \{a,b,c\} \rightarrow C = \{1,00,01\}$
 
 If you need further examples, you can look
 [here](http://en.wikipedia.org/wiki/File:Huffman_huff_demo.gif),
