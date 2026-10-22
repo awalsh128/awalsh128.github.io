@@ -3,9 +3,9 @@ title: Writing a TEDS (IEEE 1451.4) parser.
 date: '2011-08-17T12:59:00.000-07:00'
 author: awalsh128
 tags:
-- ".NET"
 - C#
-- data acquisition
+- .NET
+- Data Acquisition
 blogger_id: tag:blogger.com,1999:blog-6363087137667886940.post-204799628728171749
 blogger_orig_url: https://awalsh128.blogspot.com/2011/08/writing-teds-ieee-14514-parser.html
 ---

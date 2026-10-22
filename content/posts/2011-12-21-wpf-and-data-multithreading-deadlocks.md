@@ -3,8 +3,9 @@ title: WPF and data multithreading deadlocks.
 date: '2011-12-21T10:38:00.000-08:00'
 author: awalsh128
 tags:
-- multithreading
-- WPF
+- C#
+- .NET
+- Concurrency
 modified_time: '2014-10-25T18:18:59.954-07:00'
 thumbnail: http://3.bp.blogspot.com/-frk5kVor7dU/TvIrjJ_uxeI/AAAAAAAAAuA/8xswKGeSKg0/s72-c/uithread.png
 blogger_id: tag:blogger.com,1999:blog-6363087137667886940.post-4664014493722431844

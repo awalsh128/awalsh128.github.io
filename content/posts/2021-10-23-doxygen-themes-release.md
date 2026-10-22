@@ -3,8 +3,7 @@ title: Doxygen Themes
 summary: "Customizable and modernized Doxygen themes."
 last_modified_at: 2021-10-23 00:00:01 -0700
 tags:
-- Bootstrap
-- Doxygen
+- Open Source
 ---
 
 I just released a new project on GitHub called [doxygen-themes](https://github.com/awalsh128/doxygen-themes) which allows users to customize Doxygen styling and colors using some example templates, including a stylesheet boiled down to a few color variables.

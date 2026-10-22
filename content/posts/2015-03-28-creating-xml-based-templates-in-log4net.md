@@ -2,7 +2,10 @@
 title: Creating XML based templates in log4net.
 date: '2015-03-28T23:51:00.002-07:00'
 author: awalsh128
-tags: 
+tags:
+- C#
+- .NET
+- Logging
 modified_time: '2015-03-28T23:51:06.663-07:00'
 blogger_id: tag:blogger.com,1999:blog-6363087137667886940.post-8045654665469421599
 blogger_orig_url: https://awalsh128.blogspot.com/2015/03/creating-xml-based-templates-in-log4net.html

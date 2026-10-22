@@ -3,11 +3,9 @@ title: Reading and writing large binary data in T-SQL and ADO.NET.
 date: '2012-10-03T13:40:00.000-07:00'
 author: awalsh128
 tags:
-- ".NET"
 - C#
-- raw text
-- T-SQL
-- ADO.NET
+- .NET
+- Databases
 modified_time: '2012-10-03T13:42:20.332-07:00'
 blogger_id: tag:blogger.com,1999:blog-6363087137667886940.post-4541742311286759577
 blogger_orig_url: https://awalsh128.blogspot.com/2012/10/reading-and-writing-large-binary-data.html

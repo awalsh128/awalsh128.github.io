@@ -3,8 +3,9 @@ title: Entity Framework June 2011 CTP Bug
 date: '2011-10-08T17:22:00.000-07:00'
 author: awalsh128
 tags:
-- bugs
+- .NET
 - Entity Framework
+- Databases
 thumbnail: http://3.bp.blogspot.com/-0DqQltTWwFQ/TpDnAfXrk9I/AAAAAAAAAks/MprJzZRNH2Y/s72-c/entityfail.png
 blogger_id: tag:blogger.com,1999:blog-6363087137667886940.post-7398149697711595746
 blogger_orig_url: https://awalsh128.blogspot.com/2011/10/entity-framework-june-2011-ctp-bug.html

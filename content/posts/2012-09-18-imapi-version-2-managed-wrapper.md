@@ -3,9 +3,8 @@ title: IMAPI version 2 managed wrapper.
 date: '2012-09-18T10:03:00.000-07:00'
 author: awalsh128
 tags:
-- ".NET"
-- IMAPI
 - C#
+- .NET
 blogger_id: tag:blogger.com,1999:blog-6363087137667886940.post-7163167550647933156
 blogger_orig_url: https://awalsh128.blogspot.com/2012/09/imapi-version-2-managed-wrapper.html
 ---

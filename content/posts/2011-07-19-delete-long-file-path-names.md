@@ -2,7 +2,8 @@
 title: Delete long file path names.
 date: '2011-07-19T09:38:00.000-07:00'
 author: awalsh128
-tags: 
+tags:
+- System Administration
 modified_time: '2011-07-19T09:41:59.162-07:00'
 blogger_id: tag:blogger.com,1999:blog-6363087137667886940.post-4541140821853778113
 blogger_orig_url: https://awalsh128.blogspot.com/2011/07/delete-long-file-path-names.html

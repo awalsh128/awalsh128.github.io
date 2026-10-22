@@ -2,7 +2,9 @@
 title: Using type converters for JSON.NET.
 date: '2015-03-28T22:10:00.000-07:00'
 author: awalsh128
-tags: 
+tags:
+- C#
+- .NET
 modified_time: '2015-03-28T23:52:45.190-07:00'
 blogger_id: tag:blogger.com,1999:blog-6363087137667886940.post-2997275603564491104
 blogger_orig_url: https://awalsh128.blogspot.com/2015/03/using-type-converters-for-jsonnet.html

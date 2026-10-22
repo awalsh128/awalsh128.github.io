@@ -2,8 +2,8 @@
 title: Automated Testing for GitHub Actions
 summary: "Create a testing harness for your created GitHub Actions."
 tags:
-- Testing
 - GitHub
+- Testing
 toc: true
 toc_icon: "columns"
 ---

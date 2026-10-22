@@ -2,7 +2,11 @@
 title: Log per class pattern.
 date: '2015-03-29T14:12:00.002-07:00'
 author: awalsh128
-tags: 
+tags:
+- C#
+- .NET
+- Logging
+- Software Design
 modified_time: '2015-04-20T22:36:30.261-07:00'
 blogger_id: tag:blogger.com,1999:blog-6363087137667886940.post-5920472353607306682
 blogger_orig_url: https://awalsh128.blogspot.com/2015/03/log-per-class-pattern.html

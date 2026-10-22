@@ -2,7 +2,8 @@
 title: CMake Simple Library Example
 summary: "An example of a simple library using CMake."
 tags:
-- CMake
+- C++
+- Build Systems
 toc: true
 toc_icon: "columns"
 ---

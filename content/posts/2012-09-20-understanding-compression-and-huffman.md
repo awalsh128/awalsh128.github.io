@@ -3,10 +3,9 @@ title: Understanding compression and Huffman Coding.
 date: '2012-09-20T00:29:00.000-07:00'
 author: awalsh128
 tags:
-- algorithms
-- entropy encoding
 - C
-- compression
+- Algorithms
+- Compression
 thumbnail: http://1.bp.blogspot.com/-tNufJh6DCtU/UFpln-nBHlI/AAAAAAAAA-s/DvbFZSnJj8Q/s72-c/step1.png
 blogger_id: tag:blogger.com,1999:blog-6363087137667886940.post-6581860548501859795
 blogger_orig_url: https://awalsh128.blogspot.com/2012/09/understanding-compression-and-huffman.html

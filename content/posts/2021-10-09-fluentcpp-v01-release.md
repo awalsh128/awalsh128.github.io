@@ -2,9 +2,9 @@
 title: Fluent C++ v0.1 Release
 summary: "Fluent style querying for C++."
 tags:
-- Fluent C++
 - C++
-- fluent programming
+- Open Source
+- Software Design
 ---
 
 ## Motivation

@@ -3,9 +3,9 @@ title: Licensing using XML digital signing.
 date: '2012-08-14T09:00:00.000-07:00'
 author: awalsh128
 tags:
-- security
-- ".NET"
-- XML
+- C#
+- .NET
+- Security
 blogger_id: tag:blogger.com,1999:blog-6363087137667886940.post-7733218171039693768
 blogger_orig_url: https://awalsh128.blogspot.com/2012/08/licensing-using-xml-digital-signing.html
 ---
