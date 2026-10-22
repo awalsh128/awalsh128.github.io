@@ -43,11 +43,11 @@ A Personal Access Token (PAT) will allow the publisher (action repository) to tr
 | Expiration | (whatever you choose this to be)                            |
 | Access:    | ``repo_public``                                             |
 
-![Example PAT Config Screen](/assets/img/2021-10-12-automated-testing-for-github-actions/personal_access_token.png)
+![Example PAT Config Screen](personal_access_token.png)
 
 Once you complete the configuration it will then show you what the value is. Note this isn't my actual value, so don't get any ideas. >:\|
 
-![Example PAT Value Screen](/assets/img/2021-10-12-automated-testing-for-github-actions/personal_access_token_value.png)
+![Example PAT Value Screen](personal_access_token_value.png)
 
 We can now share this PAT / secret with the publisher.
 
@@ -74,7 +74,7 @@ Use the arguments below when creating the secret.
 
 Here's an example of the PAT we generated before.
 
-![Example PAT Value Screen](/assets/img/2021-10-12-automated-testing-for-github-actions/secret.png)
+![Example PAT Value Screen](secret.png)
 
 ### Create a ``staging`` branch in ``awalsh128/cache-apt-pkgs-action``
 

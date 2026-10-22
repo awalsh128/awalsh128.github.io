@@ -13,7 +13,7 @@ So what does this have to do with interviewing software engineers? Well it's har
 
 ## Dynamics
 
-![Stackoverflow Job Interview](/assets/img/2022-02-14-interviews-are-the-worst/job-interview-stackoverflow.jpg)
+![Stackoverflow Job Interview](job-interview-stackoverflow.jpg)
 
 As someone that has given many interviews, my worst nightmare is leading the candidate down a road I can't pull them out of due to a bad question or guidance. For me the worst feeling is holding an interview that wastes the candidate's time and the opportunity to accomplish their career goals. As an interviewer it is my responsibility that the problem be clear to the candidate and something that reflects actual skills needed.
 
@@ -59,7 +59,7 @@ What is the problem that is trying to be solved more generally speaking? A probl
 
 For example, in bio-informatic key sequencing, the problem space is in looking for specific patterns (e.g. genome sequencing). Most all sequences can be represented using a string abstraction. While the example of key sequencing is a real world example, it can be generalized to ask questions about strings. The generalized problem space would be strings. By strings I don't mean words or text, I mean a sequence of symbols in the most abstract way.
 
-![Gene Sequence](/assets/img/2022-02-14-interviews-are-the-worst/gene-sequence.png)
+![Gene Sequence](gene-sequence.png)
 *Excerpt of a Gene Sequence*
 
 Given the string problem space, some combinatorial factors, with examples, could be length, affix, repetition, similarity, and cardinality. Combinations of those being:
@@ -77,7 +77,7 @@ This is just a small example. Least common subsequence is a popular one but why 
 
 [Google Search](https://www.google.com/search?q=data+compression+interview+questions) - data compression interview questions
 
-![Founder of Information Theory](/assets/img/2022-02-14-interviews-are-the-worst/claude-shannon.jpg)
+![Founder of Information Theory](claude-shannon.jpg)
 *Claude Shannon - The OG of Information Theory*
 
 How would you represent data in memory? Combinatorial factors could be cardinality, word size, and direction. Some combinations:
@@ -106,7 +106,7 @@ Notice how there is some overlap here with strings, that is because lookup frequ
 
 [Google Search](https://www.google.com/search?q=graph+interview+questions) - graph interview questions
 
-![Spotting Spammers in Social Graph](/assets/img/2022-02-14-interviews-are-the-worst/spammers-in-social-graph.jpg)
+![Spotting Spammers in Social Graph](spammers-in-social-graph.jpg)
 *Spotting Spammers in Social Graph*
 
 How do you find specific relationships between entities? Combinatorial factors could be value cardinality, size, edge direction, edge weights and cycles.
