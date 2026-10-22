@@ -1,7 +1,6 @@
 ---
 title: CMake Simple Library Example
 summary: "An example of a simple library using CMake."
-last_modified_at: 2021-10-10 00:00:01 -0700
 tags:
 - CMake
 toc: true

@@ -1,7 +1,6 @@
 ---
 title: C++ validate and throw with a dynamic message in a single line.
 summary: "Assert a condition and throw with a dynamic message in a single line in C++."
-last_modified_at: 2021-10-10 00:00:01 -0700
 tags:
 - C++
 ---

@@ -6,7 +6,6 @@ tags:
 - ".NET"
 - IMAPI
 - C#
-modified_time: '2012-10-03T13:42:35.290-07:00'
 blogger_id: tag:blogger.com,1999:blog-6363087137667886940.post-7163167550647933156
 blogger_orig_url: https://awalsh128.blogspot.com/2012/09/imapi-version-2-managed-wrapper.html
 ---

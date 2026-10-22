@@ -5,7 +5,6 @@ author: awalsh128
 tags:
 - SVN
 - Apache
-modified_time: '2012-08-01T16:28:39.199-07:00'
 blogger_id: tag:blogger.com,1999:blog-6363087137667886940.post-2451860563261041626
 blogger_orig_url: https://awalsh128.blogspot.com/2011/07/using-ubuntu-1004-with-svnhttp.html
 ---

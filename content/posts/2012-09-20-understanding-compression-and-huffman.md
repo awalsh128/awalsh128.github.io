@@ -7,7 +7,6 @@ tags:
 - entropy encoding
 - C
 - compression
-modified_time: '2012-10-03T13:45:24.158-07:00'
 thumbnail: http://1.bp.blogspot.com/-tNufJh6DCtU/UFpln-nBHlI/AAAAAAAAA-s/DvbFZSnJj8Q/s72-c/step1.png
 blogger_id: tag:blogger.com,1999:blog-6363087137667886940.post-6581860548501859795
 blogger_orig_url: https://awalsh128.blogspot.com/2012/09/understanding-compression-and-huffman.html

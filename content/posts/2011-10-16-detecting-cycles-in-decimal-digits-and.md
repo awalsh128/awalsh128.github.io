@@ -5,7 +5,6 @@ author: awalsh128
 tags:
 - algorithms
 - Python
-modified_time: '2012-08-01T16:22:25.939-07:00'
 blogger_id: tag:blogger.com,1999:blog-6363087137667886940.post-3192609359815779517
 blogger_orig_url: https://awalsh128.blogspot.com/2011/10/detecting-cycles-in-decimal-digits-and.html
 ---

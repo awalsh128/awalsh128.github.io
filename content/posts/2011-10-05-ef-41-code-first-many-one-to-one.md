@@ -3,7 +3,6 @@ title: 'EF 4.1 Code First: Many one-to-one properties for same class type on an 
 date: '2011-10-05T15:00:00.000-07:00'
 tags:
 - Entity Framework
-modified_time: '2012-08-01T16:27:10.131-07:00'
 blogger_id: tag:blogger.com,1999:blog-6363087137667886940.post-3538605715683731614
 blogger_orig_url: https://awalsh128.blogspot.com/2011/10/ef-41-code-first-many-one-to-one.html
 ---

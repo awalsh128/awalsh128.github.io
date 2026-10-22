@@ -6,7 +6,6 @@ tags:
 - Java
 - performance
 - Android
-modified_time: '2012-10-03T13:45:08.174-07:00'
 blogger_id: tag:blogger.com,1999:blog-6363087137667886940.post-6150131899027638815
 blogger_orig_url: https://awalsh128.blogspot.com/2011/12/tips-for-java-performance-on-android.html
 ---
