@@ -111,7 +111,7 @@ timeZone = "America/Los_Angeles"
   [params.article]
     showHero = true
     heroStyle = "background"
-    showDateUpdated = false
+    showDateUpdated = true
     showTableOfContents = true
     showTaxonomies = true
     showComments = true

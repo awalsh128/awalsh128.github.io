@@ -6,7 +6,6 @@ tags:
 - CLR
 - ".NET"
 - multithreading
-modified_time: '2012-10-03T13:44:29.505-07:00'
 blogger_id: tag:blogger.com,1999:blog-6363087137667886940.post-2025164316266516224
 blogger_orig_url: https://awalsh128.blogspot.com/2011/07/reentrant-lock-acquires-in-clr.html
 ---

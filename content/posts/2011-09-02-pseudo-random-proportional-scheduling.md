@@ -4,7 +4,6 @@ date: '2011-09-02T14:10:00.000-07:00'
 author: awalsh128
 tags:
 - algorithms
-modified_time: '2012-08-01T16:27:26.667-07:00'
 blogger_id: tag:blogger.com,1999:blog-6363087137667886940.post-3561117436840978535
 blogger_orig_url: https://awalsh128.blogspot.com/2011/09/pseudo-random-proportional-scheduling.html
 ---

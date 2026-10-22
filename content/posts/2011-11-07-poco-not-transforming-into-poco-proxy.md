@@ -6,7 +6,6 @@ tags:
 - ".NET"
 - Entity Framework
 - ADO.NET
-modified_time: '2012-10-03T13:44:50.869-07:00'
 blogger_id: tag:blogger.com,1999:blog-6363087137667886940.post-2935694402221043627
 blogger_orig_url: https://awalsh128.blogspot.com/2011/11/poco-not-transforming-into-poco-proxy.html
 ---

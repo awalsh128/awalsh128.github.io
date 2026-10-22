@@ -6,7 +6,6 @@ tags:
 - security
 - ".NET"
 - XML
-modified_time: '2012-10-03T13:43:30.647-07:00'
 blogger_id: tag:blogger.com,1999:blog-6363087137667886940.post-7733218171039693768
 blogger_orig_url: https://awalsh128.blogspot.com/2012/08/licensing-using-xml-digital-signing.html
 ---

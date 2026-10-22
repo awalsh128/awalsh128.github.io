@@ -8,7 +8,6 @@ tags:
 - compression
 - raw text
 - bit twiddling
-modified_time: '2012-10-03T13:42:52.301-07:00'
 thumbnail: http://4.bp.blogspot.com/--oQWBFnoeZs/UFIbvaS6dvI/AAAAAAAAA94/0sDK-D0rhWw/s72-c/bits1.png
 blogger_id: tag:blogger.com,1999:blog-6363087137667886940.post-5900668252323938038
 blogger_orig_url: https://awalsh128.blogspot.com/2012/09/implementing-bit-readerwriter-in-c.html

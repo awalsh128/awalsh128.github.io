@@ -6,7 +6,6 @@ tags:
 - ".NET"
 - C#
 - data acquisition
-modified_time: '2012-10-03T13:43:56.066-07:00'
 blogger_id: tag:blogger.com,1999:blog-6363087137667886940.post-204799628728171749
 blogger_orig_url: https://awalsh128.blogspot.com/2011/08/writing-teds-ieee-14514-parser.html
 ---
