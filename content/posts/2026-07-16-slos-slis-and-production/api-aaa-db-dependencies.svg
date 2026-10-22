@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 210" width="760" height="210" role="img" aria-labelledby="title desc" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title id="title">API dependency chain</title>
+  <desc id="desc">An API depends on an AAA (authentication, authorization, accounting) endpoint, which depends on a database. Each critical dependency targets one more nine of availability than its parent: 99.9%, 99.99%, and 99.999%.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8a8f98"/>
+    </marker>
+  </defs>
+
+  <!-- API -->
+  <g>
+    <rect x="20" y="40" width="170" height="100" rx="10" fill="#e8f0fe" stroke="#3b6fd8" stroke-width="2"/>
+    <text x="105" y="80" text-anchor="middle" font-size="20" font-weight="600" fill="#1a2b4c">API</text>
+    <text x="105" y="104" text-anchor="middle" font-size="13" fill="#3d4a63">Your service</text>
+    <text x="105" y="126" text-anchor="middle" font-size="14" font-weight="600" fill="#3b6fd8">99.9%</text>
+  </g>
+
+  <!-- AAA -->
+  <g>
+    <rect x="295" y="40" width="190" height="100" rx="10" fill="#fdf1e2" stroke="#d9822b" stroke-width="2"/>
+    <text x="390" y="80" text-anchor="middle" font-size="20" font-weight="600" fill="#4a2e0e">AAA</text>
+    <text x="390" y="104" text-anchor="middle" font-size="13" fill="#5e4528">AuthN / AuthZ / Accounting</text>
+    <text x="390" y="126" text-anchor="middle" font-size="14" font-weight="600" fill="#b8661a">99.99%</text>
+  </g>
+
+  <!-- DB -->
+  <g>
+    <path d="M580,52 a80,12 0 0,1 160,0 v76 a80,12 0 0,1 -160,0 z" fill="#e6f4ea" stroke="#2e8b57" stroke-width="2"/>
+    <path d="M580,52 a80,12 0 0,0 160,0" fill="none" stroke="#2e8b57" stroke-width="2"/>
+    <text x="660" y="88" text-anchor="middle" font-size="20" font-weight="600" fill="#123d24">Database</text>
+    <text x="660" y="110" text-anchor="middle" font-size="13" fill="#2f5440">Auth records</text>
+    <text x="660" y="130" text-anchor="middle" font-size="14" font-weight="600" fill="#2e8b57">99.999%</text>
+  </g>
+
+  <!-- Dependency arrows -->
+  <line x1="194" y1="90" x2="290" y2="90" stroke="#8a8f98" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="242" y="80" text-anchor="middle" font-size="12" fill="#8a8f98">depends on</text>
+  <line x1="489" y1="90" x2="575" y2="90" stroke="#8a8f98" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="532" y="80" text-anchor="middle" font-size="12" fill="#8a8f98">depends on</text>
+
+  <!-- Footer -->
+  <text x="380" y="185" text-anchor="middle" font-size="13" fill="#8a8f98">Each critical dependency targets one more nine than the service that calls it.</text>
+</svg>
