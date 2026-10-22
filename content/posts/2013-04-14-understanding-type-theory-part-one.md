@@ -38,7 +38,7 @@ took different routes to [the same ending
 conclusion](http://en.wikipedia.org/wiki/Church%E2%80%93Turing_thesis)
 (ie. [universal Turing
 machine](http://plato.stanford.edu/entries/turing-machine/),
-[![](http://latex.codecogs.com/gif.latex?\inline%20\lambda)-calculus](http://plato.stanford.edu/entries/lambda-calculus/)).
+[$\lambda$-calculus](http://plato.stanford.edu/entries/lambda-calculus/)).
 What is now known as the [Church-Turing
 thesis](http://plato.stanford.edu/entries/church-turing/). In this post
 we will focus strictly on Church\'s work, more specifically his
@@ -51,7 +51,7 @@ later for learning type systems.
 Let\'s look at a function that returns the square of its input:
 
 ::: {align="center"}
-![](http://latex.codecogs.com/gif.latex?f(x)%20=%20x%5E2 "Squared Function")
+$$ f(x) = x^2 $$
 :::
 
 ::: {align="center"}
@@ -61,7 +61,7 @@ Let\'s look at a function that returns the square of its input:
 In lambda calculus, we can represent it as:
 
 ::: {align="center"}
-![](http://latex.codecogs.com/gif.latex?\lambda%20x.*x\;x "Squared Function")
+$$ \lambda x.*x\;x $$
 :::
 
 Let\'s break this down into its parts and start defining those pieces.
@@ -73,15 +73,15 @@ Let\'s break this down into its parts and start defining those pieces.
     the function. In this case it is x.
 -   **Free Variable**: The term above has none since any argument to the
     term would be applied to all variables in it. If the term were to be
-    ![](http://latex.codecogs.com/gif.latex?\inline%20\lambda%20x.*x\;y)
+    $\lambda x.*x\;y$
     instead, then y would be our free variable. We will give another
     example that demonstrates free variables later.
 -   **Abstraction Symbol**: The
-    ![](http://latex.codecogs.com/gif.latex?\inline%20\lambda) symbol
+    $\lambda$ symbol
     indicates the beginning of the function, followed by the parameter.
 -   **Function Body**: Everything following the dot is part of the
     function body (ie.
-    ![](http://latex.codecogs.com/gif.latex?\inline%20*\;x\;x)).
+    $*\;x\;x$).
 
 \
 
@@ -89,7 +89,7 @@ Let\'s break this down into its parts and start defining those pieces.
 
 Now the switch from our named function (f) to the lambda term was not
 entirely without loss. The
-![](http://latex.codecogs.com/gif.latex?\inline%20\lambda) symbol is not
+$\lambda$ symbol is not
 the function name but rather indicates that the following symbol (x) is
 a function parameter, just like the period represents the beginning of
 the function body. This is where the term [anonymous
@@ -98,7 +98,7 @@ We took a named function (f) and anonymized it. Now let\'s try defining
 the function without loss of information.
 
 ::: {align="center"}
-![](http://latex.codecogs.com/gif.latex?f%20\equiv%20\lambda%20x.*x\;x "Squared Function")
+$$ f \equiv \lambda x.*x\;x $$
 :::
 
 It can sometimes be taken for granted in programming that a function
@@ -111,7 +111,7 @@ to a capitalized letter in these situations; it would be better form to
 call it F instead.
 
 ::: {align="center"}
-![](http://latex.codecogs.com/gif.latex?F%20\equiv%20\lambda%20x.*x\;x "Squared Function")
+$$ F \equiv \lambda x.*x\;x $$
 :::
 
 That\'s better. What about function pointers? How would they be
@@ -132,11 +132,11 @@ int main(void)
 This is generally equivalent to:
 
 ::: {align="center"}
-![](http://latex.codecogs.com/gif.latex?G%20\equiv%20\lambda%20g.g\;\land\;F%20\equiv%20\lambda%20x.*x\;x\;:\;GF2%20=%204)
+$$ G \equiv \lambda g.g\;\land\;F \equiv \lambda x.*x\;x\;:\;GF2 = 4 $$
 :::
 
-I could have written our ![](http://latex.codecogs.com/gif.latex?GF2)
-term as ![](http://latex.codecogs.com/gif.latex?\inline%20G(F(2))) but
+I could have written our $GF2$
+term as $G(F(2))$ but
 this is implicit in the lambda calculus. Terms are always [applied from
 left to right](http://en.wikipedia.org/wiki/Associativity); first F is
 applied to G and then 2 is applied to that. Having these semantics
@@ -144,7 +144,7 @@ eliminates the need for excessive parentheses. Now let\'s break down the
 application of the terms in steps.
 
 ::: {align="center"}
-![](http://latex.codecogs.com/gif.latex?%20\begin%7Balign*%7D%20GF2&\;\;\;\text%7BGiven%7D\\%20\lambda%20g.g(\lambda%20x.*x\;x)2&\;\;\;\text%7BResolve%20F%20and%20G%7D\\%20(\lambda%20x.*x\;x)2&\;\;\;\text%7BApply%20F%20to%20G%7D\\%204&\;\;\;\text%7BApply%202%20to%20GF%7D%20\end%7Balign*%7D)
+$$ \begin{align*} GF2&\;\;\;\text{Given}\\ \lambda g.g(\lambda x.*x\;x)2&\;\;\;\text{Resolve F and G}\\ (\lambda x.*x\;x)2&\;\;\;\text{Apply F to G}\\ 4&\;\;\;\text{Apply 2 to GF} \end{align*} $$
 :::
 
 The first line is like the declares in our C program (line 1 and 2). The
@@ -187,7 +187,7 @@ I took a lot of liberties comparing the lambda terms earlier against the
 C program and is why I wrote that they were generally equivalent. You
 may have noticed how line 12 looks almost exactly like the actual lambda
 calculus notation form of
-![](http://latex.codecogs.com/gif.latex?\inline%20\lambda%20x.\lambda%20y.x).
+$\lambda x.\lambda y.x$.
 This is why programmers who know functional programming have a much
 easier time learning lambda calculus and type systems. In Python, the
 [type system is
@@ -204,33 +204,33 @@ You might not have known it, but by applying different terms, you were
 performing what is called a beta-reduction. This is the process of
 normalizing to its beta-redex term form. So in the case of FG, the
 beta-redex term is
-![](http://latex.codecogs.com/gif.latex?\inline%20\lambda%20x.*x\;x).
+$\lambda x.*x\;x$.
 Let\'s try something with more terms and reduce it.
 
 ::: {align="center"}
-![](http://latex.codecogs.com/gif.latex?%20\begin%7Balign*%7D%20&(\lambda%20w.w)((\lambda%20x.xx)(\lambda%20y.y))\\%20&(\lambda%20w.w)((\lambda%20x.xx)%5Bx%20:=%20\lambda%20y.y%5D)\\%20&(\lambda%20w.w)((\lambda%20y.y)(\lambda%20y.y))\\%20&(\lambda%20w.w)((\lambda%20y.y)%5By%20:=%20\lambda%20y.y%5D)\\%20&(\lambda%20w.w)\lambda%20y.y\\%20&(\lambda%20w.w)%5Bw%20:=%20\lambda%20y.y%5D\\%20&\lambda%20y.y\\%20\end%7Balign*%7D)
+$$ \begin{align*} &(\lambda w.w)((\lambda x.xx)(\lambda y.y))\\ &(\lambda w.w)((\lambda x.xx)[x := \lambda y.y])\\ &(\lambda w.w)((\lambda y.y)(\lambda y.y))\\ &(\lambda w.w)((\lambda y.y)[y := \lambda y.y])\\ &(\lambda w.w)\lambda y.y\\ &(\lambda w.w)[w := \lambda y.y]\\ &\lambda y.y\\ \end{align*} $$
 :::
 
 That normalized nicely. Let\'s do another one.
 
 ::: {align="center"}
-![](http://latex.codecogs.com/gif.latex?%20\begin%7Balign*%7D%20&(\lambda%20x.xx)(\lambda%20y.yy)\\%20&(\lambda%20x.xx)%5Bx%20:=%20\lambda%20y.yy%5D\\%20&(\lambda%20y.yy)(\lambda%20y.yy)\\%20&(\lambda%20y.yy)%5By%20:=%20\lambda%20y.yy%5D\\%20&(\lambda%20y.yy)(\lambda%20y.yy)\\%20&(\lambda%20y.yy)%5By%20:=%20\lambda%20y.yy%5D\\%20&(\lambda%20y.yy)(\lambda%20y.yy)\\%20&\ldots\\%20\end%7Balign*%7D)
+$$ \begin{align*} &(\lambda x.xx)(\lambda y.yy)\\ &(\lambda x.xx)[x := \lambda y.yy]\\ &(\lambda y.yy)(\lambda y.yy)\\ &(\lambda y.yy)[y := \lambda y.yy]\\ &(\lambda y.yy)(\lambda y.yy)\\ &(\lambda y.yy)[y := \lambda y.yy]\\ &(\lambda y.yy)(\lambda y.yy)\\ &\ldots\\ \end{align*} $$
 :::
 
 This is a case where we could keep applying the terms ad-nauseum but
 that isn\'t needed because the repeating term is
-![](http://latex.codecogs.com/gif.latex?\inline%20(\lambda%20y.yy)(\lambda%20y.yy)),
+$(\lambda y.yy)(\lambda y.yy)$,
 which is also our beta-redex term. So there is no need to go any
 further. Now let\'s do another example using free variables.
 
 ::: {align="center"}
-![](http://latex.codecogs.com/gif.latex?%20\begin%7Balign*%7D%20&(\lambda%20x.x)(\lambda%20z.zz)(\lambda%20w.t)5\\%20&(\lambda%20x.x)%5Bx%20:=%20\lambda%20z.zz%5D(\lambda%20w.t)5\\%20&(\lambda%20z.zz)(\lambda%20w.t)5\\%20&(\lambda%20z.zz)%5Bz%20:=%20\lambda%20w.t%5D5\\%20&(\lambda%20w.t)(\lambda%20w.t)5\\%20&(\lambda%20w.t)%5Bw%20:=%20\lambda%20w.t%5D5\\%20&(\lambda%20w.t)5\\%20&(\lambda%20w.t)%5Bw%20:=%205%5D\\%20&t%20\end%7Balign*%7D)
+$$ \begin{align*} &(\lambda x.x)(\lambda z.zz)(\lambda w.t)5\\ &(\lambda x.x)[x := \lambda z.zz](\lambda w.t)5\\ &(\lambda z.zz)(\lambda w.t)5\\ &(\lambda z.zz)[z := \lambda w.t]5\\ &(\lambda w.t)(\lambda w.t)5\\ &(\lambda w.t)[w := \lambda w.t]5\\ &(\lambda w.t)5\\ &(\lambda w.t)[w := 5]\\ &t \end{align*} $$
 :::
 
 I mentioned at the beginning I would give an example using free
 variables and here it is (ie. t). So what happened to 5? Well it was
 bound to w and w is not in the function body of the last lambda term
-(![](http://latex.codecogs.com/gif.latex?\inline%20\lambda%20w.t)), so
+($\lambda w.t$), so
 it didn\'t survive. Although t did and that is because t is not bound to
 anything, thus making it a free variable.
 
@@ -254,26 +254,26 @@ start by defining some of these essentials in the lambda calculus.
 Let T be true and F be false:
 
 ::: {align="center"}
-![](http://latex.codecogs.com/gif.latex?%20\begin%7Bcenter%7D%20&T%20\equiv%20\lambda%20x.\lambda%20y.x\\%20&F%20\equiv%20\lambda%20x.\lambda%20y.y\\%20\end%7Bcenter%7D)
+$$ \begin{aligned} &T \equiv \lambda x.\lambda y.x\\ &F \equiv \lambda x.\lambda y.y\\ \end{aligned} $$
 :::
 
 Now let\'s define some binary operations:
 
 ::: {align="center"}
-![](http://latex.codecogs.com/gif.latex?%20\begin%7Balign*%7D%20&AND%20\equiv%20\lambda%20x.\lambda%20y.xyF\\%20&OR%20\equiv%20\lambda%20x.\lambda%20y.xTy\\%20&NOT%20\equiv%20\lambda%20x.xFT\\%20\end%7Balign*%7D)
+$$ \begin{align*} &AND \equiv \lambda x.\lambda y.xyF\\ &OR \equiv \lambda x.\lambda y.xTy\\ &NOT \equiv \lambda x.xFT\\ \end{align*} $$
 :::
 
 To convince ourselves that these will give the desired results, let\'s
 start with AND:
 
 ::: {align="center"}
-![](http://latex.codecogs.com/gif.latex?%20\begin%7Balign*%7D%20&AND\;T\;F\\%20&(\lambda%20x.\lambda%20y.xyF)TF\\%20&(\lambda%20x.\lambda%20y.xyF)%5Bx%20:=%20T%5DF\\%20&(\lambda%20y.TyF)F\\%20&(\lambda%20y.TyF)%5Bx%20:=%20F%5D\\%20&TFF\\%20&(\lambda%20x.\lambda%20y.x)FF\\%20&(\lambda%20x.\lambda%20y.x)%5Bx%20:=%20F%5DF\\%20&(\lambda%20x.\lambda%20y.F)F\\%20&(\lambda%20x.\lambda%20y.F)%5Bx%20:=%20F%5D\\%20&\lambda%20y.F\\%20&F%20\end%7Balign*%7D)
+$$ \begin{align*} &AND\;T\;F\\ &(\lambda x.\lambda y.xyF)TF\\ &(\lambda x.\lambda y.xyF)[x := T]F\\ &(\lambda y.TyF)F\\ &(\lambda y.TyF)[x := F]\\ &TFF\\ &(\lambda x.\lambda y.x)FF\\ &(\lambda x.\lambda y.x)[x := F]F\\ &(\lambda x.\lambda y.F)F\\ &(\lambda x.\lambda y.F)[x := F]\\ &\lambda y.F\\ &F \end{align*} $$
 :::
 
 Then for good measure, let\'s do OR as well:
 
 ::: {align="center"}
-![](http://latex.codecogs.com/gif.latex?%20\begin%7Balign*%7D%20&OR\;T\;F\\%20&(\lambda%20x.\lambda%20y.xTy)TF\\%20&(\lambda%20x.\lambda%20y.xTy)%5Bx%20:=%20T%5DF\\%20&(\lambda%20x.\lambda%20y.TTy)F\\%20&(\lambda%20x.\lambda%20y.TTy)%5By%20:=%20F%5D\\%20&TTF\\%20&(\lambda%20x.\lambda%20y.x)TF\\%20&(\lambda%20x.\lambda%20y.x)%5Bx%20:=%20T%5DF\\%20&(\lambda%20y.T)F\\%20&(\lambda%20y.T)%5By%20:=%20F%5D\\%20&T\\%20\end%7Balign*%7D)
+$$ \begin{align*} &OR\;T\;F\\ &(\lambda x.\lambda y.xTy)TF\\ &(\lambda x.\lambda y.xTy)[x := T]F\\ &(\lambda x.\lambda y.TTy)F\\ &(\lambda x.\lambda y.TTy)[y := F]\\ &TTF\\ &(\lambda x.\lambda y.x)TF\\ &(\lambda x.\lambda y.x)[x := T]F\\ &(\lambda y.T)F\\ &(\lambda y.T)[y := F]\\ &T\\ \end{align*} $$
 :::
 
 Learning the untyped variant of lambda calculus is a good starting
