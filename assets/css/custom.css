@@ -34,3 +34,14 @@ section.prose:has(> .home-projects) > p {
     max-width: 95ch;
   }
 }
+
+/* Sample document embedded in a post (e.g. a playbook), set off from the surrounding prose. */
+.example-doc {
+  background-color: rgb(243 244 246);
+  border-radius: 0.375rem;
+  padding: 0.25rem 1.25rem;
+}
+
+.dark .example-doc {
+  background-color: rgb(38 38 38);
+}
