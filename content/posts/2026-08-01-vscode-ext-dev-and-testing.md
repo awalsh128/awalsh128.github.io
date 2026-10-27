@@ -511,10 +511,38 @@ describe("extension", () => {
 > poll for the expected state with a timeout or wait on an event like `vscode.languages.onDidChangeDiagnostics`
 > instead.
 
+### Mutating Files
+
+If a test needs to edit a file, have it work on a copy with a hash in the filename instead of the shared sample file.
+VSCode keys open documents and diagnostics by URI, so reusing the same path across tests can leave you asserting
+against state left over from the previous test. A fresh name for every test sidesteps that.
+
+```ts
+import * as crypto from "crypto";
+
+/** Copies a test workspace file to a uniquely named sibling so a test can mutate it freely. */
+const createTempDocument = async (filename: string) => {
+  const { name, ext } = path.parse(filename);
+  // Keep the extension last so VSCode still picks the right language for the file
+  const hash = crypto.randomBytes(4).toString("hex");
+  const source = vscode.Uri.file(path.join(TEST_WORKSPACE_DIR, filename));
+  const target = vscode.Uri.file(
+    path.join(TEST_WORKSPACE_DIR, `${name}.${hash}${ext}`),
+  );
+  // Copy through the VSCode API, not fs (see the principles above)
+  await vscode.workspace.fs.copy(source, target);
+  return await getDocument(target);
+};
+```
+
+For example, `sample.ts` becomes something like `sample.3f9a1c2e.ts`. There is no cleanup to write either; the copy
+isn't in the original snapshot, so `restore()` deletes it after the test.
+
 ## Conclusion
 
 - Test against a real VSCode instance with `@vscode/test-electron` instead of mocking the API.
 - Snapshot the test workspace once and restore it after every test so each test starts clean.
+- Mutate a copy of a file with a hash in its name so tests don't share document state.
 - Rotate the extension's log into a file per test so failures are easy to diagnose.
 - Do your edits through the VSCode API and expect to wait on async results.
 
