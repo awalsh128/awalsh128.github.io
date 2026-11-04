@@ -1,0 +1,79 @@
+{{/*
+  Resume page layout (content/resume.md sets `layout: resume`).
+
+  The Markdown stays plain so scripts/resume_to_md.py can regenerate it. This template splits the rendered
+  content on its headings to add structure for styling (see assets/css/custom/40-resume.css):
+  - Text before the first <h2> (tagline and contact line) becomes the intro card.
+  - Each <h2> starts a .resume-section, with a class taken from its heading id (e.g. resume-section--core-skills).
+  - Each <h3> inside a section (a job, a degree) becomes a .resume-entry card.
+  - Sections are grouped into .resume-main and .resume-side. On screen the groups are flattened back into one
+    column (CSS `order` restores the Markdown order); in print they become two columns.
+*/}}
+{{ define "main" }}
+  <article class="resume-page">
+    {{ if .Params.showHero | default (site.Params.article.showHero | default false) }}
+      {{ $heroStyle := print "hero/" (.Params.heroStyle | default site.Params.article.heroStyle) ".html" }}
+      {{ if templates.Exists (printf "partials/%s" $heroStyle) }}
+        {{ partial $heroStyle . }}
+      {{ else }}
+        {{ partial "hero/basic.html" . }}
+      {{ end }}
+    {{ end }}
+
+    <header class="resume-header mt-5">
+      {{/* The PDF shows just the name (the part of the title before " - "); the suffix is hidden in print. */}}
+      {{ $name := index (split .Title " - ") 0 }}
+      <h1 class="mt-0 text-4xl font-extrabold text-neutral-900 dark:text-neutral">
+        {{- $name -}}<span class="print:hidden">{{ strings.TrimPrefix $name .Title }}</span>
+      </h1>
+      {{/* content/resume.pdf sits beside content/_index.md, so it is a resource of the home page. */}}
+      {{ with site.Home.Resources.GetMatch "resume.pdf" }}
+        <a class="resume-pdf-btn print:hidden" href="{{ .RelPermalink }}" target="_blank" rel="noopener"
+          title="Open PDF resume">
+          <img class="nozoom" src="/assets/icons/pdf-filetype.svg" alt="" width="28" height="28">
+          <span>Download PDF</span>
+        </a>
+      {{ end }}
+    </header>
+
+    {{/* Sections listed here go in the sidebar when printed; the rest go in the main column. */}}
+    {{ $sideIds := slice "core-skills" "open-source" "education" "references" }}
+    {{ $parts := split (string .Content) "<h2" }}
+    {{ $main := "" }}
+    {{ $side := "" }}
+    {{ range after 1 $parts }}
+      {{ $section := print "<h2" . }}
+      {{ $id := "" }}
+      {{ with findRESubmatch `\bid="([^"]+)"` $section 1 }}{{ $id = index (index . 0) 1 }}{{ end }}
+      {{ $entries := split $section "<h3" }}
+      {{ $html := print `<section class="resume-section` (cond (ne $id "") (print " resume-section--" $id) "") `">` }}
+      {{ $html = print $html (index $entries 0) }}
+      {{ range after 1 $entries }}
+        {{ $html = print $html `<div class="resume-entry"><h3` . `</div>` }}
+      {{ end }}
+      {{ $html = print $html `</section>` }}
+      {{ if in $sideIds $id }}{{ $side = print $side $html }}{{ else }}{{ $main = print $main $html }}{{ end }}
+    {{ end }}
+    <div class="resume prose dark:prose-invert mt-6 mb-20">
+      <div class="resume-intro">{{ index $parts 0 | safeHTML }}</div>
+      <div class="resume-columns">
+        <div class="resume-main">{{ $main | safeHTML }}</div>
+        <aside class="resume-side">{{ $side | safeHTML }}</aside>
+      </div>
+    </div>
+  </article>
+  <script>
+    // Print in the light theme regardless of the reader's appearance setting, then restore it.
+    (() => {
+      const root = document.documentElement;
+      let wasDark = false;
+      window.addEventListener("beforeprint", () => {
+        wasDark = root.classList.contains("dark");
+        root.classList.remove("dark");
+      });
+      window.addEventListener("afterprint", () => {
+        if (wasDark) root.classList.add("dark");
+      });
+    })();
+  </script>
+{{ end }}

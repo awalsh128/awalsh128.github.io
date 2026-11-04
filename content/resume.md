@@ -1,6 +1,9 @@
 ---
 title: Andrew Walsh - Resume
 url: /assets/text/resume.html
+layout: resume
+showDate: false
+showDateUpdated: false
 showComments: false
 showTableOfContents: false
 ---
@@ -72,7 +75,7 @@ _Five teams spanning infrastructure, privacy, and trust & safety._
 - Extended GDPR controls to third-party tools: retention enforcement, auditing, and data classification.
 - Led the project from requirements through launch, working with product, privacy, and legal partners.
 
-#### Google Ads Privacy Engineering — Software Engineer
+#### Google Ads Privacy Engineering
 
 2019 – 2021
 
@@ -80,7 +83,7 @@ _Five teams spanning infrastructure, privacy, and trust & safety._
 - Implemented data portability, identity handling, and law-enforcement request compliance.
 - Served as a privacy engineering resource for adjacent teams, raising compliance across products.
 
-#### YouTube Trust & Safety Engineering — Software Engineer
+#### YouTube Trust & Safety Engineering
 
 2017 – 2019
 
@@ -114,10 +117,10 @@ Scotts Valley, CA | 2008 – 2012
 
 ## Open Source
 
-- **Cache APT Packages Action** (maintainer): caches APT packages for GitHub Actions CI pipelines; 10k+ usages.
-- **TypeScript APT Library:** programmatic APT package management for DevOps automation.
-- **Keep Sorted VS Code Extension:** native editor support for Google's keep-sorted linter.
-- **PCAP-NG Reader** (C#, RFC implementation) and **Fluent C++** (functional expression library).
+- [**Cache APT Packages Action**](https://github.com/awalsh128/cache-apt-pkgs-action) (maintainer): caches APT packages for GitHub Actions CI pipelines; 10k+ usages.
+- [**TypeScript APT Library**](https://github.com/awalsh128/ts-apt): programmatic APT package management for DevOps automation.
+- [**Keep Sorted VS Code Extension**](https://github.com/awalsh128/vscode-keep-sorted): native editor support for Google's keep-sorted linter.
+- [**PCAP-NG Reader**](https://github.com/awalsh128/PcapngFile) (C#, RFC implementation) and [**Fluent C++**](https://github.com/awalsh128/fluentcpp) (functional expression library).
 
 ## Education
 

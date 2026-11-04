@@ -1,0 +1,224 @@
+/*
+ * Resume (layouts/_default/resume.html). Accents use the color scheme's primary and secondary palettes so the page
+ * follows the site theme in both light and dark mode.
+ */
+.resume-page {
+  --resume-accent: rgb(var(--color-primary-600));
+  --resume-accent-soft: rgba(var(--color-primary-500), 0.12);
+  --resume-accent-2: rgb(var(--color-secondary-600));
+  --resume-border: rgba(var(--color-neutral-500), 0.25);
+  --resume-card: rgba(var(--color-neutral-500), 0.06);
+  --resume-muted: rgb(var(--color-neutral-500));
+}
+
+.dark .resume-page {
+  --resume-accent: rgb(var(--color-primary-400));
+  --resume-accent-2: rgb(var(--color-secondary-400));
+  --resume-muted: rgb(var(--color-neutral-400));
+}
+
+.resume-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.resume-pdf-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1rem 0.4rem 0.6rem;
+  border: 1px solid var(--resume-accent);
+  border-radius: 9999px;
+  background-color: var(--resume-accent-soft);
+  color: var(--resume-accent);
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    background-color 150ms ease,
+    transform 150ms ease;
+}
+
+.resume-pdf-btn:hover {
+  background-color: rgba(var(--color-primary-500), 0.15);
+  transform: translateY(-1px);
+}
+
+.resume-pdf-btn img {
+  margin: 0;
+}
+
+.resume.prose {
+  max-width: none;
+}
+
+/* Tagline and contact line. */
+.resume-intro {
+  padding: 1rem 1.25rem;
+  border-left: 4px solid var(--resume-accent);
+  border-radius: 0 0.5rem 0.5rem 0;
+  background-color: var(--resume-accent-soft);
+}
+
+.resume-intro p {
+  margin: 0;
+}
+
+.resume-intro p:first-child {
+  font-size: 1.1rem;
+}
+
+.resume-intro p:first-child strong {
+  color: var(--resume-accent);
+}
+
+.resume-intro p + p {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--resume-muted);
+}
+
+/* Section headings: small caps label with an accent rule. */
+.resume-section {
+  margin-top: 2.5rem;
+}
+
+.resume-section > h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0 0 1rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 2px solid var(--resume-accent);
+  color: var(--resume-accent);
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.resume-section > h2::before {
+  content: "";
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 0.15rem;
+  background-color: var(--resume-accent-2);
+}
+
+.resume-section > h2 > a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.resume-section > h2 > a::after {
+  content: " ↗";
+}
+
+/* Jobs and degrees as cards. */
+.resume-entry {
+  margin: 1rem 0;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--resume-border);
+  border-left: 4px solid var(--resume-accent);
+  border-radius: 0.5rem;
+  background-color: var(--resume-card);
+}
+
+.resume-entry > h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.resume-entry > h3 + p {
+  margin: 0.15rem 0 0.75rem;
+  font-size: 0.85rem;
+  color: var(--resume-muted);
+}
+
+.resume-entry em {
+  color: var(--resume-accent-2);
+}
+
+.resume-entry ul {
+  margin-bottom: 0;
+}
+
+/* Teams within a job (e.g. Google) as a sub-timeline. */
+.resume-entry h4 {
+  margin: 1.25rem 0 0;
+  padding-left: 0.75rem;
+  border-left: 3px solid var(--resume-accent-2);
+  font-size: 1rem;
+}
+
+.resume-entry h4 + p {
+  margin: 0 0 -0.5rem;
+  padding-left: 0.9rem;
+  font-size: 0.8rem;
+  color: var(--resume-muted);
+}
+
+/* Skills and open source as tiles. */
+.resume-section--core-skills > ul,
+.resume-section--open-source > ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.resume-section--core-skills > ul > li,
+.resume-section--open-source > ul > li {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--resume-border);
+  border-top: 3px solid var(--resume-accent);
+  border-radius: 0.5rem;
+  background-color: var(--resume-card);
+  font-size: 0.9rem;
+}
+
+.resume-section--core-skills > ul > li > strong:first-child {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--resume-accent);
+}
+
+.resume-section--open-source > ul > li strong {
+  color: var(--resume-accent);
+}
+
+/*
+ * Screen: show the main and sidebar groups as one column in the Markdown's section order.
+ */
+.resume-columns {
+  display: flex;
+  flex-direction: column;
+}
+
+.resume-main,
+.resume-side {
+  display: contents;
+}
+
+.resume-section--summary {
+  order: 1;
+}
+.resume-section--core-skills {
+  order: 2;
+}
+.resume-section--professional-experience {
+  order: 3;
+}
+.resume-section--references {
+  order: 4;
+}
+.resume-section--open-source {
+  order: 5;
+}
+.resume-section--education {
+  order: 6;
+}
