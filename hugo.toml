@@ -73,16 +73,24 @@ timeZone = "America/Los_Angeles"
 
 [[languages.en.menus.main]]
   name = "Posts"
+  pre = "pencil"
   pageRef = "/posts"
   weight = 20
 [[languages.en.menus.main]]
   name = "Tags"
+  pre = "tag"
   pageRef = "/tags"
   weight = 30
 [[languages.en.menus.main]]
   name = "Reading"
+  pre = "book"
   pageRef = "/reading"
   weight = 50
+[[languages.en.menus.main]]
+  name = "Resume"
+  pre = "file-lines"
+  pageRef = "/resume"
+  weight = 60
 
 [params]
   colorScheme = "ocean"
