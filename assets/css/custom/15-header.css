@@ -1,0 +1,44 @@
+/*
+ * Top toolbar (Blowfish "fixed-fill-blur" header). Instead of the theme's full-width bar that fades in on scroll,
+ * the menu sits in a rounded box: light and see-through at the top of the page, darker and solid once the page
+ * scrolls. The `header-scrolled` class on <html> is toggled by layouts/partials/extend-head.html.
+ */
+#menu-blur {
+  display: none !important;
+}
+
+#menu-blur + div > .main-menu {
+  margin-top: 0.5rem;
+  padding: 0.125rem 0.75rem 0.125rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 0.75rem;
+  background-color: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  -webkit-backdrop-filter: blur(12px) saturate(1.4);
+  backdrop-filter: blur(12px) saturate(1.4);
+  transition: background-color 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
+}
+
+.header-scrolled #menu-blur + div > .main-menu {
+  border-color: rgba(var(--color-primary-300), 0.6);
+  background-color: rgba(var(--color-primary-100), 0.95);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.dark #menu-blur + div > .main-menu {
+  border-color: rgba(255, 255, 255, 0.15);
+  background-color: rgba(var(--color-neutral-500), 0.3);
+}
+
+.dark.header-scrolled #menu-blur + div > .main-menu {
+  border-color: rgba(var(--color-neutral-700), 0.9);
+  background-color: rgba(var(--color-neutral-900), 0.92);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+}
+
+/* Site title. */
+#menu-blur + div > .main-menu > a[href="/"] {
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}

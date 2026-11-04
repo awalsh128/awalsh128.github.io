@@ -1,0 +1,45 @@
+/*
+ * Site palette. The theme's "ocean" scheme gives a blue primary (~217deg) and cyan secondary; this adds amber
+ * (~37deg), blue's complement, as a highlight color. Blue stays the color of links and navigation; amber marks
+ * emphasis and interaction (headings, tags, inline code, hover, focus, selection) so they stand apart from links.
+ *
+ * Only variables are defined here. Rules that use them are in 60-accents.css.
+ */
+:root {
+  /* Amber, as "r, g, b" to match the theme's --color-* variables. */
+  --color-accent-50: 255, 251, 235;
+  --color-accent-100: 254, 243, 199;
+  --color-accent-200: 253, 230, 138;
+  --color-accent-300: 252, 211, 77;
+  --color-accent-400: 251, 191, 36;
+  --color-accent-500: 245, 158, 11;
+  --color-accent-600: 217, 119, 6;
+  --color-accent-700: 180, 83, 9;
+  --color-accent-800: 146, 64, 14;
+  --color-accent-900: 120, 53, 15;
+
+  /*
+   * Semantic colors, light mode. Text colors meet WCAG AA (4.5:1) on the page background:
+   * accent-800 on white is 7.3:1, primary-700 on white is 6.7:1.
+   */
+  --site-accent: rgb(var(--color-accent-600));
+  --site-accent-text: rgb(var(--color-accent-800));
+  --site-accent-soft: rgba(var(--color-accent-400), 0.18);
+  --site-accent-border: rgba(var(--color-accent-500), 0.55);
+  --site-link: rgb(var(--color-primary-700));
+  --site-link-underline: rgba(var(--color-primary-400), 0.55);
+  --site-selection: rgba(var(--color-accent-300), 0.6);
+  --site-card-shadow: 0 8px 24px -8px rgba(var(--color-neutral-900), 0.18);
+}
+
+html.dark {
+  /* Dark mode: lighter tints so text stays above 4.5:1 on neutral-800/900 backgrounds. */
+  --site-accent: rgb(var(--color-accent-400));
+  --site-accent-text: rgb(var(--color-accent-300));
+  --site-accent-soft: rgba(var(--color-accent-400), 0.14);
+  --site-accent-border: rgba(var(--color-accent-400), 0.45);
+  --site-link: rgb(var(--color-primary-300));
+  --site-link-underline: rgba(var(--color-primary-400), 0.5);
+  --site-selection: rgba(var(--color-accent-500), 0.4);
+  --site-card-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.6);
+}

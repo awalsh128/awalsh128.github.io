@@ -1,0 +1,137 @@
+/*
+ * Site-wide color accents using the palette in 05-palette.css. Blue marks links and navigation; amber marks
+ * highlights and interaction. Every rule is scoped to pages without the resume, which has its own styling
+ * (40-resume.css, 50-resume-print.css) and is intentionally left unchanged.
+ */
+
+/* Text selection and keyboard focus. */
+body:not(:has(.resume-page)) ::selection {
+  background-color: var(--site-selection);
+}
+
+body:not(:has(.resume-page)) :focus-visible {
+  outline: 2px solid var(--site-accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/*
+ * Links in running text: underlined so they don't rely on color alone, amber on hover. Limited to text containers
+ * so cards, buttons, the table of contents, and heading anchors keep the theme's styling.
+ */
+body:not(:has(.resume-page))
+  .prose
+  :where(p, li, td, dd, blockquote)
+  a:not(:where(.toc *, .not-prose *)) {
+  color: var(--site-link);
+  text-decoration-line: underline;
+  text-decoration-color: var(--site-link-underline);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition:
+    color 150ms ease,
+    text-decoration-color 150ms ease;
+}
+
+body:not(:has(.resume-page))
+  .prose
+  :where(p, li, td, dd, blockquote)
+  a:not(:where(.toc *, .not-prose *)):hover {
+  color: var(--site-accent-text);
+  text-decoration-color: var(--site-accent);
+  text-decoration-thickness: 2px;
+}
+
+/* Post headings: a short amber rule under each section heading, and amber "#" anchors on hover. */
+body:not(:has(.resume-page)) .article-content h2::after {
+  content: "";
+  display: block;
+  width: 2.5rem;
+  height: 3px;
+  margin-top: 0.35rem;
+  border-radius: 2px;
+  background-color: var(--site-accent);
+}
+
+body:not(:has(.resume-page)) .article-content :is(h2, h3, h4) a[href^="#"] {
+  color: var(--site-accent);
+}
+
+/* Bullets pick up the accent so lists scan more easily. */
+body:not(:has(.resume-page)) .article-content :is(ul, ol) > li::marker {
+  color: var(--site-accent);
+}
+
+/* Inline code (not code blocks). */
+body:not(:has(.resume-page)) .prose :not(pre) > code {
+  background-color: var(--site-accent-soft);
+  color: var(--site-accent-text);
+}
+
+/* Plain quotes; GitHub-style alerts render as admonitions, not blockquotes, and keep their own colors. */
+body:not(:has(.resume-page)) .prose blockquote {
+  padding: 0.5rem 1rem;
+  border-inline-start-color: var(--site-accent);
+  border-radius: 0 0.5rem 0.5rem 0;
+  background-color: var(--site-accent-soft);
+}
+
+/* Tag badges on posts and lists. */
+body:not(:has(.resume-page)) span.rounded-md.border.border-primary-400 {
+  border-color: var(--site-accent-border);
+  background-color: var(--site-accent-soft);
+  color: var(--site-accent-text);
+  transition: background-color 150ms ease;
+}
+
+body:not(:has(.resume-page)) a:hover span.rounded-md.border.border-primary-400 {
+  background-color: rgba(var(--color-accent-400), 0.3);
+}
+
+/* Article cards (homepage "Recent" and card lists): lift and outline in amber on hover. */
+body:not(:has(.resume-page)) .article-link--card {
+  transition:
+    border-color 150ms ease,
+    box-shadow 150ms ease,
+    transform 150ms ease;
+}
+
+body:not(:has(.resume-page)) a:hover .article-link--card,
+body:not(:has(.resume-page)) .article-link--card:hover {
+  border-color: var(--site-accent-border);
+  box-shadow: var(--site-card-shadow);
+  transform: translateY(-2px);
+}
+
+/* Table of contents: turn the theme's dotted rail into a solid amber one, and amber on hover. */
+body:not(:has(.resume-page)) .toc .border-dotted {
+  border-inline-start: 2px solid var(--site-accent-border);
+}
+
+body:not(:has(.resume-page)) .toc a:hover {
+  color: var(--site-accent-text);
+}
+
+/* Reading progress bar and scroll-to-top button. */
+body:not(:has(.resume-page)) #reading-progress {
+  background-image: linear-gradient(
+    90deg,
+    rgb(var(--color-primary-500)),
+    var(--site-accent)
+  );
+}
+
+body:not(:has(.resume-page)) #scroll-to-top a:hover {
+  color: var(--site-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body:not(:has(.resume-page)) .article-link--card {
+    transition: none;
+  }
+
+  body:not(:has(.resume-page)) a:hover .article-link--card,
+  body:not(:has(.resume-page)) .article-link--card:hover {
+    transform: none;
+  }
+}
