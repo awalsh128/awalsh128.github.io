@@ -1,0 +1,64 @@
+/* Blocks used inside posts: embedded sample documents and the placeholders shortcode. */
+
+/* Sample document embedded in a post (e.g. a playbook), set off from the surrounding prose. */
+.example-doc {
+  background-color: rgb(243 244 246);
+  border-radius: 0.375rem;
+  padding: 0.25rem 1.25rem;
+}
+
+.dark .example-doc {
+  background-color: rgb(38 38 38);
+}
+
+/* Reader-fillable placeholders (layouts/shortcodes/placeholders.html). */
+.placeholders {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 0.5rem 1rem;
+  margin: 1.5rem 0;
+  padding: 0.75rem 1.25rem 1rem;
+  border-radius: 0.375rem;
+  background-color: rgb(243 244 246);
+}
+
+.dark .placeholders {
+  background-color: rgb(38 38 38);
+}
+
+.placeholders-title {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+.placeholders label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+}
+
+.placeholders input {
+  padding: 0.25rem 0.5rem;
+  border: 1px solid rgb(209 213 219);
+  border-radius: 0.25rem;
+  background-color: white;
+  font-family: ui-monospace, monospace;
+}
+
+.dark .placeholders input {
+  border-color: rgb(82 82 82);
+  background-color: rgb(23 23 23);
+  color: inherit;
+}
+
+/* Mark the values the reader filled in, so they stand out in prose and code. */
+.placeholder-value {
+  text-decoration: underline dotted;
+  text-underline-offset: 0.2em;
+}
+
+.placeholder-filled {
+  text-decoration-style: solid;
+}
