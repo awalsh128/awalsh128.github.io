@@ -1,0 +1,18 @@
+{{- /*
+  Site stylesheet overrides. The parts in assets/css/custom/ are concatenated in filename order (hence the numeric
+  prefixes), minified, and published as one css/custom.css. Blowfish's own hook for assets/css/custom.css is left
+  unused; this link comes after the theme's bundle, so these rules still override the theme.
+*/ -}}
+{{- with resources.Match "css/custom/*.css" -}}
+  {{- $css := . | resources.Concat "css/custom.css" | resources.Minify | resources.Fingerprint (site.Params.fingerprintAlgorithm | default "sha512") -}}
+  <link type="text/css" rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+{{- end -}}
+
+{{- /* Marks the page as scrolled so the header box can switch to its darker style (assets/css/custom/15-header.css). */}}
+<script>
+  (() => {
+    const update = () => document.documentElement.classList.toggle("header-scrolled", window.scrollY > 8);
+    window.addEventListener("scroll", update, { passive: true });
+    document.addEventListener("DOMContentLoaded", update);
+  })();
+</script>
