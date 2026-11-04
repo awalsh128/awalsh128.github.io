@@ -3,6 +3,10 @@ name: Deploy Hugo site to Pages
 on:
   push:
     branches: [master]
+  # Rebuild on January 1 (08:05 UTC, just after midnight Pacific) so the footer's copyright year, which is set at
+  # build time, rolls over even without a push.
+  schedule:
+    - cron: "5 8 1 1 *"
   workflow_dispatch:
 
 permissions:
