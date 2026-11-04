@@ -29,11 +29,18 @@ Instructions for AI agents (Claude Code, Codex, Copilot, Cursor, ...) working in
   time (no shortcode or JavaScript needed). Escape a literal dollar sign in prose as `\$`. Units use siunitx-style
   macros defined in `layouts/_default/_markup/render-passthrough.html`: `\qty{43.2}{min}`, `\unit{km/h}`,
   `\num{43200}`, `\percent` (`\SI` and `\si` also work).
+- Site CSS overrides live in `assets/css/custom/`, one file per responsibility, and are bundled into
+  `css/custom.css` by `layouts/partials/extend-head.html` in filename order. Add rules to the matching file (or a new
+  numbered one); don't recreate `assets/css/custom.css`.
 - Callouts use GitHub alert syntax (`> [!NOTE]`, `> [!WARNING]`), not shortcodes.
 - The homepage project list in `content/_index.md` is generated from GitHub pins between the `projects:start` and
-  `projects:end` markers by `scripts/update_projects.py`. Don't edit it by hand; change pins on GitHub instead.
+  `projects:end` markers by `scripts/update_projects.py`, which also downloads each project's README logo to
+  `assets/img/projects/` (shown by the `project-icon` shortcode). Don't edit either by hand; change pins or README
+  logos on GitHub instead.
 - `content/resume.md` is the single source of the resume. Never move it to another repo or point the homepage link
-  elsewhere. Update it with `scripts/resume_to_md.py`.
+  elsewhere. Update it with `scripts/resume_to_md.py`. It renders with `layouts/_default/resume.html`, and
+  `content/resume.pdf` is generated from the page by `scripts/resume_to_pdf.sh` (run by the pre-commit hook when
+  the resume, its layout, or `assets/css/custom/` is staged); don't edit the PDF by hand.
 - Wrap Markdown at 120 columns (see `.vscode/settings.json`).
 
 ## Writing in Andrew's voice
