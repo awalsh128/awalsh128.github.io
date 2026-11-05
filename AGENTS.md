@@ -12,6 +12,12 @@ Instructions for AI agents (Claude Code, Codex, Copilot, Cursor, ...) working in
 - A post with its own images is a page bundle instead: `content/posts/YYYY-MM-DD-slug/index.md` with the images
   beside it, referenced by bare filename (e.g. `![alt](diagram.svg)`). The folder name sets the date and URL the same
   way, and the images also render in the VSCode Markdown preview. Don't put post images under `static/`.
+- To show a whole source file in a post, put it in the page bundle and use
+  `{{< code-include source="script.sh" >}}` instead of pasting it into a fenced block. The language defaults to
+  the file extension; override it with `language="bash"`, and pass Hugo highlight options with
+  `options="linenos=table"`. Add `collapse="true"` to hide a long file behind a clickable header (or
+  `collapse="open"` to start expanded), with `title="..."` to change the header from the file name. The file is also
+  published beside the post, so readers can download it.
 - Post, list, and tag pages get a background picked at random on each load from `assets/img/backgrounds/*.jpg`
   (see `layouts/partials/random-background.html`); add or remove a .jpg there to change the rotation. The homepage
   keeps `assets/img/header.jpg`.
