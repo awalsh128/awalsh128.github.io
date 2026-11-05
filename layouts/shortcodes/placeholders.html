@@ -1,88 +1,88 @@
 {{- /*
-  Lets the reader fill in their own values for placeholder text in a post. Every occurrence of a placeholder in the
-  article (prose and code blocks) is replaced as they type, and the values are kept in localStorage so they carry over
-  between posts.
+Lets the reader fill in their own values for placeholder text in a post. Every occurrence of a placeholder in the
+article (prose and code blocks) is replaced as they type, and the values are kept in localStorage so they carry over
+between posts.
 
-  Each positional parameter is "placeholder|Label":
+Each positional parameter is "placeholder|Label":
 
-    {{< placeholders "my-publisher|Publisher ID" "my-extension|Extension name" "owner/repo|GitHub repository" >}}
-*/ -}}
-{{- $id := printf "placeholders-%d" .Ordinal -}}
-{{- $fields := slice -}}
-{{- range .Params -}}
+{{< placeholders "my-publisher|Publisher ID" "my-extension|Extension name" "owner/repo|GitHub repository">}}
+  */ -}}
+  {{- $id := printf "placeholders-%d" .Ordinal -}}
+  {{- $fields := slice -}}
+  {{- range .Params -}}
   {{- $parts := split . "|" -}}
   {{- $token := index $parts 0 -}}
   {{- $label := cond (gt (len $parts) 1) (index $parts 1) $token -}}
   {{- $fields = $fields | append (dict "token" $token "label" $label) -}}
-{{- end -}}
-<form id="{{ $id }}" class="placeholders not-prose" onsubmit="return false">
-  <p class="placeholders-title">Fill in your own values and the post updates to match.</p>
-  {{- range $i, $f := $fields }}
-  <label>
-    <span>{{ $f.label }}</span>
-    <input type="text" data-token="{{ $f.token }}" placeholder="{{ $f.token }}" spellcheck="false" autocomplete="off">
-  </label>
-  {{- end }}
-</form>
-<script>
-  // Runs after the whole article is parsed, since most placeholders appear below the form.
-  document.addEventListener("DOMContentLoaded", () => {
-    const form = document.getElementById("{{ $id }}");
-    const scope = form.closest("article") || document.body;
-    const inputs = [...form.querySelectorAll("input[data-token]")];
-    const tokens = inputs.map((input) => input.dataset.token);
-    // Longest first, so a placeholder that contains another one wins.
-    const sorted = [...tokens].sort((a, b) => b.length - a.length);
-    const pattern = new RegExp(sorted.map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|"), "g");
-    const storageKey = (token) => `placeholder:${token}`;
+  {{- end -}}
+  <form id="{{ $id }}" class="placeholders not-prose" onsubmit="return false">
+    <p class="placeholders-title">Fill in your own values and the post updates to match.</p>
+    {{- range $i, $f := $fields }}
+    <label>
+      <span>{{ $f.label }}</span>
+      <input type="text" data-token="{{ $f.token }}" placeholder="{{ $f.token }}" spellcheck="false" autocomplete="off">
+    </label>
+    {{- end }}
+  </form>
+  <script>
+    // Runs after the whole article is parsed, since most placeholders appear below the form.
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.getElementById("{{ $id }}");
+      const scope = form.closest("article") || document.body;
+      const inputs = [...form.querySelectorAll("input[data-token]")];
+      const tokens = inputs.map((input) => input.dataset.token);
+      // Longest first, so a placeholder that contains another one wins.
+      const sorted = [...tokens].sort((a, b) => b.length - a.length);
+      const pattern = new RegExp(sorted.map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|"), "g");
+      const storageKey = (token) => `placeholder:${token}`;
 
-    // Wrap each occurrence in a span once, so later edits only change the span's text.
-    const walker = document.createTreeWalker(scope, NodeFilter.SHOW_TEXT, {
-      acceptNode: (node) =>
-        node.parentElement.closest("form.placeholders, script, style, .placeholder-value")
-          ? NodeFilter.FILTER_REJECT
-          : NodeFilter.FILTER_ACCEPT,
+      // Wrap each occurrence in a span once, so later edits only change the span's text.
+      const walker = document.createTreeWalker(scope, NodeFilter.SHOW_TEXT, {
+        acceptNode: (node) =>
+          node.parentElement.closest("form.placeholders, script, style, .placeholder-value")
+            ? NodeFilter.FILTER_REJECT
+            : NodeFilter.FILTER_ACCEPT,
+      });
+      const matches = [];
+      for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+        pattern.lastIndex = 0;
+        if (pattern.test(node.nodeValue)) matches.push(node);
+      }
+      for (const node of matches) {
+        const fragment = document.createDocumentFragment();
+        let last = 0;
+        for (const match of node.nodeValue.matchAll(pattern)) {
+          fragment.append(node.nodeValue.slice(last, match.index));
+          const span = document.createElement("span");
+          span.className = "placeholder-value";
+          span.dataset.token = match[0];
+          span.textContent = match[0];
+          fragment.append(span);
+          last = match.index + match[0].length;
+        }
+        fragment.append(node.nodeValue.slice(last));
+        node.replaceWith(fragment);
+      }
+
+      const update = (input) => {
+        const token = input.dataset.token;
+        const value = input.value.trim();
+        for (const span of scope.querySelectorAll(".placeholder-value")) {
+          if (span.dataset.token !== token) continue;
+          span.textContent = value || token;
+          span.classList.toggle("placeholder-filled", value !== "");
+        }
+        try {
+          value ? localStorage.setItem(storageKey(token), value) : localStorage.removeItem(storageKey(token));
+        } catch { }
+      };
+
+      for (const input of inputs) {
+        try {
+          input.value = localStorage.getItem(storageKey(input.dataset.token)) || "";
+        } catch { }
+        input.addEventListener("input", () => update(input));
+        update(input);
+      }
     });
-    const matches = [];
-    for (let node = walker.nextNode(); node; node = walker.nextNode()) {
-      pattern.lastIndex = 0;
-      if (pattern.test(node.nodeValue)) matches.push(node);
-    }
-    for (const node of matches) {
-      const fragment = document.createDocumentFragment();
-      let last = 0;
-      for (const match of node.nodeValue.matchAll(pattern)) {
-        fragment.append(node.nodeValue.slice(last, match.index));
-        const span = document.createElement("span");
-        span.className = "placeholder-value";
-        span.dataset.token = match[0];
-        span.textContent = match[0];
-        fragment.append(span);
-        last = match.index + match[0].length;
-      }
-      fragment.append(node.nodeValue.slice(last));
-      node.replaceWith(fragment);
-    }
-
-    const update = (input) => {
-      const token = input.dataset.token;
-      const value = input.value.trim();
-      for (const span of scope.querySelectorAll(".placeholder-value")) {
-        if (span.dataset.token !== token) continue;
-        span.textContent = value || token;
-        span.classList.toggle("placeholder-filled", value !== "");
-      }
-      try {
-        value ? localStorage.setItem(storageKey(token), value) : localStorage.removeItem(storageKey(token));
-      } catch {}
-    };
-
-    for (const input of inputs) {
-      try {
-        input.value = localStorage.getItem(storageKey(input.dataset.token)) || "";
-      } catch {}
-      input.addEventListener("input", () => update(input));
-      update(input);
-    }
-  });
-</script>
+  </script>
