@@ -18,6 +18,10 @@ Instructions for AI agents (Claude Code, Codex, Copilot, Cursor, ...) working in
   `options="linenos=table"`. Add `collapse="true"` to hide a long file behind a clickable header (or
   `collapse="open"` to start expanded), with `title="..."` to change the header from the file name. The file is also
   published beside the post, so readers can download it.
+- To let readers download several bundle files at once, keep them in a folder in the bundle (e.g. `scaffold/`) and
+  run `scripts/pack_bundle_archives.sh <bundle>/scaffold/` once to create `scaffold.tar.gz` beside it. After that the
+  pre-commit hook rebuilds the archive whenever files in the folder are staged; don't edit the archive by hand. Don't
+  start file names in the folder with a dot, since Hugo doesn't publish dotfiles.
 - Post, list, and tag pages get a background picked at random on each load from `assets/img/backgrounds/*.jpg`
   (see `layouts/partials/random-background.html`); add or remove a .jpg there to change the rotation. The homepage
   keeps `assets/img/header.jpg`.
