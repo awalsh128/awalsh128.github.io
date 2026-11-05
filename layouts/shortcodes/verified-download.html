@@ -1,21 +1,30 @@
 {{- /*
-Commands that download files from the post's page bundle and check their SHA-256 before anything uses them:
-{{< verified-download sources="install.sh helper.sh" >}}. Use it where safe-fetch-exec doesn't fit, such as installing
-safe-fetch-exec itself, or an installer that needs other files beside it.
+Commands that download files from the post's page bundle and check their SHA-256 with coreutils before anything uses
+them, and optionally run one of them: {{< verified-download sources="install.sh helper.sh" run="install.sh" >}}.
+Use it in place of `curl ... | bash`.
 
   sources  space-separated files beside the post's index.md (required)
+  run      one of the sources to run with bash once every file checks out (optional)
+  args     arguments passed to the script given in run (e.g. `--prefix "$HOME/.local"`)
+  then     another command to run once the check passes (e.g. extracting an archive), chained with && after run if
+           given; use a backtick raw string when it has quotes (then=`tar -xzf a.tar.gz && bash a/run.sh "$dir"`)
 
 The hashes are computed from the files at build time, so they can't drift from what the site serves. sha256sum --check
-fails, and the && chain stops, if any file doesn't match.
+fails, and the && chain stops before anything runs, if any file doesn't match. Changing a file changes its hash, so
+commands readers copied earlier stop working instead of running the new version.
 */ -}}
 {{- $sources := split (.Get "sources" | default "") " " -}}
+{{- $run := .Get "run" -}}
 {{- $downloads := slice -}}
 {{- $sums := slice -}}
+{{- $names := slice -}}
 {{- range $sources -}}
   {{- if . -}}
     {{- with $.Page.Resources.Get . -}}
-      {{- $downloads = $downloads | append (printf "curl --proto '=https' --tlsv1.2 -fsSLO %s" .Permalink) -}}
-      {{- $sums = $sums | append (printf "%s  %s" (.Content | crypto.SHA256) (path.Base .Name)) -}}
+      {{- /* -q (ignore ~/.curlrc) has to come first. */ -}}
+      {{- $downloads = $downloads | append (printf "curl -q --proto '=https' --tlsv1.2 -fsSLO %s" .Permalink) -}}
+      {{- $sums = $sums | append (printf "'%s' '%s'" (.Content | crypto.SHA256) (path.Base .Name)) -}}
+      {{- $names = $names | append (path.Base .Name) -}}
     {{- else -}}
       {{- errorf "%s: verified-download file %q not found beside the post" $.Position . -}}
     {{- end -}}
@@ -23,7 +32,24 @@ fails, and the && chain stops, if any file doesn't match.
 {{- end -}}
 {{- if not $downloads -}}
   {{- errorf "%s: verified-download needs at least one file in sources" .Position -}}
+{{- else if and $run (not (in $names $run)) -}}
+  {{- errorf "%s: verified-download run=%q must be one of the sources" .Position $run -}}
 {{- else -}}
-  {{- $command := printf "%s &&\nsha256sum --check <<'EOF'\n%s\nEOF" (delimit $downloads " &&\n") (delimit $sums "\n") -}}
+  {{- /* One && chain: a failed download or a hash mismatch stops it before anything runs. printf writes one
+    "<hash>  <file>" line per hash/file pair (macOS's shasum rejects the line with only one space). */ -}}
+  {{- $check := printf "printf '%%s  %%s\\n' %s | sha256sum --check" (index $sums 0) -}}
+  {{- if gt (len $sums) 1 -}}
+    {{- $check = printf "printf '%%s  %%s\\n' \\\n  %s | sha256sum --check" (delimit $sums " \\\n  ") -}}
+  {{- end -}}
+  {{- $command := printf "%s &&\n%s" (delimit $downloads " &&\n") $check -}}
+  {{- with $run -}}
+    {{- $command = printf "%s &&\nbash %s" $command . -}}
+    {{- with $.Get "args" -}}
+      {{- $command = printf "%s %s" $command . -}}
+    {{- end -}}
+  {{- end -}}
+  {{- with $.Get "then" -}}
+    {{- $command = printf "%s &&\n%s" $command . -}}
+  {{- end -}}
   <div class="highlight-wrapper">{{ highlight $command "bash" "" }}</div>
 {{- end -}}

@@ -50,9 +50,7 @@ jobs:
       - name: Attest downloadable scripts
         uses: actions/attest-build-provenance@v4
         with:
-          subject-path: |
-            public/**/*.sh
-            public/**/safe-fetch-exec
+          subject-path: public/**/*.sh
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ./public

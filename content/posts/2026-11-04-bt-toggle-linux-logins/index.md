@@ -23,14 +23,10 @@ LightDM, ...).
 
 {{< code-include source="bt-lock-toggle-install.sh" collapse="true" title="Install toggling service" >}}
 
-Here is the command line to install it:
+Here is the command line to install it. Run it from wherever you keep scripts (e.g. `~/bin`). It downloads both
+scripts, checks them against hashes computed when this site was built, and only runs the installer if both match.
 
-```bash
-cd ~/bin
-curl -fsSLO https://awalsh128.com/bt-toggle-linux-logins/bt-lock-toggle.sh
-curl -fsSLO https://awalsh128.com/bt-toggle-linux-logins/bt-lock-toggle-install.sh
-bash bt-lock-toggle-install.sh
-```
+{{< verified-download sources="bt-lock-toggle.sh bt-lock-toggle-install.sh" run="bt-lock-toggle-install.sh" >}}
 
 ## Checking It Works
 

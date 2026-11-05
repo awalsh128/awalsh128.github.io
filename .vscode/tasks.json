@@ -12,7 +12,15 @@
       "presentation": { "reveal": "always", "panel": "dedicated" },
       "problemMatcher": {
         "owner": "hugo",
-        "pattern": { "regexp": "^ERROR (.*)$", "message": 1 },
+        "fileLocation": "absolute",
+        "severity": "error",
+        "pattern": {
+          "regexp": "^ERROR \"(.+?):(\\d+):(\\d+)\": (.*)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "message": 4
+        },
         "background": {
           "activeAtBeginning": true,
           "beginsPattern": "^(Start building sites|Change detected)",

@@ -12,6 +12,10 @@ Instructions for AI agents (Claude Code, Codex, Copilot, Cursor, ...) working in
 - A post with its own images is a page bundle instead: `content/posts/YYYY-MM-DD-slug/index.md` with the images
   beside it, referenced by bare filename (e.g. `![alt](diagram.svg)`). The folder name sets the date and URL the same
   way, and the images also render in the VSCode Markdown preview. Don't put post images under `static/`.
+- Link to another post by its content path with empty link text, e.g. `[](/posts/2026-11-04-safer-curl-bash)` (the
+  file or folder name under `content/`, with the date and without `.md`; add `#heading` for a section).
+  `layouts/_default/_markup/render-link.html` fills in the post's title and published URL, so the link survives title
+  changes. Give link text to override the title. An empty link that isn't a page fails the build.
 - To show a whole source file in a post, put it in the page bundle and use
   `{{< code-include source="script.sh" >}}` instead of pasting it into a fenced block. The language defaults to
   the file extension; override it with `language="bash"`, and pass Hugo highlight options with

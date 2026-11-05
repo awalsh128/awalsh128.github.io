@@ -1,0 +1,54 @@
+{{/* Blowfish's link render hook (from Hugo, Apache v2 license
+  https://github.com/gohugoio/hugo/blob/master/tpl/tplimpl/embedded/templates/_markup/render-link.html),
+  with one addition for linking between posts:
+
+  A link with empty text to another post's content path gets that post's title as its text and its published URL as
+  its href: [](/posts/2026-11-04-safer-curl-bash) renders as <a href="/safer-curl-bash/">A Safer curl | bash</a>. The
+  content path is the post's file or folder name under content/, with no .md or index.md. Give the link text yourself
+  to keep it. An empty link that isn't a page fails the build, since it would otherwise render as an invisible link.
+*/}}
+{{- $u := urls.Parse .Destination -}}
+{{- $href := $u.String -}}
+{{- $text := .Text -}}
+{{- if strings.HasPrefix $u.String "#" -}}
+  {{- $href = printf "%s#%s" .PageInner.RelPermalink $u.Fragment -}}
+{{- else if and $href (not $u.IsAbs) -}}
+  {{- $path := strings.TrimPrefix "./" $u.Path -}}
+  {{- $page := $.PageInner.GetPage $path -}}
+  {{- with or
+    $page
+    ($.PageInner.Resources.Get $path)
+    (resources.Get $path)
+  -}}
+    {{- $href = .RelPermalink -}}
+    {{- with $u.RawQuery -}}
+      {{- $href = printf "%s?%s" $href . -}}
+    {{- end -}}
+    {{- with $u.Fragment -}}
+      {{- $href = printf "%s#%s" $href . -}}
+    {{- end -}}
+  {{- end -}}
+  {{- if not $text -}}
+    {{- with $page -}}
+      {{- $text = .LinkTitle | htmlEscape -}}
+    {{- else -}}
+      {{- errorf "%s: empty link to %q, which isn't a page; use its content path (e.g. %s) or give link text"
+        $.Position .Destination "/posts/2026-11-04-safer-curl-bash" -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{/* Open external links in a new tab if
+  configured to do so by the page param externalLinkForceNewTab
+  or site param article.externalLinkForceNewTab
+  and the link starts with http: or https:
+*/}}
+{{- $forceNewTab := .Page.Params.externalLinkForceNewTab | default (.Page.Site.Params.article.externalLinkForceNewTab | default true) -}}
+{{- $isExternal := or (strings.HasPrefix .Destination "http:") (strings.HasPrefix .Destination "https:") -}}
+{{- $newTab := and $forceNewTab $isExternal -}}
+
+<a href="{{ $href }}" {{ with .Title }}title="{{ . }}"{{ end }}
+  {{- if $newTab }} target="_blank" rel="noreferrer"{{ end }}>
+  {{- $text | safeHTML -}}
+</a>
+{{- /* Trim EOF */ -}}
