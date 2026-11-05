@@ -13,6 +13,7 @@ permissions:
   contents: read
   pages: write
   id-token: write
+  attestations: write
 
 concurrency:
   group: pages
@@ -44,6 +45,14 @@ jobs:
         env:
           HUGO_ENVIRONMENT: production
         run: hugo --gc --minify --baseURL "${{ steps.pages.outputs.base_url }}/"
+      # Sign the scripts posts tell readers to download, so they can check a file came from this repo's build with
+      # `gh attestation verify <file> --repo awalsh128/awalsh128.github.io`, independent of the site serving it.
+      - name: Attest downloadable scripts
+        uses: actions/attest-build-provenance@v4
+        with:
+          subject-path: |
+            public/**/*.sh
+            public/**/safe-fetch-exec
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ./public
