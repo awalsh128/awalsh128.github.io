@@ -1,0 +1,29 @@
+{{- /*
+Commands that download files from the post's page bundle and check their SHA-256 before anything uses them:
+{{< verified-download sources="install.sh helper.sh" >}}. Use it where safe-fetch-exec doesn't fit, such as installing
+safe-fetch-exec itself, or an installer that needs other files beside it.
+
+  sources  space-separated files beside the post's index.md (required)
+
+The hashes are computed from the files at build time, so they can't drift from what the site serves. sha256sum --check
+fails, and the && chain stops, if any file doesn't match.
+*/ -}}
+{{- $sources := split (.Get "sources" | default "") " " -}}
+{{- $downloads := slice -}}
+{{- $sums := slice -}}
+{{- range $sources -}}
+  {{- if . -}}
+    {{- with $.Page.Resources.Get . -}}
+      {{- $downloads = $downloads | append (printf "curl --proto '=https' --tlsv1.2 -fsSLO %s" .Permalink) -}}
+      {{- $sums = $sums | append (printf "%s  %s" (.Content | crypto.SHA256) (path.Base .Name)) -}}
+    {{- else -}}
+      {{- errorf "%s: verified-download file %q not found beside the post" $.Position . -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- if not $downloads -}}
+  {{- errorf "%s: verified-download needs at least one file in sources" .Position -}}
+{{- else -}}
+  {{- $command := printf "%s &&\nsha256sum --check <<'EOF'\n%s\nEOF" (delimit $downloads " &&\n") (delimit $sums "\n") -}}
+  <div class="highlight-wrapper">{{ highlight $command "bash" "" }}</div>
+{{- end -}}
