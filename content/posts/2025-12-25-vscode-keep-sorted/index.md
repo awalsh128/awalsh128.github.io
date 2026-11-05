@@ -2,7 +2,7 @@
 title: VSCode Keep Sorted Extension
 last_modified_at: 2026-10-22 00:00:01 -0700
 tags:
-  - VS Code
+  - VS Code Extension
   - TypeScript
   - Open Source
 ---
@@ -15,7 +15,7 @@ tags:
 </table>
 
 > [!NOTE]
-> Updated October 2026 for version 1.0.2. This post originally announced the 0.0.1 release in December 2025. Commands,
+> Updated October 2026 for version 1.0.3. This post originally announced the 0.0.1 release in December 2025. Commands,
 > settings, and features below reflect the latest version.
 
 I released a lightweight VS Code extension that keeps marked blocks in your code sorted using
@@ -357,27 +357,22 @@ Keep Sorted works with any file type and is language agnostic. Common use cases 
 ### Extension Not Working?
 
 1. **No Warnings or Sorting?**
-
    - Verify `keep-sorted.enabled` is set to `true` in settings.
    - Check that the file isn't excluded via `keep-sorted.exclude` patterns.
    - Make sure the block has matching `keep-sorted start` and `keep-sorted end` markers.
 
 2. **Commands Not Available?**
-
    - Open the Command Palette (`Ctrl+Shift+P` / `Cmd+Shift+P`) and search for "Keep Sorted". The commands are hidden
      while `keep-sorted.enabled` is off.
    - If they still don't appear, reload VS Code (`Developer: Reload Window`).
 
 3. **Save Doesn't Sort?**
-
    - Configure `source.fixAll.keepSorted` as shown in Sort on Save. Format on save alone doesn't invoke this extension.
 
 4. **Performance Issues?**
-
    - Add problematic file patterns to `keep-sorted.exclude`.
 
 5. **Viewing Extension Logs**
-
    - Open the Output panel: `View` → `Output` or `Ctrl+Shift+U` / `Cmd+Shift+U`.
    - Select "Keep Sorted" from the dropdown menu.
    - Logs show extension activity, errors, and diagnostic information.
