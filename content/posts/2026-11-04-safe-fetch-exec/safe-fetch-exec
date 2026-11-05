@@ -1,0 +1,166 @@
+#!/usr/bin/env bash
+#
+# safe-fetch-exec
+#
+# Downloads a script over HTTPS, checks that its SHA-256 hash matches the one
+# you expect, and only then runs it with bash. Use this instead of
+# `curl ... | bash`.
+#
+# What it guarantees: the script that runs is byte-for-byte the one whose hash
+# you passed in, and nothing runs unless the whole file arrived.
+#
+# What it does NOT do: sandbox the script, or make a malicious script safe. If
+# the hash came from the same place as the script, it only proves the two
+# match, not that either is trustworthy. Read the script (--dry-run) first.
+#
+# Usage:
+#   safe-fetch-exec [--dry-run] SHA256 URL [SCRIPT_ARGS...]
+#
+# Options:
+#   --dry-run, -n   Download and check the script, then print it instead of
+#                   running it.
+#   --help, -h      Show this help.
+#
+# Examples:
+#   safe-fetch-exec 3f2a...9c https://example.com/install.sh --prefix "$HOME/.local"
+#   safe-fetch-exec --dry-run 3f2a...9c https://example.com/install.sh
+#
+# Works on Linux and macOS (needs bash, curl, and sha256sum or shasum).
+
+# Stop on any error, on unset variables, and on failures inside pipelines.
+set -o errexit
+set -o nounset
+set -o pipefail
+
+# Make any files we create readable only by the current user.
+umask 077
+
+readonly MAX_DOWNLOAD_BYTES=10485760 # 10 MiB
+readonly MAX_DOWNLOAD_SECONDS=120
+readonly MAX_REDIRECTS=5
+
+print_usage() {
+  echo "Usage: safe-fetch-exec [--dry-run] SHA256 URL [SCRIPT_ARGS...]" >&2
+}
+
+fail() {
+  local message="$1"
+  echo "safe-fetch-exec: error: $message" >&2
+  exit 1
+}
+
+# Downloads a URL to a file using HTTPS only.
+download_file() {
+  local url="$1"
+  local destination="$2"
+
+  # --disable must be the first option. It tells curl to ignore ~/.curlrc,
+  # so a modified config file can't change how the download works.
+  #
+  # --proto and --proto-redir only allow HTTPS, including when the server
+  # redirects us somewhere else.
+  if ! curl --disable \
+      --proto '=https' \
+      --proto-redir '=https' \
+      --tlsv1.2 \
+      --fail \
+      --silent \
+      --show-error \
+      --location \
+      --max-redirs "$MAX_REDIRECTS" \
+      --max-time "$MAX_DOWNLOAD_SECONDS" \
+      --max-filesize "$MAX_DOWNLOAD_BYTES" \
+      --output "$destination" \
+      -- "$url"; then
+    fail "download failed: $url"
+  fi
+
+  # Older curl only enforces --max-filesize when the server sends the size up
+  # front, so check the size of what actually arrived as well.
+  local size
+  size="$(wc -c < "$destination" | tr -d '[:space:]')"
+  if (( size > MAX_DOWNLOAD_BYTES )); then
+    fail "download is $size bytes, over the $MAX_DOWNLOAD_BYTES byte limit: $url"
+  fi
+}
+
+# Prints the SHA-256 hash of a file. Linux has sha256sum; macOS has shasum.
+sha256_of() {
+  local file="$1"
+
+  if command -v sha256sum > /dev/null 2>&1; then
+    sha256sum -- "$file" | awk '{ print $1 }'
+  elif command -v shasum > /dev/null 2>&1; then
+    shasum -a 256 -- "$file" | awk '{ print $1 }'
+  else
+    fail "need sha256sum or shasum to check the download"
+  fi
+}
+
+# Fails unless the file's SHA-256 hash matches the expected hash.
+check_sha256() {
+  local file="$1"
+  local expected_hash="$2"
+  local actual_hash
+
+  actual_hash="$(sha256_of "$file")"
+
+  if [[ "$actual_hash" != "$expected_hash" ]]; then
+    fail "SHA-256 mismatch: expected $expected_hash, got $actual_hash"
+  fi
+}
+
+main() {
+  local dry_run=false
+
+  case "${1:-}" in
+    --help | -h)
+      print_usage
+      exit 0
+      ;;
+    --dry-run | -n)
+      dry_run=true
+      shift
+      ;;
+  esac
+
+  if (( $# < 2 )); then
+    print_usage
+    exit 1
+  fi
+
+  # Lowercase the hash so uppercase hex input also matches.
+  local expected_hash
+  expected_hash="$(printf '%s' "$1" | tr '[:upper:]' '[:lower:]')"
+  local url="$2"
+  shift 2
+  # Whatever is left is passed through to the downloaded script.
+
+  if [[ ! "$expected_hash" =~ ^[0-9a-f]{64}$ ]]; then
+    fail "SHA256 must be 64 hex characters, got: $expected_hash"
+  fi
+
+  # Download into a private temp folder, deleted when this script exits.
+  # This is a global (not local) so the cleanup trap can still see it after
+  # main has returned.
+  temp_dir="$(mktemp -d)"
+  trap 'rm -rf -- "$temp_dir"' EXIT
+
+  local script_file="$temp_dir/script"
+
+  # The whole file is downloaded and checked before anything runs, so a
+  # dropped connection can never run half a script.
+  download_file "$url" "$script_file"
+  check_sha256 "$script_file" "$expected_hash"
+
+  if [[ "$dry_run" == true ]]; then
+    cat -- "$script_file"
+    exit 0
+  fi
+
+  # Run the checked script in a clean bash: no startup files, and no BASH_ENV
+  # or ENV, which would make bash run another file before the script.
+  env -u BASH_ENV -u ENV bash --noprofile --norc -- "$script_file" "$@"
+}
+
+main "$@"
