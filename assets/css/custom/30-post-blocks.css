@@ -1,4 +1,4 @@
-/* Blocks used inside posts: embedded sample documents and the placeholders shortcode. */
+/* Blocks used inside posts: embedded sample documents, the placeholders shortcode, and code-include cards. */
 
 /* Sample document embedded in a post (e.g. a playbook), set off from the surrounding prose. */
 .example-doc {
@@ -61,4 +61,136 @@
 
 .placeholder-filled {
   text-decoration-style: solid;
+}
+
+/* Code card from layouts/shortcodes/code-include.html: a rounded box with a header bar (title, language, download link)
+   divided from the code. With collapse="true" or "open" it is a <details> and the header toggles it. */
+.code-include {
+  --code-include-border: rgb(var(--color-neutral-200));
+  --code-include-header-bg: rgb(var(--color-neutral-50));
+  --code-include-muted: rgb(var(--color-neutral-500));
+  margin: 1.75em 0;
+  overflow: hidden;
+  border: 1px solid var(--code-include-border);
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 2px rgba(var(--color-neutral-900), 0.06);
+}
+
+.dark .code-include {
+  --code-include-border: rgb(var(--color-neutral-700));
+  --code-include-header-bg: rgb(var(--color-neutral-800));
+  --code-include-muted: rgb(var(--color-neutral-400));
+}
+
+.code-include-header {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.5rem 0.875rem;
+  background-color: var(--code-include-header-bg);
+  border-bottom: 1px solid var(--code-include-border);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.8125rem;
+  line-height: 1.25rem;
+}
+
+.code-include-title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 600;
+  color: rgb(var(--color-neutral-800));
+}
+
+.dark .code-include-title {
+  color: rgb(var(--color-neutral-100));
+}
+
+/* Language as a small muted pill next to the title. */
+.code-include-lang {
+  padding: 0 0.4rem;
+  border: 1px solid var(--code-include-border);
+  border-radius: 9999px;
+  font-size: 0.6875rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--code-include-muted);
+}
+
+.prose .code-include-download {
+  margin-left: auto;
+  color: var(--code-include-muted);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.prose .code-include-download:hover,
+.prose .code-include-download:focus-visible {
+  color: var(--site-accent);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+/* The card supplies the frame, so drop Blowfish's own margins, shadow, and rounding on the code. */
+.code-include .highlight-wrapper {
+  margin: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.code-include pre {
+  margin: 0;
+  border-radius: 0;
+}
+
+/* Collapsible header: a chevron that points right when closed and down when open. */
+details.code-include > summary {
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+
+details.code-include > summary::-webkit-details-marker {
+  display: none;
+}
+
+details.code-include > summary::before {
+  content: "";
+  flex: none;
+  width: 0.4rem;
+  height: 0.4rem;
+  margin: 0 0.15rem 0 0.05rem;
+  border-right: 1.5px solid var(--code-include-muted);
+  border-bottom: 1.5px solid var(--code-include-muted);
+  transform: rotate(-45deg);
+  transition: transform 150ms ease;
+}
+
+details.code-include[open] > summary::before {
+  transform: rotate(45deg);
+}
+
+details.code-include > summary:hover {
+  background-color: rgb(var(--color-neutral-100));
+}
+
+.dark details.code-include > summary:hover {
+  background-color: rgb(var(--color-neutral-700));
+}
+
+details.code-include > summary:focus-visible {
+  outline: 2px solid var(--site-accent);
+  outline-offset: -2px;
+}
+
+/* Closed, the header is the whole card, so it needs no divider. */
+details.code-include:not([open]) > summary {
+  border-bottom: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  details.code-include > summary::before {
+    transition: none;
+  }
 }
