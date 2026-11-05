@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # 1. Sync the homepage project list and project logos with the repositories pinned on GitHub.
 # 2. Regenerate content/resume.pdf when the resume changes.
+# 3. Rebuild post download archives (e.g. scaffold.tar.gz) when the folder they're built from changes.
 # Enable once per clone with: git config core.hooksPath .githooks
 
 root="$(git rev-parse --show-toplevel)"
@@ -26,3 +27,15 @@ elif "${root}/scripts/resume_to_pdf.sh"; then
 else
   echo "pre-commit: skipping PDF resume; commit continues with the existing ${pdf}." >&2
 fi
+
+# Rebuild a post's download archive when files in the folder it's built from are part of the commit.
+for archive in "${root}"/content/posts/*/*.tar.gz; do
+  [[ -e "${archive}" ]] || continue
+  folder="${archive%.tar.gz}"
+  rel="${archive#"${root}/"}"
+  if [[ -d "${folder}" ]] && ! git -C "${root}" diff --cached --quiet -- "${folder}"; then
+    "${root}/scripts/pack_bundle_archives.sh" "${folder}" >/dev/null
+    git -C "${root}" add -- "${rel}"
+    echo "pre-commit: staged rebuilt ${rel}." >&2
+  fi
+done
