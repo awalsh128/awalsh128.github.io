@@ -2,7 +2,6 @@
 title: "A Safer curl | bash"
 date: "2026-11-04T00:00:00.000-07:00"
 author: awalsh128
-draft: true
 tags:
   - Security
   - System Administration
