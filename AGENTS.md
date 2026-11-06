@@ -5,7 +5,7 @@ Instructions for AI agents (Claude Code, Codex, Copilot, Cursor, ...) working in
 
 ## Repository conventions
 
-- Hugo site with the Blowfish theme. On a fresh clone run `scripts/bootstrap.sh`, then build with `.tools/hugo --gc`
+- Hugo site with the Blowfish theme. On a fresh clone run `scripts/setup_dev.sh`, then build with `.tools/hugo --gc`
   and preview with `.tools/hugo server`.
 - Posts are `content/posts/YYYY-MM-DD-slug.md`; the filename sets the date and the `/slug/` URL. Don't rename
   existing posts, since that breaks published URLs and Disqus threads.
@@ -55,6 +55,10 @@ Instructions for AI agents (Claude Code, Codex, Copilot, Cursor, ...) working in
   elsewhere. Update it with `scripts/resume_to_md.py`. It renders with `layouts/_default/resume.html`, and
   `content/resume.pdf` is generated from the page by `scripts/resume_to_pdf.sh` (run by the pre-commit hook when
   the resume, its layout, or `assets/css/custom/` is staged); don't edit the PDF by hand.
+- The resume page shows LinkedIn recommendations under References, from `data/linkedin_recommendations.json`. The
+  pre-commit hook refreshes it with `scripts/update_recommendations.py`, which reads only
+  `Recommendations_Received.csv` from the newest LinkedIn data export in `~/Downloads` (LinkedIn has no API for
+  this). They're hidden in print, so the PDF leaves them out. Don't edit the JSON by hand.
 - Wrap Markdown at 120 columns (see `.vscode/settings.json`).
 
 ## Writing in Andrew's voice

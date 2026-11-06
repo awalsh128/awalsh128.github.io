@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# Bootstrap a fresh clone for local development. Safe to re-run; finished steps are skipped.
+# Set up a fresh clone for local development. Safe to re-run; finished steps are skipped.
 #
 # - Installs Hugo extended into .tools/ (git-ignored), pinned to the version CI uses.
 # - Enables the repository's git hooks (.githooks/).
 # - Runs a test build, which downloads the Hugo theme module.
 #
-# Usage: scripts/bootstrap.sh
+# Usage: scripts/setup_dev.sh
 
 set -euo pipefail
 
@@ -14,8 +14,8 @@ tools_dir="${root}/.tools"
 hugo="${tools_dir}/hugo"
 workflow="${root}/.github/workflows/hugo.yml"
 
-info() { echo "bootstrap: $*"; }
-fail() { echo "bootstrap: error: $*" >&2; exit 1; }
+info() { echo "setup_dev: $*"; }
+fail() { echo "setup_dev: error: $*" >&2; exit 1; }
 
 # Prerequisites. Go is required by Hugo to fetch the theme module; gh is only needed by the pre-commit hook.
 for cmd in git go python3 curl tar; do

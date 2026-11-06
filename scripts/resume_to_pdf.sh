@@ -19,7 +19,7 @@ page="assets/text/resume.html"
 info() { echo "resume_to_pdf: $*" >&2; }
 fail() { echo "resume_to_pdf: error: $*" >&2; exit 1; }
 
-[[ -x "${hugo}" ]] || fail "Hugo not found at ${hugo}; run scripts/bootstrap.sh."
+[[ -x "${hugo}" ]] || fail "Hugo not found at ${hugo}; run scripts/setup_dev.sh."
 
 find_chrome() {
   if [[ -n "${CHROME:-}" ]]; then
