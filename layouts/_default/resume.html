@@ -54,7 +54,7 @@
       {{/* LinkedIn recommendations (data/linkedin_recommendations.json, from scripts/update_recommendations.py) go
         under References on the page only; print:hidden keeps them out of the PDF. */}}
       {{ if eq $id "references" }}
-        {{ with site.Data.linkedin_recommendations }}
+        {{ with hugo.Data.linkedin_recommendations }}
           {{ $html = print $html (partial "resume-recommendations.html" .) }}
         {{ end }}
       {{ end }}
