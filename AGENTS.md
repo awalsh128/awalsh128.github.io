@@ -22,6 +22,10 @@ Instructions for AI agents (Claude Code, Codex, Copilot, Cursor, ...) working in
   `options="linenos=table"`. Add `collapse="true"` to hide a long file behind a clickable header (or
   `collapse="open"` to start expanded), with `title="..."` to change the header from the file name. The file is also
   published beside the post, so readers can download it.
+- To collapse a long fenced code block that isn't a bundle file, add attributes to its opening fence, e.g.
+  ```` ```yaml {collapse="true" title=".github/workflows/publish.yml"} ````. It renders as the same card as
+  `code-include` (`layouts/partials/code-card.html`, via `layouts/_default/_markup/render-codeblock.html`); blocks
+  without `collapse` render as before.
 - To let readers download several bundle files at once, keep them in a folder in the bundle (e.g. `scaffold/`) and
   run `scripts/pack_bundle_archives.sh <bundle>/scaffold/` once to create `scaffold.tar.gz` beside it. After that the
   pre-commit hook rebuilds the archive whenever files in the folder are staged; don't edit the archive by hand. Don't

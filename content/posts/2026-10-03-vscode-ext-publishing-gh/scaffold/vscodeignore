@@ -1,0 +1,15 @@
+# Everything except the bundle and the assets the extension needs at runtime.
+# TODO: Don't list runtime assets your extension loads (e.g. images/, media/, syntaxes/); they must ship.
+# TODO: Add any other development-only paths in your repository.
+node_modules/
+out/
+src/
+scripts/
+docs/
+.github/
+.githooks/
+.vscode/
+.vscode-test/
+dist/**/*.map
+*.vsix
+tsconfig*.json

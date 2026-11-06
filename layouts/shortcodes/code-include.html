@@ -9,7 +9,7 @@ download link) above the code: {{< code-include source="script.sh" >}}.
             expanded
   title     header text; defaults to the source file name
 
-Styled in assets/css/custom/30-post-blocks.css. The inner .highlight-wrapper picks up Blowfish's copy button.
+The card itself is layouts/partials/code-card.html.
 */ -}}
 {{- $source := .Get "source" -}}
 {{- if not $source -}}
@@ -17,25 +17,14 @@ Styled in assets/css/custom/30-post-blocks.css. The inner .highlight-wrapper pic
 {{- else -}}
   {{- with .Page.Resources.Get $source -}}
     {{- $language := $.Get "language" | default (strings.TrimPrefix "." (path.Ext $source)) -}}
-    {{- $collapse := $.Get "collapse" | default "false" | string -}}
-    {{- if not (in (slice "true" "open" "false") $collapse) -}}
-      {{- errorf "%s: code-include collapse must be \"true\", \"open\", or \"false\", not %q" $.Position $collapse -}}
-    {{- end -}}
-    {{- $collapsible := ne $collapse "false" -}}
-    {{- $header := printf `<span class="code-include-title">%s</span><span class="code-include-lang">%s</span><a class="code-include-download" href="%s" download title="Download %s">Download</a>`
-        (htmlEscape ($.Get "title" | default $source)) (htmlEscape $language) .RelPermalink (htmlEscape $source) -}}
-    {{- $code := printf `<div class="highlight-wrapper">%s</div>` (highlight (trim .Content "\n\r") $language ($.Get "options")) -}}
-    {{- if $collapsible -}}
-      <details class="code-include"{{ if eq $collapse "open" }} open{{ end }}>
-        <summary class="code-include-header">{{ $header | safeHTML }}</summary>
-        {{- $code | safeHTML -}}
-      </details>
-    {{- else -}}
-      <div class="code-include">
-        <div class="code-include-header">{{ $header | safeHTML }}</div>
-        {{- $code | safeHTML -}}
-      </div>
-    {{- end -}}
+    {{- partial "code-card.html" (dict
+        "code" (highlight (trim .Content "\n\r") $language ($.Get "options"))
+        "title" ($.Get "title" | default $source)
+        "language" $language
+        "download" .RelPermalink
+        "collapse" ($.Get "collapse")
+        "position" $.Position
+    ) -}}
   {{- else -}}
     {{- errorf "%s: code-include file %q not found beside the post" $.Position $source -}}
   {{- end -}}
