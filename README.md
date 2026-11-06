@@ -5,11 +5,11 @@ Source for [awalsh128.com](https://awalsh128.com), built with [Hugo](https://goh
 
 ## Setup
 
-After cloning, run the bootstrap script once. It needs Git, Go, Python 3, and curl (plus an authenticated
+After cloning, run the setup script once. It needs Git, Go, Python 3, and curl (plus an authenticated
 [`gh`](https://cli.github.com) CLI for the projects hook), and is safe to re-run.
 
 ```sh
-scripts/bootstrap.sh
+scripts/setup_dev.sh
 ```
 
 It installs Hugo extended into `.tools/` (git-ignored) at the same version CI uses (`HUGO_VERSION` in
@@ -32,7 +32,7 @@ It installs Hugo extended into `.tools/` (git-ignored) at the same version CI us
 | `static/`           | Files copied as-is (`/assets/...` images and PDFs, `CNAME`)     |
 | `assets/img/`       | Images processed by the theme (avatar, homepage background)     |
 | `assets/icons/`     | Custom icons; the file name is the author-link key and tooltip  |
-| `scripts/`          | Bootstrap, resume export normalizer, and homepage projects sync |
+| `scripts/`          | Dev setup, resume export normalizer, and homepage projects sync |
 | `.githooks/`        | Pre-commit hook that syncs homepage projects with GitHub pins   |
 | `hugo.toml`         | Site, theme, and menu configuration                             |
 
@@ -54,7 +54,7 @@ python3 scripts/resume_to_md.py exported.md --output - # preview
 The Projects list in `content/_index.md` mirrors the repositories pinned on
 [github.com/awalsh128](https://github.com/awalsh128), between the `projects:start` and `projects:end`
 markers. A pre-commit hook regenerates it with `scripts/update_projects.py` (via an authenticated `gh` CLI)
-and stages the result. `scripts/bootstrap.sh` enables the hook. To preview the list without writing:
+and stages the result. `scripts/setup_dev.sh` enables the hook. To preview the list without writing:
 
 ```sh
 python3 scripts/update_projects.py --output -

@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # 1. Sync the homepage project list and project logos with the repositories pinned on GitHub.
-# 2. Regenerate content/resume.pdf when the resume changes.
-# 3. Rebuild post download archives (e.g. scaffold.tar.gz) when the folder they're built from changes.
+# 2. Refresh the resume page's LinkedIn recommendations from the newest LinkedIn data export in ~/Downloads.
+# 3. Regenerate content/resume.pdf when the resume changes.
+# 4. Rebuild post download archives (e.g. scaffold.tar.gz) when the folder they're built from changes.
 # Enable once per clone with: git config core.hooksPath .githooks
 
 root="$(git rev-parse --show-toplevel)"
@@ -14,6 +15,15 @@ elif [[ -n "$(git -C "${root}" status --porcelain -- "${index}" "${logos}")" ]];
   # -A also stages logos removed for repositories that are no longer pinned.
   git -C "${root}" add -A -- "${index}" "${logos}"
   echo "pre-commit: staged updated ${index} and ${logos}/." >&2
+fi
+
+# Refresh the LinkedIn recommendations shown on the resume page (not in the PDF). Without an export it changes nothing.
+recommendations="data/linkedin_recommendations.json"
+if ! python3 "${root}/scripts/update_recommendations.py"; then
+  echo "pre-commit: skipping recommendations sync; commit continues with the existing list." >&2
+elif [[ -n "$(git -C "${root}" status --porcelain -- "${recommendations}")" ]]; then
+  git -C "${root}" add -- "${recommendations}"
+  echo "pre-commit: staged updated ${recommendations}." >&2
 fi
 
 # Regenerate the PDF resume when its source, layout, or styling is part of the commit.

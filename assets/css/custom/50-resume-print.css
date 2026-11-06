@@ -18,7 +18,8 @@
   body:has(.resume-page) .single_hero_background,
   body:has(.resume-page) #scroll-to-top,
   body:has(.resume-page) #site-footer,
-  .resume-pdf-btn {
+  .resume-pdf-btn,
+  .resume-recommendations {
     display: none !important;
   }
 

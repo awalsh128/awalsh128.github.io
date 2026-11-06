@@ -51,6 +51,13 @@
       {{ range after 1 $entries }}
         {{ $html = print $html `<div class="resume-entry"><h3` . `</div>` }}
       {{ end }}
+      {{/* LinkedIn recommendations (data/linkedin_recommendations.json, from scripts/update_recommendations.py) go
+        under References on the page only; print:hidden keeps them out of the PDF. */}}
+      {{ if eq $id "references" }}
+        {{ with site.Data.linkedin_recommendations }}
+          {{ $html = print $html (partial "resume-recommendations.html" .) }}
+        {{ end }}
+      {{ end }}
       {{ $html = print $html `</section>` }}
       {{ if in $sideIds $id }}{{ $side = print $side $html }}{{ else }}{{ $main = print $main $html }}{{ end }}
     {{ end }}
