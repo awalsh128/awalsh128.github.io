@@ -37,6 +37,15 @@ timeZone = "America/Los_Angeles"
 [outputFormats.RSS]
   baseName = "feed"
 
+# Machine-readable export of posts tagged Lykotek, published at /tags/lykotek/lykotek.json. lykotek.com's sync
+# script fetches it and wraps each post body in that site's own layout. Only content/tags/lykotek/_index.md enables
+# it. See layouts/_default/term.lykotekexport.json for the schema.
+[outputFormats.LykotekExport]
+  mediaType = "application/json"
+  baseName = "lykotek"
+  isPlainText = true
+  notAlternative = true
+
 [markup.goldmark.renderer]
   unsafe = true
 # LaTeX math: $...$ inline and $$...$$ block, rendered at build time by render-passthrough.html.
