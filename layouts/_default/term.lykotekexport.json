@@ -1,6 +1,6 @@
 {{- /*
-Export of the posts tagged Lykotek, published at /tags/lykotek/lykotek.json for lykotek.com to sync from. Enabled
-only by content/tags/lykotek/_index.md. Bump "version" on any breaking change to the fields below.
+Export of the posts tagged Article, published at /tags/article/lykotek.json for lykotek.com to sync from. Enabled
+only by content/tags/article/_index.md. Bump "version" on any breaking change to the fields below.
 
   version    schema version
   site       this site's absolute base URL
