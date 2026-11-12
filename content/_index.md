@@ -20,4 +20,6 @@ how their team works. [More at Lykotek →](https://lykotek.com)
 
 <!-- projects:end -->
 
+See https://github.com/awalsh128 for my most popular repositories.
+
 </div>
