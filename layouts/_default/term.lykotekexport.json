@@ -1,0 +1,45 @@
+{{- /*
+Export of the posts tagged Article, published at /tags/article/lykotek.json for lykotek.com to sync from. Enabled
+only by content/tags/article/_index.md. Bump "version" on any breaking change to the fields below.
+
+  version    schema version
+  site       this site's absolute base URL
+  posts      newest first; each has:
+    title, slug, permalink (absolute), date and lastmod (RFC 3339), description, summary (plain text), tags
+    has_math   true when the post contains math. KaTeX renders it as both MathML (.katex-mathml) and styled HTML
+               (.katex-html, which uses inline style attributes and needs KaTeX's CSS and fonts)
+    content    rendered post body only (no theme header, footer, or comments). Links and image sources are site
+               relative (e.g. /safer-curl-bash/ or /slos-slis-and-production/diagram.svg); resolve them against
+               "site" or "permalink". Headings include Blowfish's anchor-link markup (Tailwind classes).
+    resources  the post's page bundle files (images, downloadable scripts), each with name, permalink (absolute),
+               and media_type
+*/ -}}
+{{- $posts := slice -}}
+{{- range .Pages.ByDate.Reverse -}}
+  {{- if .IsPage -}}
+    {{- /* Render the content first; the math render hook sets hasMath while rendering. */ -}}
+    {{- $content := .Content -}}
+    {{- $resources := slice -}}
+    {{- range .Resources -}}
+      {{- $resources = $resources | append (dict
+          "name" .Name
+          "permalink" .Permalink
+          "media_type" .MediaType.Type
+      ) -}}
+    {{- end -}}
+    {{- $posts = $posts | append (dict
+        "title" .Title
+        "slug" (path.Base (strings.TrimSuffix "/" .RelPermalink))
+        "permalink" .Permalink
+        "date" (.Date.Format "2006-01-02T15:04:05Z07:00")
+        "lastmod" (.Lastmod.Format "2006-01-02T15:04:05Z07:00")
+        "description" (.Description | default "")
+        "summary" (.Summary | plainify | htmlUnescape | replaceRE `\s+#\s+` " " | strings.TrimSpace)
+        "tags" (.Params.tags | default slice)
+        "has_math" (.Store.Get "hasMath" | default false)
+        "content" $content
+        "resources" $resources
+    ) -}}
+  {{- end -}}
+{{- end -}}
+{{- dict "version" 1 "site" site.BaseURL "posts" $posts | jsonify (dict "indent" "  ") -}}

@@ -37,6 +37,15 @@ timeZone = "America/Los_Angeles"
 [outputFormats.RSS]
   baseName = "feed"
 
+# Machine-readable export of posts tagged Article, published at /tags/article/lykotek.json. lykotek.com's sync
+# script fetches it and wraps each post body in that site's own layout. Only content/tags/article/_index.md enables
+# it. See layouts/_default/term.lykotekexport.json for the schema.
+[outputFormats.LykotekExport]
+  mediaType = "application/json"
+  baseName = "lykotek"
+  isPlainText = true
+  notAlternative = true
+
 [markup.goldmark.renderer]
   unsafe = true
 # LaTeX math: $...$ inline and $$...$$ block, rendered at build time by render-passthrough.html.
@@ -149,3 +158,7 @@ timeZone = "America/Los_Angeles"
   [[related.indices]]
     name = "tags"
     weight = 100
+
+# Embed YouTube videos from youtube-nocookie.com, so no YouTube cookies are set until the reader plays one.
+[privacy.youtube]
+  privacyEnhanced = true
