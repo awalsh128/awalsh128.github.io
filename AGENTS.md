@@ -40,6 +40,10 @@ Instructions for AI agents (Claude Code, Codex, Copilot, Cursor, ...) working in
   - Topics: `Algorithms`, `Build Systems`, `Career`, `Compression`, `Computer Science`, `Concurrency`,
     `Data Acquisition`, `Databases`, `Logging`, `Open Source` (project releases), `Performance`, `Reliability`,
     `Security`, `Software Design`, `Static Analysis`, `System Administration`, `Testing`.
+  - Cross-posting: `Article` marks a post to republish on lykotek.com. Hugo exports these posts to
+    `/tags/article/lykotek.json` (`layouts/_default/term.lykotekexport.json`), and lykotek.com's sync script copies
+    them from the live site. It doesn't count toward the 1-4 tags. Everything in a tagged post also becomes public
+    on the Lykotek business site, so use it only for posts that belong there.
 
   Spell tags exactly as listed; Hugo merges tags case-insensitively into one URL, so `vscode` and `VSCode` would
   collide. Add a new topic only when it is the main subject of the post.
