@@ -18,6 +18,8 @@ Exits non-zero when `gh` is missing or the query fails, so callers such as the
 pre-commit hook can decide whether that should block.
 """
 
+from urllib.parse import urlparse
+import urllib.request
 from pathlib import Path, PurePosixPath
 import argparse
 import base64
@@ -25,6 +27,7 @@ import json
 import re
 import subprocess
 import sys
+from urllib.parse import urljoin
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT = ROOT_DIR / "content" / "_index.md"
@@ -47,136 +50,147 @@ query($login: String!) {
 
 
 def fetch_pinned(user: str) -> list[dict]:
-    result = subprocess.run(
-        ["gh", "api", "graphql", "-f", f"query={QUERY}", "-F", f"login={user}"],
-        capture_output=True,
-        text=True,
-        check=True,
-    )
-    return json.loads(result.stdout)["data"]["user"]["pinnedItems"]["nodes"]
+  result = subprocess.run(
+      ["gh", "api", "graphql", "-f", f"query={QUERY}", "-F", f"login={user}"],
+      capture_output=True,
+      text=True,
+      check=True,
+  )
+  return json.loads(result.stdout)["data"]["user"]["pinnedItems"]["nodes"]
 
 
 def gh_api(path: str, raw: bool = False) -> bytes:
-    command = ["gh", "api", path]
-    if raw:
-        command += ["-H", "Accept: application/vnd.github.raw"]
-    return subprocess.run(command, capture_output=True, check=True).stdout
+  command = ["gh", "api", path]
+  if raw:
+    command += ["-H", "Accept: application/vnd.github.raw"]
+  return subprocess.run(command, capture_output=True, check=True).stdout
 
 
-IMAGE_PATTERN = re.compile(r"""<img\b[^>]*?\bsrc=["']([^"']+)["']|!\[[^\]]*\]\(\s*<?([^)\s>]+)""", re.I)
+"""
+Patterns
+
+'<img src="logo.png">',
+'<img class="x" src = "logo.png">',
+'![alt](logo.png)',
+'![alt](<logo with spaces.png>)',
+'![alt](logo.png "My Title")',
+'![alt](<https://x.com/a.png> "T")',
+"""
+IMAGE_PATTERN = re.compile(
+    r"""<img\b[^>]*?\bsrc\s*=\s*["']([^"']+)["']"""
+    r"""|!\[[^\]]*\]\(\s*<?([^)\s>]+)>?(?:\s+["'][^"']*["'])?\s*\)""",
+    re.I,
+)
 
 
-def readme_logo_path(readme: str, readme_dir: PurePosixPath) -> str | None:
-    """Repository path of the first image in the README that is a file in the repository, if any."""
-    for match in IMAGE_PATTERN.finditer(readme):
-        src = (match.group(1) or match.group(2)).split("#")[0].split("?")[0]
-        if re.match(r"^[a-z][a-z0-9+.-]*:|^//", src, re.I):
-            continue  # Badges and other images hosted elsewhere.
-        if PurePosixPath(src).suffix.lower() not in LOGO_EXTENSIONS:
-            continue
-        parts = []
-        for part in (PurePosixPath("/") / src if src.startswith("/") else readme_dir / src).parts:
-            if part in ("", "/", "."):
-                continue
-            if part == "..":
-                if parts:
-                    parts.pop()
-                continue
-            parts.append(part)
-        return "/".join(parts)
-    return None
+def readme_logo_download_url(readme: str, readme_download_url: str) -> str | None:
+  """Download URL of the first image in the README, if any."""
+  for match in IMAGE_PATTERN.finditer(readme):
+    src = (match.group(1) or match.group(2)).split("#")[0].split("?")[0]
+    if not src:
+      continue
+    if PurePosixPath(src).suffix.lower() not in LOGO_EXTENSIONS:
+      continue
+    if re.match(r"^[a-z][a-z0-9+.-]*:|^//", src, re.I):
+      # Only accept URLs from the same repo's raw host
+      repo_prefix = readme_download_url.rsplit("/", 2)[0]
+      if src.startswith(repo_prefix):
+        return src
+      continue
+    # Relative path — resolve against the repo base
+    base = readme_download_url.rsplit("/", 1)[0] + "/"
+    return urljoin(base, src)
+  return None
 
 
 def sync_logos(repos: list[dict], logo_dir: Path) -> None:
-    """Download each repository's README logo into logo_dir and remove logos of unlisted repositories."""
-    logo_dir.mkdir(parents=True, exist_ok=True)
-    keep = set()
-    for repo in repos:
-        name, slug = repo["name"], repo["nameWithOwner"]
-        try:
-            info = json.loads(gh_api(f"repos/{slug}/readme"))
-            readme = base64.b64decode(info["content"]).decode("utf-8", "replace")
-            path = readme_logo_path(readme, PurePosixPath(info["path"]).parent)
-            if not path:
-                continue
-            data = gh_api(f"repos/{slug}/contents/{path}", raw=True)
-        except (subprocess.CalledProcessError, KeyError, ValueError) as error:
-            detail = getattr(error, "stderr", b"") or error
-            if isinstance(detail, bytes):
-                detail = detail.decode("utf-8", "replace").strip()
-            print(f"update_projects: no logo for {slug}: {detail}", file=sys.stderr)
-            continue
-        target = logo_dir / f"{name}{PurePosixPath(path).suffix.lower()}"
-        keep.add(target.name)
-        if not target.exists() or target.read_bytes() != data:
-            target.write_bytes(data)
-            print(f"update_projects: updated {target.relative_to(ROOT_DIR)}", file=sys.stderr)
-    for stale in logo_dir.iterdir():
-        if stale.is_file() and stale.name not in keep:
-            stale.unlink()
-            print(f"update_projects: removed {stale.relative_to(ROOT_DIR)}", file=sys.stderr)
+  """Download each repository's README logo into logo_dir and remove logos of unlisted repositories."""
+  logo_dir.mkdir(parents=True, exist_ok=True)
+  keep = set()
+  for repo in repos:
+    name, slug = repo["name"], repo["nameWithOwner"]
+    try:
+      info = json.loads(gh_api(f"repos/{slug}/readme"))
+      readme = base64.b64decode(info["content"]).decode("utf-8", "replace")
+      url = readme_logo_download_url(readme, info["download_url"])
+      if not url:
+        continue
+      data = urllib.request.urlopen(url).read()
+    except (subprocess.CalledProcessError, KeyError, ValueError, OSError) as e:
+      print(f"update_projects: no logo for {slug}: {e}", file=sys.stderr)
+      continue
+    ext = PurePosixPath(urlparse(url).path).suffix.lower()
+    target = logo_dir / f"{name}{ext}"
+    keep.add(target.name)
+    if not target.exists() or target.read_bytes() != data:
+      target.write_bytes(data)
+      print(f"update_projects: updated {target.relative_to(ROOT_DIR)}", file=sys.stderr)
+  for stale in logo_dir.iterdir():
+    if stale.is_file() and stale.name not in keep:
+      stale.unlink()
+      print(f"update_projects: removed {stale.relative_to(ROOT_DIR)}", file=sys.stderr)
 
 
 def first_sentence(text: str) -> str:
-    text = " ".join((text or "").split())
-    match = re.match(r"(.+?[.!?])(\s|$)", text)
-    sentence = match.group(1) if match else text
-    return sentence if not sentence or sentence[-1] in ".!?" else sentence + "."
+  text = " ".join((text or "").split())
+  match = re.match(r"(.+?[.!?])(\s|$)", text)
+  sentence = match.group(1) if match else text
+  return sentence if not sentence or sentence[-1] in ".!?" else sentence + "."
 
 
 def render(repos: list[dict]) -> str:
-    lines = []
-    for repo in repos:
-        line = f"- {{{{< project-icon \"{repo['name']}\" >}}}} [**{repo['name']}**]({repo['url']})"
-        description = first_sentence(repo.get("description"))
-        if description:
-            line += f": {description}"
-        lines.append(line)
-    return "\n".join(lines)
+  lines = []
+  for repo in repos:
+    line = f"- {{{{< project-icon \"{repo['name']}\" >}}}} [**{repo['name']}**]({repo['url']})"
+    description = first_sentence(repo.get("description"))
+    if description:
+      line += f": {description}"
+    lines.append(line)
+  return "\n".join(lines)
 
 
 def update(content: str, projects: str) -> str:
-    pattern = re.compile(re.escape(START_MARKER) + r".*?" + re.escape(END_MARKER), re.S)
-    if not pattern.search(content):
-        raise ValueError(f"projects markers not found; expected {START_MARKER!r} ... {END_MARKER!r}")
-    return pattern.sub(lambda _: f"{START_MARKER}\n\n{projects}\n\n{END_MARKER}", content)
+  pattern = re.compile(re.escape(START_MARKER) + r".*?" + re.escape(END_MARKER), re.S)
+  if not pattern.search(content):
+    raise ValueError(f"projects markers not found; expected {START_MARKER!r} ... {END_MARKER!r}")
+  return pattern.sub(lambda _: f"{START_MARKER}\n\n{projects}\n\n{END_MARKER}", content)
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("--user", default=DEFAULT_USER, help="GitHub user whose pins are listed")
-    parser.add_argument("--output", default=str(DEFAULT_OUTPUT), help="file to update, or - to print the list")
-    args = parser.parse_args()
+  parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+  parser.add_argument("--user", default=DEFAULT_USER, help="GitHub user whose pins are listed")
+  parser.add_argument("--output", default=str(DEFAULT_OUTPUT), help="file to update, or - to print the list")
+  args = parser.parse_args()
 
-    try:
-        repos = fetch_pinned(args.user)
-    except FileNotFoundError:
-        print("update_projects: gh CLI not found", file=sys.stderr)
-        return 1
-    except (subprocess.CalledProcessError, KeyError, TypeError, json.JSONDecodeError) as error:
-        detail = getattr(error, "stderr", "") or error
-        print(f"update_projects: failed to fetch pinned repositories: {detail}", file=sys.stderr)
-        return 1
+  try:
+    repos = fetch_pinned(args.user)
+  except FileNotFoundError:
+    print("update_projects: gh CLI not found", file=sys.stderr)
+    return 1
+  except (subprocess.CalledProcessError, KeyError, TypeError, json.JSONDecodeError) as error:
+    detail = getattr(error, "stderr", "") or error
+    print(f"update_projects: failed to fetch pinned repositories: {detail}", file=sys.stderr)
+    return 1
 
-    projects = render(repos)
-    if args.output == "-":
-        print(projects)
-        return 0
-
-    sync_logos(repos, LOGO_DIR)
-
-    path = Path(args.output)
-    content = path.read_text()
-    try:
-        updated = update(content, projects)
-    except ValueError as error:
-        print(f"update_projects: {error}", file=sys.stderr)
-        return 1
-    if updated != content:
-        path.write_text(updated)
-        print(f"update_projects: updated {path.relative_to(ROOT_DIR)}", file=sys.stderr)
+  projects = render(repos)
+  if args.output == "-":
+    print(projects)
     return 0
+
+  sync_logos(repos, LOGO_DIR)
+
+  path = Path(args.output)
+  content = path.read_text()
+  try:
+    updated = update(content, projects)
+  except ValueError as error:
+    print(f"update_projects: {error}", file=sys.stderr)
+    return 1
+  if updated != content:
+    path.write_text(updated)
+    print(f"update_projects: updated {path.relative_to(ROOT_DIR)}", file=sys.stderr)
+  return 0
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+  sys.exit(main())
