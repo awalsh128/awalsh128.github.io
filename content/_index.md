@@ -20,6 +20,7 @@ how their team works. [More at Lykotek →](https://lykotek.com)
 
 <!-- projects:end -->
 
-See https://github.com/awalsh128 for my most popular repositories.
+See https://github.com/awalsh128 for my most popular repositories, or the [API reference](/api/) for the libraries
+I've published.
 
 </div>
