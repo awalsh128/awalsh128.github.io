@@ -1,6 +1,8 @@
 ---
 title: Andrew Walsh - Resume
 url: /assets/text/resume.html
+aliases:
+  - /resume
 layout: resume
 showDate: false
 showDateUpdated: false
