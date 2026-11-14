@@ -5,8 +5,10 @@ on:
     branches: [master]
   # Rebuild on January 1 (08:05 UTC, just after midnight Pacific) so the footer's copyright year, which is set at
   # build time, rolls over even without a push.
+  # Also rebuild weekly (Mondays, 08:05 UTC) so the homepage project list follows the pins on GitHub.
   schedule:
     - cron: "5 8 1 1 *"
+    - cron: "5 8 * * 1"
   workflow_dispatch:
 
 permissions:
@@ -40,6 +42,13 @@ jobs:
           go-version-file: go.mod
           cache: false
       - uses: actions/configure-pages@v5
+      # Regenerate the homepage project list and logos from the pins on GitHub, as the pre-commit hook does. The result
+      # is only built, not committed. The recommendations (local LinkedIn export), resume PDF (needs a browser) and
+      # bundle archives (committed alongside their folders) are refreshed at commit time and have nothing to do here.
+      - name: Refresh homepage projects
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/update_projects.py
       - name: Build
         env:
           HUGO_ENVIRONMENT: production
