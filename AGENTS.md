@@ -19,7 +19,7 @@ Instructions for AI agents (Claude Code, Codex, Copilot, Cursor, ...) working in
 
 - Writing or editing a post (bundles, links to other posts, code blocks, math, callouts, tags):
   [docs/posts.md](docs/posts.md).
-- Any prose for the site or on Andrew's behalf (posts, page copy, reading list, release notes):
-  [docs/voice.md](docs/voice.md). Never invent his experiences or opinions; leave a `TODO(andrew):` placeholder for
-  what's needed.
+- Any prose for the site or on Andrew's behalf (posts, page copy, reading list, release notes): the `site-voice` skill,
+  [.claude/skills/site-voice/SKILL.md](.claude/skills/site-voice/SKILL.md). Never invent his experiences or opinions;
+  leave a `TODO(andrew):` placeholder for what's needed.
 - The resume, homepage projects, CSS overrides, or page backgrounds: [docs/site.md](docs/site.md).

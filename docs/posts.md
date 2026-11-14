@@ -1,6 +1,6 @@
 # Writing posts
 
-Authoring conventions for `content/posts/`. For tone, see [voice.md](voice.md).
+Authoring conventions for `content/posts/`. For tone, use the `site-voice` skill (`.claude/skills/site-voice/SKILL.md`).
 
 ## Page bundles
 
