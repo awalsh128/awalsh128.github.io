@@ -13,7 +13,7 @@ how their team works. [More at Lykotek →](https://lykotek.com)
 
 - {{< project-icon "cache-apt-pkgs-action" >}} [**cache-apt-pkgs-action**](https://github.com/awalsh128/cache-apt-pkgs-action): Cache APT packages in GitHub Actions.
 - {{< project-icon "vscode-keep-sorted" >}} [**vscode-keep-sorted**](https://github.com/awalsh128/vscode-keep-sorted): VSCode linter extension for google/keep-sorted.
-- {{< project-icon "vscode-regex-explain" >}} [**vscode-regex-explain**](https://github.com/awalsh128/vscode-regex-explain): Explains regular expressions in plain English and warns about catastrophic backtracking.
+- {{< project-icon "vscode-regex-explain" >}} [**vscode-regex-explain**](https://github.com/awalsh128/vscode-regex-explain): Explains regular expressions in plain English and diagrams along with experimentation for modified test patterns and inputs.
 - {{< project-icon "PcapngFile" >}} [**PcapngFile**](https://github.com/awalsh128/PcapngFile): Reads PCAP Next Generation files and generates CLR objects from its data.
 - {{< project-icon "fluentcpp" >}} [**fluentcpp**](https://github.com/awalsh128/fluentcpp): Statically typed, fluent query functions for C++20 containers that are easy to discover through auto-complete.
 - {{< project-icon "gh-dev-powerpack" >}} [**gh-dev-powerpack**](https://github.com/awalsh128/gh-dev-powerpack): Powerpack for developing code and managing CI/CD.
