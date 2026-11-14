@@ -39,12 +39,11 @@ jobs:
         with:
           go-version-file: go.mod
           cache: false
-      - id: pages
-        uses: actions/configure-pages@v5
+      - uses: actions/configure-pages@v5
       - name: Build
         env:
           HUGO_ENVIRONMENT: production
-        run: hugo --gc --minify --baseURL "${{ steps.pages.outputs.base_url }}/"
+        run: hugo --gc --minify
       # Sign the scripts posts tell readers to download, so they can check a file came from this repo's build with
       # `gh attestation verify <file> --repo awalsh128/awalsh128.github.io`, independent of the site serving it.
       - name: Attest downloadable scripts
