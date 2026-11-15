@@ -77,7 +77,8 @@ timeZone = "America/Los_Angeles"
       { github = "https://github.com/awalsh128" },
       { linkedin = "https://www.linkedin.com/in/andrew-walsh-a235787/" },
       { resume = "/assets/text/resume.html" },
-      { sponsor = "https://github.com/sponsors/awalsh128" },
+      { youtube = "https://music.youtube.com/@neomnemonic" },
+      { sponsor ="https://github.com/sponsors/awalsh128" },
     ]
 
 [[languages.en.menus.main]]
