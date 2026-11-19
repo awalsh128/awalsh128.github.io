@@ -15,6 +15,17 @@ Instructions for AI agents (Claude Code, Codex, Copilot, Cursor, ...) working in
   the resume and stays in this repo.
 - Wrap Markdown at 120 columns.
 
+## Drafts stay private
+
+This repo is public, so unpublished posts never go in it, not even as `draft: true`, untracked files, or a stash.
+
+- Write drafts in the private repo `awalsh128/awalsh128.github.io.private` (cloned at
+  `../awalsh128.github.io.private`), under `_drafts/` with the same name a post would get here
+  (`_drafts/YYYY-MM-DD-slug/index.md` for a bundle). Commit them there.
+- If you find a draft in this repo, move it to the private repo and remove it here.
+- Bring a draft into `content/posts/` only when Andrew says it's ready to publish. Remove `draft: true` and any
+  agent prompt files (such as `agent.md`) and resolve every `TODO(andrew):` first, then delete it from the private repo.
+
 ## Read before you start
 
 - Writing or editing a post (bundles, links to other posts, code blocks, math, callouts, tags):
