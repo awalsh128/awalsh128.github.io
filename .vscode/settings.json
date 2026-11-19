@@ -12,5 +12,6 @@
     "editor.wordWrap": "wordWrapColumn",
     "editor.wordWrapColumn": 110
   },
-  "keep-sorted.enabled": false
+  "keep-sorted.enabled": false,
+  "workbench.externalBrowser": "brave",
 }
