@@ -13,7 +13,7 @@ scripts/setup_dev.sh
 ```
 
 It installs Hugo extended into `.tools/` (git-ignored) at the same version CI uses (`HUGO_VERSION` in
-`.github/workflows/hugo.yml`), enables the git hooks in `.githooks/`, and runs a test build.
+`.github/workflows/hugo.yml`), installs [Husky](https://typicode.github.io/husky/) to enable the git hooks in `.husky/`, and runs a test build.
 
 ## Local preview
 
@@ -33,7 +33,7 @@ It installs Hugo extended into `.tools/` (git-ignored) at the same version CI us
 | `assets/img/`       | Images processed by the theme (avatar, homepage background)     |
 | `assets/icons/`     | Custom icons; the file name is the author-link key and tooltip  |
 | `scripts/`          | Dev setup, resume export normalizer, and homepage projects sync |
-| `.githooks/`        | Pre-commit hook that syncs homepage projects with GitHub pins   |
+| `.husky/`           | Pre-commit hook (Husky): projects sync, resume PDF, archives    |
 | `hugo.toml`         | Site, theme, and menu configuration                             |
 
 Callouts use GitHub alert syntax (`> [!NOTE]`, `> [!WARNING]`, ...).
@@ -51,8 +51,8 @@ python3 scripts/resume_to_md.py exported.md --output - # preview
 
 ## Homepage projects
 
-The Projects list in `content/_index.md` mirrors the repositories pinned on
-[github.com/awalsh128](https://github.com/awalsh128), between the `projects:start` and `projects:end`
+The Projects list in `content/_index.md` is built from the `REPOS` list in `scripts/update_projects.py` (each entry is
+checked to exist) and rendered in a collapsed block between the `projects:start` and `projects:end`
 markers. A pre-commit hook regenerates it with `scripts/update_projects.py` (via an authenticated `gh` CLI)
 and stages the result. `scripts/setup_dev.sh` enables the hook. To preview the list without writing:
 

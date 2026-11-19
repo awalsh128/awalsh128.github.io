@@ -2,7 +2,7 @@
 # Set up a fresh clone for local development. Safe to re-run; finished steps are skipped.
 #
 # - Installs Hugo extended into .tools/ (git-ignored), pinned to the version CI uses.
-# - Enables the repository's git hooks (.githooks/).
+# - Installs Husky through npm, which enables the repository's git hooks (.husky/).
 # - Runs a test build, which downloads the Hugo theme module.
 #
 # Usage: scripts/setup_dev.sh
@@ -18,7 +18,7 @@ info() { echo "setup_dev: $*"; }
 fail() { echo "setup_dev: error: $*" >&2; exit 1; }
 
 # Prerequisites. Go is required by Hugo to fetch the theme module; gh is only needed by the pre-commit hook.
-for cmd in git go python3 curl tar; do
+for cmd in git go python3 curl tar node npm; do
   command -v "${cmd}" > /dev/null || fail "${cmd} is required but not installed."
 done
 if ! command -v gh > /dev/null; then
@@ -46,13 +46,9 @@ else
   curl -fsSL "${url}" | tar -xz -C "${tools_dir}" hugo
 fi
 
-# Git hooks.
-if [[ "$(git -C "${root}" config --local core.hooksPath || true)" == ".githooks" ]]; then
-  info "git hooks already enabled."
-else
-  git -C "${root}" config --local core.hooksPath .githooks
-  info "enabled git hooks (.githooks/)."
-fi
+# Git hooks: Husky's `prepare` script points core.hooksPath at .husky/_ during npm install.
+info "installing npm dependencies (enables the Husky git hooks)..."
+(cd "${root}" && npm install --no-audit --no-fund --silent)
 
 # Test build; the first build also downloads the theme module pinned in go.mod.
 info "running a test build (downloads the theme module on first run)..."

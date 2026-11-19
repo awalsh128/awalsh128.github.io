@@ -1,0 +1,11 @@
+{
+  "name": "awalsh128-github-io",
+  "private": true,
+  "description": "Tooling for awalsh128.com (git hooks only; the site itself is built with Hugo).",
+  "scripts": {
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7"
+  }
+}
