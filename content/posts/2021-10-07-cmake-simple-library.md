@@ -4,8 +4,6 @@ summary: "An example of a simple library using CMake."
 tags:
 - C++
 - Build Systems
-toc: true
-toc_icon: "columns"
 ---
 
 ## Motivation

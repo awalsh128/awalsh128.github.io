@@ -40,8 +40,8 @@ Callouts use GitHub alert syntax (`> [!NOTE]`, `> [!WARNING]`, ...).
 
 ## Resume
 
-`content/resume.md` is the resume page, published at `/assets/text/resume.html` and linked
-from the homepage icon (`resume` in `hugo.toml`, icon `assets/icons/resume.svg`, tooltip
+`content/resume.md` is the resume page, published at `/resume/` (the old `/assets/text/resume.html`
+redirects there) and linked from the homepage icon (`resume` in `hugo.toml`, icon `assets/icons/resume.svg`, tooltip
 "Resume"). To update it from a Google Doc markdown export:
 
 ```sh

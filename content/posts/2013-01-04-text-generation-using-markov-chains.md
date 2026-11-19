@@ -1,14 +1,10 @@
 ---
 title: Text generation using Markov chains.
 date: '2013-01-04T19:11:00.002-08:00'
-author: awalsh128
 tags:
 - Python
 - Algorithms
-modified_time: '2013-01-04T19:11:30.599-08:00'
-thumbnail: http://2.bp.blogspot.com/-_8ivI0g-2pY/UJsLfG04cRI/AAAAAAAADRU/HOFVAJKwYqc/s72-c/simple-automata.png
-blogger_id: tag:blogger.com,1999:blog-6363087137667886940.post-4038923617750448040
-blogger_orig_url: https://awalsh128.blogspot.com/2013/01/text-generation-using-markov-chains.html
+lastmod: '2013-01-04T19:11:30.599-08:00'
 ---
 
 ### Introduction

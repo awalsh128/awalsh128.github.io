@@ -1,6 +1,6 @@
 ---
 title: VSCode Keep Sorted Extension
-last_modified_at: 2026-10-22 00:00:01 -0700
+lastmod: 2026-10-22 00:00:01 -0700
 tags:
   - VS Code
   - TypeScript

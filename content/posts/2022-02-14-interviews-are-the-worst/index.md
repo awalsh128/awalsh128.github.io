@@ -1,6 +1,6 @@
 ---
 title: Interviews are the Worst
-last_modified_at: 2022-02-14 00:00:01 -0700
+lastmod: 2022-02-14 00:00:01 -0700
 tags:
 - Career
 ---

@@ -4,8 +4,6 @@ summary: "A GitHub action to cache APT packages for future workflow runs.."
 tags:
 - GitHub
 - Open Source
-toc: true
-toc_icon: "columns"
 ---
 
 I created a GitHub action [awalsh128/cache-apt-packages](https://github.com/marketplace/actions/cache-apt-packages) that allows caching of Advanced Package Tool (APT) package dependencies to improve workflow execution time instead of installing the packages on every run.

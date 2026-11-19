@@ -1,13 +1,10 @@
 ---
 title: Get Windows Service name from executable in PowerShell.
 date: '2015-04-20T22:50:00.002-07:00'
-author: awalsh128
 tags:
 - PowerShell
 - System Administration
-modified_time: '2015-04-20T22:53:20.126-07:00'
-blogger_id: tag:blogger.com,1999:blog-6363087137667886940.post-1860596437713208243
-blogger_orig_url: https://awalsh128.blogspot.com/2015/04/get-windows-service-name-from.html
+lastmod: '2015-04-20T22:53:20.126-07:00'
 ---
 
 I was recently putting some PowerShell scripts together for deployment

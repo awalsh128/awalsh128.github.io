@@ -4,8 +4,6 @@ summary: "Create a testing harness for your created GitHub Actions."
 tags:
 - GitHub
 - Testing
-toc: true
-toc_icon: "columns"
 ---
 
 GitHub actions don't support running tests on created actions from the same repository. In order to do this, another repository needs to be created. There is a way to test locally using [nektos/act](https://github.com/nektos/act) but this doesn't address code being committed upstream and continuously integrated. Let's get to it.

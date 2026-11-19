@@ -15,7 +15,7 @@ set -euo pipefail
 . "$(dirname "$0")/common.sh"
 hugo="${root}/.tools/hugo"
 output="${1:-${root}/content/resume.pdf}"
-page="assets/text/resume.html"
+page="resume/index.html"
 
 [[ -x "${hugo}" ]] || fail "Hugo not found at ${hugo}; run scripts/setup_dev.sh."
 

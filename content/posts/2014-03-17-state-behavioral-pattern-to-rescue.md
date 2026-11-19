@@ -1,15 +1,11 @@
 ---
 title: State behavioral pattern to the rescue.
 date: '2014-03-17T22:27:00.000-07:00'
-author: awalsh128
 tags:
 - C#
 - .NET
 - Software Design
-modified_time: '2014-03-20T10:45:31.364-07:00'
-thumbnail: http://2.bp.blogspot.com/-3UkWChCOHY4/UyWBnlNbLGI/AAAAAAAAg5Y/mqhF-oDM7qs/s72-c/requestresponse-states.png
-blogger_id: tag:blogger.com,1999:blog-6363087137667886940.post-8182782051494253614
-blogger_orig_url: https://awalsh128.blogspot.com/2014/03/state-behavioral-pattern-to-rescue.html
+lastmod: '2014-03-20T10:45:31.364-07:00'
 ---
 
 ### The Creeping Problem

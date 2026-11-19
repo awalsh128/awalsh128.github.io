@@ -1,10 +1,9 @@
 ---
 title: Toggling Bluetooth on Linux Login Status
 date: "2026-11-04T00:00:00.000-07:00"
-author: awalsh128
 tags:
   - Linux
-modified_time: "2026-11-04T00:00:00.000-07:00"
+lastmod: "2026-11-04T00:00:00.000-07:00"
 summary: "Automate a way to turn off Bluetooth on logout and turn back on for login."
 ---
 

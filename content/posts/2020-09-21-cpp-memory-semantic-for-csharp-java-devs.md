@@ -3,10 +3,8 @@ title: C++ Memory Semantics for C# and Java Devs
 date: '2020-10-15T00:00:00.000-07:00'
 tags:
 - C++
-modified_time: '2020-10-15T00:00:00.000-07:00'
+lastmod: '2020-10-15T00:00:00.000-07:00'
 summary: "Understanding how memory semantics works in C++ from the perspective of a C# or Java dev."
-toc: true
-toc_icon: "columns"
 ---
 
 When I first started using C++, I was really confused as to how to pass things around and reason about best practices for memory. In C#, primitives were passed by value and all else by memory reference (ignoring nuance). C++ was a whole new world of aliases, pointers, smart pointers, [r/l]value references, forwarding, moves, etc.

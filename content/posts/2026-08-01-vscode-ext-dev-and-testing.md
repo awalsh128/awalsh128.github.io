@@ -1,12 +1,11 @@
 ---
 title: Testing framework for VSCode extension development
 date: "2026-08-01T09:38:00.000-07:00"
-author: awalsh128
 tags:
   - VS Code
   - TypeScript
   - Testing
-modified_time: "2026-08-01T16:28:39.199-07:00"
+lastmod: "2026-08-01T16:28:39.199-07:00"
 ---
 
 I created a VSCode extension recently ([awalsh128/vscode-keep-sorted](https://github.com/awalsh128/vscode-keep-sorted))

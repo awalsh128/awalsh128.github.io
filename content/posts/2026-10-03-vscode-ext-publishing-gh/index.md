@@ -1,6 +1,6 @@
 ---
 title: Publishing a VS Code Extension from GitHub
-last_modified_at: 2026-10-03 00:00:01 -0700
+lastmod: 2026-10-03 00:00:01 -0700
 tags:
   # keep-sorted start
   - GitHub

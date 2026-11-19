@@ -1,8 +1,8 @@
 ---
 title: Andrew Walsh - Resume
-url: /assets/text/resume.html
+# The Jekyll site served the resume at /assets/text/resume.html; keep that link working as a redirect.
 aliases:
-  - /resume
+  - /assets/text/resume.html
 layout: resume
 showDate: false
 showDateUpdated: false

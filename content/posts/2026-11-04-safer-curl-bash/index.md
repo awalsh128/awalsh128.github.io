@@ -1,11 +1,10 @@
 ---
 title: "A Safer curl | bash"
 date: "2026-11-04T00:00:00.000-07:00"
-author: awalsh128
 tags:
   - Security
   - System Administration
-modified_time: "2026-11-04T00:00:00.000-07:00"
+lastmod: "2026-11-04T00:00:00.000-07:00"
 summary: "Download a script, check its SHA-256, and only then run it, using tools you already have."
 ---
 

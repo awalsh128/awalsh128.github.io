@@ -25,7 +25,7 @@ timeZone = "America/Los_Angeles"
 
 [frontmatter]
   date = [":filename", ":default"]
-  lastmod = ["lastmod", "last_modified_at", "modified_time", ":default"]
+  lastmod = ["lastmod", ":default"]
 
 [services.disqus]
   shortname = "andrew-walshs-website"
@@ -76,7 +76,7 @@ timeZone = "America/Los_Angeles"
     links = [
       { github = "https://github.com/awalsh128" },
       { linkedin = "https://www.linkedin.com/in/andrew-walsh-a235787/" },
-      { resume = "/assets/text/resume.html" },
+      { resume = "/resume/" },
       { youtube = "https://music.youtube.com/@neomnemonic" },
       { sponsor ="https://github.com/sponsors/awalsh128" },
     ]

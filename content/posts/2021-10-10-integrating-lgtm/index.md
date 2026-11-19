@@ -1,12 +1,10 @@
 ---
 title: Code Analysis for GitHub Projects
 summary: "Integrate your GitHub projects with a code analysis tool."
-last_modified_at: 2021-10-10 00:00:01 -0700
+lastmod: 2021-10-10 00:00:01 -0700
 tags:
 - GitHub
 - Static Analysis
-toc: true
-toc_icon: "columns"
 ---
 
 LGTM is a nice little integration for your GitHub projects that performs code analysis and alerts if any violations are found. And example of what an alert screen looks like on the LGTM site below (using my fluentcpp project as a demonstration).

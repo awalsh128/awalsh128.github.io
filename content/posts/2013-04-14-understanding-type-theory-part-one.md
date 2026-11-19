@@ -1,12 +1,9 @@
 ---
 title: 'Understanding type theory (Part one: Lambda Calculus).'
 date: '2013-04-14T20:57:00.002-07:00'
-author: awalsh128
 tags:
 - Computer Science
-modified_time: '2013-04-14T20:57:11.382-07:00'
-blogger_id: tag:blogger.com,1999:blog-6363087137667886940.post-3949893894537893082
-blogger_orig_url: https://awalsh128.blogspot.com/2013/04/understanding-type-theory-part-one.html
+lastmod: '2013-04-14T20:57:11.382-07:00'
 ---
 
 ### Series Introduction

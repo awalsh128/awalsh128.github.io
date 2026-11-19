@@ -2,6 +2,13 @@
 
 Authoring conventions for `content/posts/`. For tone, use the `site-voice` skill (`.claude/skills/site-voice/SKILL.md`).
 
+## Front matter
+
+Use Hugo and Blowfish keys only: `title`, `summary`, `tags`, and `lastmod` for the last meaningful update. The date comes
+from the file or folder name, so a `date` key is optional and doesn't override it. Leave out keys from the old Jekyll
+and Blogger site (`author`, `toc`, `toc_icon`, `thumbnail`, `modified_time`, `last_modified_at`, `blogger_*`);
+nothing reads them. The table of contents is on for every post via `showTableOfContents` in `hugo.toml`.
+
 ## Page bundles
 
 A post with its own images is a page bundle instead of a single file: `content/posts/YYYY-MM-DD-slug/index.md` with the

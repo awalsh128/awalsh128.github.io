@@ -6,8 +6,6 @@ tags:
 - .NET
 - Entity Framework
 - Databases
-blogger_id: tag:blogger.com,1999:blog-6363087137667886940.post-3538605715683731614
-blogger_orig_url: https://awalsh128.blogspot.com/2011/10/ef-41-code-first-many-one-to-one.html
 ---
 
 I just started using the Entity Framework recently to employ persistence
