@@ -10,9 +10,9 @@ Instructions for AI agents (Claude Code, Codex, Copilot, Cursor, ...) working in
 - Posts are `content/posts/YYYY-MM-DD-slug.md`; the filename sets the date and the `/slug/` URL. Don't rename
   existing posts, since that breaks published URLs and Disqus threads.
 - Post images go in a page bundle (`content/posts/YYYY-MM-DD-slug/index.md`), never under `static/`.
-- Generated files are never edited by hand: the project list in `content/_index.md`, `content/resume.pdf`,
-  `data/linkedin_recommendations.json`, and `.tar.gz` bundle archives. `content/resume.md` is the single source of
-  the resume and stays in this repo.
+- Generated files are never edited by hand: the project list in `content/_index.md`, the library list in
+  `content/api.md`, `content/resume.pdf`, `data/linkedin_recommendations.json`, and `.tar.gz` bundle archives.
+  `content/resume.md` is the single source of the resume and stays in this repo.
 - Wrap Markdown at 120 columns.
 
 ## Drafts stay private

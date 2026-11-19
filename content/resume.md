@@ -92,7 +92,9 @@ _Five teams spanning infrastructure, privacy, and trust & safety._
 - Built and maintained a self-service anti-abuse platform that fraud, copyright, legal, and regulatory compliance teams used to act on all YouTube content.
 - Partnered with policy stakeholders to translate abuse policy into enforcement workflows.
 
-### Xignite (financial market data APIs) — Senior Software Engineer
+### Xignite — Senior Software Engineer
+
+_Financial market data cloud based APIs for all financial instruments._
 
 San Mateo, CA | 2012 – 2017
 
@@ -103,6 +105,8 @@ San Mateo, CA | 2012 – 2017
 - Designed a REST API framework that decoupled front-end and back-end development, shortening release cycles.
 
 ### Vibrant Technology — Software Engineer
+
+_Structural and mechanical engineering analysis application from FEA to modal analysis and machine monitoring._
 
 Scotts Valley, CA | 2008 – 2012
 

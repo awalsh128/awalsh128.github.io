@@ -1,8 +1,9 @@
 #!/usr/bin/env sh
 # 1. Sync the homepage project list and project logos with the REPOS list in update_projects.py.
-# 2. Refresh the resume page's LinkedIn recommendations from the newest LinkedIn data export in ~/Downloads.
-# 3. Regenerate content/resume.pdf when the resume changes.
-# 4. Rebuild post download archives (e.g. scaffold.tar.gz) when the folder they're built from changes.
+# 2. Sync the API page with the repositories that publish API docs (scripts/update_apis.py).
+# 3. Refresh the resume page's LinkedIn recommendations from the newest LinkedIn data export in ~/Downloads.
+# 4. Regenerate content/resume.pdf when the resume changes.
+# 5. Rebuild post download archives (e.g. scaffold.tar.gz) when the folder they're built from changes.
 # Run by Husky; `npm install` (or scripts/setup_dev.sh) enables it once per clone.
 
 root="$(git rev-parse --show-toplevel)"
@@ -15,6 +16,15 @@ elif [ -n "$(git -C "${root}" status --porcelain -- "${index}" "${logos}")" ]; t
   # -A also stages logos removed for repositories no longer in REPOS.
   git -C "${root}" add -A -- "${index}" "${logos}"
   echo "pre-commit: staged updated ${index} and ${logos}/." >&2
+fi
+
+# Sync the API page with the repositories that publish API docs under awalsh128.com/<repo>/.
+apis="content/api.md"
+if ! python3 "${root}/scripts/update_apis.py"; then
+  echo "pre-commit: skipping API page sync; commit continues with the existing list." >&2
+elif [ -n "$(git -C "${root}" status --porcelain -- "${apis}")" ]; then
+  git -C "${root}" add -- "${apis}"
+  echo "pre-commit: staged updated ${apis}." >&2
 fi
 
 # Refresh the LinkedIn recommendations shown on the resume page (not in the PDF). Without an export it changes nothing.
