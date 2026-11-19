@@ -1,9 +1,10 @@
 #!/usr/bin/env sh
 # 1. Sync the homepage project list and project logos with the REPOS list in update_projects.py.
 # 2. Sync the API page with the repositories that publish API docs (scripts/update_apis.py).
-# 3. Refresh the resume page's LinkedIn recommendations from the newest LinkedIn data export in ~/Downloads.
-# 4. Regenerate content/resume.pdf when the resume changes.
-# 5. Rebuild post download archives (e.g. scaffold.tar.gz) when the folder they're built from changes.
+# 3. Refresh the homepage's popular posts from Google Search Console (scripts/update_popular_posts.py).
+# 4. Refresh the resume page's LinkedIn recommendations from the newest LinkedIn data export in ~/Downloads.
+# 5. Regenerate content/resume.pdf when the resume changes.
+# 6. Rebuild post download archives (e.g. scaffold.tar.gz) when the folder they're built from changes.
 # Run by Husky; `npm install` (or scripts/setup_dev.sh) enables it once per clone.
 
 . "$(dirname "$0")/../scripts/common.sh"
@@ -25,6 +26,8 @@ sync_and_stage() {
 
 sync_and_stage "homepage projects" update_projects.py content/_index.md assets/img/projects
 sync_and_stage "API page" update_apis.py content/api.md
+# Search clicks that rank the homepage's popular posts. Without a Search Console key it changes nothing.
+sync_and_stage "popular posts" update_popular_posts.py data/popular_posts.json
 # Recommendations show on the resume page (not in the PDF). Without a LinkedIn export it changes nothing.
 sync_and_stage "recommendations" update_recommendations.py data/linkedin_recommendations.json
 

@@ -9,6 +9,9 @@ from the file or folder name, so a `date` key is optional and doesn't override i
 and Blogger site (`author`, `toc`, `toc_icon`, `thumbnail`, `modified_time`, `last_modified_at`, `blogger_*`);
 nothing reads them. The table of contents is on for every post via `showTableOfContents` in `hugo.toml`.
 
+To pin a post to the top of the homepage Posts section, add `pinned: YYYY-MM-DD` with today's date; remove the line to
+unpin. AGENTS.md says when to review pins.
+
 ## Page bundles
 
 A post with its own images is a page bundle instead of a single file: `content/posts/YYYY-MM-DD-slug/index.md` with the
