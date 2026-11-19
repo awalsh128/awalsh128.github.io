@@ -28,9 +28,7 @@ Below is a great simplification of the actual project I worked on but I
 wanted to boil it down to its simplest form, eliminating excessive
 states that I have collapsed to the CreateResponse state.
 
-::: {.separator style="clear: both; text-align: center;"}
-[![](http://2.bp.blogspot.com/-3UkWChCOHY4/UyWBnlNbLGI/AAAAAAAAg5Y/mqhF-oDM7qs/s1600/requestresponse-states.png)](http://2.bp.blogspot.com/-3UkWChCOHY4/UyWBnlNbLGI/AAAAAAAAg5Y/mqhF-oDM7qs/s1600/requestresponse-states.png)
-:::
+![](requestresponse-states.png)
 
 In my original implementation, I modeled the requests as queued items
 (UserRequest) that I would dequeue and start work on.
@@ -205,9 +203,7 @@ mind). Maybe there was a solution in there. I can\'t be the first one to
 come across this simple design problem. So there I found it in the
 [State design pattern](http://en.wikipedia.org/wiki/State_pattern).
 
-::: {.separator style="clear: both; text-align: center;"}
 [![](http://upload.wikimedia.org/wikipedia/commons/e/e8/State_Design_Pattern_UML_Class_Diagram.svg)](http://upload.wikimedia.org/wikipedia/commons/e/e8/State_Design_Pattern_UML_Class_Diagram.svg)
-:::
 
 The design is pretty simple. You have a context that is used by the end
 user, and the states themselves wrapped by the context. The context can

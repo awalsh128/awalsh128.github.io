@@ -20,20 +20,14 @@ made](http://xkcd.com/627/). An example could be a room with a light
 switch; there are the two states of having the light on or off. Using
 the light switch will transition you between the two states.
 
-::: {.separator style="clear: both; text-align: center;"}
-[![](http://2.bp.blogspot.com/-_8ivI0g-2pY/UJsLfG04cRI/AAAAAAAADRU/HOFVAJKwYqc/s400/simple-automata.png){width="400"
-height="183"}](http://2.bp.blogspot.com/-_8ivI0g-2pY/UJsLfG04cRI/AAAAAAAADRU/HOFVAJKwYqc/s1600/simple-automata.png)
-:::
+![](simple-automata.png)
 
 The difference between standard finite automata and Markov chains is
 that instead of having some definite outcome determining each path (eg.
 yes or no), they are probabilities. Take for example a coin flip, there
 is a 50% (0.5) chance that it could either be heads or tails.
 
-::: {.separator style="clear: both; text-align: center;"}
-[![](http://4.bp.blogspot.com/-At-x9TP5t44/UJsLwCzq81I/AAAAAAAADRg/IFNPH1QKU8U/s400/simple-markov.png){width="400"
-height="259"}](http://4.bp.blogspot.com/-At-x9TP5t44/UJsLwCzq81I/AAAAAAAADRg/IFNPH1QKU8U/s1600/simple-markov.png)
-:::
+![](simple-markov.png)
 
 ### An Example
 
@@ -45,10 +39,7 @@ languages and take a look at some sample text that will form the
 
 This would render a Markov chain as follows:
 
-::: {.separator style="clear: both; text-align: center;"}
-[![](http://2.bp.blogspot.com/-U2fyhOJ7bN8/UJsL23oh3zI/AAAAAAAADRs/wZNWvVR-Jco/s400/text-markov.png){width="400"
-height="345"}](http://2.bp.blogspot.com/-U2fyhOJ7bN8/UJsL23oh3zI/AAAAAAAADRs/wZNWvVR-Jco/s1600/text-markov.png)
-:::
+![](text-markov.png)
 
 The above chain means that, among the sentences:
 

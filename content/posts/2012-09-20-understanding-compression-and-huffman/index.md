@@ -181,19 +181,16 @@ algorithm on it:
 
 1.  Initial queue state with only symbol nodes in it.\
     \
-    [![](http://1.bp.blogspot.com/-tNufJh6DCtU/UFpln-nBHlI/AAAAAAAAA-s/DvbFZSnJj8Q/s400/step1.png){width="267"
-    height="53"}](http://1.bp.blogspot.com/-tNufJh6DCtU/UFpln-nBHlI/AAAAAAAAA-s/DvbFZSnJj8Q/s1600/step1.png)\
+    ![](step1.png)\
     \
 2.  New node created from first two symbol nodes and requeued.\
     \
-    [![](http://3.bp.blogspot.com/-LvjqXh94MWs/UFpl46DDISI/AAAAAAAAA-0/RClE4osgnT8/s400/step2.png){width="237"
-    height="127"}](http://3.bp.blogspot.com/-LvjqXh94MWs/UFpl46DDISI/AAAAAAAAA-0/RClE4osgnT8/s1600/step2.png)\
+    ![](step2.png)\
     \
 3.  New node created from non-symbol and symbol node, becoming the
     tree\'s root node.\
     \
-    [![](http://3.bp.blogspot.com/-kEZIkB0I3j4/UFppgkVAZ5I/AAAAAAAAA_U/sUkTAoWd0gk/s400/step3.png){width="280"
-    height="204"}](http://3.bp.blogspot.com/-kEZIkB0I3j4/UFppgkVAZ5I/AAAAAAAAA_U/sUkTAoWd0gk/s1600/step3.png)\
+    ![](step3.png)\
     \
 4.  The final alphabet to codeword mapping is:\
     \

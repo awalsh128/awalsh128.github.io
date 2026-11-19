@@ -52,10 +52,7 @@ byte aligned to your output bits. You just need to simply mask out the
 unneeded bits and buffer them for the next read (eg. no bits buffered,
 12 bits requested, 16 bits read in, 4 bits buffered).
 
-::: {.separator style="clear: both; text-align: center;"}
-[![](http://4.bp.blogspot.com/--oQWBFnoeZs/UFIbvaS6dvI/AAAAAAAAA94/0sDK-D0rhWw/s400/bits1.png){width="400"
-height="42"}](http://4.bp.blogspot.com/--oQWBFnoeZs/UFIbvaS6dvI/AAAAAAAAA94/0sDK-D0rhWw/s1600/bits1.png)
-:::
+![](bits1.png)
 
 **Populated Buffer**: The can get a little trickier, especially in the
 last two cases of this.
@@ -69,18 +66,13 @@ last two cases of this.
     out the unneeded bits, put them in the buffer and then append the
     additional unneeded read bits from the next byte block (eg. 4 bits
     buffered, 13 bits requested, 16 bits read in, 8 bits buffered).
-    ::: {.separator style="clear: both; text-align: center;"}
-    [![](http://2.bp.blogspot.com/-wCITShIYyBg/UFIcK77GIzI/AAAAAAAAA-E/IbYkzeHHiQw/s400/bits2-2.png)](http://2.bp.blogspot.com/-wCITShIYyBg/UFIcK77GIzI/AAAAAAAAA-E/IbYkzeHHiQw/s400/bits2-2.png)
-    :::
+    ![](bits2-2.png)
 
 3.  **Not all requested bits buffered; end of read bits in same byte
     block as end of output bits.** The last output byte block must mask
     out the unneeded bits and put them in the buffer (eg. 4 bits
     buffered, 10 bits requested, 8 bits read in, 2 bits buffered).
-    ::: {.separator style="clear: both; text-align: center;"}
-    [![](http://1.bp.blogspot.com/-yZcVwLBuEts/UFIcRFPoL3I/AAAAAAAAA-Q/xJAcG1Zv73M/s400/bits2-3.png){width="400"
-    height="42"}](http://1.bp.blogspot.com/-yZcVwLBuEts/UFIcRFPoL3I/AAAAAAAAA-Q/xJAcG1Zv73M/s1600/bits2-3.png)
-    :::
+    ![](bits2-3.png)
 
 Writer
 ------

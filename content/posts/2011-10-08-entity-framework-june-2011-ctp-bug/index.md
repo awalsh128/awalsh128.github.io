@@ -12,10 +12,7 @@ enum support but ran into a bug along the way that reported an error
 while processing the template.\
 \
 
-::: {.separator style="clear: both; text-align: center;"}
-[![](http://3.bp.blogspot.com/-0DqQltTWwFQ/TpDnAfXrk9I/AAAAAAAAAks/MprJzZRNH2Y/s400/entityfail.png){width="400"
-height="390"}](http://3.bp.blogspot.com/-0DqQltTWwFQ/TpDnAfXrk9I/AAAAAAAAAks/MprJzZRNH2Y/s1600/entityfail.png)
-:::
+![](entityfail.png)
 
 \
 I encountered this error while trying to run an Entity based project

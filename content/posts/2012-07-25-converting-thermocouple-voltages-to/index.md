@@ -51,10 +51,7 @@ Given some ordered set of coefficients, *D*, and a voltages value, *v*,
 let the voltage to celcius conversion be defined as a function of *v* as
 follows.
 
-::: {.separator style="clear: both; text-align: center;"}
-[![](http://1.bp.blogspot.com/-gaacEByTnvA/UBBLzb9lfWI/AAAAAAAAA8k/vigwBYw-Pas/s400/ktype.gif){width="56"
-height="56"}](http://1.bp.blogspot.com/-gaacEByTnvA/UBBLzb9lfWI/AAAAAAAAA8k/vigwBYw-Pas/s1600/ktype.gif)
-:::
+![](ktype.gif)
 
 *D* is dependent on the voltage value being evaluated:
 
@@ -75,10 +72,7 @@ Given some ordered set of coefficients, *C*, an ordered set of
 exponentials, *A*, and a celcius value, *x*, let the celcius to voltage
 conversion be defined as a function of *x* as follows.
 
-::: {.separator style="clear: both; text-align: center;"}
-[![](http://4.bp.blogspot.com/-KxsCdsIpbCg/UBBQYlp3s5I/AAAAAAAAA80/hdsuZgJaktQ/s400/ktype-ctov.gif){width="182"
-height="56"}](http://4.bp.blogspot.com/-KxsCdsIpbCg/UBBQYlp3s5I/AAAAAAAAA80/hdsuZgJaktQ/s1600/ktype-ctov.gif)
-:::
+![](ktype-ctov.gif)
 
 *C* is dependent on the celius value being evaluated:
 

@@ -35,15 +35,11 @@ dependency or deadlock.~~
 
 The call stack for the UI thread. Note the wait call.
 
-::: {.separator style="clear: both; text-align: center;"}
-[![](http://3.bp.blogspot.com/-frk5kVor7dU/TvIrjJ_uxeI/AAAAAAAAAuA/8xswKGeSKg0/s400/uithread.png)](http://3.bp.blogspot.com/-frk5kVor7dU/TvIrjJ_uxeI/AAAAAAAAAuA/8xswKGeSKg0/s1600/uithread.png)
-:::
+![](uithread.png)
 
 The call stack for the data thread.
 
-::: {.separator style="clear: both; text-align: center;"}
-[![](http://3.bp.blogspot.com/-_CPhXd1Z3VQ/TvIr0eLxl9I/AAAAAAAAAuM/mneSJNQZZvs/s400/workerthread.png)](http://3.bp.blogspot.com/-_CPhXd1Z3VQ/TvIr0eLxl9I/AAAAAAAAAuM/mneSJNQZZvs/s1600/workerthread.png)
-:::
+![](workerthread.png)
 
 Deadlock Scenario
 -----------------
