@@ -73,22 +73,18 @@ be a much better standard due to better localization support and
 variable width codes, ASCII serves our purposes for this discussion.
 ASCII is considered a fixed width coding scheme:
 
-::: {align="center"}
-$\Sigma = \{a-z,A-Z,0-9,...\},\;\; C = 0\{0,1\}^7,\;\;|C| = 2^7 = 128$
-:::
+$$\Sigma = \{a-z,A-Z,0-9,...\},\;\; C = 0\{0,1\}^7,\;\;|C| = 2^7 = 128$$
 
 When performance is at stake, it is best to code information atomically
 aligned to the computer architecture that it is being used for. This
 means allocating and defining information in terms of bytes (defined as
 8-bits) for the majority of systems today. Although, if space is the
 priority, performance can take a hit [to shift around
-bits](http://awalsh128.blogspot.com/2012/09/implementing-bit-readerwriter-in-c.html)
+bits](/posts/2012-09-13-implementing-bit-readerwriter-in-c)
 along the byte boundaries and create variable width codes that do not
 byte align.
 
-::: {align="center"}
-$\Sigma = \{a-z,A-Z,0-9,...\},\;\; C = \{0,1\}^+,\;\;|C| \leq n$
-:::
+$$\Sigma = \{a-z,A-Z,0-9,...\},\;\; C = \{0,1\}^+,\;\;|C| \leq n$$
 
 *Note*: The ellipses in the alphabet denote the control characters (eg.
 CR, LB) and grammatical structure symbols (eg. \#, \$, %) contained in
@@ -104,18 +100,14 @@ like \"aaabb\", it will take up 5 bytes. Although we only really need
 one bit to encode our information if we assign 0 to \'a\' and 1 to
 \'b\'.
 
-::: {align="center"}
-$\Sigma = \{a,b\} \rightarrow C = \{0,1\},\;\; w = aaabb,\;\; f(C,w) = 00011$
-:::
+$$\Sigma = \{a,b\} \rightarrow C = \{0,1\},\;\; w = aaabb,\;\; f(C,w) = 00011$$
 
 We just took a 5 byte ASCII encoded string and compressed it down to
 under a byte. Now let us take another string, w, and give it
 \"aaabbcc\". Three alphabet symbols need to be coded; it will take at
 least 2 bits. At first glance, this assignment would make sense:
 
-::: {align="center"}
-$\Sigma = \{a,b,c\} \rightarrow C = \{0,1,01\},\;\; w = aaabbcc,\;\; w(C) = 000110101$
-:::
+$$\Sigma = \{a,b,c\} \rightarrow C = \{0,1,01\},\;\; w = aaabbcc,\;\; w(C) = 000110101$$
 
 Although this gives us an ambiguous string since it could either be
 \"aaabbcc\", \"aaabbabab\", \"aacbcc\" or any other permutation of our
@@ -130,9 +122,7 @@ The way to get around this ambiguity is to ensure that all of your codes
 are [prefix type](http://en.wikipedia.org/wiki/Prefix_code). Something
 like this would work:
 
-::: {align="center"}
-$\Sigma = \{a,b,c\} \rightarrow C = \{0,10,11\},\;\; w = aaabbcc,\;\; w(C) = 00010101111$
-:::
+$$\Sigma = \{a,b,c\} \rightarrow C = \{0,10,11\},\;\; w = aaabbcc,\;\; w(C) = 00010101111$$
 
 This ensures that we maintain the one-to-one mapping between our
 alphabet and codewords; we can translate alphabet symbols to codewords

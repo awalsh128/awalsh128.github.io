@@ -45,19 +45,13 @@ later for learning type systems.
 
 Let\'s look at a function that returns the square of its input:
 
-::: {align="center"}
 $$ f(x) = x^2 $$
-:::
 
-::: {align="center"}
 `int f(int x) { return x * x; }`
-:::
 
 In lambda calculus, we can represent it as:
 
-::: {align="center"}
 $$ \lambda x.*x\;x $$
-:::
 
 Let\'s break this down into its parts and start defining those pieces.
 
@@ -92,9 +86,7 @@ function](http://en.wikipedia.org/wiki/Anonymous_function) comes from.
 We took a named function (f) and anonymized it. Now let\'s try defining
 the function without loss of information.
 
-::: {align="center"}
 $$ f \equiv \lambda x.*x\;x $$
-:::
 
 It can sometimes be taken for granted in programming that a function
 name is just another type of variable. The above example makes that
@@ -105,9 +97,7 @@ considered good convention in lambda calculus. Terms are normally bound
 to a capitalized letter in these situations; it would be better form to
 call it F instead.
 
-::: {align="center"}
 $$ F \equiv \lambda x.*x\;x $$
-:::
 
 That\'s better. What about function pointers? How would they be
 expressed in the lambda calculus? Let\'s define some function pointer
@@ -126,9 +116,7 @@ int main(void)
 
 This is generally equivalent to:
 
-::: {align="center"}
 $$ G \equiv \lambda g.g\;\land\;F \equiv \lambda x.*x\;x\;:\;GF2 = 4 $$
-:::
 
 I could have written our $GF2$
 term as $G(F(2))$ but
@@ -138,9 +126,7 @@ applied to G and then 2 is applied to that. Having these semantics
 eliminates the need for excessive parentheses. Now let\'s break down the
 application of the terms in steps.
 
-::: {align="center"}
 $$ \begin{align*} GF2&\;\;\;\text{Given}\\ \lambda g.g(\lambda x.*x\;x)2&\;\;\;\text{Resolve F and G}\\ (\lambda x.*x\;x)2&\;\;\;\text{Apply F to G}\\ 4&\;\;\;\text{Apply 2 to GF} \end{align*} $$
-:::
 
 The first line is like the declares in our C program (line 1 and 2). The
 second line is akin to when we assign the address of the function F to G
@@ -202,15 +188,11 @@ beta-redex term is
 $\lambda x.*x\;x$.
 Let\'s try something with more terms and reduce it.
 
-::: {align="center"}
 $$ \begin{align*} &(\lambda w.w)((\lambda x.xx)(\lambda y.y))\\ &(\lambda w.w)((\lambda x.xx)[x := \lambda y.y])\\ &(\lambda w.w)((\lambda y.y)(\lambda y.y))\\ &(\lambda w.w)((\lambda y.y)[y := \lambda y.y])\\ &(\lambda w.w)\lambda y.y\\ &(\lambda w.w)[w := \lambda y.y]\\ &\lambda y.y\\ \end{align*} $$
-:::
 
 That normalized nicely. Let\'s do another one.
 
-::: {align="center"}
 $$ \begin{align*} &(\lambda x.xx)(\lambda y.yy)\\ &(\lambda x.xx)[x := \lambda y.yy]\\ &(\lambda y.yy)(\lambda y.yy)\\ &(\lambda y.yy)[y := \lambda y.yy]\\ &(\lambda y.yy)(\lambda y.yy)\\ &(\lambda y.yy)[y := \lambda y.yy]\\ &(\lambda y.yy)(\lambda y.yy)\\ &\ldots\\ \end{align*} $$
-:::
 
 This is a case where we could keep applying the terms ad-nauseum but
 that isn\'t needed because the repeating term is
@@ -218,9 +200,7 @@ $(\lambda y.yy)(\lambda y.yy)$,
 which is also our beta-redex term. So there is no need to go any
 further. Now let\'s do another example using free variables.
 
-::: {align="center"}
 $$ \begin{align*} &(\lambda x.x)(\lambda z.zz)(\lambda w.t)5\\ &(\lambda x.x)[x := \lambda z.zz](\lambda w.t)5\\ &(\lambda z.zz)(\lambda w.t)5\\ &(\lambda z.zz)[z := \lambda w.t]5\\ &(\lambda w.t)(\lambda w.t)5\\ &(\lambda w.t)[w := \lambda w.t]5\\ &(\lambda w.t)5\\ &(\lambda w.t)[w := 5]\\ &t \end{align*} $$
-:::
 
 I mentioned at the beginning I would give an example using free
 variables and here it is (ie. t). So what happened to 5? Well it was
@@ -248,28 +228,20 @@ start by defining some of these essentials in the lambda calculus.
 
 Let T be true and F be false:
 
-::: {align="center"}
 $$ \begin{aligned} &T \equiv \lambda x.\lambda y.x\\ &F \equiv \lambda x.\lambda y.y\\ \end{aligned} $$
-:::
 
 Now let\'s define some binary operations:
 
-::: {align="center"}
 $$ \begin{align*} &AND \equiv \lambda x.\lambda y.xyF\\ &OR \equiv \lambda x.\lambda y.xTy\\ &NOT \equiv \lambda x.xFT\\ \end{align*} $$
-:::
 
 To convince ourselves that these will give the desired results, let\'s
 start with AND:
 
-::: {align="center"}
 $$ \begin{align*} &AND\;T\;F\\ &(\lambda x.\lambda y.xyF)TF\\ &(\lambda x.\lambda y.xyF)[x := T]F\\ &(\lambda y.TyF)F\\ &(\lambda y.TyF)[x := F]\\ &TFF\\ &(\lambda x.\lambda y.x)FF\\ &(\lambda x.\lambda y.x)[x := F]F\\ &(\lambda x.\lambda y.F)F\\ &(\lambda x.\lambda y.F)[x := F]\\ &\lambda y.F\\ &F \end{align*} $$
-:::
 
 Then for good measure, let\'s do OR as well:
 
-::: {align="center"}
 $$ \begin{align*} &OR\;T\;F\\ &(\lambda x.\lambda y.xTy)TF\\ &(\lambda x.\lambda y.xTy)[x := T]F\\ &(\lambda x.\lambda y.TTy)F\\ &(\lambda x.\lambda y.TTy)[y := F]\\ &TTF\\ &(\lambda x.\lambda y.x)TF\\ &(\lambda x.\lambda y.x)[x := T]F\\ &(\lambda y.T)F\\ &(\lambda y.T)[y := F]\\ &T\\ \end{align*} $$
-:::
 
 Learning the untyped variant of lambda calculus is a good starting
 place, because we don\'t place any domain restrictions on our functions
