@@ -49,3 +49,13 @@ section.prose:has(> .home-projects) > p {
 .dark .home-projects .project-icon--fallback {
   color: rgb(var(--color-neutral-300));
 }
+
+/* The "Projects" heading is the <summary> of the collapsed list: keep the h2 look, inline beside the disclosure
+   marker, and show it's clickable. */
+.home-projects details > summary {
+  cursor: pointer;
+}
+
+.home-projects details > summary > h2 {
+  display: inline;
+}

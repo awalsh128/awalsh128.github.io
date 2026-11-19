@@ -5,7 +5,7 @@
 Each repository in REPOS is validated through the GitHub CLI (`gh`): it must exist
 and be reachable, otherwise the script fails. The bullet list between the projects
 markers in content/_index.md is then rewritten inside a collapsed <details> block,
-with a heading per group of REPOS.
+with the "Projects" heading as its toggle and a heading per group of REPOS.
 Each bullet starts with the project's icon (the `project-icon` shortcode), links
 the repository name to GitHub, and ends with the first sentence of its
 description.
@@ -40,14 +40,14 @@ REPOS = {
         "awalsh128/cache-apt-pkgs-action",
         "awalsh128/npm-publish-strict",
         "awalsh128/semantic-release-sentinel-app",
-        "awalsh128/gh-dev-powerpack",
     ],
     "Editor extensions": [
         "awalsh128/vscode-keep-sorted",
         "awalsh128/vscode-regex-explain",
     ],
-    "AI agents": [
+    "AI agents and templates": [
         "awalsh128/skills",
+        "awalsh128/gh-dev-powerpack",
     ],
     "Libraries": [
         "awalsh128/winston-host-adapters",
@@ -189,7 +189,9 @@ def render(groups: dict[str, list[dict]]) -> str:
     bullets = "\n".join(render_bullet(repo) for repo in repos)
     sections.append(f"### {group}\n\n{bullets}")
   body = "\n\n".join(sections)
-  return f"<details>\n<summary>Show projects</summary>\n\n{body}\n\n</details>"
+  # The section heading is the toggle itself, so the list collapses under a "Projects" h2 (styled in 20-home.css).
+  summary = '<summary><h2 id="projects">Projects</h2></summary>'
+  return f"<details>\n{summary}\n\n{body}\n\n</details>"
 
 
 def update(content: str, projects: str) -> str:
