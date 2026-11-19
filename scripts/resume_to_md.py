@@ -5,7 +5,7 @@
 Google's markdown export represents headings as bold paragraphs (unless the
 doc uses heading styles), uses `*` bullets with blank lines between them,
 aligns dates with tabs, and backslash-escapes punctuation. This script turns
-that into the semantic dialect read by markdown_to_html.py:
+that into the semantic headings assets/css/custom/40-resume.css styles:
 
   ## Section, ### Employer or role, #### Team, and tight `-` lists.
 
@@ -28,12 +28,6 @@ SECTIONS = {
     "publications", "awards",
 }
 EXPERIENCE_SECTIONS = {"professional experience", "experience"}
-
-
-def fetch(doc_path: str) -> str:
-    with open(doc_path, "r") as file:
-        content = file.read()
-    return content
 
 
 def clean(text: str) -> str:
@@ -123,32 +117,20 @@ def front_matter(path: Path) -> str:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument(
-        "mddoc_path", nargs="?",
-        help="Local file path to markdown file")
-    parser.add_argument(
-        "--input", type=Path,
-        help="normalize an already-exported markdown file instead of fetching")
+    parser.add_argument("input", type=Path, help="markdown file exported from the Google Doc")
     parser.add_argument(
         "--output", default=str(DEFAULT_OUTPUT),
         help="output path, or - for stdout (default: content/resume.md)")
     args = parser.parse_args()
 
-    if args.input:
-        markdown = args.input.read_text(encoding="utf-8")
-    elif args.mddoc_path:
-        markdown = fetch(args.mddoc_path)
-    else:
-        parser.error(
-            "pass a local markdown file path or use --input")
-
+    markdown = args.input.read_text(encoding="utf-8")
     output = re.sub(r"\A# [^\n]*\n+", "", normalize(markdown))
     if args.output == "-":
         sys.stdout.write(output)
     else:
         path = Path(args.output)
         path.write_text(front_matter(path) + output, encoding="utf-8")
-        print(f"Wrote {args.output}")
+        print(f"resume_to_md: wrote {args.output}", file=sys.stderr)
 
 
 if __name__ == "__main__":

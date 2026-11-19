@@ -10,13 +10,10 @@
 
 set -euo pipefail
 
-root="$(git rev-parse --show-toplevel)"
+. "$(dirname "$0")/common.sh"
 tools_dir="${root}/.tools"
 hugo="${tools_dir}/hugo"
 workflow="${root}/.github/workflows/hugo.yml"
-
-info() { echo "setup_dev: $*"; }
-fail() { echo "setup_dev: error: $*" >&2; exit 1; }
 
 # Prerequisites. Go is required by Hugo to fetch the theme module; gh is only needed by the pre-commit hook.
 for cmd in git go python3 curl tar node npm; do

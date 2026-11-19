@@ -6,46 +6,38 @@
 # 5. Rebuild post download archives (e.g. scaffold.tar.gz) when the folder they're built from changes.
 # Run by Husky; `npm install` (or scripts/setup_dev.sh) enables it once per clone.
 
-root="$(git rev-parse --show-toplevel)"
-index="content/_index.md"
-logos="assets/img/projects"
+. "$(dirname "$0")/../scripts/common.sh"
 
-if ! python3 "${root}/scripts/update_projects.py"; then
-  echo "pre-commit: skipping project sync; commit continues with the existing list." >&2
-elif [ -n "$(git -C "${root}" status --porcelain -- "${index}" "${logos}")" ]; then
-  # -A also stages logos removed for repositories no longer in REPOS.
-  git -C "${root}" add -A -- "${index}" "${logos}"
-  echo "pre-commit: staged updated ${index} and ${logos}/." >&2
-fi
+# sync_and_stage <what> <script> <path>...: run a sync script and stage the paths it changed. A failing script
+# (no gh, no network) only skips that sync; the commit continues with the existing files. -A also stages removed
+# files, such as logos of repositories no longer listed.
+sync_and_stage() {
+  what="$1"
+  script="$2"
+  shift 2
+  if ! python3 "${root}/scripts/${script}"; then
+    info "skipping ${what} sync; commit continues with the existing files."
+  elif [ -n "$(git -C "${root}" status --porcelain -- "$@")" ]; then
+    git -C "${root}" add -A -- "$@"
+    info "staged updated $*."
+  fi
+}
 
-# Sync the API page with the repositories that publish API docs under awalsh128.com/<repo>/.
-apis="content/api.md"
-if ! python3 "${root}/scripts/update_apis.py"; then
-  echo "pre-commit: skipping API page sync; commit continues with the existing list." >&2
-elif [ -n "$(git -C "${root}" status --porcelain -- "${apis}")" ]; then
-  git -C "${root}" add -- "${apis}"
-  echo "pre-commit: staged updated ${apis}." >&2
-fi
-
-# Refresh the LinkedIn recommendations shown on the resume page (not in the PDF). Without an export it changes nothing.
-recommendations="data/linkedin_recommendations.json"
-if ! python3 "${root}/scripts/update_recommendations.py"; then
-  echo "pre-commit: skipping recommendations sync; commit continues with the existing list." >&2
-elif [ -n "$(git -C "${root}" status --porcelain -- "${recommendations}")" ]; then
-  git -C "${root}" add -- "${recommendations}"
-  echo "pre-commit: staged updated ${recommendations}." >&2
-fi
+sync_and_stage "homepage projects" update_projects.py content/_index.md assets/img/projects
+sync_and_stage "API page" update_apis.py content/api.md
+# Recommendations show on the resume page (not in the PDF). Without a LinkedIn export it changes nothing.
+sync_and_stage "recommendations" update_recommendations.py data/linkedin_recommendations.json
 
 # Regenerate the PDF resume when its source, layout, or styling is part of the commit.
 # Renders the working tree, so stage the resume changes you want reflected in the PDF.
 pdf="content/resume.pdf"
-if git -C "${root}" diff --cached --quiet -- content/resume.md layouts/_default/resume.html assets/css/custom/; then
-  :
-elif "${root}/scripts/resume_to_pdf.sh"; then
-  git -C "${root}" add -- "${pdf}"
-  echo "pre-commit: staged regenerated ${pdf}." >&2
-else
-  echo "pre-commit: skipping PDF resume; commit continues with the existing ${pdf}." >&2
+if ! git -C "${root}" diff --cached --quiet -- content/resume.md layouts/_default/resume.html assets/css/custom/; then
+  if "${root}/scripts/resume_to_pdf.sh"; then
+    git -C "${root}" add -- "${pdf}"
+    info "staged regenerated ${pdf}."
+  else
+    info "skipping PDF resume; commit continues with the existing ${pdf}."
+  fi
 fi
 
 # Rebuild a post's download archive when files in the folder it's built from are part of the commit.
@@ -54,8 +46,8 @@ for archive in "${root}"/content/posts/*/*.tar.gz; do
   folder="${archive%.tar.gz}"
   rel="${archive#"${root}/"}"
   if [ -d "${folder}" ] && ! git -C "${root}" diff --cached --quiet -- "${folder}"; then
-    "${root}/scripts/pack_bundle_archives.sh" "${folder}" >/dev/null
+    "${root}/scripts/pack_bundle_archives.sh" "${folder}"
     git -C "${root}" add -- "${rel}"
-    echo "pre-commit: staged rebuilt ${rel}." >&2
+    info "staged rebuilt ${rel}."
   fi
 done

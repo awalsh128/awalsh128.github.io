@@ -10,26 +10,22 @@ Each bullet starts with the project's icon (the `project-icon` shortcode), links
 the repository name to GitHub, and ends with the first sentence of its
 description.
 
-Icons come from each repository's README: the first image that points at a file
-in the repository itself (badges and other external images are skipped) is
-downloaded to assets/img/projects/<repo>.<ext>. Logos of repositories that are
-not listed are removed. A repository without a README logo gets the shortcode's
-fallback icon.
+Icons are downloaded by project_logos.py: each repository's README logo, or the
+file named in LOGO_OVERRIDES.
 
 Exits non-zero when `gh` is missing or a repository is not found, so callers such
 as the pre-commit hook can decide whether that should block.
 """
 
-from urllib.parse import urlparse
-import urllib.request
-from pathlib import Path, PurePosixPath
+from pathlib import Path
 import argparse
-import base64
 import json
-import re
 import subprocess
 import sys
-from urllib.parse import urljoin
+
+from github_api import gh_api
+from generated_markdown import first_sentence, replace_between
+from project_logos import sync_logos
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT = ROOT_DIR / "content" / "_index.md"
@@ -56,8 +52,7 @@ REPOS = {
         "awalsh128/PcapngFile",
     ],
 }
-LOGO_DIR = ROOT_DIR / "assets" / "img" / "projects"
-LOGO_EXTENSIONS = {".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg"}
+# Repository name -> path of the logo file inside that repository, used instead of the README's first image.
 LOGO_OVERRIDES = {
     "fluentcpp": "assets/artwork/fluentcpp-initial-sm.png",
 }
@@ -71,11 +66,11 @@ def fetch_repos(slugs: list[str]) -> list[dict]:
   """Look up each repository, raising LookupError listing every one that does not exist."""
   repos, missing = [], []
   for slug in slugs:
-    result = subprocess.run(["gh", "api", f"repos/{slug}"], capture_output=True, text=True)
-    if result.returncode != 0:
-      missing.append(f"{slug} ({result.stderr.strip() or 'lookup failed'})")
+    try:
+      data = json.loads(gh_api(f"repos/{slug}"))
+    except subprocess.CalledProcessError as error:
+      missing.append(f"{slug} ({error.stderr.decode().strip() or 'lookup failed'})")
       continue
-    data = json.loads(result.stdout)
     repos.append(
         {
             "name": data["name"],
@@ -87,94 +82,6 @@ def fetch_repos(slugs: list[str]) -> list[dict]:
   if missing:
     raise LookupError("repositories not found: " + "; ".join(missing))
   return repos
-
-
-def gh_api(path: str, raw: bool = False) -> bytes:
-  command = ["gh", "api", path]
-  if raw:
-    command += ["-H", "Accept: application/vnd.github.raw"]
-  return subprocess.run(command, capture_output=True, check=True).stdout
-
-
-"""
-Patterns
-
-'<img src="logo.png">',
-'<img class="x" src = "logo.png">',
-'![alt](logo.png)',
-'![alt](<logo with spaces.png>)',
-'![alt](logo.png "My Title")',
-'![alt](<https://x.com/a.png> "T")',
-"""
-IMAGE_PATTERN = re.compile(
-    r"""<img\b[^>]*?\bsrc\s*=\s*["']([^"']+)["']"""
-    r"""|!\[[^\]]*\]\(\s*<?([^)\s>]+)>?(?:\s+["'][^"']*["'])?\s*\)""",
-    re.I,
-)
-
-
-def readme_logo_download_url(readme: str, readme_download_url: str) -> str | None:
-  """Download URL of the first image in the README, if any."""
-  for match in IMAGE_PATTERN.finditer(readme):
-    src = (match.group(1) or match.group(2)).split("#")[0].split("?")[0]
-    if not src or PurePosixPath(src).suffix.lower() not in LOGO_EXTENSIONS:
-      continue
-
-    if re.match(r"^[a-z][a-z0-9+.-]*:|^//", src, re.I):
-      # Only accept URLs from the same repo's raw host
-      repo_prefix = readme_download_url.rsplit("/", 2)[0]
-      if src.startswith(repo_prefix):
-        return src
-      continue
-
-    # Relative path — resolve against the repo base
-    base = readme_download_url.rsplit("/", 1)[0] + "/"
-    return urljoin(base, src)
-
-  return None
-
-
-def sync_logos(repos: list[dict], logo_dir: Path) -> None:
-  """Download each repository's README logo into logo_dir and remove logos of unlisted repositories."""
-  logo_dir.mkdir(parents=True, exist_ok=True)
-  keep = set()
-  for repo in repos:
-    name, slug = repo["name"], repo["nameWithOwner"]
-
-    if repo["name"] in LOGO_OVERRIDES:
-      keep.add(repo["name"] + PurePosixPath(LOGO_OVERRIDES[repo["name"]]).suffix.lower())
-      continue
-
-    try:
-      info = json.loads(gh_api(f"repos/{slug}/readme"))
-      readme = base64.b64decode(info["content"]).decode("utf-8", "replace")
-      url = readme_logo_download_url(readme, info["download_url"])
-      if not url:
-        continue
-      data = urllib.request.urlopen(url).read()
-    except (subprocess.CalledProcessError, KeyError, ValueError, OSError) as e:
-      print(f"update_projects: no logo for {slug}: {e}", file=sys.stderr)
-      continue
-
-    ext = PurePosixPath(urlparse(url).path).suffix.lower()
-    target = logo_dir / f"{name}{ext}"
-    keep.add(target.name)
-
-    if not target.exists() or target.read_bytes() != data:
-      target.write_bytes(data)
-      print(f"update_projects: updated {target.relative_to(ROOT_DIR)}", file=sys.stderr)
-
-  for stale in logo_dir.iterdir():
-    if stale.is_file() and stale.name not in keep:
-      stale.unlink()
-      print(f"update_projects: removed {stale.relative_to(ROOT_DIR)}", file=sys.stderr)
-
-
-def first_sentence(text: str) -> str:
-  text = " ".join((text or "").split())
-  match = re.match(r"(.+?[.!?])(\s|$)", text)
-  sentence = match.group(1) if match else text
-  return sentence if not sentence or sentence[-1] in ".!?" else sentence + "."
 
 
 def render_bullet(repo: dict) -> str:
@@ -189,17 +96,9 @@ def render(groups: dict[str, list[dict]]) -> str:
     bullets = "\n".join(render_bullet(repo) for repo in repos)
     sections.append(f"### {group}\n\n{bullets}")
   body = "\n\n".join(sections)
-  # The section heading is the toggle itself, so the list collapses under a "My Open Source Projects" h2 (styled in
-  # 20-home.css).
+  # The section heading is the toggle, so the list collapses under it (styled in assets/css/custom/20-home.css).
   summary = '<summary><h2 id="projects">My Open Source Projects</h2></summary>'
   return f"<details>\n{summary}\n\n{body}\n\n</details>"
-
-
-def update(content: str, projects: str) -> str:
-  pattern = re.compile(re.escape(START_MARKER) + r".*?" + re.escape(END_MARKER), re.S)
-  if not pattern.search(content):
-    raise ValueError(f"projects markers not found; expected {START_MARKER!r} ... {END_MARKER!r}")
-  return pattern.sub(lambda _: f"{START_MARKER}\n\n{projects}\n\n{END_MARKER}", content)
 
 
 def main() -> int:
@@ -213,23 +112,22 @@ def main() -> int:
   except FileNotFoundError:
     print("update_projects: gh CLI not found", file=sys.stderr)
     return 1
-  except (LookupError, KeyError, TypeError, json.JSONDecodeError) as error:
+  except (LookupError, KeyError, json.JSONDecodeError) as error:
     print(f"update_projects: {error}", file=sys.stderr)
     return 1
 
   groups = {group: [fetched[slug] for slug in group_slugs] for group, group_slugs in REPOS.items()}
-  repos = list(fetched.values())
   projects = render(groups)
   if args.output == "-":
     print(projects)
     return 0
 
-  sync_logos(repos, LOGO_DIR)
+  sync_logos(list(fetched.values()), LOGO_OVERRIDES)
 
   path = Path(args.output)
   content = path.read_text()
   try:
-    updated = update(content, projects)
+    updated = replace_between(content, START_MARKER, END_MARKER, projects)
   except ValueError as error:
     print(f"update_projects: {error}", file=sys.stderr)
     return 1

@@ -5,20 +5,17 @@
 # Chrome/Chromium. Print styling lives in assets/css/custom/50-resume-print.css.
 #
 # Browser lookup order: $CHROME, then google-chrome / chromium on PATH, then Playwright's cached Chromium
-# (scripts/setup_dev.sh installs one; or run: npx playwright install chromium-headless-shell). Snap browsers such as Brave hang in headless
-# mode, so they aren't looked up.
+# (scripts/setup_dev.sh installs one; or run: npx playwright install chromium-headless-shell). Snap browsers such
+# as Brave hang in headless mode, so they aren't looked up.
 #
 # Usage: scripts/resume_to_pdf.sh [output.pdf]
 
 set -euo pipefail
 
-root="$(git rev-parse --show-toplevel)"
+. "$(dirname "$0")/common.sh"
 hugo="${root}/.tools/hugo"
 output="${1:-${root}/content/resume.pdf}"
 page="assets/text/resume.html"
-
-info() { echo "resume_to_pdf: $*" >&2; }
-fail() { echo "resume_to_pdf: error: $*" >&2; exit 1; }
 
 [[ -x "${hugo}" ]] || fail "Hugo not found at ${hugo}; run scripts/setup_dev.sh."
 
@@ -47,7 +44,7 @@ find_chrome() {
 }
 
 chrome="$(find_chrome)"
-[[ -n "${chrome}" ]] || fail "no Chrome/Chromium found; set CHROME or run 'npx playwright install chromium-headless-shell'."
+[[ -n "${chrome}" ]] || fail "no Chrome/Chromium found; set CHROME or run scripts/setup_dev.sh."
 
 work="$(mktemp -d)"
 server_pid=""

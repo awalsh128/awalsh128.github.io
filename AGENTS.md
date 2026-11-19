@@ -15,6 +15,14 @@ Instructions for AI agents (Claude Code, Codex, Copilot, Cursor, ...) working in
   `content/resume.md` is the single source of the resume and stays in this repo.
 - Wrap Markdown at 120 columns.
 
+## Scripts
+
+- Keep each script in `scripts/` small and readable: one job per script, short enough to read in one sitting (aim for
+  under 150 lines). When a script outgrows that, split a self-contained part into its own script.
+- Shell scripts and git hooks source `scripts/common.sh` for the repo root and the `info` / `fail` helpers, and new
+  shared shell functions go there instead of being copied between scripts. Keep it POSIX `sh`, since Husky runs hooks
+  with `sh`.
+
 ## Drafts stay private
 
 This repo is public, so unpublished posts never go in it, not even as `draft: true`, untracked files, or a stash.

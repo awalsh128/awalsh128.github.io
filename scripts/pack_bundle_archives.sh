@@ -11,7 +11,7 @@
 
 set -euo pipefail
 
-root="$(git rev-parse --show-toplevel)"
+. "$(dirname "$0")/common.sh"
 
 pack() {
   local folder="${1%/}"
@@ -20,12 +20,12 @@ pack() {
   name="$(basename "${folder}")"
   tar -C "${parent}" -cf - --sort=name --mtime='2026-01-01 00:00:00Z' --mode='u+rwX,go+rX,go-w' \
     --owner=0 --group=0 --numeric-owner "${name}" | gzip -n -9 > "${folder}.tar.gz"
-  echo "pack_bundle_archives: wrote ${folder#"${root}/"}.tar.gz"
+  info "wrote ${folder#"${root}/"}.tar.gz"
 }
 
 if [[ $# -gt 0 ]]; then
   for folder in "$@"; do
-    [[ -d "${folder}" ]] || { echo "pack_bundle_archives: not a folder: ${folder}" >&2; exit 1; }
+    [[ -d "${folder}" ]] || fail "not a folder: ${folder}"
     pack "$(cd "${folder}" && pwd)"
   done
   exit
