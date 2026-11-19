@@ -13,7 +13,8 @@ one-line note instead.
 from pathlib import Path
 import re
 import sys
-import zipfile
+
+from downloads import DOWNLOADS_DIR, newest_export, read_export_csv
 
 try:
     import termios
@@ -21,12 +22,14 @@ try:
 except ImportError:  # Not POSIX; fall back to waiting for Enter.
     termios = tty = None
 
-DEFAULT_SEARCH_DIR = Path.home() / "Downloads"
+DEFAULT_SEARCH_DIR = DOWNLOADS_DIR
 CSV_NAME = "Recommendations_Received.csv"
 
 # LinkedIn names the archive after the export date and downloads it as Basic_LinkedInDataExport_11-05-2026.zip.zip;
 # unzipping that gives a folder named ...zip. Match any number of .zip suffixes, including none.
-EXPORT_NAME = re.compile(r"^(?:Basic|Complete)_LinkedInDataExport_(\d{2})-(\d{2})-(\d{4})(?:\.zip)*$", re.I)
+EXPORT_NAME = re.compile(
+    r"^(?:Basic|Complete)_LinkedInDataExport_(?P<month>\d{2})-(?P<day>\d{2})-(?P<year>\d{4})(?:\.zip)*$", re.I
+)
 EXPORT_URL = "https://www.linkedin.com/mypreferences/d/download-my-data"
 INSTRUCTIONS = f"""\
 No LinkedIn data export found in {DEFAULT_SEARCH_DIR}. To get one:
@@ -35,19 +38,6 @@ No LinkedIn data export found in {DEFAULT_SEARCH_DIR}. To get one:
   2. Choose "Want something in particular?", tick Recommendations, and click Request archive.
   3. When LinkedIn emails you (usually within minutes), download the zip into {DEFAULT_SEARCH_DIR}.
      It's named like Basic_LinkedInDataExport_MM-DD-YYYY.zip.zip; there's no need to unzip it."""
-
-
-def find_export(search_dir: Path) -> Path | None:
-    """Newest LinkedIn export in search_dir by the date in its name (then by modification time)."""
-    if not search_dir.is_dir():
-        return None
-    candidates = []
-    for path in search_dir.iterdir():
-        match = EXPORT_NAME.match(path.name)
-        if match and (path.is_dir() or zipfile.is_zipfile(path)):
-            month, day, year = match.groups()
-            candidates.append(((year, month, day, path.stat().st_mtime), path))
-    return max(candidates, default=(None, None))[1]
 
 
 def read_key() -> str:
@@ -72,25 +62,11 @@ def wait_for_export(search_dir: Path) -> Path | None:
         print(file=sys.stderr)
         if key.lower() == "q":
             return None
-        export = find_export(search_dir)
+        export = newest_export(search_dir, EXPORT_NAME)
         if export:
             print(f"Found {export.name}.", file=sys.stderr)
             return export
         print(f"Still no export in {search_dir}.", file=sys.stderr)
-
-
-def read_csv_text(export: Path) -> str | None:
-    """Contents of Recommendations_Received.csv from an export zip, folder, or the CSV itself."""
-    if export.is_file() and export.suffix.lower() == ".csv":
-        return export.read_text(encoding="utf-8-sig")
-    if export.is_dir():
-        found = next(export.rglob(CSV_NAME), None)
-        return found.read_text(encoding="utf-8-sig") if found else None
-    if zipfile.is_zipfile(export):
-        with zipfile.ZipFile(export) as archive:
-            name = next((n for n in archive.namelist() if Path(n).name == CSV_NAME), None)
-            return archive.read(name).decode("utf-8-sig") if name else None
-    return None
 
 
 def load_csv(export_arg: str | None) -> str | None:
@@ -104,7 +80,7 @@ def load_csv(export_arg: str | None) -> str | None:
             print(f"update_recommendations: {export} not found; keeping the current list.", file=sys.stderr)
             return None
     else:
-        export = find_export(DEFAULT_SEARCH_DIR)
+        export = newest_export(DEFAULT_SEARCH_DIR, EXPORT_NAME)
         if not export and sys.stdin.isatty():
             export = wait_for_export(DEFAULT_SEARCH_DIR)
             if not export:
@@ -117,7 +93,7 @@ def load_csv(export_arg: str | None) -> str | None:
                 file=sys.stderr,
             )
             return None
-    csv_text = read_csv_text(export)
+    csv_text = read_export_csv(export, CSV_NAME)
     if csv_text is None:
         print(f"update_recommendations: {CSV_NAME} not found in {export}; keeping the current list.", file=sys.stderr)
     return csv_text

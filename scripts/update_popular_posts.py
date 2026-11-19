@@ -1,95 +1,90 @@
 #!/usr/bin/env python3
 
-"""Sync data/popular_posts.json with Google Search Console clicks per page.
+"""Sync data/popular_posts.json with the search clicks per page in a Google Search Console export.
 
 The homepage's Posts section (layouts/partials/recent-articles/main.html) shows pinned posts first, then the posts
-with the most search clicks over the last LOOKBACK_DAYS, then the newest to fill any gaps.
+with the most search clicks, then the newest to fill any gaps.
 
-Reads clicks for the domain property through the Search Console API as a service account. CI passes a short-lived
-access token in $SEARCH_CONSOLE_TOKEN (from Workload Identity Federation, no stored key); locally it signs in with the
-service account's JSON key, the file named by $SEARCH_CONSOLE_KEY, else DEFAULT_KEY. See docs/site.md for the setup.
-With neither it leaves the data file alone and exits 0, so the pre-commit hook and CI skip it without access.
+Reads Pages.csv from the newest Search Console export for awalsh128.com in ~/Downloads (Search Console > Performance >
+Pages > Export > Download CSV, which saves a zip named like awalsh128.com-Performance-on-Search-YYYY-MM-DD.zip), or
+from the path given with --export or $SEARCH_CONSOLE_EXPORT. With no export it leaves the data file alone and exits 0,
+so the pre-commit hook skips it until you download one.
 """
 
-from datetime import date, timedelta
 from pathlib import Path
-from urllib.parse import quote, urlparse
+from urllib.parse import urlparse
 import argparse
+import csv
+import io
 import json
 import os
-import subprocess
+import re
 import sys
-import urllib.error
-import urllib.request
 
-from google_auth import access_token
+from downloads import DOWNLOADS_DIR, newest_export, read_export_csv
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT = ROOT_DIR / "data" / "popular_posts.json"
-DEFAULT_KEY = Path.home() / ".config" / "awalsh128.com" / "search-console-key.json"
-PROPERTY = "sc-domain:awalsh128.com"
-SCOPE = "https://www.googleapis.com/auth/webmasters.readonly"
-LOOKBACK_DAYS = 365
-# Search Console data lags by about two days; end before that so totals don't shift between runs on the same day.
-LAG_DAYS = 3
+CSV_NAME = "Pages.csv"
+# Search Console names the zip after the property and the export date; a repeat download adds " (1)" and so on.
+EXPORT_NAME = re.compile(
+    r"^.*awalsh128\.com.*-Performance-on-Search-(?P<year>\d{4})-(?P<month>\d{2})-(?P<day>\d{2})"
+    r"(?: \(\d+\))?(?:\.zip)?$",
+    re.I,
+)
 
 
-def query_clicks(token: str, start: date, end: date) -> dict[str, int]:
-  """Clicks per site path (e.g. /safer-curl-bash/), merging http/https, www and #fragment variants."""
-  url = f"https://www.googleapis.com/webmasters/v3/sites/{quote(PROPERTY, safe='')}/searchAnalytics/query"
-  body = {"startDate": start.isoformat(), "endDate": end.isoformat(), "dimensions": ["page"], "rowLimit": 1000}
-  request = urllib.request.Request(
-      url,
-      data=json.dumps(body).encode(),
-      headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json"},
-  )
-  with urllib.request.urlopen(request) as response:
-    rows = json.loads(response.read()).get("rows", [])
-  clicks: dict[str, int] = {}
-  for row in rows:
-    path = urlparse(row["keys"][0]).path.lower() or "/"
-    clicks[path] = clicks.get(path, 0) + int(row["clicks"])
-  return clicks
+def parse(csv_text: str) -> list[dict]:
+    """Clicks per site path (e.g. /safer-curl-bash/), most first, merging http/https, www and #fragment variants."""
+    rows = csv.reader(io.StringIO(csv_text))
+    header = [name.strip().lower() for name in next(rows, [])]
+    clicks_column = header.index("clicks")
+    clicks: dict[str, int] = {}
+    for row in rows:
+        if not row or not row[0].strip():
+            continue
+        path = urlparse(row[0].strip()).path.lower() or "/"
+        clicks[path] = clicks.get(path, 0) + int(row[clicks_column].replace(",", "") or 0)
 
-
-def render(clicks: dict[str, int], start: date, end: date) -> str:
-  pages = [{"path": path, "clicks": n} for path, n in clicks.items() if n > 0]
-  pages.sort(key=lambda page: (-page["clicks"], page["path"]))
-  data = {"source": "Google Search Console", "start": start.isoformat(), "end": end.isoformat(), "pages": pages}
-  return json.dumps(data, indent=2) + "\n"
+    pages = [{"path": path, "clicks": n} for path, n in clicks.items() if n > 0]
+    return sorted(pages, key=lambda page: (-page["clicks"], page["path"]))
 
 
 def main() -> int:
-  parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-  parser.add_argument("--output", default=str(DEFAULT_OUTPUT), help="JSON file to write, or - to print")
-  args = parser.parse_args()
+    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser.add_argument(
+        "--export",
+        default=os.environ.get("SEARCH_CONSOLE_EXPORT"),
+        help="export zip, extracted folder, or Pages.csv (default: newest in ~/Downloads)",
+    )
+    parser.add_argument("--output", default=str(DEFAULT_OUTPUT), help="JSON file to write, or - to print")
+    args = parser.parse_args()
 
-  token = os.environ.get("SEARCH_CONSOLE_TOKEN")
-  key_file = Path(os.environ.get("SEARCH_CONSOLE_KEY") or DEFAULT_KEY).expanduser()
-  if not token and not key_file.is_file():
-    print(f"update_popular_posts: no Search Console key at {key_file}; keeping the current list.", file=sys.stderr)
-    return 0
+    export = Path(args.export).expanduser() if args.export else newest_export(DOWNLOADS_DIR, EXPORT_NAME)
+    if not export or not export.exists():
+        print("update_popular_posts: no Search Console export found; keeping the current list.", file=sys.stderr)
+        return 0
+    csv_text = read_export_csv(export, CSV_NAME)
+    if csv_text is None:
+        print(f"update_popular_posts: {CSV_NAME} not found in {export}; keeping the current list.", file=sys.stderr)
+        return 0
+    try:
+        pages = parse(csv_text)
+    except ValueError as error:
+        print(f"update_popular_posts: can't read {CSV_NAME} in {export}: {error}", file=sys.stderr)
+        return 1
 
-  end = date.today() - timedelta(days=LAG_DAYS)
-  start = end - timedelta(days=LOOKBACK_DAYS)
-  try:
-    clicks = query_clicks(token or access_token(key_file, SCOPE), start, end)
-  except (OSError, subprocess.CalledProcessError, KeyError, ValueError) as error:
-    detail = error.read().decode(errors="replace") if isinstance(error, urllib.error.HTTPError) else error
-    print(f"update_popular_posts: Search Console query failed: {detail}", file=sys.stderr)
-    return 1
-
-  content = render(clicks, start, end)
-  if args.output == "-":
-    print(content, end="")
+    content = json.dumps({"source": export.name, "pages": pages}, indent=2) + "\n"
+    if args.output == "-":
+        print(content, end="")
+        return 0
+    path = Path(args.output)
+    if path.exists() and path.read_text() == content:
+        return 0
+    path.write_text(content)
+    print(f"update_popular_posts: updated {path.relative_to(ROOT_DIR)} from {export.name}", file=sys.stderr)
     return 0
-  path = Path(args.output)
-  if path.exists() and json.loads(path.read_text())["pages"] == json.loads(content)["pages"]:
-    return 0
-  path.write_text(content)
-  print(f"update_popular_posts: updated {path.relative_to(ROOT_DIR)}", file=sys.stderr)
-  return 0
 
 
 if __name__ == "__main__":
-  sys.exit(main())
+    sys.exit(main())

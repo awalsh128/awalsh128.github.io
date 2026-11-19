@@ -28,21 +28,14 @@ either by hand; edit `REPOS` or the README logos on GitHub instead.
 `homepage.showRecentItems` cards, in this order:
 
 1. Pinned posts (`pinned: YYYY-MM-DD` in front matter), most recently pinned first. AGENTS.md covers reviewing pins.
-2. The most popular posts: most Google Search clicks over the last year, from `data/popular_posts.json`.
+2. The most popular posts: most Google Search clicks in the latest export, from `data/popular_posts.json`.
 3. The newest posts, filling any remaining slots.
 
-`scripts/update_popular_posts.py` writes `data/popular_posts.json` from the Search Console API for the
-`sc-domain:awalsh128.com` property, as a service account. The pre-commit hook runs it with a local JSON key, and CI
-refreshes it on each build (including the weekly one) through Workload Identity Federation, with no stored key. Both
-skip it without access and keep the committed data; with no data the section shows the newest posts. One-time setup:
-
-1. In Google Cloud, create a project, enable the Search Console API, and create a service account.
-2. In Search Console, add the service account's email as a user (Restricted) on the `awalsh128.com` domain property.
-3. CI: create a Workload Identity pool with a GitHub OIDC provider limited to `awalsh128/awalsh128.github.io`, and let
-   it impersonate the service account (`roles/iam.workloadIdentityUser`). Set the repository variables
-   `GCP_WORKLOAD_IDENTITY_PROVIDER` (the provider's full resource name) and `GCP_SERVICE_ACCOUNT` (its email).
-4. Local (optional): create a JSON key for the service account and save it as
-   `~/.config/awalsh128.com/search-console-key.json`, or point `$SEARCH_CONSOLE_KEY` at it. Keep it out of the repo.
+`scripts/update_popular_posts.py` writes `data/popular_posts.json` from a Search Console export, and the pre-commit
+hook runs it. To refresh the ranking, open Search Console > Performance > Pages for the `awalsh128.com` property, pick
+a date range (a year is a good default), and click Export > Download CSV; the zip lands in `~/Downloads`, and the next
+commit picks up the newest one. Without an export the data file stays as it is, and with no data the section shows
+the newest posts.
 
 ## API page
 
