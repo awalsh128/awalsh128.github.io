@@ -189,8 +189,9 @@ def render(groups: dict[str, list[dict]]) -> str:
     bullets = "\n".join(render_bullet(repo) for repo in repos)
     sections.append(f"### {group}\n\n{bullets}")
   body = "\n\n".join(sections)
-  # The section heading is the toggle itself, so the list collapses under a "Projects" h2 (styled in 20-home.css).
-  summary = '<summary><h2 id="projects">Projects</h2></summary>'
+  # The section heading is the toggle itself, so the list collapses under a "My Open Source Projects" h2 (styled in
+  # 20-home.css).
+  summary = '<summary><h2 id="projects">My Open Source Projects</h2></summary>'
   return f"<details>\n{summary}\n\n{body}\n\n</details>"
 
 
