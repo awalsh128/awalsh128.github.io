@@ -3,6 +3,7 @@
 #
 # - Installs Hugo extended into .tools/ (git-ignored), pinned to the version CI uses.
 # - Installs Husky through npm, which enables the repository's git hooks (.husky/).
+# - Installs Playwright's headless Chromium, which scripts/resume_to_pdf.sh prints the resume PDF with.
 # - Runs a test build, which downloads the Hugo theme module.
 #
 # Usage: scripts/setup_dev.sh
@@ -49,6 +50,11 @@ fi
 # Git hooks: Husky's `prepare` script points core.hooksPath at .husky/_ during npm install.
 info "installing npm dependencies (enables the Husky git hooks)..."
 (cd "${root}" && npm install --no-audit --no-fund --silent)
+
+# Headless Chromium for the resume PDF, at the version the pinned playwright package expects. Re-running is a no-op
+# once it's cached in ~/.cache/ms-playwright.
+info "installing Playwright's headless Chromium (prints the resume PDF)..."
+(cd "${root}" && npx --no-install playwright install chromium-headless-shell)
 
 # Test build; the first build also downloads the theme module pinned in go.mod.
 info "running a test build (downloads the theme module on first run)..."

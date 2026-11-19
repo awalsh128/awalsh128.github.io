@@ -5,7 +5,8 @@
 # Chrome/Chromium. Print styling lives in assets/css/custom/50-resume-print.css.
 #
 # Browser lookup order: $CHROME, then google-chrome / chromium on PATH, then Playwright's cached Chromium
-# (install one with: npx playwright install chromium-headless-shell).
+# (scripts/setup_dev.sh installs one; or run: npx playwright install chromium-headless-shell). Snap browsers such as Brave hang in headless
+# mode, so they aren't looked up.
 #
 # Usage: scripts/resume_to_pdf.sh [output.pdf]
 
@@ -71,17 +72,28 @@ for _ in $(seq 50); do
 done
 curl -fs -o /dev/null "${base}${page}" || fail "local server did not start on port ${port}."
 
+# Print with Chrome's sandbox first. Hosts that block unprivileged user namespaces (Ubuntu's AppArmor default,
+# kernel.apparmor_restrict_unprivileged_userns=1) crash it at startup, so retry once without the sandbox; the
+# browser only loads this repo's own resume page from localhost.
+print_pdf() {
+  "${chrome}" \
+    --headless \
+    --disable-gpu \
+    --no-first-run \
+    --user-data-dir="${work}/profile" \
+    --no-pdf-header-footer \
+    --run-all-compositor-stages-before-draw \
+    --virtual-time-budget=10000 \
+    --print-to-pdf="${work}/resume.pdf" \
+    "$@" \
+    "${base}${page}" > /dev/null 2>&1
+}
+
 info "printing with $(basename "${chrome}")..."
-"${chrome}" \
-  --headless \
-  --disable-gpu \
-  --no-first-run \
-  --user-data-dir="${work}/profile" \
-  --no-pdf-header-footer \
-  --run-all-compositor-stages-before-draw \
-  --virtual-time-budget=10000 \
-  --print-to-pdf="${work}/resume.pdf" \
-  "${base}${page}" > /dev/null 2>&1 || fail "Chrome failed to print ${base}${page}."
+if ! print_pdf; then
+  info "sandboxed print failed; retrying with --no-sandbox..."
+  print_pdf --no-sandbox || fail "Chrome failed to print ${base}${page}."
+fi
 
 [[ -s "${work}/resume.pdf" ]] || fail "Chrome produced no PDF."
 mv "${work}/resume.pdf" "${output}"
