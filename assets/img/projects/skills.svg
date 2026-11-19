@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Agent Skills logo">
+  <title>Agent Skills logo</title>
+  <rect width="512" height="512" rx="96" fill="#1f2937"/>
+  <rect x="96" y="120" width="320" height="64" rx="20" fill="#10b981"/>
+  <rect x="96" y="224" width="320" height="64" rx="20" fill="#10b981"/>
+  <rect x="96" y="328" width="320" height="64" rx="20" fill="#10b981"/>
+  <path d="M288 64 168 268h80l-24 180 120-212h-80z" fill="#ecfdf5" stroke="#1f2937" stroke-width="16" stroke-linejoin="round"/>
+</svg>
