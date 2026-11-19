@@ -6,10 +6,23 @@
       "detail": "Live preview at http://localhost:1313/; open it with 'Simple Browser: Show'",
       "type": "shell",
       "command": "${workspaceFolder}/.tools/hugo",
-      "args": ["server", "-D", "--navigateToChanged"],
+      "args": [
+        "server",
+        "-D",
+        "--navigateToChanged"
+      ],
       "isBackground": true,
-      "group": { "kind": "build", "isDefault": true },
-      "presentation": { "reveal": "always", "panel": "dedicated" },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "runOptions": {
+        "runOn": "folderOpen"
+      },
       "problemMatcher": {
         "owner": "hugo",
         "fileLocation": "absolute",
@@ -22,7 +35,7 @@
           "message": 4
         },
         "background": {
-          "activeAtBeginning": true,
+          "activeOnStart": true,
           "beginsPattern": "^(Start building sites|Change detected)",
           "endsPattern": "^(Web Server is available at|Total in)"
         }
