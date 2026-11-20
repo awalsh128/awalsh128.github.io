@@ -15,16 +15,16 @@ Exits non-zero when `gh` is missing or the GitHub lookup fails, so callers such 
 whether that should block.
 """
 
-from pathlib import Path
-from urllib.parse import urlparse
 import argparse
 import base64
 import json
 import subprocess
 import sys
+from pathlib import Path
+from urllib.parse import urlparse
 
-from github_api import gh_json
 from generated_markdown import first_sentence, replace_between
+from github_api import gh_json
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT = ROOT_DIR / "content" / "api.md"
@@ -36,104 +36,108 @@ END_MARKER = "<!-- apis:end -->"
 
 
 def docs_url(homepage: str | None) -> str | None:
-  """Canonical docs URL when the homepage is a path on the site (not the site root), else None."""
-  url = urlparse((homepage or "").strip())
-  path = url.path.strip("/")
-  if url.hostname not in SITE_HOSTS or not path:
-    return None
-  return f"https://awalsh128.com/{path}/"
+    """Canonical docs URL when the homepage is a path on the site (not the site root), else None."""
+    url = urlparse((homepage or "").strip())
+    path = url.path.strip("/")
+    if url.hostname not in SITE_HOSTS or not path:
+        return None
+    return f"https://awalsh128.com/{path}/"
 
 
 def read_package(repo: str, path: str) -> dict:
-  """The repository's package.json at path, or {} when there is none."""
-  try:
-    info = gh_json(f"repos/{OWNER}/{repo}/contents/{path}")
-    return json.loads(base64.b64decode(info["content"]))
-  except (subprocess.CalledProcessError, KeyError, ValueError):
-    return {}
+    """The repository's package.json at path, or {} when there is none."""
+    try:
+        info = gh_json(f"repos/{OWNER}/{repo}/contents/{path}")
+        return json.loads(base64.b64decode(info["content"]))
+    except (subprocess.CalledProcessError, KeyError, ValueError):
+        return {}
 
 
 def npm_packages(repo: str) -> list[str]:
-  """Public npm packages published from the repository: its root package, or else its listed workspaces."""
-  root = read_package(repo, "package.json")
-  if root.get("name") and not root.get("private"):
-    return [root["name"]]
-  workspaces = root.get("workspaces") or []
-  if isinstance(workspaces, dict):  # Yarn's {"packages": [...]} form
-    workspaces = workspaces.get("packages", [])
-  packages = []
-  for workspace in workspaces:
-    if "*" in workspace:  # Globs would need a directory listing; list workspaces explicitly to include them.
-      continue
-    package = read_package(repo, f"{workspace.strip('/')}/package.json")
-    if package.get("name") and not package.get("private"):
-      packages.append(package["name"])
-  return packages
+    """Public npm packages published from the repository: its root package, or else its listed workspaces."""
+    root = read_package(repo, "package.json")
+    if root.get("name") and not root.get("private"):
+        return [root["name"]]
+    workspaces = root.get("workspaces") or []
+    if isinstance(workspaces, dict):  # Yarn's {"packages": [...]} form
+        workspaces = workspaces.get("packages", [])
+    packages = []
+    for workspace in workspaces:
+        if (
+            "*" in workspace
+        ):  # Globs would need a directory listing; list workspaces explicitly to include them.
+            continue
+        package = read_package(repo, f"{workspace.strip('/')}/package.json")
+        if package.get("name") and not package.get("private"):
+            packages.append(package["name"])
+    return packages
 
 
 def fetch_apis() -> list[dict]:
-  pages = gh_json(f"users/{OWNER}/repos?type=owner&per_page=100", paginate=True)
-  apis = []
-  for repo in (repo for page in pages for repo in page):
-    url = docs_url(repo.get("homepage"))
-    if repo["private"] or repo["fork"] or repo["archived"] or not repo["has_pages"] or not url:
-      continue
-    apis.append(
-        {
-            "name": repo["name"],
-            "docs": url,
-            "description": first_sentence(repo.get("description")),
-            "npm": npm_packages(repo["name"]),
-        }
-    )
-  return sorted(apis, key=lambda api: api["name"].lower())
+    pages = gh_json(f"users/{OWNER}/repos?type=owner&per_page=100", paginate=True)
+    apis = []
+    for repo in (repo for page in pages for repo in page):
+        url = docs_url(repo.get("homepage"))
+        if repo["private"] or repo["fork"] or repo["archived"] or not repo["has_pages"] or not url:
+            continue
+        apis.append(
+            {
+                "name": repo["name"],
+                "docs": url,
+                "description": first_sentence(repo.get("description")),
+                "npm": npm_packages(repo["name"]),
+            }
+        )
+    return sorted(apis, key=lambda api: api["name"].lower())
 
 
 def render(apis: list[dict]) -> str:
-  bullets = []
-  for api in apis:
-    line = f"- [**{api['name']}**]({api['docs']})"
-    if api["description"]:
-      line += f" - {api['description']}"
-    links = [f"[{name}](https://www.npmjs.com/package/{name})" for name in api["npm"]]
-    if len(links) == 1:
-      line += f" Published on [npm](https://www.npmjs.com/package/{api['npm'][0]})."
-    elif links:
-      line += f" Published on npm as {', '.join(links)}."
-    bullets.append(line)
-  return "\n".join(bullets)
+    bullets = []
+    for api in apis:
+        line = f"- [**{api['name']}**]({api['docs']})"
+        if api["description"]:
+            line += f" - {api['description']}"
+        links = [f"[{name}](https://www.npmjs.com/package/{name})" for name in api["npm"]]
+        if len(links) == 1:
+            line += f" Published on [npm](https://www.npmjs.com/package/{api['npm'][0]})."
+        elif links:
+            line += f" Published on npm as {', '.join(links)}."
+        bullets.append(line)
+    return "\n".join(bullets)
 
 
 def main() -> int:
-  parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-  parser.add_argument("--output", default=str(DEFAULT_OUTPUT), help="file to update, or - to print the list")
-  args = parser.parse_args()
+    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser.add_argument(
+        "--output", default=str(DEFAULT_OUTPUT), help="file to update, or - to print the list"
+    )
+    args = parser.parse_args()
 
-  try:
-    apis = render(fetch_apis())
-  except FileNotFoundError:
-    print("update_apis: gh CLI not found", file=sys.stderr)
-    return 1
-  except (subprocess.CalledProcessError, KeyError, TypeError, json.JSONDecodeError) as error:
-    print(f"update_apis: GitHub lookup failed: {error}", file=sys.stderr)
-    return 1
+    try:
+        apis = render(fetch_apis())
+    except FileNotFoundError:
+        print("update_apis: gh CLI not found", file=sys.stderr)
+        return 1
+    except (subprocess.CalledProcessError, KeyError, TypeError, json.JSONDecodeError) as error:
+        print(f"update_apis: GitHub lookup failed: {error}", file=sys.stderr)
+        return 1
 
-  if args.output == "-":
-    print(apis)
+    if args.output == "-":
+        print(apis)
+        return 0
+
+    path = Path(args.output)
+    content = path.read_text()
+    try:
+        updated = replace_between(content, START_MARKER, END_MARKER, apis)
+    except ValueError as error:
+        print(f"update_apis: {error}", file=sys.stderr)
+        return 1
+    if updated != content:
+        path.write_text(updated)
+        print(f"update_apis: updated {path.relative_to(ROOT_DIR)}", file=sys.stderr)
     return 0
-
-  path = Path(args.output)
-  content = path.read_text()
-  try:
-    updated = replace_between(content, START_MARKER, END_MARKER, apis)
-  except ValueError as error:
-    print(f"update_apis: {error}", file=sys.stderr)
-    return 1
-  if updated != content:
-    path.write_text(updated)
-    print(f"update_apis: updated {path.relative_to(ROOT_DIR)}", file=sys.stderr)
-  return 0
 
 
 if __name__ == "__main__":
-  sys.exit(main())
+    sys.exit(main())

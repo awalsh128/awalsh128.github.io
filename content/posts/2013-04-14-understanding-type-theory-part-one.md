@@ -1,9 +1,9 @@
 ---
-title: 'Understanding type theory (Part one: Lambda Calculus).'
-date: '2013-04-14T20:57:00.002-07:00'
+title: "Understanding type theory (Part one: Lambda Calculus)."
+date: "2013-04-14T20:57:00.002-07:00"
 tags:
-- Computer Science
-lastmod: '2013-04-14T20:57:11.382-07:00'
+  - Computer Science
+lastmod: "2013-04-14T20:57:11.382-07:00"
 ---
 
 ### Series Introduction
@@ -51,26 +51,26 @@ $$ f(x) = x^2 $$
 
 In lambda calculus, we can represent it as:
 
-$$ \lambda x.*x\;x $$
+$$ \lambda x.\*x\;x $$
 
 Let\'s break this down into its parts and start defining those pieces.
 
--   **Term**: Since x is a variable, it can be considered a term and the
-    whole expression itself is also a term (specifically a lambda
-    abstraction).
--   **Bound Variable**: Any variable in the term that is a parameter of
-    the function. In this case it is x.
--   **Free Variable**: The term above has none since any argument to the
-    term would be applied to all variables in it. If the term were to be
-    $\lambda x.*x\;y$
-    instead, then y would be our free variable. We will give another
-    example that demonstrates free variables later.
--   **Abstraction Symbol**: The
-    $\lambda$ symbol
-    indicates the beginning of the function, followed by the parameter.
--   **Function Body**: Everything following the dot is part of the
-    function body (ie.
-    $*\;x\;x$).
+- **Term**: Since x is a variable, it can be considered a term and the
+  whole expression itself is also a term (specifically a lambda
+  abstraction).
+- **Bound Variable**: Any variable in the term that is a parameter of
+  the function. In this case it is x.
+- **Free Variable**: The term above has none since any argument to the
+  term would be applied to all variables in it. If the term were to be
+  $\lambda x.*x\;y$
+  instead, then y would be our free variable. We will give another
+  example that demonstrates free variables later.
+- **Abstraction Symbol**: The
+  $\lambda$ symbol
+  indicates the beginning of the function, followed by the parameter.
+- **Function Body**: Everything following the dot is part of the
+  function body (ie.
+  $*\;x\;x$).
 
 \
 
@@ -86,7 +86,7 @@ function](http://en.wikipedia.org/wiki/Anonymous_function) comes from.
 We took a named function (f) and anonymized it. Now let\'s try defining
 the function without loss of information.
 
-$$ f \equiv \lambda x.*x\;x $$
+$$ f \equiv \lambda x.\*x\;x $$
 
 It can sometimes be taken for granted in programming that a function
 name is just another type of variable. The above example makes that
@@ -97,13 +97,13 @@ considered good convention in lambda calculus. Terms are normally bound
 to a capitalized letter in these situations; it would be better form to
 call it F instead.
 
-$$ F \equiv \lambda x.*x\;x $$
+$$ F \equiv \lambda x.\*x\;x $$
 
 That\'s better. What about function pointers? How would they be
 expressed in the lambda calculus? Let\'s define some function pointer
 (G), our previous function (F) and bind them in the C language:
 
-``` c
+```c
 int (*G)(int);
 int F(int x) { return x * x; }
 
@@ -116,7 +116,7 @@ int main(void)
 
 This is generally equivalent to:
 
-$$ G \equiv \lambda g.g\;\land\;F \equiv \lambda x.*x\;x\;:\;GF2 = 4 $$
+$$ G \equiv \lambda g.g\;\land\;F \equiv \lambda x.\*x\;x\;:\;GF2 = 4 $$
 
 I could have written our $GF2$
 term as $G(F(2))$ but
@@ -126,7 +126,7 @@ applied to G and then 2 is applied to that. Having these semantics
 eliminates the need for excessive parentheses. Now let\'s break down the
 application of the terms in steps.
 
-$$ \begin{align*} GF2&\;\;\;\text{Given}\\ \lambda g.g(\lambda x.*x\;x)2&\;\;\;\text{Resolve F and G}\\ (\lambda x.*x\;x)2&\;\;\;\text{Apply F to G}\\ 4&\;\;\;\text{Apply 2 to GF} \end{align*} $$
+$$ \begin{align*} GF2&\;\;\;\text{Given}\\ \lambda g.g(\lambda x.*x\;x)2&\;\;\;\text{Resolve F and G}\\ (\lambda x._x\;x)2&\;\;\;\text{Apply F to G}\\ 4&\;\;\;\text{Apply 2 to GF} \end{align_} $$
 
 The first line is like the declares in our C program (line 1 and 2). The
 second line is akin to when we assign the address of the function F to G
@@ -141,25 +141,28 @@ form](http://en.wikipedia.org/wiki/Currying) or
 [Schönfinkeled](http://en.wikipedia.org/wiki/Moses_Sch%C3%B6nfinkel)
 form if you want to get all crazy about it. You may have heard this
 mentioned before when people talk about
-[closures](http://en.wikipedia.org/wiki/Closure_(computer_science)).
+[closures](<http://en.wikipedia.org/wiki/Closure_(computer_science)>).
 Since we can\'t demonstrate currying in C (nested functions aren\'t
 supported), let\'s do it in Python:
 
-``` python
+```python
 # uncurried form
 def f(x, y):
     return x
+
 
 # curried form using named functions
 def g(x):
     def h(y):
         return x
+
     return h
+
 
 # curried form using lambda functions
 h = lambda x: lambda y: x
 
-f(2,1)
+f(2, 1)
 g(2)(1)
 h(2)(1)
 ```
@@ -256,19 +259,19 @@ comments with questions, suggestions or corrections.
 
 ### More Reading & Resources
 
--   [Notes on Untyped Lambda
-    Calculus](http://www.cse.iitb.ac.in/~rkj/lambda.pdf)
--   [An Introduction to Lambda Calculi and
-    Arithmetic](http://www.cs.man.ac.uk/~hsimmons/BOOKS/lcalculus.pdf)
--   [A short introduction to the Lambda
-    Calculus](http://www.cs.bham.ac.uk/~axj/pub/papers/lambda-calculus.pdf)
--   [Lectures Notes on the Lambda
-    Calculus](http://www.mscs.dal.ca/~selinger/papers/papers/lambdanotes.pdf)
--   [A Tutorial Introduction to the Lambda
-    Calculus](http://www.inf.fu-berlin.de/lehre/WS03/alpi/lambda.pdf)
--   [Lambda Calculus
-    Tutorial](http://classes.soe.ucsc.edu/cmps112/Spring03/readings/lambdacalculus/project3.html)
--   [An Introduction to Type
-    Theory](http://www.cs.ru.nl/~herman/PUBS/IntroTT-improved.pdf)
--   [A Short Introduction to Type
-    Theory](http://events.math.unipd.it/3wftop/pdf/coquandintro.pdf)
+- [Notes on Untyped Lambda
+  Calculus](http://www.cse.iitb.ac.in/~rkj/lambda.pdf)
+- [An Introduction to Lambda Calculi and
+  Arithmetic](http://www.cs.man.ac.uk/~hsimmons/BOOKS/lcalculus.pdf)
+- [A short introduction to the Lambda
+  Calculus](http://www.cs.bham.ac.uk/~axj/pub/papers/lambda-calculus.pdf)
+- [Lectures Notes on the Lambda
+  Calculus](http://www.mscs.dal.ca/~selinger/papers/papers/lambdanotes.pdf)
+- [A Tutorial Introduction to the Lambda
+  Calculus](http://www.inf.fu-berlin.de/lehre/WS03/alpi/lambda.pdf)
+- [Lambda Calculus
+  Tutorial](http://classes.soe.ucsc.edu/cmps112/Spring03/readings/lambdacalculus/project3.html)
+- [An Introduction to Type
+  Theory](http://www.cs.ru.nl/~herman/PUBS/IntroTT-improved.pdf)
+- [A Short Introduction to Type
+  Theory](http://events.math.unipd.it/3wftop/pdf/coquandintro.pdf)
