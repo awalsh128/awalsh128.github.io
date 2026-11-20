@@ -10,9 +10,9 @@ downloaded, or q to skip. Without a terminal (e.g. the pre-commit hook, where gi
 one-line note instead.
 """
 
-from pathlib import Path
 import re
 import sys
+from pathlib import Path
 
 from downloads import DOWNLOADS_DIR, newest_export, read_export_csv
 
@@ -28,7 +28,7 @@ CSV_NAME = "Recommendations_Received.csv"
 # LinkedIn names the archive after the export date and downloads it as Basic_LinkedInDataExport_11-05-2026.zip.zip;
 # unzipping that gives a folder named ...zip. Match any number of .zip suffixes, including none.
 EXPORT_NAME = re.compile(
-    r"^(?:Basic|Complete)_LinkedInDataExport_(?P<month>\d{2})-(?P<day>\d{2})-(?P<year>\d{4})(?:\.zip)*$", re.I
+    r"^(?:Basic|Complete)_LinkedInDataExport_(?P<month>\d{2})-(?P<day>\d{2})-(?P<year>\d{4})(?:\.zip)*$", re.IGNORECASE
 )
 EXPORT_URL = "https://www.linkedin.com/mypreferences/d/download-my-data"
 INSTRUCTIONS = f"""\
@@ -95,5 +95,8 @@ def load_csv(export_arg: str | None) -> str | None:
             return None
     csv_text = read_export_csv(export, CSV_NAME)
     if csv_text is None:
-        print(f"update_recommendations: {CSV_NAME} not found in {export}; keeping the current list.", file=sys.stderr)
+        print(
+            f"update_recommendations: {CSV_NAME} not found in {export}; keeping the current list.",
+            file=sys.stderr,
+        )
     return csv_text

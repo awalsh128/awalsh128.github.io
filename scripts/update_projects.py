@@ -17,14 +17,14 @@ Exits non-zero when `gh` is missing or a repository is not found, so callers suc
 as the pre-commit hook can decide whether that should block.
 """
 
-from pathlib import Path
 import argparse
 import json
 import subprocess
 import sys
+from pathlib import Path
 
-from github_api import gh_api
 from generated_markdown import first_sentence, replace_between
+from github_api import gh_api
 from project_logos import sync_logos
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
@@ -63,79 +63,81 @@ END_MARKER = "<!-- projects:end -->"
 
 
 def fetch_repos(slugs: list[str]) -> list[dict]:
-  """Look up each repository, raising LookupError listing every one that does not exist."""
-  repos, missing = [], []
-  for slug in slugs:
-    try:
-      data = json.loads(gh_api(f"repos/{slug}"))
-    except subprocess.CalledProcessError as error:
-      missing.append(f"{slug} ({error.stderr.decode().strip() or 'lookup failed'})")
-      continue
-    repos.append(
-        {
-            "name": data["name"],
-            "nameWithOwner": data["full_name"],
-            "description": data["description"],
-            "url": data["html_url"],
-        }
-    )
-  if missing:
-    raise LookupError("repositories not found: " + "; ".join(missing))
-  return repos
+    """Look up each repository, raising LookupError listing every one that does not exist."""
+    repos, missing = [], []
+    for slug in slugs:
+        try:
+            data = json.loads(gh_api(f"repos/{slug}"))
+        except subprocess.CalledProcessError as error:
+            missing.append(f"{slug} ({error.stderr.decode().strip() or 'lookup failed'})")
+            continue
+        repos.append(
+            {
+                "name": data["name"],
+                "nameWithOwner": data["full_name"],
+                "description": data["description"],
+                "url": data["html_url"],
+            }
+        )
+    if missing:
+        raise LookupError("repositories not found: " + "; ".join(missing))
+    return repos
 
 
 def render_bullet(repo: dict) -> str:
-  line = f"- {{{{< project-icon \"{repo['name']}\" >}}}} [**{repo['name']}**]({repo['url']})"
-  description = first_sentence(repo.get("description"))
-  return f"{line}: {description}" if description else line
+    line = f'- {{{{< project-icon "{repo["name"]}" >}}}} [**{repo["name"]}**]({repo["url"]})'
+    description = first_sentence(repo.get("description"))
+    return f"{line}: {description}" if description else line
 
 
 def render(groups: dict[str, list[dict]]) -> str:
-  sections = []
-  for group, repos in groups.items():
-    bullets = "\n".join(render_bullet(repo) for repo in repos)
-    sections.append(f"### {group}\n\n{bullets}")
-  body = "\n\n".join(sections)
-  # The section heading is the toggle, so the list collapses under it (styled in assets/css/custom/20-home.css).
-  summary = '<summary><h2 id="projects">My Open Source Projects</h2></summary>'
-  return f"<details>\n{summary}\n\n{body}\n\n</details>"
+    sections = []
+    for group, repos in groups.items():
+        bullets = "\n".join(render_bullet(repo) for repo in repos)
+        sections.append(f"### {group}\n\n{bullets}")
+    body = "\n\n".join(sections)
+    # The section heading is the toggle, so the list collapses under it (styled in assets/css/custom/20-home.css).
+    summary = '<summary><h2 id="projects">My Open Source Projects</h2></summary>'
+    return f"<details>\n{summary}\n\n{body}\n\n</details>"
 
 
 def main() -> int:
-  parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-  parser.add_argument("--output", default=str(DEFAULT_OUTPUT), help="file to update, or - to print the list")
-  args = parser.parse_args()
+    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser.add_argument(
+        "--output", default=str(DEFAULT_OUTPUT), help="file to update, or - to print the list"
+    )
+    args = parser.parse_args()
 
-  try:
-    slugs = [slug for group in REPOS.values() for slug in group]
-    fetched = dict(zip(slugs, fetch_repos(slugs)))
-  except FileNotFoundError:
-    print("update_projects: gh CLI not found", file=sys.stderr)
-    return 1
-  except (LookupError, KeyError, json.JSONDecodeError) as error:
-    print(f"update_projects: {error}", file=sys.stderr)
-    return 1
+    try:
+        slugs = [slug for group in REPOS.values() for slug in group]
+        fetched = dict(zip(slugs, fetch_repos(slugs)))
+    except FileNotFoundError:
+        print("update_projects: gh CLI not found", file=sys.stderr)
+        return 1
+    except (LookupError, KeyError, json.JSONDecodeError) as error:
+        print(f"update_projects: {error}", file=sys.stderr)
+        return 1
 
-  groups = {group: [fetched[slug] for slug in group_slugs] for group, group_slugs in REPOS.items()}
-  projects = render(groups)
-  if args.output == "-":
-    print(projects)
+    groups = {group: [fetched[slug] for slug in group_slugs] for group, group_slugs in REPOS.items()}
+    projects = render(groups)
+    if args.output == "-":
+        print(projects)
+        return 0
+
+    sync_logos(list(fetched.values()), LOGO_OVERRIDES)
+
+    path = Path(args.output)
+    content = path.read_text()
+    try:
+        updated = replace_between(content, START_MARKER, END_MARKER, projects)
+    except ValueError as error:
+        print(f"update_projects: {error}", file=sys.stderr)
+        return 1
+    if updated != content:
+        path.write_text(updated)
+        print(f"update_projects: updated {path.relative_to(ROOT_DIR)}", file=sys.stderr)
     return 0
-
-  sync_logos(list(fetched.values()), LOGO_OVERRIDES)
-
-  path = Path(args.output)
-  content = path.read_text()
-  try:
-    updated = replace_between(content, START_MARKER, END_MARKER, projects)
-  except ValueError as error:
-    print(f"update_projects: {error}", file=sys.stderr)
-    return 1
-  if updated != content:
-    path.write_text(updated)
-    print(f"update_projects: updated {path.relative_to(ROOT_DIR)}", file=sys.stderr)
-  return 0
 
 
 if __name__ == "__main__":
-  sys.exit(main())
+    sys.exit(main())

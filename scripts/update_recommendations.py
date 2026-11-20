@@ -8,8 +8,6 @@ layouts/_default/resume.html shows on the resume page (but not in the PDF). With
 alone and exits 0.
 """
 
-from datetime import datetime
-from pathlib import Path
 import argparse
 import csv
 import io
@@ -17,14 +15,22 @@ import json
 import os
 import re
 import sys
+from datetime import datetime
+from pathlib import Path
 
 from linkedin_export import load_csv
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT = ROOT_DIR / "data" / "linkedin_recommendations.json"
 DATE_FORMATS = (
-    "%m/%d/%y, %I:%M %p", "%m/%d/%Y, %I:%M %p", "%m/%d/%y %I:%M %p", "%m/%d/%Y %I:%M %p",
-    "%m/%d/%y", "%m/%d/%Y", "%b %d, %Y", "%Y-%m-%d",
+    "%m/%d/%y, %I:%M %p",
+    "%m/%d/%Y, %I:%M %p",
+    "%m/%d/%y %I:%M %p",
+    "%m/%d/%Y %I:%M %p",
+    "%m/%d/%y",
+    "%m/%d/%Y",
+    "%b %d, %Y",
+    "%Y-%m-%d",
 )
 
 
@@ -50,16 +56,20 @@ def parse(csv_text: str) -> list[dict]:
         if not text:
             continue
         name = " ".join(part for part in (row.get("first name", ""), row.get("last name", "")) if part)
-        recommendations.append({
-            "name": name,
-            "title": row.get("job title", ""),
-            "company": row.get("company", ""),
-            "date": iso_date(row.get("creation date", "")),
-            "text": text,
-        })
+        recommendations.append(
+            {
+                "name": name,
+                "title": row.get("job title", ""),
+                "company": row.get("company", ""),
+                "date": iso_date(row.get("creation date", "")),
+                "text": text,
+            }
+        )
     # Newest first; anything without a parseable date goes last.
     dated = re.compile(r"^\d{4}-\d{2}-\d{2}$")
-    return sorted(recommendations, key=lambda rec: (bool(dated.match(rec["date"])), rec["date"]), reverse=True)
+    return sorted(
+        recommendations, key=lambda rec: (bool(dated.match(rec["date"])), rec["date"]), reverse=True
+    )
 
 
 def main() -> int:

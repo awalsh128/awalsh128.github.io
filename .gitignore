@@ -1,6 +1,7 @@
 public/
 resources/_gen/
 .hugo_build.lock
+.ruff_cache/
 .tools/
 **/__pycache__
 node_modules/

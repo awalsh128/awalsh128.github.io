@@ -4,9 +4,9 @@ An export is a zip, the folder it unzips to, or a single CSV, named with the dat
 that date, then by modification time.
 """
 
-from pathlib import Path
 import re
 import zipfile
+from pathlib import Path
 
 DOWNLOADS_DIR = Path.home() / "Downloads"
 

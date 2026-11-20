@@ -1,0 +1,9 @@
+# Generated or built output that Prettier should not rewrite.
+public/
+resources/
+.tools/
+node_modules/
+content/resume.pdf
+content/_index.md
+content/api.md
+data/

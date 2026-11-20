@@ -11,8 +11,6 @@ from the path given with --export or $SEARCH_CONSOLE_EXPORT. With no export it l
 so the pre-commit hook skips it until you download one.
 """
 
-from pathlib import Path
-from urllib.parse import urlparse
 import argparse
 import csv
 import io
@@ -20,6 +18,8 @@ import json
 import os
 import re
 import sys
+from pathlib import Path
+from urllib.parse import urlparse
 
 from downloads import DOWNLOADS_DIR, newest_export, read_export_csv
 
@@ -30,7 +30,7 @@ CSV_NAME = "Pages.csv"
 EXPORT_NAME = re.compile(
     r"^.*awalsh128\.com.*-Performance-on-Search-(?P<year>\d{4})-(?P<month>\d{2})-(?P<day>\d{2})"
     r"(?: \(\d+\))?(?:\.zip)?$",
-    re.I,
+    re.IGNORECASE,
 )
 
 
@@ -62,11 +62,16 @@ def main() -> int:
 
     export = Path(args.export).expanduser() if args.export else newest_export(DOWNLOADS_DIR, EXPORT_NAME)
     if not export or not export.exists():
-        print("update_popular_posts: no Search Console export found; keeping the current list.", file=sys.stderr)
+        print(
+            "update_popular_posts: no Search Console export found; keeping the current list.", file=sys.stderr
+        )
         return 0
     csv_text = read_export_csv(export, CSV_NAME)
     if csv_text is None:
-        print(f"update_popular_posts: {CSV_NAME} not found in {export}; keeping the current list.", file=sys.stderr)
+        print(
+            f"update_popular_posts: {CSV_NAME} not found in {export}; keeping the current list.",
+            file=sys.stderr,
+        )
         return 0
     try:
         pages = parse(csv_text)

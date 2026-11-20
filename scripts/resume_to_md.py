@@ -13,19 +13,28 @@ When writing to a file, the existing Hugo front matter is kept and the `# Name`
 heading is dropped, because the page title in the front matter is the heading.
 """
 
-from pathlib import Path
 import argparse
 import re
 import sys
+from pathlib import Path
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT = ROOT_DIR / "content" / "resume.md"
 
 SECTIONS = {
-    "summary", "professional summary", "core skills", "skills",
-    "technical skills", "professional experience", "experience",
-    "open source", "projects", "education", "certifications",
-    "publications", "awards",
+    "summary",
+    "professional summary",
+    "core skills",
+    "skills",
+    "technical skills",
+    "professional experience",
+    "experience",
+    "open source",
+    "projects",
+    "education",
+    "certifications",
+    "publications",
+    "awards",
 }
 EXPERIENCE_SECTIONS = {"professional experience", "experience"}
 
@@ -51,8 +60,7 @@ def normalize(markdown: str) -> str:
 
         heading = re.match(r"^(#{1,6})\s+(.*)$", stripped)
         if heading:
-            title = clean(re.sub(r"^\*\*(.*)\*\*$", r"\1",
-                          heading.group(2).strip()))
+            title = clean(re.sub(r"^\*\*(.*)\*\*$", r"\1", heading.group(2).strip()))
             level = min(len(heading.group(1)), 4)
             if level == 1:
                 seen_title = True
@@ -97,9 +105,8 @@ def normalize(markdown: str) -> str:
     result: list[str] = []
     for index, line in enumerate(lines):
         if not line:
-            following = next((l for l in lines[index + 1:] if l), "")
-            if not result or not result[-1] or (
-                    result[-1].startswith("- ") and following.startswith("- ")):
+            following = next((l for l in lines[index + 1 :] if l), "")
+            if not result or not result[-1] or (result[-1].startswith("- ") and following.startswith("- ")):
                 continue
         result.append(line)
     while result and not result[-1]:
@@ -111,7 +118,7 @@ def front_matter(path: Path) -> str:
     """Return the file's existing `---` front matter block plus a blank line."""
     if not path.exists():
         return ""
-    match = re.match(r"\A---\n.*?\n---\n", path.read_text(encoding="utf-8"), re.S)
+    match = re.match(r"\A---\n.*?\n---\n", path.read_text(encoding="utf-8"), re.DOTALL)
     return match.group(0) + "\n" if match else ""
 
 
@@ -119,8 +126,10 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("input", type=Path, help="markdown file exported from the Google Doc")
     parser.add_argument(
-        "--output", default=str(DEFAULT_OUTPUT),
-        help="output path, or - for stdout (default: content/resume.md)")
+        "--output",
+        default=str(DEFAULT_OUTPUT),
+        help="output path, or - for stdout (default: content/resume.md)",
+    )
     args = parser.parse_args()
 
     markdown = args.input.read_text(encoding="utf-8")

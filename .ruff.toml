@@ -1,4 +1,4 @@
 line-length = 110
 
 [format]
-quote-style = "double"
+indent-style = "space"

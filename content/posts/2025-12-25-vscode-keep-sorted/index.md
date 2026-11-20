@@ -190,11 +190,15 @@ Use `newline_separated=yes` to add blank lines between sorted items:
 def calculate_total():
     pass
 
+
 def process_data():
     pass
 
+
 def validate_input():
     pass
+
+
 # keep-sorted end
 ```
 
@@ -267,9 +271,9 @@ Place markers around only the lines that should move, using your language's comm
 ```python
 items = [
     # keep-sorted start
-    'zebra',
-    'alpha',
-    'delta',
+    "zebra",
+    "alpha",
+    "delta",
     # keep-sorted end
 ]
 ```
@@ -388,10 +392,10 @@ For example, here the block wraps the whole list instead of just its items:
 ```py
 # keep-sorted start
 items = [
-  'zebra',
-  'alpha',
-  'delta',
-  'beta',
+    "zebra",
+    "alpha",
+    "delta",
+    "beta",
 ]
 # keep-sorted end
 ```
@@ -414,12 +418,12 @@ markers instead:
 
 ```py
 items = [
-  # keep-sorted start
-  'zebra',
-  'alpha',
-  'delta',
-  'beta',
-  # keep-sorted end
+    # keep-sorted start
+    "zebra",
+    "alpha",
+    "delta",
+    "beta",
+    # keep-sorted end
 ]
 ```
 

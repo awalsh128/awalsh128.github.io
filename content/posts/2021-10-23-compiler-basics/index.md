@@ -44,7 +44,7 @@ As a contrast, let's look at a Python like snippet...
 
 ```python
 def foo(bar):
-  bar = 123
+    bar = 123
 ```
 
 Since these languages treat spaces as part of the language (unlike C-like ones), this would be tokenized as ``def``, ``foo``, ``(``, ``bar``, ``)``, ``:``, ``\n``, ``\s``, ``\s``, ``bar``, ``=``, and ``123``. This approach is a bit nuanced though as any spaces after ``:`` and before newline are not tokenized since they have no meaning for the compiled language (same goes for extraneous newlines). This is why the last C-like example could be expressed as.
