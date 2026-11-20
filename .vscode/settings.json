@@ -1,17 +1,15 @@
 {
-  "editor.wordWrap": "wordWrapColumn",
   "editor.tabSize": 2,
-  "editor.wrappingIndent": "same",
-  "editor.wordWrapColumn": 110,
   "editor.rulers": [
     110
   ],
   "editor.formatOnSave": true,
   "editor.insertSpaces": true,
-  "[markdown]": {
-    "editor.wordWrap": "wordWrapColumn",
-    "editor.wordWrapColumn": 110
-  },
+  "prettier.printWidth": 110,
   "keep-sorted.enabled": false,
   "workbench.externalBrowser": "brave",
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.formatOnSave": true
+  },
 }
