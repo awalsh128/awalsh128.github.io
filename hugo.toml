@@ -1,0 +1,165 @@
+baseURL = "https://awalsh128.com/"
+locale = "en-US"
+defaultContentLanguage = "en"
+title = "Andrew Walsh"
+enableRobotsTXT = true
+summaryLength = 30
+timeZone = "America/Los_Angeles"
+
+[module]
+  [module.hugoVersion]
+    extended = true
+    min = "0.141.0"
+  [[module.imports]]
+    path = "github.com/nunocoracao/blowfish/v2"
+
+[pagination]
+  pagerSize = 20
+
+[taxonomies]
+  tag = "tags"
+
+# Keep the Jekyll URLs: posts at /<slug>/ with the slug taken from the dated filename.
+[permalinks]
+  posts = "/:slug/"
+
+[frontmatter]
+  date = [":filename", ":default"]
+  lastmod = ["lastmod", ":default"]
+
+[services.disqus]
+  shortname = "andrew-walshs-website"
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+
+# Jekyll served the feed at /feed.xml; keep that path for existing subscribers.
+[outputFormats.RSS]
+  baseName = "feed"
+
+# Machine-readable export of posts tagged Article, published at /tags/article/lykotek.json. lykotek.com's sync
+# script fetches it and wraps each post body in that site's own layout. Only content/tags/article/_index.md enables
+# it. See layouts/_default/term.lykotekexport.json for the schema.
+[outputFormats.LykotekExport]
+  mediaType = "application/json"
+  baseName = "lykotek"
+  isPlainText = true
+  notAlternative = true
+
+[markup.goldmark.renderer]
+  unsafe = true
+# LaTeX math: $...$ inline and $$...$$ block, rendered at build time by render-passthrough.html.
+# \[...\] isn't a delimiter because older posts use it for escaped brackets.
+[markup.goldmark.extensions.passthrough]
+  enable = true
+  [markup.goldmark.extensions.passthrough.delimiters]
+    block = [["$$", "$$"]]
+    inline = [["$", "$"]]
+[markup.highlight]
+  noClasses = false
+[markup.tableOfContents]
+  startLevel = 2
+  endLevel = 4
+
+[languages.en]
+  label = "English"
+  weight = 1
+  title = "Andrew Walsh"
+  [languages.en.params]
+    dateFormat = "2 January 2006"
+    description = "Thoughts on Software Engineering."
+  [languages.en.params.author]
+    name = "Andrew Walsh"
+    image = "img/avatar.png"
+    headline = "Thoughts on Software Engineering."
+    bio = "Coder with a passion for most all things technological."
+    links = [
+      { github = "https://github.com/awalsh128" },
+      { linkedin = "https://www.linkedin.com/in/andrew-walsh-a235787/" },
+      { resume = "/resume/" },
+      { youtube = "https://music.youtube.com/@neomnemonic" },
+      { sponsor ="https://github.com/sponsors/awalsh128" },
+    ]
+
+[[languages.en.menus.main]]
+  name = "Posts"
+  pre = "pencil"
+  pageRef = "/posts"
+  weight = 20
+[[languages.en.menus.main]]
+  name = "Tags"
+  pre = "tag"
+  pageRef = "/tags"
+  weight = 30
+[[languages.en.menus.main]]
+  name = "Reading"
+  pre = "book"
+  pageRef = "/reading"
+  weight = 50
+[[languages.en.menus.main]]
+  name = "Resume"
+  pre = "file-lines"
+  pageRef = "/resume"
+  weight = 60
+
+[params]
+  colorScheme = "ocean"
+  defaultAppearance = "dark"
+  autoSwitchAppearance = true
+  enableSearch = true
+  enableCodeCopy = true
+  mainSections = ["posts"]
+
+  [params.header]
+    layout = "fixed-fill-blur"
+
+  [params.footer]
+    showThemeAttribution = false
+
+  [params.homepage]
+    layout = "background"
+    homepageImage = "img/header.jpg"
+    showRecent = true
+    showRecentItems = 6
+    showMoreLink = true
+    showMoreLinkDest = "/posts/"
+    cardView = true
+    layoutBackgroundBlur = true
+
+  [params.article]
+    showHero = true
+    heroStyle = "background"
+    showDateUpdated = true
+    showTableOfContents = true
+    showTaxonomies = true
+    showComments = true
+    showReadingProgress = true
+    showRelatedContent = true
+    relatedContentLimit = 3
+    showWordCount = false
+
+  [params.list]
+    showHero = true
+    heroStyle = "background"
+    showSummary = true
+    groupByYear = true
+
+  [params.taxonomy]
+    showHero = true
+    heroStyle = "background"
+
+  [params.term]
+    showHero = true
+    heroStyle = "background"
+
+[related]
+  threshold = 80
+  includeNewer = true
+  toLower = true
+  [[related.indices]]
+    name = "tags"
+    weight = 100
+
+# Embed YouTube videos from youtube-nocookie.com, so no YouTube cookies are set until the reader plays one.
+[privacy.youtube]
+  privacyEnhanced = true

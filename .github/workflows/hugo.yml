@@ -1,0 +1,75 @@
+name: Deploy Hugo site to Pages
+
+on:
+  push:
+    branches: [master]
+  # Rebuild on January 1 (08:05 UTC, just after midnight Pacific) so the footer's copyright year, which is set at
+  # build time, rolls over even without a push.
+  # Also rebuild weekly (Mondays, 08:05 UTC) so the homepage project list picks up repository changes.
+  schedule:
+    - cron: "5 8 1 1 *"
+    - cron: "5 8 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+  attestations: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      HUGO_VERSION: 0.165.0
+    steps:
+      - name: Install Hugo
+        run: |
+          curl -sSL -o "${RUNNER_TEMP}/hugo.deb" \
+            "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb"
+          sudo dpkg -i "${RUNNER_TEMP}/hugo.deb"
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: false
+      - uses: actions/configure-pages@v5
+      # Regenerate the homepage project list and logos from REPOS in update_projects.py, as the pre-commit hook does.
+      # The result is only built, not committed. The recommendations (local LinkedIn export), resume PDF (needs a
+      # browser) and bundle archives (committed alongside their folders) are refreshed at commit time and have nothing
+      # to do here.
+      - name: Refresh homepage projects
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/update_projects.py
+      - name: Build
+        env:
+          HUGO_ENVIRONMENT: production
+        run: hugo --gc --minify
+      # Sign the scripts posts tell readers to download, so they can check a file came from this repo's build with
+      # `gh attestation verify <file> --repo awalsh128/awalsh128.github.io`, independent of the site serving it.
+      - name: Attest downloadable scripts
+        uses: actions/attest-build-provenance@v4
+        with:
+          subject-path: public/**/*.sh
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

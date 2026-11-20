@@ -1,0 +1,53 @@
+{{- /*
+  Homepage "Posts" section, replacing Blowfish's "Recent" list. Shows up to homepage.showRecentItems posts:
+    1. pinned posts (`pinned: <date pinned>` in front matter), most recently pinned first;
+    2. the most popular, by search clicks in data/popular_posts.json (scripts/update_popular_posts.py);
+    3. the newest, to fill any remaining slots (e.g. before the popularity data exists).
+*/ -}}
+{{- $limit := site.Params.homepage.showRecentItems | default 6 -}}
+{{- $posts := where site.RegularPages "Type" "in" site.Params.mainSections -}}
+{{- $pinned := sort (where $posts "Params.pinned" "!=" nil) "Params.pinned" "desc" -}}
+
+{{- $clicks := dict -}}
+{{- with hugo.Data.popular_posts -}}
+  {{- range .pages -}}
+    {{- $clicks = merge $clicks (dict (lower .path) .clicks) -}}
+  {{- end -}}
+{{- end -}}
+{{- $ranked := slice -}}
+{{- range $post := $posts -}}
+  {{- with index $clicks (lower $post.RelPermalink) -}}
+    {{- $ranked = $ranked | append (dict "page" $post "clicks" .) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $shown := $pinned | first $limit -}}
+{{- range sort $ranked "clicks" "desc" -}}
+  {{- if and (lt (len $shown) $limit) (not (in $shown .page)) -}}
+    {{- $shown = $shown | append .page -}}
+  {{- end -}}
+{{- end -}}
+{{- range $posts.ByDate.Reverse -}}
+  {{- if and (lt (len $shown) $limit) (not (in $shown .)) -}}
+    {{- $shown = $shown | append . -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if site.Params.homepage.showRecent | default false }}
+  <h2 class="mt-8 text-2xl font-extrabold mb-10">Posts</h2>
+  <section class="w-full grid gap-4 sm:grid-cols-2 md:grid-cols-3">
+    {{- range $shown }}
+      {{ partial "article-link/card.html" . }}
+    {{- end }}
+  </section>
+  {{- if site.Params.homepage.showMoreLink | default false }}
+    <div class="mt-10 flex justify-center">
+      <a href="{{ site.Params.homepage.showMoreLinkDest | default "/posts/" | relLangURL }}">
+        <button
+          class="bg-transparent hover:text-primary-500 prose dark:prose-invert font-semibold py-2 px-4 border border-primary-500 hover:border-transparent rounded">
+          {{ i18n "recent.show_more" | markdownify }}
+        </button>
+      </a>
+    </div>
+  {{- end }}
+{{- end }}

@@ -1,0 +1,29 @@
+{{- /*
+Blowfish's code block render hook, plus collapsible cards: a fenced block with a collapse attribute renders as the
+same card as the code-include shortcode (layouts/partials/code-card.html), e.g.
+
+  ```yaml {collapse="true" title=".github/workflows/publish.yml"}
+
+collapse is "true" (starts collapsed) or "open" (collapsible, starts expanded); title defaults to the language.
+Blocks without collapse render exactly as Blowfish does (with its optional title bar).
+*/ -}}
+{{- $title := or .Attributes.title "" -}}
+{{- $lang := or .Type "text" -}}
+{{- with .Attributes.collapse -}}
+  {{- partial "code-card.html" (dict
+      "code" (transform.Highlight $.Inner $lang $.Options)
+      "title" ($title | default $lang)
+      "language" $lang
+      "collapse" .
+      "position" $.Position
+  ) -}}
+{{- else -}}
+<div class="highlight-wrapper">
+  {{- with $title -}}
+    <div class="codeblock-title">
+      {{- $title -}}
+    </div>
+  {{- end -}}
+  {{- transform.Highlight .Inner $lang .Options -}}
+</div>
+{{ end -}}

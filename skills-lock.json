@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "skills": {
+    "hugo": {
+      "source": "gopherconil/gopherconil.github.io",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/hugo/SKILL.md",
+      "computedHash": "72f1f6fe797c67cb9d607164b3d0669faa7c7b0653ce21b0c0da40f9af333b7e"
+    }
+  }
+}

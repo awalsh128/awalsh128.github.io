@@ -1,0 +1,86 @@
+name: Publish Extension
+
+# TODO: Pin third-party actions to commit SHAs (e.g. `uses: actions/checkout@<sha> # v5`).
+# TODO: If branch protection or rulesets cover the release branch, allow GitHub Actions to push the version commit
+#       (add a bypass, or push with a GitHub App token).
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Show the next version and release notes without publishing
+        required: true
+        type: boolean
+        default: true
+      pre_release:
+        description: Mark the release as a pre-release on both registries and on GitHub
+        required: true
+        type: boolean
+        default: false
+
+jobs:
+  # Reuse the CI workflow, which needs `on: workflow_call` among its triggers.
+  # TODO: Point this at your CI workflow and add `workflow_call:` to its `on:` triggers.
+  ci:
+    uses: ./.github/workflows/ci.yml
+    secrets: inherit
+
+  release:
+    runs-on: ubuntu-24.04
+    needs: ci
+    permissions:
+      contents: write # push the version commit and tag, create the GitHub release
+      issues: write # comment on released issues
+      pull-requests: write # comment on released pull requests
+      id-token: write # trusted publishing to the Marketplace and Open VSX
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0 # semantic-release reads every commit and tag since the last release
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24" # TODO: Match the Node version your CI uses.
+
+      - run: npm ci
+
+      - name: Get an Open VSX publishing token
+        run: node scripts/openvsx-token.mjs
+
+      # TODO: Check for newer versions of the release tools below; they're pinned on purpose.
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VSCE_PRE_RELEASE: ${{ inputs.pre_release }}
+          DRY_RUN_FLAG: ${{ inputs.dry_run && '--dry-run' || '' }}
+        run: |
+          npx --yes \
+            --package semantic-release@25.0.9 \
+            --package semantic-release-vsce@6.1.8 \
+            --package @semantic-release/git@11.0.1 \
+            semantic-release $DRY_RUN_FLAG
+
+      # semantic-release-vsce doesn't support Marketplace trusted publishing yet, so publish the VSIX it packaged
+      # here. No VSIX means nothing was released (or this is a dry run).
+      - name: Publish to the Marketplace
+        if: ${{ !inputs.dry_run }}
+        run: |
+          shopt -s nullglob
+          vsix=(*.vsix)
+          if [ ${#vsix[@]} -eq 0 ]; then
+            echo "No new release; nothing to publish to the Marketplace."
+            exit 0
+          fi
+          npx --yes @vscode/vsce@4.1.0 publish --oidc --packagePath "${vsix[@]}"
+
+      # semantic-release marks GitHub releases as pre-releases only for prerelease branches, whose
+      # versions carry a suffix the registries reject, so mark the release here instead.
+      - name: Mark the GitHub release as a pre-release
+        if: inputs.pre_release && !inputs.dry_run
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          tag=$(git tag --points-at HEAD --list 'v*')
+          if [ -n "$tag" ]; then
+            gh release edit "$tag" --prerelease
+          fi

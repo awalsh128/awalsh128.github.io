@@ -1,0 +1,39 @@
+{{- /*
+Code card: a rounded box with a header bar (title, language, optional download link) above highlighted code, used by
+the code-include shortcode and by fenced code blocks with a collapse attribute
+(layouts/_default/_markup/render-codeblock.html). Styled in assets/css/custom/30-post-blocks.css.
+
+Context is a dict:
+  code      highlighted HTML (required)
+  title     header text (required)
+  language  language label shown after the title
+  download  URL for a Download link (optional)
+  collapse  "true" (starts collapsed), "open" (collapsible, starts expanded), or "false" (always shown)
+  position  where the block came from, for error messages
+
+The code sits in a .highlight-wrapper, so it picks up Blowfish's copy button.
+*/ -}}
+{{- $collapse := .collapse | default "false" | string -}}
+{{- if not (in (slice "true" "open" "false") $collapse) -}}
+  {{- errorf "%s: collapse must be \"true\", \"open\", or \"false\", not %q" .position $collapse -}}
+{{- end -}}
+{{- $header := printf `<span class="code-include-title">%s</span>` (htmlEscape .title) -}}
+{{- with .language -}}
+  {{- $header = printf `%s<span class="code-include-lang">%s</span>` $header (htmlEscape .) -}}
+{{- end -}}
+{{- with .download -}}
+  {{- $header = printf `%s<a class="code-include-download" href="%s" download title="Download %s">Download</a>`
+      $header . (htmlEscape (path.Base .)) -}}
+{{- end -}}
+{{- $code := printf `<div class="highlight-wrapper">%s</div>` .code -}}
+{{- if ne $collapse "false" -}}
+  <details class="code-include"{{ if eq $collapse "open" }} open{{ end }}>
+    <summary class="code-include-header">{{ $header | safeHTML }}</summary>
+    {{- $code | safeHTML -}}
+  </details>
+{{- else -}}
+  <div class="code-include">
+    <div class="code-include-header">{{ $header | safeHTML }}</div>
+    {{- $code | safeHTML -}}
+  </div>
+{{- end -}}

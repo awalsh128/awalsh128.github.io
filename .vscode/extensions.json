@@ -1,0 +1,11 @@
+{
+  "recommendations": [
+    "charliermarsh.ruff",
+    "ms-python.python",
+    "esbenp.prettier-vscode",
+    "EditorConfig.EditorConfig",
+    "yzhang.markdown-all-in-one",
+    "timonwong.shellcheck",
+    "github.vscode-github-actions"
+  ]
+}

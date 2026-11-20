@@ -1,0 +1,45 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Hugo: serve with drafts",
+      "detail": "Live preview at http://localhost:1313/; open it with 'Simple Browser: Show'",
+      "type": "shell",
+      "command": "${workspaceFolder}/.tools/hugo",
+      "args": [
+        "server",
+        "-D",
+        "--navigateToChanged"
+      ],
+      "isBackground": true,
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "runOptions": {
+        "runOn": "folderOpen"
+      },
+      "problemMatcher": {
+        "owner": "hugo",
+        "fileLocation": "absolute",
+        "severity": "error",
+        "pattern": {
+          "regexp": "^ERROR \"(.+?):(\\d+):(\\d+)\": (.*)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "message": 4
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^(Start building sites|Change detected)",
+          "endsPattern": "^(Web Server is available at|Total in)"
+        }
+      }
+    }
+  ]
+}

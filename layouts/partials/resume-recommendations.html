@@ -1,0 +1,29 @@
+{{- /*
+LinkedIn recommendations for the resume page, from data/linkedin_recommendations.json (written by
+scripts/update_recommendations.py). Called by layouts/_default/resume.html with the list as its context. Hidden in
+print, so content/resume.pdf leaves them out.
+*/ -}}
+<div class="resume-recommendations print:hidden">
+  {{- range . }}
+    <figure class="resume-recommendation">
+      <blockquote>
+        {{- range split (strings.TrimSpace .text) "\n" }}
+          {{- with strings.TrimSpace . }}<p>{{ . }}</p>{{ end }}
+        {{- end -}}
+      </blockquote>
+      <figcaption>
+        <span class="resume-recommendation-name">{{ .name }}</span>
+        {{- $role := slice -}}
+        {{- with .title }}{{ $role = $role | append . }}{{ end -}}
+        {{- with .company }}{{ $role = $role | append . }}{{ end -}}
+        {{- with $role }}<span class="resume-recommendation-role">{{ delimit . ", " }}</span>{{ end -}}
+        {{- if findRE `^\d{4}-\d{2}-\d{2}$` .date -}}
+          {{- $date := time.AsTime .date -}}
+          <time datetime="{{ $date.Format "2006-01-02" }}">{{ $date.Format "January 2006" }}</time>
+        {{- else -}}
+          {{- with .date }}<span>{{ . }}</span>{{ end -}}
+        {{- end -}}
+      </figcaption>
+    </figure>
+  {{- end }}
+</div>

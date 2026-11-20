@@ -1,0 +1,39 @@
+{{- /*
+  Background image picked at random on each page load from assets/img/backgrounds/. Drop a .jpg in that folder to
+  add it to the rotation. Called from the overridden hero/background.html theme partial (posts and list pages) in place
+  of its <img id="background-image">. The homepage keeps homepage.homepageImage.
+
+  The <img> is created by an inline script so the browser only downloads the chosen image (a static src would be
+  fetched by the preload scanner before any script could swap it). Without JavaScript the first image is used.
+
+  Context: dict "class" (img classes) and "style" (optional inline style).
+*/ -}}
+{{- $urls := slice }}
+{{- range resources.Match "img/backgrounds/*.jpg" }}
+  {{- $urls = $urls | append (.Resize "1920x webp q70").RelPermalink }}
+{{- end }}
+{{- with $urls }}
+  <script>
+    (function () {
+      var urls = {{ $urls }};
+      var img = document.createElement("img");
+      img.id = "background-image";
+      img.className = {{ $.class }};
+      img.setAttribute("role", "presentation");
+      img.setAttribute("fetchpriority", "high");
+      {{- with $.style }}
+      img.setAttribute("style", {{ . }});
+      {{- end }}
+      img.src = urls[Math.floor(Math.random() * urls.length)];
+      document.currentScript.after(img);
+    })();
+  </script>
+  <noscript>
+    <img
+      id="background-image"
+      class="{{ $.class }}"
+      src="{{ index $urls 0 }}"
+      role="presentation"
+      {{ with $.style }}style="{{ . | safeCSS }}"{{ end }}>
+  </noscript>
+{{- end }}

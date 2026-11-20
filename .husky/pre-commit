@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+# Run by Husky; `npm install` (or scripts/setup_dev.sh) enables it once per clone. The sync steps are in
+# scripts/precommit.sh, which also takes --local to refresh files without touching git or gh.
+
+exec "$(dirname "$0")/../scripts/precommit.sh"

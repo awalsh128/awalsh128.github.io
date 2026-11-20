@@ -1,0 +1,9 @@
+{{- /* KaTeX stylesheet and fonts for pages with math (see render-passthrough.html). */ -}}
+{{- if .Store.Get "hasMath" -}}
+  {{- $css := resources.Get "lib/katex/katex.min.css" | resources.Fingerprint (.Site.Params.fingerprintAlgorithm | default "sha512") }}
+  <link type="text/css" rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+  {{- /* Referencing the fonts publishes them next to the stylesheet, which loads them by relative path. */ -}}
+  {{- range resources.Match "lib/katex/fonts/*" }}
+    {{- $_ := .RelPermalink }}
+  {{- end }}
+{{- end -}}

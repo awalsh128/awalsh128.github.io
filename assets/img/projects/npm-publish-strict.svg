@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-labelledby="title">
+  <title id="title">npm-publish-strict</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1e293b"/>
+      <stop offset="1" stop-color="#0b1120"/>
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="28" fill="url(#bg)"/>
+  <!-- package box -->
+  <g transform="translate(0 -8) scale(0.9) translate(7 0)">
+    <path d="M64 22 L100 40 V80 L64 98 L28 80 V40 Z" fill="none" stroke="#e2e8f0" stroke-width="6" stroke-linejoin="round"/>
+    <path d="M28 40 L64 58 L100 40 M64 58 V98" fill="none" stroke="#e2e8f0" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+  </g>
+  <!-- npm label -->
+  <rect x="26" y="92" width="76" height="26" rx="5" fill="#cb3837"/>
+  <text x="64" y="112" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="21" font-weight="700" fill="#ffffff" letter-spacing="1">npm</text>
+  <!-- strict gate: check badge -->
+  <circle cx="98" cy="38" r="18" fill="#2dd4bf" stroke="#0b1120" stroke-width="4"/>
+  <path d="M89 38 L96 45 L108 31" fill="none" stroke="#0b1120" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

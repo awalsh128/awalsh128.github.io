@@ -1,0 +1,31 @@
+{{- /*
+Highlighted code block from a file in the post's page bundle, shown as a card with a header bar (title, language,
+download link) above the code: {{< code-include source="script.sh" >}}.
+
+  source    file beside the post's index.md (required)
+  language  Chroma lexer name; defaults to the file extension (e.g. "sh", "py")
+  options   Hugo highlight options (e.g. "linenos=table,hl_lines=3-5")
+  collapse  "true" to show only the header until the reader expands it, "open" to make it collapsible but start
+            expanded
+  title     header text; defaults to the source file name
+
+The card itself is layouts/partials/code-card.html.
+*/ -}}
+{{- $source := .Get "source" -}}
+{{- if not $source -}}
+  {{- errorf "%s: code-include needs a source file" .Position -}}
+{{- else -}}
+  {{- with .Page.Resources.Get $source -}}
+    {{- $language := $.Get "language" | default (strings.TrimPrefix "." (path.Ext $source)) -}}
+    {{- partial "code-card.html" (dict
+        "code" (highlight (trim .Content "\n\r") $language ($.Get "options"))
+        "title" ($.Get "title" | default $source)
+        "language" $language
+        "download" .RelPermalink
+        "collapse" ($.Get "collapse")
+        "position" $.Position
+    ) -}}
+  {{- else -}}
+    {{- errorf "%s: code-include file %q not found beside the post" $.Position $source -}}
+  {{- end -}}
+{{- end -}}
