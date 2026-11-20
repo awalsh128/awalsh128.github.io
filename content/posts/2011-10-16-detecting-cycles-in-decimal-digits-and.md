@@ -1,18 +1,17 @@
 ---
 title: Detecting cycles in decimal digits and lists.
-date: '2011-10-16T02:25:00.000-07:00'
+date: "2011-10-16T02:25:00.000-07:00"
 tags:
-- Python
-- Algorithms
+  - Python
+  - Algorithms
 ---
 
-I was recently working on solving [problem 64 for project
-Euler](http://projecteuler.net/problem=64) and one of the needed
-algorithms was a detection of cycles in a list. This routine works for
-detecting cycles in lists of cardinality greater than 2.\
+I was recently working on solving [problem 64 for project Euler](http://projecteuler.net/problem=64) and one
+of the needed algorithms was a detection of cycles in a list. This routine works for detecting cycles in lists
+of cardinality greater than 2.\
 \
 
-``` python
+```python
 def get_cycle_len(N):
     i = k = 0
     for j in range(2, len(N)):

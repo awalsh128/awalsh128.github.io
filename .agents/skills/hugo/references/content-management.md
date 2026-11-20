@@ -1,6 +1,7 @@
 # Hugo Content Management Reference
 
 ## Table of Contents
+
 1. [Content Organization](#content-organization)
 2. [Front Matter](#front-matter)
 3. [Page Bundles](#page-bundles)
@@ -31,37 +32,39 @@ content/
 │       └── install.md           → /docs/getting-started/install/
 ```
 
-**Sections** are top-level content directories. A directory becomes a section if it contains `_index.md` or is a top-level dir. The section determines the content type (and therefore which templates apply).
+**Sections** are top-level content directories. A directory becomes a section if it contains `_index.md` or is
+a top-level dir. The section determines the content type (and therefore which templates apply).
 
 ## Front Matter
 
 ### Predefined Fields
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `title` | string | Page title |
-| `date` | datetime | Creation date |
-| `lastmod` | datetime | Last modification date |
-| `publishDate` | datetime | Future publish date |
-| `expiryDate` | datetime | Expiration date |
-| `draft` | bool | Exclude from build (unless `-D` flag) |
-| `description` | string | Page description (meta) |
-| `summary` | string | Summary text (overrides auto) |
-| `slug` | string | URL tail segment |
-| `url` | string | Full URL path (overrides everything) |
-| `weight` | int | Sort order (lower = first) |
-| `layout` | string | Specific layout template name |
-| `type` | string | Content type (default: section name) |
-| `aliases` | []string | Redirect URLs pointing to this page |
-| `keywords` | []string | Meta keywords |
-| `linkTitle` | string | Short title for navigation |
-| `markup` | string | Markup language override |
-| `outputs` | []string | Output formats for this page |
-| `cascade` | map | Values inherited by descendant pages |
+| Field         | Type     | Description                           |
+| ------------- | -------- | ------------------------------------- |
+| `title`       | string   | Page title                            |
+| `date`        | datetime | Creation date                         |
+| `lastmod`     | datetime | Last modification date                |
+| `publishDate` | datetime | Future publish date                   |
+| `expiryDate`  | datetime | Expiration date                       |
+| `draft`       | bool     | Exclude from build (unless `-D` flag) |
+| `description` | string   | Page description (meta)               |
+| `summary`     | string   | Summary text (overrides auto)         |
+| `slug`        | string   | URL tail segment                      |
+| `url`         | string   | Full URL path (overrides everything)  |
+| `weight`      | int      | Sort order (lower = first)            |
+| `layout`      | string   | Specific layout template name         |
+| `type`        | string   | Content type (default: section name)  |
+| `aliases`     | []string | Redirect URLs pointing to this page   |
+| `keywords`    | []string | Meta keywords                         |
+| `linkTitle`   | string   | Short title for navigation            |
+| `markup`      | string   | Markup language override              |
+| `outputs`     | []string | Output formats for this page          |
+| `cascade`     | map      | Values inherited by descendant pages  |
 
 ### Custom Parameters
 
 Custom fields go under `params:`:
+
 ```yaml
 ---
 title: "My Post"
@@ -77,6 +80,7 @@ Access in templates: `{{ .Params.author }}`, `{{ .Params.featured }}`.
 ### Cascade
 
 Propagate front matter to descendant pages:
+
 ```yaml
 ---
 cascade:
@@ -158,6 +162,7 @@ permalinks:
 ```
 
 Available tokens:
+
 - Date: `:year`, `:month`, `:monthname`, `:day`, `:weekday`, `:weekdayname`, `:yearday`
 - Content: `:title`, `:slug`, `:contentbasename`, `:slugorcontentbasename`, `:filename`
 - Structure: `:section`, `:sectionslug`, `:sections` (full path), `:sections[1:]` (slice syntax)
@@ -171,7 +176,8 @@ aliases:
   - /posts/original-title/
 ```
 
-Generates HTML files with meta-refresh redirects. For server-side redirects, set `disableAliases: true` and configure your server.
+Generates HTML files with meta-refresh redirects. For server-side redirects, set `disableAliases: true` and
+configure your server.
 
 ## Taxonomies
 
@@ -245,6 +251,7 @@ params:
 Templates for `hugo new content`:
 
 `archetypes/posts.md`:
+
 ```yaml
 ---
 title: "{{ replace .File.ContentBaseName "-" " " | title }}"
@@ -256,6 +263,7 @@ categories: []
 ```
 
 `archetypes/posts/` directory creates a leaf bundle archetype:
+
 ```
 archetypes/posts/
 ├── index.md
@@ -313,6 +321,7 @@ Access resources co-located with a page:
 ### Resource Metadata
 
 Set in front matter:
+
 ```yaml
 resources:
   - src: "hero.jpg"
@@ -346,6 +355,7 @@ languages:
 Content translation by filename: `about.md` (default) and `about.he.md` (Hebrew).
 
 Template access:
+
 ```go-html-template
 {{ .IsTranslated }}
 {{ range .Translations }}

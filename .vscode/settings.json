@@ -1,15 +1,7 @@
 {
-  "editor.tabSize": 2,
-  "editor.rulers": [
-    110
-  ],
   "editor.formatOnSave": true,
-  "editor.insertSpaces": true,
-  "prettier.printWidth": 110,
-  "keep-sorted.enabled": false,
-  "workbench.externalBrowser": "brave",
   "[python]": {
-    "editor.defaultFormatter": "charliermarsh.ruff",
-    "editor.formatOnSave": true
+    "editor.defaultFormatter": "charliermarsh.ruff"
   },
+  "workbench.externalBrowser": "brave"
 }

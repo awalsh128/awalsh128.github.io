@@ -1,49 +1,41 @@
 ---
 title: Using CC.NET & Gallio for priority based smoke testing.
-date: '2014-10-17T11:07:00.002-07:00'
+date: "2014-10-17T11:07:00.002-07:00"
 tags:
-- C#
-- .NET
-- Testing
-lastmod: '2015-03-19T10:28:59.720-07:00'
+  - C#
+  - .NET
+  - Testing
+lastmod: "2015-03-19T10:28:59.720-07:00"
 ---
 
 ### Pitfalls in Production
 
 Being able to monitor
-[production](http://en.wikipedia.org/wiki/Development_environment_(software_development_process))
-services for potential errors is critical. Especially if the services
-are dependant on external resources which may become unavailable or
-exhibit unexpected behavior. Even if you follow good software
-development discipline, this is always a source of concern. Think
-network outages, unannounced third party API changes, hosted services
-becoming unavailable, etc.
+[production](<http://en.wikipedia.org/wiki/Development_environment_(software_development_process)>) services
+for potential errors is critical. Especially if the services are dependant on external resources which may
+become unavailable or exhibit unexpected behavior. Even if you follow good software development discipline,
+this is always a source of concern. Think network outages, unannounced third party API changes, hosted
+services becoming unavailable, etc.
 
-For large software projects, creating a [testing
-strategy](http://en.wikipedia.org/wiki/Software_testing) that involves
-unit and integration is helpful when managing complexity of the commit
-to deployment workflow. Functional/smoke tests are also good to ensure
-critical functionality works as expected. Although, in an environment
-where the running of your software is dependent on external resources,
-you need a system of continuous monitoring that run these smoke tests.
+For large software projects, creating a [testing strategy](http://en.wikipedia.org/wiki/Software_testing) that
+involves unit and integration is helpful when managing complexity of the commit to deployment workflow.
+Functional/smoke tests are also good to ensure critical functionality works as expected. Although, in an
+environment where the running of your software is dependent on external resources, you need a system of
+continuous monitoring that run these smoke tests.
 
 ### Monitoring Confusion
 
-At [Xignite](https://www.xignite.com/), we use
-[Gallio](https://code.google.com/p/mb-unit/) for our testing framework
-and [CC.NET](http://www.cruisecontrolnet.org) for our continuous
-integration. I used these tools for my production smoke tests but soon
-realized that not all tests were equal. Getting paged at 2am for a test
-failure that is not mission critical sucks. Even worse, these lower
-priority failures can mask very high priority ones since they cause the
-entire [test fixture](http://en.wikipedia.org/wiki/Test_fixture) to
-fail, and require scrutiny on behalf of the dev-ops person to ensure
-that a high priority failure doesn\'t fall through the cracks.
+At [Xignite](https://www.xignite.com/), we use [Gallio](https://code.google.com/p/mb-unit/) for our testing
+framework and [CC.NET](http://www.cruisecontrolnet.org) for our continuous integration. I used these tools for
+my production smoke tests but soon realized that not all tests were equal. Getting paged at 2am for a test
+failure that is not mission critical sucks. Even worse, these lower priority failures can mask very high
+priority ones since they cause the entire [test fixture](http://en.wikipedia.org/wiki/Test_fixture) to fail,
+and require scrutiny on behalf of the dev-ops person to ensure that a high priority failure doesn\'t fall
+through the cracks.
 
-Consider the following test fixture and how it lumps all the different
-tests together.
+Consider the following test fixture and how it lumps all the different tests together.
 
-``` csharp
+```csharp
 namespace MyServices.Tests.Smoke
 {
    using Gallio.Framework;
@@ -80,7 +72,7 @@ namespace MyServices.Tests.Smoke
          {
             // Handle some other outcome.
          }
-      }     
+      }
 
       [Test]
       public void MissionCritical()
@@ -98,26 +90,23 @@ namespace MyServices.Tests.Smoke
       public void MinorFunctionality()
       {
          // ...
-      }     
+      }
    }
 }
 ```
 
-Any test failure will make the entire context outcome to fail whether it
-was the mission critical test or the test that affects minor
-functionality. I tried looking through the Gallio/MbUnit API, event its
-[source](https://github.com/Gallio/mbunit-v3), but couldn\'t find a way
-to find out which tests failed within a fixture. If anyone knows how to
-determine this, please let me know.
+Any test failure will make the entire context outcome to fail whether it was the mission critical test or the
+test that affects minor functionality. I tried looking through the Gallio/MbUnit API, event its
+[source](https://github.com/Gallio/mbunit-v3), but couldn\'t find a way to find out which tests failed within
+a fixture. If anyone knows how to determine this, please let me know.
 
 ### Prioritized Testing
 
-What I do know though is that you can inherit the `TestAttribute` class
-and override its `Execute` method. I created a required parameter to
-specify the priority of the test and then used a `LoggedTestingContext`
-class to store all the results.
+What I do know though is that you can inherit the `TestAttribute` class and override its `Execute` method. I
+created a required parameter to specify the priority of the test and then used a `LoggedTestingContext` class
+to store all the results.
 
-``` csharp
+```csharp
 namespace MyServices.Tests
 {
    using Gallio.Framework.Pattern;
@@ -149,7 +138,7 @@ namespace MyServices.Tests
             LoggedTestingContext.AddTest(this, state.Test, true);
          }
          catch (Exception)
-         {            
+         {
             LoggedTestingContext.AddTest(this, state.Test, false);
             throw;
          }
@@ -158,7 +147,7 @@ namespace MyServices.Tests
 }
 ```
 
-``` csharp
+```csharp
 namespace MyServices.Tests
 {
    using System;
@@ -183,11 +172,11 @@ namespace MyServices.Tests
       }
 
       private const int PriorityCount = LoggedTestAttribute.MaxPriority - LoggedTestAttribute.MinPriority + 1;
-      
+
       private static readonly Dictionary nameToFailure = new Dictionary();
 
       internal static void AddTest(LoggedTestAttribute testAttribute, Test test, bool passed)
-      {         
+      {
          if (passed)
          {
             return;
@@ -208,7 +197,7 @@ namespace MyServices.Tests
       }
 
       public static void LogSmokeTests(Test fixtureTest, string serviceName)
-      {     
+      {
          foreach (var priority in Enumerable.Range(LoggedTestAttribute.MinPriority, PriorityCount))
          {
             if (HasFailed(fixtureTest, priority))
@@ -225,11 +214,10 @@ namespace MyServices.Tests
 }
 ```
 
-Finally, putting it together, I replaced the `TestAttribute` with the
-new `LoggedTestAttribute` and then process the results in the test
-fixture teardown.
+Finally, putting it together, I replaced the `TestAttribute` with the new `LoggedTestAttribute` and then
+process the results in the test fixture teardown.
 
-``` csharp
+```csharp
 namespace MyServices.Tests.Smoke
 {
    using Gallio.Framework;
@@ -255,7 +243,7 @@ namespace MyServices.Tests.Smoke
       public void TestFixtureTearDown()
       {
          LoggedTestingContext.LogSmokeTests(TestContext.CurrentContext.Test, "OneOfMyServices");
-      }     
+      }
 
       [LoggedTest(1)]
       public void MissionCritical()
@@ -273,13 +261,12 @@ namespace MyServices.Tests.Smoke
       public void AffectsFunctionalityByDoesntRequireImmediateAttention()
       {
          // ...
-      }     
+      }
    }
 }
 ```
 
 ### More Reading & Resources
 
--   [mb-unit:
-    Downloads](https://code.google.com/p/mb-unit/downloads/list)
--   [CruiseControl.NET](http://www.cruisecontrolnet.org/)
+- [mb-unit: Downloads](https://code.google.com/p/mb-unit/downloads/list)
+- [CruiseControl.NET](http://www.cruisecontrolnet.org/)

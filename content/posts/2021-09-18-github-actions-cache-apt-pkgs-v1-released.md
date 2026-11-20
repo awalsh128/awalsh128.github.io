@@ -2,11 +2,14 @@
 title: GitHub Actions - Cache APT Packages v1 Released
 summary: "A GitHub action to cache APT packages for future workflow runs.."
 tags:
-- GitHub
-- Open Source
+  - GitHub
+  - Open Source
 ---
 
-I created a GitHub action [awalsh128/cache-apt-packages](https://github.com/marketplace/actions/cache-apt-packages) that allows caching of Advanced Package Tool (APT) package dependencies to improve workflow execution time instead of installing the packages on every run.
+I created a GitHub action
+[awalsh128/cache-apt-packages](https://github.com/marketplace/actions/cache-apt-packages) that allows caching
+of Advanced Package Tool (APT) package dependencies to improve workflow execution time instead of installing
+the packages on every run.
 
 Here is an example using it to cache Doxygen dependencies.
 
@@ -14,7 +17,6 @@ Here is an example using it to cache Doxygen dependencies.
 name: Create Documentation
 on: push
 jobs:
-
   build_and_deploy_docs:
     runs-on: ubuntu-latest
     name: Build Doxygen documentation and deploy
@@ -24,7 +26,7 @@ jobs:
         with:
           packages: dia doxygen doxygen-doc doxygen-gui doxygen-latex graphviz mscgen
 
-      - name: Build        
+      - name: Build
         run: |
           cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}      
           cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
@@ -36,4 +38,6 @@ jobs:
           folder: ${{github.workspace}}/build/website
 ```
 
-This action is a composition of [actions/cache](https://github.com/actions/cache/README.md) and the `apt` utility. For more information, see [the repository README on GitHub](https://github.com/awalsh128/cache-apt-pkgs-action#readme).
+This action is a composition of [actions/cache](https://github.com/actions/cache/README.md) and the `apt`
+utility. For more information, see
+[the repository README on GitHub](https://github.com/awalsh128/cache-apt-pkgs-action#readme).

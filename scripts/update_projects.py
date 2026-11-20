@@ -29,8 +29,8 @@ from project_logos import sync_logos
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT = ROOT_DIR / "content" / "_index.md"
-# Projects shown on the homepage, grouped by type. Groups and the repositories in them render in this order, each
-# group under its own heading inside the collapsed block.
+# Projects shown on the homepage, grouped by type. Groups and the repositories in them render in this order,
+# each group under its own heading inside the collapsed block.
 REPOS = {
     "GitHub Actions and CI/CD": [
         "awalsh128/cache-apt-pkgs-action",
@@ -96,7 +96,8 @@ def render(groups: dict[str, list[dict]]) -> str:
         bullets = "\n".join(render_bullet(repo) for repo in repos)
         sections.append(f"### {group}\n\n{bullets}")
     body = "\n\n".join(sections)
-    # The section heading is the toggle, so the list collapses under it (styled in assets/css/custom/20-home.css).
+    # The section heading is the toggle, so the list collapses under it (styled in
+    # assets/css/custom/20-home.css).
     summary = '<summary><h2 id="projects">My Open Source Projects</h2></summary>'
     return f"<details>\n{summary}\n\n{body}\n\n</details>"
 

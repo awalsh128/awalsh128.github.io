@@ -1,14 +1,16 @@
 #!/usr/bin/env bash
-# Replace origin/master's history with one "Initial commit." of the current files. Destructive: it force-pushes.
+# Replace origin/master's history with one "Initial commit." of the current files. Destructive: it
+# force-pushes.
 #
 # Usage: scripts/wipe_git_history.sh
 #
-# Run it from a clean master that matches origin/master. It writes a git bundle backup next to the repo, asks you to
-# type "wipe", and force-pushes only if origin/master has not moved since the fetch. It skips git hooks for the commit.
+# Run it from a clean master that matches origin/master. It writes a git bundle backup next to the repo, asks
+# you to type "wipe", and force-pushes only if origin/master has not moved since the fetch. It skips git hooks
+# for the commit.
 #
-# It rewrites master only. Other branches, tags and pull request refs keep the old history until you delete them, and
-# GitHub keeps old commits reachable by SHA, in forks and in caches until it garbage-collects them (ask GitHub support
-# to purge cached views). Treat anything that was ever public as exposed.
+# It rewrites master only. Other branches, tags and pull request refs keep the old history until you delete
+# them, and GitHub keeps old commits reachable by SHA, in forks and in caches until it garbage-collects them
+# (ask GitHub support to purge cached views). Treat anything that was ever public as exposed.
 
 set -euo pipefail
 
@@ -21,7 +23,8 @@ branch="$(git branch --show-current)"
 [[ -z "$(git status --porcelain)" ]] || fail "the working tree is not clean; commit or stash first."
 git fetch --quiet origin
 head="$(git rev-parse master)"
-[[ "${head}" == "$(git rev-parse origin/master)" ]] || fail "master and origin/master differ; push or pull first."
+[[ "${head}" == "$(git rev-parse origin/master)" ]] ||
+  fail "master and origin/master differ; push or pull first."
 
 backup="$(dirname "${root}")/$(basename "${root}")-$(date +%Y%m%d-%H%M%S).bundle"
 git bundle create --quiet "${backup}" --all

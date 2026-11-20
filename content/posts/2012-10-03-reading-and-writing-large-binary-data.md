@@ -1,45 +1,38 @@
 ---
 title: Reading and writing large binary data in T-SQL and ADO.NET.
-date: '2012-10-03T13:40:00.000-07:00'
+date: "2012-10-03T13:40:00.000-07:00"
 tags:
-- C#
-- .NET
-- Databases
-lastmod: '2012-10-03T13:42:20.332-07:00'
+  - C#
+  - .NET
+  - Databases
+lastmod: "2012-10-03T13:42:20.332-07:00"
 ---
 
 ### Introduction
 
-In some cases, you may want to read/write binary data from/to your
-relational database. This can be a problem when the data set size
-exceeds the memory address size (eg. 32-bit processes) or the [managed
-large object
-heap](http://msdn.microsoft.com/en-us/magazine/cc534993.aspx) cannot
-load it all without throwing an
-[OutOfMemoryException](http://msdn.microsoft.com/en-us/library/system.outofmemoryexception.aspx).
-In those cases, you will need to load the data into memory in chunks.
-Fortunately, the [T-SQL](http://en.wikipedia.org/wiki/Transact-SQL)
-syntax supports this operation.
+In some cases, you may want to read/write binary data from/to your relational database. This can be a problem
+when the data set size exceeds the memory address size (eg. 32-bit processes) or the
+[managed large object heap](http://msdn.microsoft.com/en-us/magazine/cc534993.aspx) cannot load it all without
+throwing an [OutOfMemoryException](http://msdn.microsoft.com/en-us/library/system.outofmemoryexception.aspx).
+In those cases, you will need to load the data into memory in chunks. Fortunately, the
+[T-SQL](http://en.wikipedia.org/wiki/Transact-SQL) syntax supports this operation.
 
 ### Latest Standard
 
 The old standard for reading and writing raw text data was by using the
 [UPDATETEXT](http://msdn.microsoft.com/en-us/library/ms189466.aspx),
 [READTEXT](http://msdn.microsoft.com/en-us/library/ms187365.aspx) and
-[TEXTPTR](http://msdn.microsoft.com/en-us/library/ms176068.aspx)
-commands. Although, these are being obsoleted for the newer command
-[SUBSTRING](http://msdn.microsoft.com/en-us/library/ms187748.aspx) and
-the addition of the `.WRITE` argument to the
-[UPDATE](http://msdn.microsoft.com/en-us/library/ms177523.aspx) command.
-I found the newer syntax much easier to use and requiring less
-parameters. Below is an example schema and implementation.
+[TEXTPTR](http://msdn.microsoft.com/en-us/library/ms176068.aspx) commands. Although, these are being obsoleted
+for the newer command [SUBSTRING](http://msdn.microsoft.com/en-us/library/ms187748.aspx) and the addition of
+the `.WRITE` argument to the [UPDATE](http://msdn.microsoft.com/en-us/library/ms177523.aspx) command. I found
+the newer syntax much easier to use and requiring less parameters. Below is an example schema and
+implementation.
 
 ### Example Schema
 
-For this example, we will use a very simple table setup with a primary
-key and binary data column.
+For this example, we will use a very simple table setup with a primary key and binary data column.
 
-``` sql
+```sql
 CREATE TABLE [dbo].[DataTable] (
  [Id] [int] IDENTITY(1,1) NOT NULL,
  [Data] [varbinary](max) NOT NULL
@@ -48,11 +41,10 @@ CREATE TABLE [dbo].[DataTable] (
 
 ### Example Code
 
-The `Read` method simply provides an offset into the data and the size
-of the chunk it wishes to read. The same applies for the `Write` method,
-except that a data argument is also supplied.
+The `Read` method simply provides an offset into the data and the size of the chunk it wishes to read. The
+same applies for the `Write` method, except that a data argument is also supplied.
 
-``` csharp
+```csharp
 private const int ReadChunkSize = 1 << 21;   // 2MB Chunks
 private const int WriteChunkSize = 1 << 21;  // 2MB Chunks
 
@@ -128,22 +120,17 @@ public static void Write(string connectionString, string writePath)
 
 ### Performance Considerations
 
-When benchmarking my code against the simple database schema, execution
-time was drastically different if the data was already read into memory.
-When a read was performed after a write, it took 2 seconds. A read
-without a write beforehand took about 10 seconds. This is also the same
-time that the write took before a read. The chunk size did not seems to
-have any significant impact when adjusted between 512K and 4MB sizes.
-Your results may vary though depending on your system\'s memory layout.
+When benchmarking my code against the simple database schema, execution time was drastically different if the
+data was already read into memory. When a read was performed after a write, it took 2 seconds. A read without
+a write beforehand took about 10 seconds. This is also the same time that the write took before a read. The
+chunk size did not seems to have any significant impact when adjusted between 512K and 4MB sizes. Your results
+may vary though depending on your system\'s memory layout.
 
-These time benchmarks are very informal and highly dependent on system
-architecture, network latency and hardware specifications. Although, the
-relative performance gain between the two benchmarks can be gleaned from
-these tests.
+These time benchmarks are very informal and highly dependent on system architecture, network latency and
+hardware specifications. Although, the relative performance gain between the two benchmarks can be gleaned
+from these tests.
 
-A further performance gain would be to front load the data into memory
-on a separate thread and process the loaded data into and out of the
-database on another. This would require some tweaking and knowledge of
-the system\'s memory constraints to ensure it doesn\'t become a
-performance bottleneck. If properly done, a lot can be gained from not
-having to block on I/O between every chunk read and write.
+A further performance gain would be to front load the data into memory on a separate thread and process the
+loaded data into and out of the database on another. This would require some tweaking and knowledge of the
+system\'s memory constraints to ensure it doesn\'t become a performance bottleneck. If properly done, a lot
+can be gained from not having to block on I/O between every chunk read and write.

@@ -1,9 +1,5 @@
-# Generated or built output that Prettier should not rewrite.
-public/
+# Generated output that Prettier should not rewrite. Anything in .gitignore is already skipped.
 resources/
-.tools/
-node_modules/
-content/resume.pdf
+data/
 content/_index.md
 content/api.md
-data/

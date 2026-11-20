@@ -2,13 +2,14 @@
 
 """Sync data/popular_posts.json with the search clicks per page in a Google Search Console export.
 
-The homepage's Posts section (layouts/partials/recent-articles/main.html) shows pinned posts first, then the posts
-with the most search clicks, then the newest to fill any gaps.
+The homepage's Posts section (layouts/partials/recent-articles/main.html) shows pinned posts first, then the
+posts with the most search clicks, then the newest to fill any gaps.
 
-Reads Pages.csv from the newest Search Console export for awalsh128.com in ~/Downloads (Search Console > Performance >
-Pages > Export > Download CSV, which saves a zip named like awalsh128.com-Performance-on-Search-YYYY-MM-DD.zip), or
-from the path given with --export or $SEARCH_CONSOLE_EXPORT. With no export it leaves the data file alone and exits 0,
-so the pre-commit hook skips it until you download one.
+Reads Pages.csv from the newest Search Console export for awalsh128.com in ~/Downloads (Search Console >
+Performance > Pages > Export > Download CSV, which saves a zip named like
+awalsh128.com-Performance-on-Search-YYYY-MM-DD.zip), or from the path given with --export or
+$SEARCH_CONSOLE_EXPORT. With no export it leaves the data file alone and exits 0, so the pre-commit hook skips
+it until you download one.
 """
 
 import argparse
@@ -26,7 +27,8 @@ from downloads import DOWNLOADS_DIR, newest_export, read_export_csv
 ROOT_DIR = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT = ROOT_DIR / "data" / "popular_posts.json"
 CSV_NAME = "Pages.csv"
-# Search Console names the zip after the property and the export date; a repeat download adds " (1)" and so on.
+# Search Console names the zip after the property and the export date; a repeat download adds " (1)" and so
+# on.
 EXPORT_NAME = re.compile(
     r"^.*awalsh128\.com.*-Performance-on-Search-(?P<year>\d{4})-(?P<month>\d{2})-(?P<day>\d{2})"
     r"(?: \(\d+\))?(?:\.zip)?$",
@@ -35,7 +37,9 @@ EXPORT_NAME = re.compile(
 
 
 def parse(csv_text: str) -> list[dict]:
-    """Clicks per site path (e.g. /safer-curl-bash/), most first, merging http/https, www and #fragment variants."""
+    """Clicks per site path (e.g. /safer-curl-bash/), most first, merging http/https, www and #fragment
+    variants.
+    """
     rows = csv.reader(io.StringIO(csv_text))
     header = [name.strip().lower() for name in next(rows, [])]
     clicks_column = header.index("clicks")

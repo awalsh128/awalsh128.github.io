@@ -1,13 +1,13 @@
 """Find and read a LinkedIn data export for update_recommendations.py.
 
-LinkedIn has no public API for recommendations, so the resume page's recommendations come from the data export you
-request from LinkedIn. This finds the newest export in ~/Downloads under LinkedIn's own file name
-(Basic_LinkedInDataExport_MM-DD-YYYY.zip.zip, or Complete_..., zipped or unzipped), or takes a given path, and reads
-only Recommendations_Received.csv from it.
+LinkedIn has no public API for recommendations, so the resume page's recommendations come from the data export
+you request from LinkedIn. This finds the newest export in ~/Downloads under LinkedIn's own file name
+(Basic_LinkedInDataExport_MM-DD-YYYY.zip.zip, or Complete_..., zipped or unzipped), or takes a given path, and
+reads only Recommendations_Received.csv from it.
 
-With no export found, run from a terminal, it prints how to get one and waits: press any key to look again once it's
-downloaded, or q to skip. Without a terminal (e.g. the pre-commit hook, where git gives hooks no input), it prints a
-one-line note instead.
+With no export found, run from a terminal, it prints how to get one and waits: press any key to look again
+once it's downloaded, or q to skip. Without a terminal (e.g. the pre-commit hook, where git gives hooks no
+input), it prints a one-line note instead.
 """
 
 import re
@@ -25,10 +25,12 @@ except ImportError:  # Not POSIX; fall back to waiting for Enter.
 DEFAULT_SEARCH_DIR = DOWNLOADS_DIR
 CSV_NAME = "Recommendations_Received.csv"
 
-# LinkedIn names the archive after the export date and downloads it as Basic_LinkedInDataExport_11-05-2026.zip.zip;
-# unzipping that gives a folder named ...zip. Match any number of .zip suffixes, including none.
+# LinkedIn names the archive after the export date and downloads it as
+# Basic_LinkedInDataExport_11-05-2026.zip.zip; unzipping that gives a folder named ...zip. Match any number of
+# .zip suffixes, including none.
 EXPORT_NAME = re.compile(
-    r"^(?:Basic|Complete)_LinkedInDataExport_(?P<month>\d{2})-(?P<day>\d{2})-(?P<year>\d{4})(?:\.zip)*$", re.IGNORECASE
+    r"^(?:Basic|Complete)_LinkedInDataExport_(?P<month>\d{2})-(?P<day>\d{2})-(?P<year>\d{4})(?:\.zip)*$",
+    re.IGNORECASE,
 )
 EXPORT_URL = "https://www.linkedin.com/mypreferences/d/download-my-data"
 INSTRUCTIONS = f"""\

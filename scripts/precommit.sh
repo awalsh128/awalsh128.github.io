@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
-# Sync generated files for the commit and stage them. Run by .husky/pre-commit; run it by hand to refresh the files.
+# Sync generated files for the commit and stage them. Run by .husky/pre-commit; run it by hand to refresh the
+# files.
 #
 # Usage: scripts/precommit.sh [--local]
-#   --local  Update files in the working tree only. It makes no gh calls and no git commands, and stages nothing.
-#            It skips the GitHub-backed syncs (homepage projects, API page) and the PDF and archive rebuilds, since
-#            those depend on what is staged.
+#   --local  Update files in the working tree only. It makes no gh calls and no git commands, and stages
+#            nothing. It skips the GitHub-backed syncs (homepage projects, API page) and the PDF and archive
+#            rebuilds, since those depend on what is staged.
 #
 # 1. Sync the homepage project list and project logos with the REPOS list in update_projects.py.
 # 2. Sync the API page with the repositories that publish API docs (update_apis.py).
@@ -23,9 +24,9 @@ case "${1:-}" in
 *) fail "unknown argument '$1'; usage: precommit.sh [--local]" ;;
 esac
 
-# run_sync <what> <script> <path>...: run a sync script and, unless --local, stage the paths it changed. A failing
-# script (no gh, no network) only skips that sync; the commit continues with the existing files. -A also stages
-# removed files, such as logos of repositories no longer listed.
+# run_sync <what> <script> <path>...: run a sync script and, unless --local, stage the paths it changed. A
+# failing script (no gh, no network) only skips that sync; the commit continues with the existing files. -A
+# also stages removed files, such as logos of repositories no longer listed.
 run_sync() {
   what="$1"
   script="$2"
@@ -58,7 +59,8 @@ fi
 # Regenerate the PDF resume when its source, layout, or styling is part of the commit.
 # Renders the working tree, so stage the resume changes you want reflected in the PDF.
 pdf="content/resume.pdf"
-if ! git -C "${root}" diff --cached --quiet -- content/resume.md layouts/_default/resume.html assets/css/custom/; then
+resume_sources=(content/resume.md layouts/_default/resume.html assets/css/custom/)
+if ! git -C "${root}" diff --cached --quiet -- "${resume_sources[@]}"; then
   if "${root}/scripts/resume_to_pdf.sh"; then
     git -C "${root}" add -- "${pdf}"
     info "staged regenerated ${pdf}."

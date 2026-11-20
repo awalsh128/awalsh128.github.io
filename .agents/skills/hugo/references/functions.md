@@ -1,6 +1,7 @@
 # Hugo Functions Reference
 
 ## Table of Contents
+
 1. [String Functions](#string-functions)
 2. [Collection Functions](#collection-functions)
 3. [Math Functions](#math-functions)
@@ -309,11 +310,13 @@ Mark strings as safe (bypass HTML escaping):
 ## Hugo Pipes
 
 ### Minify
+
 ```go-html-template
 {{ $css := resources.Get "css/main.css" | minify }}
 ```
 
 ### Fingerprint (Cache Busting & SRI)
+
 ```go-html-template
 {{ $css := resources.Get "css/main.css" | fingerprint }}
 {{ $css := resources.Get "css/main.css" | fingerprint "sha384" }}
@@ -321,11 +324,13 @@ Mark strings as safe (bypass HTML escaping):
 ```
 
 ### Concatenation
+
 ```go-html-template
 {{ $css := slice (resources.Get "css/a.css") (resources.Get "css/b.css") | resources.Concat "css/bundle.css" }}
 ```
 
 ### From String
+
 ```go-html-template
 {{ $css := resources.FromString "css/dynamic.css" (printf ":root { --primary: %s; }" .Site.Params.primaryColor) }}
 ```
@@ -333,6 +338,7 @@ Mark strings as safe (bypass HTML escaping):
 ## CSS Functions
 
 ### Sass/SCSS
+
 ```go-html-template
 {{ $opts := dict "transpiler" "libsass" "targetPath" "css/style.css" }}
 {{ $css := resources.Get "scss/main.scss" | css.Sass $opts }}
@@ -342,12 +348,15 @@ Mark strings as safe (bypass HTML escaping):
 ```
 
 ### PostCSS
+
 ```go-html-template
 {{ $css := resources.Get "css/main.css" | css.PostCSS }}
 ```
+
 Requires `postcss-cli` and a `postcss.config.js`.
 
 ### TailwindCSS
+
 ```go-html-template
 {{ $css := resources.Get "css/main.css" | css.TailwindCSS }}
 ```
@@ -355,6 +364,7 @@ Requires `postcss-cli` and a `postcss.config.js`.
 ## JS Functions
 
 ### js.Build (ESBuild)
+
 ```go-html-template
 {{ $opts := dict
   "targetPath" "js/bundle.js"
@@ -368,7 +378,8 @@ Requires `postcss-cli` and a `postcss.config.js`.
 {{ $js := resources.Get "js/main.js" | js.Build $opts }}
 ```
 
-Options: `targetPath`, `minify`, `target` (es2015-es2022), `externals`, `defines`, `format` (iife/cjs/esm), `sourceMap`, `inject`, `shims`, `params` (accessible via `import { params } from '@params'`).
+Options: `targetPath`, `minify`, `target` (es2015-es2022), `externals`, `defines`, `format` (iife/cjs/esm),
+`sourceMap`, `inject`, `shims`, `params` (accessible via `import { params } from '@params'`).
 
 ## Image Functions
 

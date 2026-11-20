@@ -1,8 +1,9 @@
 """Download homepage project logos into assets/img/projects/, used by update_projects.py.
 
-A project's logo is the first image in its README that points at a file in the repository itself (badges and other
-external images are skipped), or the file named in the overrides. It's saved as <repo>.<ext>, and logos of
-repositories no longer listed are removed. A repository without a logo gets the `project-icon` shortcode's fallback.
+A project's logo is the first image in its README that points at a file in the repository itself (badges and
+other external images are skipped), or the file named in the overrides. It's saved as <repo>.<ext>, and logos
+of repositories no longer listed are removed. A repository without a logo gets the `project-icon` shortcode's
+fallback.
 """
 
 import base64
@@ -65,7 +66,8 @@ def fetch_logo(slug: str, override: str | None) -> tuple[bytes, str] | None:
 def sync_logos(repos: list[dict], overrides: dict[str, str], logo_dir: Path = LOGO_DIR) -> None:
     """Download each repository's logo into logo_dir and remove logos of unlisted repositories.
 
-    overrides maps a repository name to the path of its logo file in the repository, used instead of the README image.
+    overrides maps a repository name to the path of its logo file in the repository, used instead of the
+    README image.
     """
     logo_dir.mkdir(parents=True, exist_ok=True)
     keep = set()

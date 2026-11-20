@@ -1,39 +1,34 @@
 ---
 title: Text generation using Markov chains.
-date: '2013-01-04T19:11:00.002-08:00'
+date: "2013-01-04T19:11:00.002-08:00"
 tags:
-- Python
-- Algorithms
-lastmod: '2013-01-04T19:11:30.599-08:00'
+  - Python
+  - Algorithms
+lastmod: "2013-01-04T19:11:30.599-08:00"
 ---
 
 ### Introduction
 
-If you are already familiar with [finite
-automata](http://en.wikipedia.org/wiki/Finite-state_machine), then
-understanding a [Markov
-chain](http://en.wikipedia.org/wiki/Markov_chain) will not be as hard.
-If you are not familiar with one, you can think of finite automata as a
-[flowchart](http://en.wikipedia.org/wiki/Flowchart), with states and
-paths leading from one state to another [based on some decision being
-made](http://xkcd.com/627/). An example could be a room with a light
-switch; there are the two states of having the light on or off. Using
-the light switch will transition you between the two states.
+If you are already familiar with [finite automata](http://en.wikipedia.org/wiki/Finite-state_machine), then
+understanding a [Markov chain](http://en.wikipedia.org/wiki/Markov_chain) will not be as hard. If you are not
+familiar with one, you can think of finite automata as a [flowchart](http://en.wikipedia.org/wiki/Flowchart),
+with states and paths leading from one state to another
+[based on some decision being made](http://xkcd.com/627/). An example could be a room with a light switch;
+there are the two states of having the light on or off. Using the light switch will transition you between the
+two states.
 
 ![](simple-automata.png)
 
-The difference between standard finite automata and Markov chains is
-that instead of having some definite outcome determining each path (eg.
-yes or no), they are probabilities. Take for example a coin flip, there
-is a 50% (0.5) chance that it could either be heads or tails.
+The difference between standard finite automata and Markov chains is that instead of having some definite
+outcome determining each path (eg. yes or no), they are probabilities. Take for example a coin flip, there is
+a 50% (0.5) chance that it could either be heads or tails.
 
 ![](simple-markov.png)
 
 ### An Example
 
-Let\'s explore Markov chains a little deeper with respect to natural
-languages and take a look at some sample text that will form the
-[corpus](http://en.wikipedia.org/wiki/Text_corpus) of our analysis.
+Let\'s explore Markov chains a little deeper with respect to natural languages and take a look at some sample
+text that will form the [corpus](http://en.wikipedia.org/wiki/Text_corpus) of our analysis.
 
 "I like turtles. I like rabbits. I don\'t like snails."
 
@@ -43,59 +38,46 @@ This would render a Markov chain as follows:
 
 The above chain means that, among the sentences:
 
--   100% (1.0) will start with *I*.
--   This will be followed by *like* for 66% (0.66) of the time and
-    *don\'t* for 33% (0.33) of the time.
--   The word *don\'t* will always (100% / 1.0) be followed by *like*.
--   Then lastly, *turtles*, *rabbits* and *snails* will all follow
-    *like* 33% (0.33) of the time.
+- 100% (1.0) will start with _I_.
+- This will be followed by _like_ for 66% (0.66) of the time and _don\'t_ for 33% (0.33) of the time.
+- The word _don\'t_ will always (100% / 1.0) be followed by _like_.
+- Then lastly, _turtles_, _rabbits_ and _snails_ will all follow _like_ 33% (0.33) of the time.
 
-The nice thing about Markov chains, with respect to natural language
-modelling, is that they form [word
-dependencies](http://en.wikipedia.org/wiki/Dependency_grammar) without
-any knowledge of the language\'s syntax or semantics. The chain gets
-created purely based on statistical knowledge extracted from the corpus.
+The nice thing about Markov chains, with respect to natural language modelling, is that they form
+[word dependencies](http://en.wikipedia.org/wiki/Dependency_grammar) without any knowledge of the language\'s
+syntax or semantics. The chain gets created purely based on statistical knowledge extracted from the corpus.
 
 ### Text Generation
 
 Random Selection
 ----------------
 
-Using the Markov chain example from before and taking the weight of
-probabilities into account, we can randomly traverse the chain to
-generate new sentences like:
+Using the Markov chain example from before and taking the weight of probabilities into account, we can
+randomly traverse the chain to generate new sentences like:
 
 "I don\'t like turtles. I like snails."
 
-Although, our small corpus does not make for very interesting or new
-text. We could make it more interesting by adding to it or switching to
-a much larger corpus altogether. In my case, I decided to take all of
-[Shakespear\'s
-sonnets](https://raw.github.com/awalsh128/nlp/master/sonnets.txt) and
-generate the text from that. You can see some example code that uses it
-as the corpus below.
+Although, our small corpus does not make for very interesting or new text. We could make it more interesting
+by adding to it or switching to a much larger corpus altogether. In my case, I decided to take all of
+[Shakespear\'s sonnets](https://raw.github.com/awalsh128/nlp/master/sonnets.txt) and generate the text from
+that. You can see some example code that uses it as the corpus below.
 
 The Code
 --------
 
-The Markov chains will be built up for each new sentence it comes
-across. The critical parts to the `MarkovChain` object are its:
+The Markov chains will be built up for each new sentence it comes across. The critical parts to the
+`MarkovChain` object are its:
 
--   **Cardinalities**: The cardinality of the sample space for a given
-    state. In our original example, the cardinality of *like* is 3 since
-    snails, rabbits and turtles follow out of the *like* state. The
-    cardinality of *I* would be 2 since *don\'t* and *like* follow.
--   **Occurrences**: The edge valued occurrences between the different
-    states. For example, a transition from the *I* to *like* state
-    occurred twice. The probability can then be easily calculated by
-    taking the number of occurrences on a transition and divide it by
-    the cardinality of the state\'s sample space. Note, there is also a
-    special start state transition that can be used at the beginning of
-    each new sentence generation.
+- **Cardinalities**: The cardinality of the sample space for a given state. In our original example, the
+  cardinality of _like_ is 3 since snails, rabbits and turtles follow out of the _like_ state. The cardinality
+  of _I_ would be 2 since _don\'t_ and _like_ follow.
+- **Occurrences**: The edge valued occurrences between the different states. For example, a transition from
+  the _I_ to _like_ state occurred twice. The probability can then be easily calculated by taking the number
+  of occurrences on a transition and divide it by the cardinality of the state\'s sample space. Note, there is
+  also a special start state transition that can be used at the beginning of each new sentence generation.
 
-Using these two parts, a random walk can be made across a chain path,
-starting from the special start state. Each walk will generate a new
-sentence based on probabilities of the transitions along the path.
+Using these two parts, a random walk can be made across a chain path, starting from the special start state.
+Each walk will generate a new sentence based on probabilities of the transitions along the path.
 
 \
 
@@ -103,13 +85,8 @@ sentence based on probabilities of the transitions along the path.
 
 ### Additional Resources
 
--   [Wikipedia: Stochastic
-    Grammar](https://en.wikipedia.org/wiki/Stochastic_grammar)
--   [Wikipedia: Natural language
-    generation](http://en.wikipedia.org/wiki/Natural_language_generation)
--   [Princeton CS206: Markov Model of Natural
-    Language](http://www.cs.princeton.edu/courses/archive/spr05/cos126/assignments/markov.html)
--   [Markov-chain Text
-    Generator](http://www.owlnet.rice.edu/~cz1/prog/markov/markov.html)
--   [ACL Special Interest Group on Natural Language Generation
-    (SIGGEN)](http://www.siggen.org/)
+- [Wikipedia: Stochastic Grammar](https://en.wikipedia.org/wiki/Stochastic_grammar)
+- [Wikipedia: Natural language generation](http://en.wikipedia.org/wiki/Natural_language_generation)
+- [Princeton CS206: Markov Model of Natural Language](http://www.cs.princeton.edu/courses/archive/spr05/cos126/assignments/markov.html)
+- [Markov-chain Text Generator](http://www.owlnet.rice.edu/~cz1/prog/markov/markov.html)
+- [ACL Special Interest Group on Natural Language Generation (SIGGEN)](http://www.siggen.org/)

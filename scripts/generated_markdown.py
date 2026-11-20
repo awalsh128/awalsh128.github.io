@@ -12,7 +12,9 @@ def first_sentence(text: str) -> str:
 
 
 def replace_between(content: str, start: str, end: str, body: str) -> str:
-    """Replace everything between the start and end marker lines with body; ValueError if the markers are missing."""
+    """Replace everything between the start and end marker lines with body; ValueError if the markers are
+    missing.
+    """
     pattern = re.compile(re.escape(start) + r".*?" + re.escape(end), re.DOTALL)
     if not pattern.search(content):
         raise ValueError(f"markers not found; expected {start!r} ... {end!r}")

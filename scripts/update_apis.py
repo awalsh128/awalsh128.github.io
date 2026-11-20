@@ -2,17 +2,17 @@
 
 """Sync the API page with the API docs sites published from awalsh128's repositories.
 
-A repository is listed when it is public, not a fork, not archived, has GitHub Pages enabled, and its homepage is a
-path under awalsh128.com (for example https://awalsh128.com/ts-apt/), which is where its generated API reference is
-published. New libraries appear once their docs site is live and the repository homepage points at it; no list to
-edit here.
+A repository is listed when it is public, not a fork, not archived, has GitHub Pages enabled, and its homepage
+is a path under awalsh128.com (for example https://awalsh128.com/ts-apt/), which is where its generated API
+reference is published. New libraries appear once their docs site is live and the repository homepage points
+at it; no list to edit here.
 
-The bullet list between the apis markers in content/api.md is rewritten. Each bullet links the docs site, gives the
-first sentence of the repository description, and links the npm packages published from it: the root package.json, or
-each listed workspace when the root is a private workspace.
+The bullet list between the apis markers in content/api.md is rewritten. Each bullet links the docs site,
+gives the first sentence of the repository description, and links the npm packages published from it: the root
+package.json, or each listed workspace when the root is a private workspace.
 
-Exits non-zero when `gh` is missing or the GitHub lookup fails, so callers such as the pre-commit hook can decide
-whether that should block.
+Exits non-zero when `gh` is missing or the GitHub lookup fails, so callers such as the pre-commit hook can
+decide whether that should block.
 """
 
 import argparse

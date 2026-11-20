@@ -1,6 +1,7 @@
 # Hugo Templates Reference
 
 ## Table of Contents
+
 1. [Template Types](#template-types)
 2. [Lookup Order](#lookup-order)
 3. [Go Template Syntax](#go-template-syntax)
@@ -18,23 +19,25 @@
 
 ## Template Types
 
-| Type | Purpose | Default Location |
-|------|---------|-----------------|
-| Base | HTML shell with blocks | `_default/baseof.html` |
-| Single | Individual content pages | `_default/single.html` |
-| List | Section/taxonomy pages | `_default/list.html` |
-| Homepage | Site root | `index.html` |
-| Partial | Reusable fragments | `partials/*.html` |
-| Shortcode | Content-embedded templates | `shortcodes/*.html` |
-| 404 | Error page | `404.html` |
-| robots.txt | SEO | `robots.txt` |
-| sitemap | XML sitemap | `_default/sitemap.xml` |
+| Type       | Purpose                    | Default Location       |
+| ---------- | -------------------------- | ---------------------- |
+| Base       | HTML shell with blocks     | `_default/baseof.html` |
+| Single     | Individual content pages   | `_default/single.html` |
+| List       | Section/taxonomy pages     | `_default/list.html`   |
+| Homepage   | Site root                  | `index.html`           |
+| Partial    | Reusable fragments         | `partials/*.html`      |
+| Shortcode  | Content-embedded templates | `shortcodes/*.html`    |
+| 404        | Error page                 | `404.html`             |
+| robots.txt | SEO                        | `robots.txt`           |
+| sitemap    | XML sitemap                | `_default/sitemap.xml` |
 
 ## Lookup Order
 
-Hugo searches for templates in order of specificity. For a page at `content/posts/my-post.md` with `type: blog` and `layout: special`:
+Hugo searches for templates in order of specificity. For a page at `content/posts/my-post.md` with
+`type: blog` and `layout: special`:
 
 **Single page lookup** (first match wins):
+
 1. `layouts/blog/special.html`
 2. `layouts/blog/single.html`
 3. `layouts/posts/special.html`
@@ -43,6 +46,7 @@ Hugo searches for templates in order of specificity. For a page at `content/post
 6. `layouts/_default/single.html`
 
 **List page lookup** for section `posts`:
+
 1. `layouts/posts/posts.html`
 2. `layouts/posts/section.html`
 3. `layouts/posts/list.html`
@@ -51,6 +55,7 @@ Hugo searches for templates in order of specificity. For a page at `content/post
 6. `layouts/_default/list.html`
 
 **Homepage lookup**:
+
 1. `layouts/index.html`
 2. `layouts/home.html`
 3. `layouts/_default/index.html`
@@ -303,6 +308,7 @@ Theme templates are checked after project layouts (project always wins).
 Partials can return values using `return`:
 
 `partials/get-css-class.html`:
+
 ```go-html-template
 {{ $class := "default" }}
 {{ if .Params.featured }}
@@ -312,6 +318,7 @@ Partials can return values using `return`:
 ```
 
 Usage:
+
 ```go-html-template
 <div class="{{ partial "get-css-class.html" . }}">
 ```
@@ -333,6 +340,7 @@ Usage:
 ```
 
 In the partial:
+
 ```go-html-template
 <div class="{{ .class }}">
   <h1>{{ .page.Title }}</h1>
@@ -345,6 +353,7 @@ In the partial:
 ## Base Templates & Blocks
 
 `layouts/_default/baseof.html`:
+
 ```go-html-template
 <!DOCTYPE html>
 <html lang="{{ .Site.LanguageCode }}">
@@ -366,6 +375,7 @@ In the partial:
 ```
 
 Child template (`layouts/_default/single.html`):
+
 ```go-html-template
 {{ define "title" }}{{ .Title }} | {{ .Site.Title }}{{ end }}
 
@@ -512,6 +522,7 @@ Child template (`layouts/_default/single.html`):
 Load data from `data/` directory files:
 
 `data/team.yml`:
+
 ```yaml
 - name: "Alice"
   role: "Lead"
@@ -520,6 +531,7 @@ Load data from `data/` directory files:
 ```
 
 Template:
+
 ```go-html-template
 {{ range .Site.Data.team }}
   <div>{{ .name }} — {{ .role }}</div>
@@ -531,6 +543,7 @@ Also: `getJSON` and `getCSV` for remote data (cached).
 ## Custom Output Formats
 
 Define in config:
+
 ```yaml
 outputFormats:
   SearchIndex:
@@ -542,6 +555,7 @@ outputs:
 ```
 
 Template: `layouts/index.searchindex.json`:
+
 ```go-html-template
 [
 {{ range $index, $page := .Site.RegularPages }}

@@ -35,7 +35,7 @@ jobs:
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v3
         with:
-          hugo-version: 'latest'
+          hugo-version: "latest"
           extended: true
       - name: Build
         run: hugo --minify
@@ -51,6 +51,7 @@ jobs:
 ## Netlify
 
 `netlify.toml`:
+
 ```toml
 [build]
   publish = "public"
@@ -74,6 +75,7 @@ jobs:
 ## Vercel
 
 `vercel.json`:
+
 ```json
 {
   "build": {
@@ -102,6 +104,7 @@ firebase deploy
 ```
 
 `firebase.json`:
+
 ```json
 {
   "hosting": {
@@ -110,7 +113,7 @@ firebase deploy
     "headers": [
       {
         "source": "**/*.@(js|css)",
-        "headers": [{"key": "Cache-Control", "value": "max-age=31536000"}]
+        "headers": [{ "key": "Cache-Control", "value": "max-age=31536000" }]
       }
     ]
   }
@@ -120,6 +123,7 @@ firebase deploy
 ## AWS Amplify
 
 `amplify.yml`:
+
 ```yaml
 version: 1
 frontend:
@@ -130,7 +134,7 @@ frontend:
   artifacts:
     baseDirectory: public
     files:
-      - '**/*'
+      - "**/*"
   cache:
     paths: []
 ```

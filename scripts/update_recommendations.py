@@ -2,10 +2,10 @@
 
 """Sync the resume page's LinkedIn recommendations from a LinkedIn data export.
 
-Reads the export found by linkedin_export.py (the newest in ~/Downloads, or --export / $LINKEDIN_EXPORT), keeps the
-recommendations marked visible, and writes them newest first to data/linkedin_recommendations.json, which
-layouts/_default/resume.html shows on the resume page (but not in the PDF). With no export, it leaves the data file
-alone and exits 0.
+Reads the export found by linkedin_export.py (the newest in ~/Downloads, or --export / $LINKEDIN_EXPORT),
+keeps the recommendations marked visible, and writes them newest first to data/linkedin_recommendations.json,
+which layouts/_default/resume.html shows on the resume page (but not in the PDF). With no export, it leaves
+the data file alone and exits 0.
 """
 
 import argparse

@@ -23,7 +23,8 @@ done
 if ! command -v gh > /dev/null; then
   info "warning: gh CLI not found; the pre-commit hook will skip syncing homepage projects."
 elif ! gh auth status > /dev/null 2>&1; then
-  info "warning: gh is not authenticated (run 'gh auth login'); the pre-commit hook will skip syncing projects."
+  info "warning: gh is not authenticated (run 'gh auth login'); the pre-commit hook will skip syncing" \
+    "projects."
 fi
 
 # Hugo, pinned to the CI version so local and deployed builds match.
@@ -39,7 +40,8 @@ else
     Darwin/*) platform="darwin-universal" ;;
     *) fail "unsupported platform $(uname -s)/$(uname -m); install Hugo extended ${version} manually." ;;
   esac
-  url="https://github.com/gohugoio/hugo/releases/download/v${version}/hugo_extended_${version}_${platform}.tar.gz"
+  url="https://github.com/gohugoio/hugo/releases/download/v${version}"
+  url+="/hugo_extended_${version}_${platform}.tar.gz"
   info "installing Hugo extended ${version} (${platform}) into .tools/..."
   mkdir -p "${tools_dir}"
   curl -fsSL "${url}" | tar -xz -C "${tools_dir}" hugo
@@ -49,8 +51,8 @@ fi
 info "installing npm dependencies (enables the Husky git hooks)..."
 (cd "${root}" && npm install --no-audit --no-fund --silent)
 
-# Headless Chromium for the resume PDF, at the version the pinned playwright package expects. Re-running is a no-op
-# once it's cached in ~/.cache/ms-playwright.
+# Headless Chromium for the resume PDF, at the version the pinned playwright package expects. Re-running is a
+# no-op once it's cached in ~/.cache/ms-playwright.
 info "installing Playwright's headless Chromium (prints the resume PDF)..."
 (cd "${root}" && npx --no-install playwright install chromium-headless-shell)
 

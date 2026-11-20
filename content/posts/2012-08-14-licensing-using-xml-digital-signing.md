@@ -1,50 +1,44 @@
 ---
 title: Licensing using XML digital signing.
-date: '2012-08-14T09:00:00.000-07:00'
+date: "2012-08-14T09:00:00.000-07:00"
 tags:
-- C#
-- .NET
-- Security
+  - C#
+  - .NET
+  - Security
 ---
 
 ### Motivation
 
-One of the main concerns in any licensing implementation is that
-authored license files are coming from the trusted authority (ie. your
-company) and not some third party. This can be accomplished in software
-by encrypting and decrypting the license with a [single
-key](http://en.wikipedia.org/wiki/Symmetric-key_algorithm), but
-symmetric [key storage](http://en.wikipedia.org/wiki/Key_management) can
-be cumbersome and have added complexity.
+One of the main concerns in any licensing implementation is that authored license files are coming from the
+trusted authority (ie. your company) and not some third party. This can be accomplished in software by
+encrypting and decrypting the license with a
+[single key](http://en.wikipedia.org/wiki/Symmetric-key_algorithm), but symmetric
+[key storage](http://en.wikipedia.org/wiki/Key_management) can be cumbersome and have added complexity.
 
-[Assymetric
-cryptography](http://en.wikipedia.org/wiki/Public-key_cryptography), on
-the other hand, allows for two keys: a private one to author files with
-and a public one to verify its authenticity. This is well suited for
-licensing, where we want to ensure that the authored license has not
-been altered in anyway and the content can be relied on.
+[Assymetric cryptography](http://en.wikipedia.org/wiki/Public-key_cryptography), on the other hand, allows for
+two keys: a private one to author files with and a public one to verify its authenticity. This is well suited
+for licensing, where we want to ensure that the authored license has not been altered in anyway and the
+content can be relied on.
 
 ### Implementation
 
-I ran across [a great
-article](http://www.codeproject.com/Articles/4940/Using-XML-Digital-Signatures-for-Application-Licen%20)
-that details the use of XML digital signatures in the .NET framework. It
-describes the type of digital signatures that can be implemented and
-lays out the classes and methods needed to author and verify license
+I ran across
+[a great article](http://www.codeproject.com/Articles/4940/Using-XML-Digital-Signatures-for-Application-Licen%20)
+that details the use of XML digital signatures in the .NET framework. It describes the type of digital
+signatures that can be implemented and lays out the classes and methods needed to author and verify license
 files.
 
-This specific implementation allows for an: authentication key to
-compare against some unique value tying the license to the system,
-expiration date to set a time span on the software use and set of
-available features the user is authorized for.
+This specific implementation allows for an: authentication key to compare against some unique value tying the
+license to the system, expiration date to set a time span on the software use and set of available features
+the user is authorized for.
 
 Base Class
 ----------
 
-This forms the runtime object representation of the license and will be
-inherited by the license reader and writer.
+This forms the runtime object representation of the license and will be inherited by the license reader and
+writer.
 
-``` csharp
+```csharp
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -58,9 +52,9 @@ namespace Licensing
 {
 
 public abstract class LicenseBase
-{ 
- private byte[] _authenticationKey; 
- private DateTime _expiration; 
+{
+ private byte[] _authenticationKey;
+ private DateTime _expiration;
  private List _features;
     private int _id;
 
@@ -78,7 +72,7 @@ public abstract class LicenseBase
  }
  protected List Features {
         get { return _features; }
- } 
+ }
 
  public LicenseBase()
  {
@@ -99,12 +93,11 @@ public abstract class LicenseBase
 Writer Class
 ------------
 
-This class will be used internally to author the license files that will
-be distributed with the released software. Note that the private key is
-added as an embedded resource in the project and should not be
+This class will be used internally to author the license files that will be distributed with the released
+software. Note that the private key is added as an embedded resource in the project and should not be
 distributed since the public key can be derived from it.
 
-``` csharp
+```csharp
 using System;
 using System.IO;
 using System.Security;
@@ -120,17 +113,17 @@ namespace Licensing
 
         License(int id, byte[] authenticationKey, DateTime expiration, string[] features)
         {
-            this.AuthenticationKey = authenticationKey;            
+            this.AuthenticationKey = authenticationKey;
             this.Expiration = expiration;
             this.Id = id;
             this.Features.AddRange(features);
         }
 
-        /// 
+        ///
         /// Generates a key pair for digital signing and verification.
-        /// 
-        /// 
-        /// 
+        ///
+        ///
+        ///
         static internal void GenerateAssymetricKeys()
         {
             string datestamp = null;
@@ -151,12 +144,12 @@ namespace Licensing
             output.Close();
         }
 
-        /// 
+        ///
         /// Digitally sign an XML document.
-        /// 
+        ///
         /// The XML document to sign.
-        /// The private key to sign it with.    
-        /// 
+        /// The private key to sign it with.
+        ///
         private static void _SignXmlDocument(System.Xml.XmlDocument document, RSA privateKey)
         {
             SignedXml signedDocument = new SignedXml(document);
@@ -176,9 +169,9 @@ namespace Licensing
             document.DocumentElement.AppendChild(signature);
         }
 
-        /// 
+        ///
         /// Write the contents and digitally sign the document.
-        /// 
+        ///
         /// The file path to the digitally signed document.
         public void WriteDocument(string filepath)
         {
@@ -192,7 +185,7 @@ namespace Licensing
             id.InnerText = this.Id.ToString();
             root.AppendChild(id);
 
-            XmlElement authenticationKey = document.CreateElement("AuthenticationKey");            
+            XmlElement authenticationKey = document.CreateElement("AuthenticationKey");
             authenticationKey.InnerText = Convert.ToBase64String(this.AuthenticationKey);
             root.AppendChild(authenticationKey);
 
@@ -219,7 +212,7 @@ namespace Licensing
             privateKey.FromXmlString(Licensing.Properties.Resources.privatekey);
             _SignXmlDocument(document, privateKey);
 
-            File.WriteAllText(filepath, document.InnerXml);            
+            File.WriteAllText(filepath, document.InnerXml);
         }
 
     }
@@ -229,19 +222,15 @@ namespace Licensing
 Reader Class
 ------------
 
-This class will be used in the field to verify the license files that
-will be distributed with the released software. It is best to wrap the
-license read and authenticate methods in try-catch blocks since they
-represent exceptional behavior that fall outside the post-conditions of
-the method. Handling the exceptions will allow for better error
-reporting in the field so you can decide what information you will share
-with the end user (eg. bad authentication key, malformed/tampered
-licenses). Note again that the public key is an embedded resource for
-the project. It should never be distributed with the license since an
-attacker could generate their own keypair and envelope their own public
-key, with signature, in the license.
+This class will be used in the field to verify the license files that will be distributed with the released
+software. It is best to wrap the license read and authenticate methods in try-catch blocks since they
+represent exceptional behavior that fall outside the post-conditions of the method. Handling the exceptions
+will allow for better error reporting in the field so you can decide what information you will share with the
+end user (eg. bad authentication key, malformed/tampered licenses). Note again that the public key is an
+embedded resource for the project. It should never be distributed with the license since an attacker could
+generate their own keypair and envelope their own public key, with signature, in the license.
 
-``` csharp
+```csharp
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -261,7 +250,7 @@ namespace Licensing
 
         public void Authenticate()
         {
-            // Check the hardware key value against the AuthenticationKey        
+            // Check the hardware key value against the AuthenticationKey
             if (!_AuthenticationKeyMatches(hardwareKey))
                 throw new LicenseAuthenticationException("The license failed to authenticate the hardware key.");
 
@@ -273,9 +262,9 @@ namespace Licensing
                 throw new LicenseAuthenticationException("The license has expired.");
         }
 
-        /// 
+        ///
         /// Compare byte array against authentication key byte array.
-        /// 
+        ///
         /// Byte array to compare against.
         /// True if a match, else false.
         private bool _AuthenticationKeyMatches(byte[] compare)
@@ -297,9 +286,9 @@ namespace Licensing
             return this.Features.Contains(featureName);
         }
 
-        /// 
+        ///
         /// Read the digitally signed document and load its contents.
-        /// 
+        ///
         /// The file path to the digitally signed document.
         protected virtual void ReadDocument(string filepath)
         {
@@ -326,13 +315,13 @@ namespace Licensing
 
         }
 
-        /// 
+        ///
         /// Verify the digital signature of an XML document.
-        /// 
+        ///
         /// The XML document containing the signature.
         /// The public key to verify signature authenticity.
         /// True if the signature is authentic, else false.
-        /// 
+        ///
         private bool _VerifyXmlDocument(XmlDocument document, RSA publicKey)
         {
             SignedXml signedDocument = new SignedXml(document);
@@ -354,21 +343,15 @@ namespace Licensing
 
 ### Additions & Caveats
 
-Symmetric encryption could also be used to hinder casual viewing of the
-license file. The issue of symmetric key storage must be revisited but
-will no longer be critical to maintaining the integrity of the license
+Symmetric encryption could also be used to hinder casual viewing of the license file. The issue of symmetric
+key storage must be revisited but will no longer be critical to maintaining the integrity of the license
 files.
 
-Strong naming of the license reading assembly is encouraged to prevent
-dissasembly and re-embedding of an attacker\'s own public key. Although,
-this is by no means an attack-proof method since [strong naming can be
-removed](http://www.codeproject.com/Articles/15374/Removing-Strong-Signing-from-assemblies-at-file-le)
-by changing information in the [CLI
-header](http://www.ntcore.com/Files/dotnetformat.htm) of the portable
-executable (PE). Even if the application was able to secure the public
-key outside the application in a
-[PKI](http://en.wikipedia.org/wiki/Public_key_infrastructure), there is
-still the issue of code injection or recompilation once strong naming is
-stripped. Indirection of the public key or obfuscation of the assembly
-can also help but is [not a reliable security
-measure](http://csrc.nist.gov/publications/secpubs/faq-sec.txt).
+Strong naming of the license reading assembly is encouraged to prevent dissasembly and re-embedding of an
+attacker\'s own public key. Although, this is by no means an attack-proof method since
+[strong naming can be removed](http://www.codeproject.com/Articles/15374/Removing-Strong-Signing-from-assemblies-at-file-le)
+by changing information in the [CLI header](http://www.ntcore.com/Files/dotnetformat.htm) of the portable
+executable (PE). Even if the application was able to secure the public key outside the application in a
+[PKI](http://en.wikipedia.org/wiki/Public_key_infrastructure), there is still the issue of code injection or
+recompilation once strong naming is stripped. Indirection of the public key or obfuscation of the assembly can
+also help but is [not a reliable security measure](http://csrc.nist.gov/publications/secpubs/faq-sec.txt).

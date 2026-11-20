@@ -1,6 +1,7 @@
 # Hugo Configuration Reference
 
 ## Table of Contents
+
 1. [Config File Formats](#config-file-formats)
 2. [Top-Level Settings](#top-level-settings)
 3. [Build Settings](#build-settings)
@@ -14,7 +15,8 @@
 
 ## Config File Formats
 
-Hugo accepts `hugo.toml`, `hugo.yaml`, `hugo.json`, or the legacy `config.toml`/`config.yml`/`config.json`. You can also split config into a `config/` directory:
+Hugo accepts `hugo.toml`, `hugo.yaml`, `hugo.json`, or the legacy `config.toml`/`config.yml`/`config.json`.
+You can also split config into a `config/` directory:
 
 ```
 config/
@@ -30,44 +32,44 @@ Environment-specific config overrides the default.
 
 ## Top-Level Settings
 
-| Key | Default | Description |
-|-----|---------|-------------|
-| `baseURL` | `""` | Absolute URL of published site |
-| `title` | `""` | Site title |
-| `theme` | `""` | Theme name(s) |
-| `languageCode` | `""` | RFC 5646 language tag |
-| `copyright` | `""` | Copyright notice |
-| `paginate` | `10` | Default pagination size |
-| `summaryLength` | `70` | Word count for auto summaries |
-| `publishDir` | `"public"` | Output directory |
-| `contentDir` | `"content"` | Content source directory |
-| `layoutDir` | `"layouts"` | Layout source directory |
-| `staticDir` | `"static"` | Static files directory |
-| `assetDir` | `"assets"` | Asset pipeline source |
-| `dataDir` | `"data"` | Data files directory |
-| `themesDir` | `"themes"` | Themes directory |
-| `archetypeDir` | `"archetypes"` | Archetype templates |
-| `environment` | `"production"` / `"development"` | Build environment |
-| `enableEmoji` | `false` | Enable emoji shortcodes |
-| `enableGitInfo` | `false` | Use git for lastmod dates |
-| `enableRobotsTXT` | `false` | Generate robots.txt |
-| `disableKinds` | `[]` | Disable page kinds: `404`, `home`, `page`, `rss`, `section`, `sitemap`, `taxonomy`, `term` |
+| Key               | Default                          | Description                                                                                |
+| ----------------- | -------------------------------- | ------------------------------------------------------------------------------------------ |
+| `baseURL`         | `""`                             | Absolute URL of published site                                                             |
+| `title`           | `""`                             | Site title                                                                                 |
+| `theme`           | `""`                             | Theme name(s)                                                                              |
+| `languageCode`    | `""`                             | RFC 5646 language tag                                                                      |
+| `copyright`       | `""`                             | Copyright notice                                                                           |
+| `paginate`        | `10`                             | Default pagination size                                                                    |
+| `summaryLength`   | `70`                             | Word count for auto summaries                                                              |
+| `publishDir`      | `"public"`                       | Output directory                                                                           |
+| `contentDir`      | `"content"`                      | Content source directory                                                                   |
+| `layoutDir`       | `"layouts"`                      | Layout source directory                                                                    |
+| `staticDir`       | `"static"`                       | Static files directory                                                                     |
+| `assetDir`        | `"assets"`                       | Asset pipeline source                                                                      |
+| `dataDir`         | `"data"`                         | Data files directory                                                                       |
+| `themesDir`       | `"themes"`                       | Themes directory                                                                           |
+| `archetypeDir`    | `"archetypes"`                   | Archetype templates                                                                        |
+| `environment`     | `"production"` / `"development"` | Build environment                                                                          |
+| `enableEmoji`     | `false`                          | Enable emoji shortcodes                                                                    |
+| `enableGitInfo`   | `false`                          | Use git for lastmod dates                                                                  |
+| `enableRobotsTXT` | `false`                          | Generate robots.txt                                                                        |
+| `disableKinds`    | `[]`                             | Disable page kinds: `404`, `home`, `page`, `rss`, `section`, `sitemap`, `taxonomy`, `term` |
 
 ## Build Settings
 
 ```yaml
 build:
-  writeStats: false        # Write hugo_stats.json (useful for PurgeCSS)
+  writeStats: false # Write hugo_stats.json (useful for PurgeCSS)
   noJSConfigInAssets: false
-  useResourceCacheWhen: "fallback"  # "fallback", "always", "never"
+  useResourceCacheWhen: "fallback" # "fallback", "always", "never"
 ```
 
 ## URL Settings
 
 ```yaml
-relativeURLs: false    # Make all URLs relative
-canonifyURLs: false    # Prefix all URLs with baseURL
-uglyurls: false        # Use /page.html instead of /page/
+relativeURLs: false # Make all URLs relative
+canonifyURLs: false # Prefix all URLs with baseURL
+uglyurls: false # Use /page.html instead of /page/
 
 permalinks:
   posts: "/:year/:month/:title/"
@@ -80,9 +82,9 @@ permalinks:
 
 ```yaml
 markup:
-  goldmark:              # Default Markdown renderer
+  goldmark: # Default Markdown renderer
     renderer:
-      unsafe: false      # Allow raw HTML in markdown
+      unsafe: false # Allow raw HTML in markdown
     extensions:
       typographer:
         disable: false
@@ -93,11 +95,11 @@ markup:
     parser:
       autoHeadingID: true
       autoHeadingIDType: "github"
-  highlight:             # Code highlighting (Chroma)
+  highlight: # Code highlighting (Chroma)
     style: "monokai"
     lineNos: false
     lineNumbersInTable: true
-    noClasses: true      # Use inline styles (false = use CSS classes)
+    noClasses: true # Use inline styles (false = use CSS classes)
     codeFences: true
     guessSyntax: false
     tabWidth: 4
@@ -113,9 +115,9 @@ markup:
 imaging:
   quality: 75
   resampleFilter: "Lanczos"
-  anchor: "Smart"        # Crop anchor: Smart, Center, TopLeft, etc.
+  anchor: "Smart" # Crop anchor: Smart, Center, TopLeft, etc.
   bgColor: "#ffffff"
-  hint: "photo"          # WebP encoding hint: photo, picture, drawing, icon, text
+  hint: "photo" # WebP encoding hint: photo, picture, drawing, icon, text
   exif:
     includeFields: ""
     excludeFields: ""
@@ -129,7 +131,7 @@ imaging:
 caches:
   assets:
     dir: ":resourceDir/_gen"
-    maxAge: -1           # -1 = never expire; 0 = no cache
+    maxAge: -1 # -1 = never expire; 0 = no cache
   getcsv:
     dir: ":cacheDir/:project"
     maxAge: -1
@@ -173,7 +175,7 @@ minify:
   disableJSON: false
   disableSVG: false
   disableXML: false
-  minifyOutput: false    # Minify the final output
+  minifyOutput: false # Minify the final output
   tdewolff:
     html:
       keepComments: false
@@ -225,14 +227,16 @@ menus:
 ```
 
 Or in content front matter:
+
 ```yaml
 menus:
   main:
     weight: 10
-    parent: "Products"  # Creates submenu
+    parent: "Products" # Creates submenu
 ```
 
 Access in templates:
+
 ```go-html-template
 {{ range .Site.Menus.main }}
   <a href="{{ .URL }}">{{ .Name }}</a>

@@ -5,8 +5,8 @@
 # Chrome/Chromium. Print styling lives in assets/css/custom/50-resume-print.css.
 #
 # Browser lookup order: $CHROME, then google-chrome / chromium on PATH, then Playwright's cached Chromium
-# (scripts/setup_dev.sh installs one; or run: npx playwright install chromium-headless-shell). Snap browsers such
-# as Brave hang in headless mode, so they aren't looked up.
+# (scripts/setup_dev.sh installs one; or run: npx playwright install chromium-headless-shell). Snap browsers
+# such as Brave hang in headless mode, so they aren't looked up.
 #
 # Usage: scripts/resume_to_pdf.sh [output.pdf]
 

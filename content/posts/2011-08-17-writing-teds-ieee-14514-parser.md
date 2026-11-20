@@ -1,55 +1,41 @@
 ---
 title: Writing a TEDS (IEEE 1451.4) parser.
-date: '2011-08-17T12:59:00.000-07:00'
+date: "2011-08-17T12:59:00.000-07:00"
 tags:
-- C#
-- .NET
-- Data Acquisition
+  - C#
+  - .NET
+  - Data Acquisition
 ---
 
-I was tasked recently with writing a parser for TEDS bit stream data.
-There is an [IEEE published
-paper](http://standards.ieee.org/develop/regauth/tut/teds.pdf) with an
-overview of the standard but it doesn\'t give any examples for
-implementation. I was finally able to find a
-[paper](http://standards.ieee.org/develop/regauth/tut/tdl.pdf) that gave
-examples but still had trouble parsing the data. I finally realized
-there is not only 2 selector bits after the basic TEDS block but
-selector bits inside the standard template (2 in the case of template
-25). Here are my main findings:\
+I was tasked recently with writing a parser for TEDS bit stream data. There is an
+[IEEE published paper](http://standards.ieee.org/develop/regauth/tut/teds.pdf) with an overview of the
+standard but it doesn\'t give any examples for implementation. I was finally able to find a
+[paper](http://standards.ieee.org/develop/regauth/tut/tdl.pdf) that gave examples but still had trouble
+parsing the data. I finally realized there is not only 2 selector bits after the basic TEDS block but selector
+bits inside the standard template (2 in the case of template 25). Here are my main findings:\
 \
 
--   It depends on the software interface to get the bit-stream, but bits
-    usually start their indexing from left to right. If you are using a
-    language that assumes right to left bit encoding, the stream indices
-    will need to be reversed (eg. 01011000[2]{.Apple-style-span
-    style="font-size: xx-small;"}[ ]{.Apple-style-span
-    style="font-size: xx-small;"}translates
-    to 00011010[2 ]{.Apple-style-span style="font-size: xx-small;"}=
-    26[10]{.Apple-style-span style="font-size: xx-small;"}).
--   If you are using an little-endian architecture (eg. x86), then the
-    byte order will need to be converted from big-endian (reverse the
-    byte indices). It is big-endian since the standard is defined for
-    networks and thus has a network byte order.
--   To calculate [ConRelRes ]{.Apple-style-span
-    style="font-family: Arial, Helvetica, sans-serif;"}values, use the
-    formula\...\
-    [\<start\_value\> \* \[1 + 2 \* \<tolerance\>\] \^
-    \<teds\_value\>]{.Apple-style-span
-    style="font-family: 'Courier New', Courier, monospace;"}\
-    In the published paper, you will see an entry like [ConRelRes(5E-7
-    to 172, +- 0.15%)]{.Apple-style-span
-    style="font-family: Arial, Helvetica, sans-serif;"} in the \"[Data
-    Type (and Range)]{.Apple-style-span
-    style="font-family: Arial, Helvetica, sans-serif;"}\" field. 5E-7 is
-    the start value, 0.15 is the tolerance and the TEDS value is
-    whatever value gets parsed from the bit stream.
+- It depends on the software interface to get the bit-stream, but bits usually start their indexing from left
+  to right. If you are using a language that assumes right to left bit encoding, the stream indices will need
+  to be reversed (eg. 01011000[2]{.Apple-style-span style="font-size: xx-small;"}[ ]{.Apple-style-span
+  style="font-size: xx-small;"}translates to 00011010[2 ]{.Apple-style-span style="font-size: xx-small;"}=
+  26[10]{.Apple-style-span style="font-size: xx-small;"}).
+- If you are using an little-endian architecture (eg. x86), then the byte order will need to be converted from
+  big-endian (reverse the byte indices). It is big-endian since the standard is defined for networks and thus
+  has a network byte order.
+- To calculate [ConRelRes ]{.Apple-style-span style="font-family: Arial, Helvetica, sans-serif;"}values, use
+  the formula\...\
+  [\<start\_value\> \* \[1 + 2 \* \<tolerance\>\] \^ \<teds\_value\>]{.Apple-style-span style="font-family:
+  'Courier New', Courier, monospace;"}\
+  In the published paper, you will see an entry like [ConRelRes(5E-7 to 172, +- 0.15%)]{.Apple-style-span
+  style="font-family: Arial, Helvetica, sans-serif;"} in the \"[Data Type (and Range)]{.Apple-style-span
+  style="font-family: Arial, Helvetica, sans-serif;"}\" field. 5E-7 is the start value, 0.15 is the tolerance
+  and the TEDS value is whatever value gets parsed from the bit stream.
 
 \
-Here are some helper functions to parse TEDS correctly on the .NET
-platform (x86 systems).\
+Here are some helper functions to parse TEDS correctly on the .NET platform (x86 systems).\
 
-``` csharp
+```csharp
 int _streamOffset = 0;
 
 private System.Collections.BitArray _GetBits(System.Collections.BitArray bits, int length)

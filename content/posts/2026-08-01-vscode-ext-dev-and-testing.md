@@ -8,8 +8,9 @@ tags:
 lastmod: "2026-08-01T16:28:39.199-07:00"
 ---
 
-I created a VSCode extension recently ([awalsh128/vscode-keep-sorted](https://github.com/awalsh128/vscode-keep-sorted))
-and learned a lot of lessons trying to set up the test environment. What I wanted was:
+I created a VSCode extension recently
+([awalsh128/vscode-keep-sorted](https://github.com/awalsh128/vscode-keep-sorted)) and learned a lot of lessons
+trying to set up the test environment. What I wanted was:
 
 - Tests that run against a real VSCode instance, not mocks.
 - An immutable test workspace, so every test starts from the same files.
@@ -19,14 +20,14 @@ and learned a lot of lessons trying to set up the test environment. What I wante
 
 Some things I learned the hard way about testing extensions.
 
-- **Don't mock the VSCode API.** Bring up a test workspace with the extension under test instead. Mocking is almost
-  impossible since many of the API calls are static and will elicit unexpected behavior. You will also end up creating
-  shims and factory methods everywhere, making your extension implementation brittle.
-- **Don't perform I/O out of band.** Always go through the VSCode API or you will hit unexpected behavior. The API
-  batches edits and diagnostic operations to prevent flooding and to give them meaningful context (e.g. resolving
-  multiple edits to the same file, possibly on the same line).
-- **Always have an immutable test workspace.** This isolates each test's preconditions. If you want to test a chain of
-  behaviors, do that inside an individual test.
+- **Don't mock the VSCode API.** Bring up a test workspace with the extension under test instead. Mocking is
+  almost impossible since many of the API calls are static and will elicit unexpected behavior. You will also
+  end up creating shims and factory methods everywhere, making your extension implementation brittle.
+- **Don't perform I/O out of band.** Always go through the VSCode API or you will hit unexpected behavior. The
+  API batches edits and diagnostic operations to prevent flooding and to give them meaningful context (e.g.
+  resolving multiple edits to the same file, possibly on the same line).
+- **Always have an immutable test workspace.** This isolates each test's preconditions. If you want to test a
+  chain of behaviors, do that inside an individual test.
 - **VSCode API operations may be asynchronous.** You will often need to wait before the expected state can be
   asserted.
 
@@ -57,8 +58,8 @@ npm install --save-dev mocha chai chai-as-promised glob rimraf @vscode/test-elec
 
 ### Running
 
-Add a test script to `package.json` that compiles and then runs the launcher. Clearing out the logs directory first
-keeps old test logs from piling up.
+Add a test script to `package.json` that compiles and then runs the launcher. Clearing out the logs directory
+first keeps old test logs from piling up.
 
 ```json
 "scripts": {
@@ -78,17 +79,16 @@ The code below comes from my extension, so a few values are specific to it. Swap
 - `log/keep-sorted.log` - the log file path inside the test workspace, excluded from the workspace snapshot in
   `suite/index.ts`.
 
-> [!NOTE]
-> Per-test logging assumes your extension writes its log to a file whose path comes from a workspace setting. My test
-> workspace's `.vscode/settings.json` has `"keep-sorted.logFilepath": "log/keep-sorted.log"`. If your extension only
-> logs to an output channel, drop `TestLogs` or add a file logging setting first.
+> [!NOTE] Per-test logging assumes your extension writes its log to a file whose path comes from a workspace
+> setting. My test workspace's `.vscode/settings.json` has `"keep-sorted.logFilepath": "log/keep-sorted.log"`.
+> If your extension only logs to an output channel, drop `TestLogs` or add a file logging setting first.
 
 ## The Code
 
 ### `runTest.ts`
 
-This is the launcher. It downloads VSCode (if needed), opens the immutable test workspace with the extension loaded,
-and turns on trace logging so each test has something to diagnose failures with.
+This is the launcher. It downloads VSCode (if needed), opens the immutable test workspace with the extension
+loaded, and turns on trace logging so each test has something to diagnose failures with.
 
 ```ts
 import * as path from "path";
@@ -116,19 +116,15 @@ main();
 
 ### `suite/index.ts`
 
-This is the Mocha entry point that runs inside the VSCode instance. The global `beforeEach` and `afterEach` hooks are
-where the workspace gets restored and the logs get rotated, so none of your tests need to do it themselves.
+This is the Mocha entry point that runs inside the VSCode instance. The global `beforeEach` and `afterEach`
+hooks are where the workspace gets restored and the logs get rotated, so none of your tests need to do it
+themselves.
 
 ```ts
 import * as path from "path";
 import * as Mocha from "mocha";
 import * as vscode from "vscode";
-import {
-  TestLogs,
-  TEST_LOGS_DIR,
-  TestWorkspace,
-  TEST_WORKSPACE_DIR,
-} from "../testing";
+import { TestLogs, TEST_LOGS_DIR, TestWorkspace, TEST_WORKSPACE_DIR } from "../testing";
 import { sync as globSync } from "glob";
 
 export function run(): Promise<void> {
@@ -144,9 +140,7 @@ export function run(): Promise<void> {
   }
 
   // Snapshot the workspace, excluding the extension's log file since it changes every test
-  const workspace = TestWorkspace.createWithSnapshot(TEST_WORKSPACE_DIR, [
-    "log/keep-sorted.log",
-  ]);
+  const workspace = TestWorkspace.createWithSnapshot(TEST_WORKSPACE_DIR, ["log/keep-sorted.log"]);
   const logs = TestLogs.create(TEST_LOGS_DIR, TEST_WORKSPACE_DIR);
   console.info("Test logs writing to directory: ", TEST_LOGS_DIR);
 
@@ -186,14 +180,14 @@ export function run(): Promise<void> {
 
 This is the reusable part. It has two classes.
 
-- `TestWorkspace` - snapshots every file in the test workspace up front, then `restore()` puts back anything a test
-  modified, created, or deleted.
+- `TestWorkspace` - snapshots every file in the test workspace up front, then `restore()` puts back anything a
+  test modified, created, or deleted.
 - `TestLogs` - after each test, `rotate()` copies the extension's log to `logs/<test name>.log`, appends it to
   `logs/all.log`, and empties the log for the next test.
 
-You might notice `restore()` writes files with `fs` directly, which looks like it breaks the "no out of band I/O" rule.
-That is only half the job though; `syncVscodeDocument` then pushes the same content through the VSCode API so any
-document VSCode still has in memory matches what is on disk.
+You might notice `restore()` writes files with `fs` directly, which looks like it breaks the "no out of band
+I/O" rule. That is only half the job though; `syncVscodeDocument` then pushes the same content through the
+VSCode API so any document VSCode still has in memory matches what is on disk.
 
 ```ts
 import * as path from "path";
@@ -203,10 +197,7 @@ import * as crypto from "crypto";
 // The extension under development, relative to the compiled `out/test/` directory
 export const EXT_WORKSPACE_DIR = path.resolve(__dirname, "../../");
 // The immutable test workspace to perform test operations on
-export const TEST_WORKSPACE_DIR = path.resolve(
-  __dirname,
-  "../../test-workspace",
-);
+export const TEST_WORKSPACE_DIR = path.resolve(__dirname, "../../test-workspace");
 // Location to create the trace log files per test under
 export const TEST_LOGS_DIR = path.resolve(EXT_WORKSPACE_DIR, "src/test/logs");
 
@@ -228,15 +219,9 @@ export class TestLogs {
 
   private static logFilepath(testWorkspaceDir: string): string {
     // Read the extension's log file path from the test workspace's .vscode/settings.json
-    const settingsPath = path.resolve(
-      testWorkspaceDir,
-      ".vscode",
-      "settings.json",
-    );
+    const settingsPath = path.resolve(testWorkspaceDir, ".vscode", "settings.json");
     if (!fs.existsSync(settingsPath)) {
-      throw new Error(
-        "No test workspace settings.json found at " + settingsPath,
-      );
+      throw new Error("No test workspace settings.json found at " + settingsPath);
     }
     try {
       const raw = fs.readFileSync(settingsPath, { encoding: ENCODING });
@@ -245,9 +230,7 @@ export class TestLogs {
       const settings = JSON.parse(raw);
       const relativeLogFilepath = settings?.["keep-sorted.logFilepath"];
       if (!relativeLogFilepath) {
-        throw new Error(
-          "keep-sorted.logFilepath setting not found in test workspace settings.json",
-        );
+        throw new Error("keep-sorted.logFilepath setting not found in test workspace settings.json");
       }
       return path.join(testWorkspaceDir, relativeLogFilepath);
     } catch (err) {
@@ -257,19 +240,13 @@ export class TestLogs {
   }
 
   private testFilepath(rawTitle: string | null): string {
-    const fileSuffix = (rawTitle ?? "unknown_test").replace(
-      /[^A-Za-z0-9-]+/g,
-      "_",
-    );
+    const fileSuffix = (rawTitle ?? "unknown_test").replace(/[^A-Za-z0-9-]+/g, "_");
     return path.join(this.outputLogDir, `${fileSuffix}.log`);
   }
 
   rotate(currentTest: Mocha.Test | undefined): void {
     try {
-      if (
-        !fs.existsSync(this.filepath) ||
-        fs.lstatSync(this.filepath).size === 0
-      ) {
+      if (!fs.existsSync(this.filepath) || fs.lstatSync(this.filepath).size === 0) {
         return;
       }
       fs.mkdirSync(this.outputLogDir, { recursive: true });
@@ -280,11 +257,7 @@ export class TestLogs {
       // Write it out to the logging trace directory
       fs.writeFileSync(testFilepath, content, ENCODING);
       // Also write to a global log file that combines all test output
-      fs.appendFileSync(
-        path.join(this.outputLogDir, "all.log"),
-        content,
-        ENCODING,
-      );
+      fs.appendFileSync(path.join(this.outputLogDir, "all.log"), content, ENCODING);
       // Empty the extension's logfile for the next test
       fs.writeFileSync(this.filepath, "", ENCODING);
     } catch (err) {
@@ -308,12 +281,8 @@ function getFilepaths(dir: string, files: string[] = []): string[] {
 }
 
 /** Snapshots each file's content and hash so the workspace can be restored later. */
-function createPathToFile(
-  workspaceDir: string,
-  excluded: string[],
-): Map<string, FileMetadata> {
-  const hash = (content: string) =>
-    crypto.createHash("sha256").update(content, ENCODING).digest("hex");
+function createPathToFile(workspaceDir: string, excluded: string[]): Map<string, FileMetadata> {
+  const hash = (content: string) => crypto.createHash("sha256").update(content, ENCODING).digest("hex");
 
   return new Map(
     getFilepaths(workspaceDir).map((f) => {
@@ -356,10 +325,7 @@ export class TestWorkspace {
   }
 
   /** Captures the workspace's immutable baseline state. */
-  static createWithSnapshot(
-    workspaceDir: string,
-    excludeFilepaths: string[] = [],
-  ): TestWorkspace {
+  static createWithSnapshot(workspaceDir: string, excludeFilepaths: string[] = []): TestWorkspace {
     return new TestWorkspace(
       workspaceDir,
       createPathToFile(workspaceDir, excludeFilepaths),
@@ -419,9 +385,7 @@ export class TestWorkspace {
     }
     try {
       const uri = vscode.Uri.file(filePath);
-      const document = vscode.workspace.textDocuments.find(
-        (doc) => doc.uri.fsPath === uri.fsPath,
-      );
+      const document = vscode.workspace.textDocuments.find((doc) => doc.uri.fsPath === uri.fsPath);
       if (!document || document.isClosed || document.getText() === content) {
         return;
       }
@@ -441,9 +405,9 @@ export class TestWorkspace {
 
 ## Usage in Tests
 
-Here is an example test. You will notice none of the framework code is used here. That is because all of it is rolled
-up into the global hooks in `suite/index.ts`, which run around every test. This makes the framework easy to plug into
-your existing tests without much overhead.
+Here is an example test. You will notice none of the framework code is used here. That is because all of it is
+rolled up into the global hooks in `suite/index.ts`, which run around every test. This makes the framework
+easy to plug into your existing tests without much overhead.
 
 ```ts
 import * as path from "path";
@@ -473,13 +437,10 @@ describe("extension", () => {
     const uri =
       filename instanceof vscode.Uri
         ? filename
-        : vscode.Uri.file(
-            path.join(TEST_WORKSPACE_DIR, filename ?? SAMPLE_TS_FILENAME),
-          );
+        : vscode.Uri.file(path.join(TEST_WORKSPACE_DIR, filename ?? SAMPLE_TS_FILENAME));
     return await vscode.workspace.openTextDocument(uri);
   };
-  const delay = (ms: number) =>
-    new Promise((resolve) => setTimeout(resolve, ms));
+  const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
   describe("activation behavior", () => {
     it("should create diagnostics on save", async () => {
@@ -505,16 +466,16 @@ describe("extension", () => {
 });
 ```
 
-> [!WARNING]
-> A fixed `delay` is the simplest way to wait on async work, but it can get flaky on slow CI machines. If that happens,
-> poll for the expected state with a timeout or wait on an event like `vscode.languages.onDidChangeDiagnostics`
-> instead.
+> [!WARNING] A fixed `delay` is the simplest way to wait on async work, but it can get flaky on slow CI
+> machines. If that happens, poll for the expected state with a timeout or wait on an event like
+> `vscode.languages.onDidChangeDiagnostics` instead.
 
 ### Mutating Files
 
-If a test needs to edit a file, have it work on a copy with a hash in the filename instead of the shared sample file.
-VSCode keys open documents and diagnostics by URI, so reusing the same path across tests can leave you asserting
-against state left over from the previous test. A fresh name for every test sidesteps that.
+If a test needs to edit a file, have it work on a copy with a hash in the filename instead of the shared
+sample file. VSCode keys open documents and diagnostics by URI, so reusing the same path across tests can
+leave you asserting against state left over from the previous test. A fresh name for every test sidesteps
+that.
 
 ```ts
 import * as crypto from "crypto";
@@ -525,17 +486,15 @@ const createTempDocument = async (filename: string) => {
   // Keep the extension last so VSCode still picks the right language for the file
   const hash = crypto.randomBytes(4).toString("hex");
   const source = vscode.Uri.file(path.join(TEST_WORKSPACE_DIR, filename));
-  const target = vscode.Uri.file(
-    path.join(TEST_WORKSPACE_DIR, `${name}.${hash}${ext}`),
-  );
+  const target = vscode.Uri.file(path.join(TEST_WORKSPACE_DIR, `${name}.${hash}${ext}`));
   // Copy through the VSCode API, not fs (see the principles above)
   await vscode.workspace.fs.copy(source, target);
   return await getDocument(target);
 };
 ```
 
-For example, `sample.ts` becomes something like `sample.3f9a1c2e.ts`. There is no cleanup to write either; the copy
-isn't in the original snapshot, so `restore()` deletes it after the test.
+For example, `sample.ts` becomes something like `sample.3f9a1c2e.ts`. There is no cleanup to write either; the
+copy isn't in the original snapshot, so `restore()` deletes it after the test.
 
 ## Conclusion
 

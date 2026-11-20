@@ -2,23 +2,25 @@
 title: CMake Simple Library Example
 summary: "An example of a simple library using CMake."
 tags:
-- C++
-- Build Systems
+  - C++
+  - Build Systems
 ---
 
 ## Motivation
 
-There are already some tutorials and examples of setting up a CMake project already but I work very much ny example and then deep dive later. It's just how my brain works I guess. So let's skim the waters.
+There are already some tutorials and examples of setting up a CMake project already but I work very much ny
+example and then deep dive later. It's just how my brain works I guess. So let's skim the waters.
 
 ## Assumptions
 
 This example uses the follow dev stack.
 
-* CMake (obviously)
-* C++ code.
-* Catch2 testing framework ([GitHub](https://github.com/catchorg/Catch2)).
+- CMake (obviously)
+- C++ code.
+- Catch2 testing framework ([GitHub](https://github.com/catchorg/Catch2)).
 
-The file layout has subdirectory for source code and tests, each with their own CMake file and one at the root level.
+The file layout has subdirectory for source code and tests, each with their own CMake file and one at the root
+level.
 
 ```txt
 CMakeLists.txt
@@ -35,7 +37,7 @@ src
 
 Here is the whole configuration in its respective files.
 
-``/CMakeLists.txt``
+`/CMakeLists.txt`
 
 ```cmake
 cmake_minimum_required(VERSION 3.16.3)
@@ -57,7 +59,7 @@ include(CTest)  # Automatically invokes enable_testing()
 add_subdirectory(tests)
 ```
 
-``/src/CMakeLists.txt``
+`/src/CMakeLists.txt`
 
 ```cmake
 message(STATUS "Building and installing library.")
@@ -69,7 +71,7 @@ message(STATUS "Building and installing library.")
 #
 # https://stackoverflow.com/questions/2649334/difference-between-static-and-shared-libraries
 #
-# If you are using a different type of library than STATIC, make sure to look into how the target properties and 
+# If you are using a different type of library than STATIC, make sure to look into how the target properties and
 # install will be different. For example https://cmake.org/cmake/help/latest/command/install.html
 #
 add_library(mylib STATIC mylib.h mylib.cpp)
@@ -86,7 +88,7 @@ install(TARGETS mylib
   PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mylib COMPONENT dev)
 ```
 
-``/tests/CMakeLists.txt``
+`/tests/CMakeLists.txt`
 
 ```cmake
 include(FetchContent)
@@ -116,10 +118,10 @@ add_test(NAME tests COMMAND query_tests)
 
 Here are some more examples to help you along.
 
-* [Dev Cafe: CMake Cookbook Examples](https://github.com/dev-cafe/cmake-cookbook)
-* [GitHub: CMakeLists.txt Search](https://github.com/search?q=filename%3ACMakeLists.txt)
-* CMake Documentation
-  * [add_library](https://cmake.org/cmake/help/latest/command/add_library.html)
-  * [add_test](https://cmake.org/cmake/help/latest/command/add_test.html)
-  * [install](https://cmake.org/cmake/help/latest/command/install.html)
-  * [set_target_properties](https://cmake.org/cmake/help/latest/command/set_target_properties.html)
+- [Dev Cafe: CMake Cookbook Examples](https://github.com/dev-cafe/cmake-cookbook)
+- [GitHub: CMakeLists.txt Search](https://github.com/search?q=filename%3ACMakeLists.txt)
+- CMake Documentation
+  - [add_library](https://cmake.org/cmake/help/latest/command/add_library.html)
+  - [add_test](https://cmake.org/cmake/help/latest/command/add_test.html)
+  - [install](https://cmake.org/cmake/help/latest/command/install.html)
+  - [set_target_properties](https://cmake.org/cmake/help/latest/command/set_target_properties.html)

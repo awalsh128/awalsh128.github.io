@@ -1,54 +1,44 @@
 ---
 title: Creating XML based templates in log4net.
-date: '2015-03-28T23:51:00.002-07:00'
+date: "2015-03-28T23:51:00.002-07:00"
 tags:
-- C#
-- .NET
-- Logging
-lastmod: '2015-03-28T23:51:06.663-07:00'
+  - C#
+  - .NET
+  - Logging
+lastmod: "2015-03-28T23:51:06.663-07:00"
 ---
 
 ### Motivation
 
-I decided to use [log4net](https://logging.apache.org/log4net/) for a
-recent project I had been working on. There is a concept of
-[loggers](https://logging.apache.org/log4net/release/manual/configuration.html#loggers)
-and
-[appenders](https://logging.apache.org/log4net/release/manual/configuration.html#appenders).
-Loggers are composed of appenders and a log threshold. Appenders are
-consumers of logging information and provide specific implementations
-(eg. file, email, event log, database). You can configure the loggers
-and appenders either in the [application
-configuration](https://logging.apache.org/log4net/release/manual/configuration.html)
-or [at runtime](http://www.roelvanlisdonk.nl/?p=723).
+I decided to use [log4net](https://logging.apache.org/log4net/) for a recent project I had been working on.
+There is a concept of [loggers](https://logging.apache.org/log4net/release/manual/configuration.html#loggers)
+and [appenders](https://logging.apache.org/log4net/release/manual/configuration.html#appenders). Loggers are
+composed of appenders and a log threshold. Appenders are consumers of logging information and provide specific
+implementations (eg. file, email, event log, database). You can configure the loggers and appenders either in
+the [application configuration](https://logging.apache.org/log4net/release/manual/configuration.html) or
+[at runtime](http://www.roelvanlisdonk.nl/?p=723).
 
-Configuring logging in the application configuration provides the most
-flexibility. It is great being able to change settings on the fly,
-especially when it is running in a production environment and
-redeploying the build is out of the question. Although this approach
-comes at the expense of having a lot of information in your application
-configuration for the loggers and appenders. No big deal though if you
-just have to configure once.
+Configuring logging in the application configuration provides the most flexibility. It is great being able to
+change settings on the fly, especially when it is running in a production environment and redeploying the
+build is out of the question. Although this approach comes at the expense of having a lot of information in
+your application configuration for the loggers and appenders. No big deal though if you just have to configure
+once.
 
 ### Why Templates?
 
-I had quite a bit of projects with a lot of redundant logging
-configuration information in each one\'s application configuration file.
-Much of the information had a standard form that we wanted uniform
-across our different projects too (eg. log file name conventions, event
-log setup, email format). Also, if we updated the logging appender
-configuration for a new standard, we would need to do it to every
-project\'s application configuration file. This is where templates came
-into play.
+I had quite a bit of projects with a lot of redundant logging configuration information in each one\'s
+application configuration file. Much of the information had a standard form that we wanted uniform across our
+different projects too (eg. log file name conventions, event log setup, email format). Also, if we updated the
+logging appender configuration for a new standard, we would need to do it to every project\'s application
+configuration file. This is where templates came into play.
 
 ### Writing the Code
 
-To cut down the amount of configuration information needed to start a
-new project with logging and make the configuration more uniform where
-needed, we offloaded it into the code and left the rest in the
-application configuration file like so.
+To cut down the amount of configuration information needed to start a new project with logging and make the
+configuration more uniform where needed, we offloaded it into the code and left the rest in the application
+configuration file like so.
 
-``` xml
+```xml
 <log4net xsi:noNamespaceSchemaLocation="log4net.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
 <logger name="LoggerTemplate">
@@ -68,12 +58,11 @@ application configuration file like so.
 </log4net>
 ```
 
-We don\'t use the logger directly but rather as a template for our [root
-logger](https://logging.apache.org/log4net/release/manual/configuration.html#root).
-Now we just need to craft a method to consume the template and create
-the root appenders at runtime.
+We don\'t use the logger directly but rather as a template for our
+[root logger](https://logging.apache.org/log4net/release/manual/configuration.html#root). Now we just need to
+craft a method to consume the template and create the root appenders at runtime.
 
-``` csharp
+```csharp
 /// <summary>
 /// Get appenders matching the logger template name and use them to populate the root appenders at runtime.
 /// </summary>
@@ -107,9 +96,9 @@ public static void ConfigureRootFromTemplate(string loggerTemplateName)
 
   // Can repeat the above pattern with other appenders as well.
   // Create appenders using the template information from above.
-  
+
   AddAppendersToRootAndConfigure(
-    new AppenderCollection 
+    new AppenderCollection
  {
       // Put your created appenders here.
     });
@@ -134,12 +123,12 @@ private static void AddAppendersToRootAndConfigure(AppenderCollection appenders)
 
 Then just call the configuration method at the application\'s startup.
 
-``` csharp
+```csharp
 class Program
 {
-  /// 
+  ///
   /// The main entry point for the application.
-  /// 
+  ///
   static void Main()
   {
     // Other startup configuration code.
@@ -153,27 +142,17 @@ class Program
 
 ### Considerations
 
-I don\'t recommend using this approach in all cases. It definitely cuts
-down the amount of application configuration needed but at the cost of
-information hiding, since it has been moved to code. Also, it may not be
-obvious to an uninitiated developer what your application configuration
-is doing, especially since this template approach is not encoded into
-the structure of log4net\'s XML. Although, if you have many projects and
-need to effect changes to logging across them, this may be a good
-solution for you.
+I don\'t recommend using this approach in all cases. It definitely cuts down the amount of application
+configuration needed but at the cost of information hiding, since it has been moved to code. Also, it may not
+be obvious to an uninitiated developer what your application configuration is doing, especially since this
+template approach is not encoded into the structure of log4net\'s XML. Although, if you have many projects and
+need to effect changes to logging across them, this may be a good solution for you.
 
 ### More Reading & Resources
 
--   [C&C Inc: Logging Best
-    Practices](http://c2.com/cgi/wiki?LoggingBestPractices)
--   [beefycode: Log4Net Recommended Practices pt 1: Your
-    Code](http://www.beefycode.com/post/Log4Net-Recommended-Practices-pt-1-Your-Code.aspx)
--   [JayWay: A nice, basic log4net
-    setup](http://www.jayway.com/2011/06/13/a-nice-basic-log4net-setup/)
--   [Stack Overflow: Why do loggers recommend using a logger per
-    class?](http://stackoverflow.com/questions/3143929/why-do-loggers-recommend-using-a-logger-per-class)
--   [Stack Overflow: log4net: Configure to ignore messages from a
-    specific
-    class](http://stackoverflow.com/questions/5504148/log4net-configure-to-ignore-messages-from-a-specific-class)
--   [Stack Overflow: Best way to dynamically set an appender file
-    path](http://stackoverflow.com/questions/571876/best-way-to-dynamically-set-an-appender-file-path)
+- [C&C Inc: Logging Best Practices](http://c2.com/cgi/wiki?LoggingBestPractices)
+- [beefycode: Log4Net Recommended Practices pt 1: Your Code](http://www.beefycode.com/post/Log4Net-Recommended-Practices-pt-1-Your-Code.aspx)
+- [JayWay: A nice, basic log4net setup](http://www.jayway.com/2011/06/13/a-nice-basic-log4net-setup/)
+- [Stack Overflow: Why do loggers recommend using a logger per class?](http://stackoverflow.com/questions/3143929/why-do-loggers-recommend-using-a-logger-per-class)
+- [Stack Overflow: log4net: Configure to ignore messages from a specific class](http://stackoverflow.com/questions/5504148/log4net-configure-to-ignore-messages-from-a-specific-class)
+- [Stack Overflow: Best way to dynamically set an appender file path](http://stackoverflow.com/questions/571876/best-way-to-dynamically-set-an-appender-file-path)
