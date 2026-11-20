@@ -2,6 +2,7 @@
 # Set up a fresh clone for local development. Safe to re-run; finished steps are skipped.
 #
 # - Installs Hugo extended into .tools/ (git-ignored), pinned to the version CI uses.
+# - Links or installs ShellCheck as .tools/shellcheck, which the editor's shell linting uses.
 # - Installs Husky through npm, which enables the repository's git hooks (.husky/).
 # - Installs Playwright's headless Chromium, which scripts/resume_to_pdf.sh prints the resume PDF with.
 # - Runs a test build, which downloads the Hugo theme module.
@@ -45,6 +46,18 @@ else
   info "installing Hugo extended ${version} (${platform}) into .tools/..."
   mkdir -p "${tools_dir}"
   curl -fsSL "${url}" | tar -xz -C "${tools_dir}" hugo
+fi
+
+# ShellCheck for the editor's shell linting (.vscode/settings.json points at .tools/shellcheck). Use the
+# system one if there is one; otherwise the npm wrapper installs it into .tools/, downloading the official
+# release on first run.
+if system_shellcheck="$(command -v shellcheck)"; then
+  ln -sf "${system_shellcheck}" "${tools_dir}/shellcheck"
+else
+  info "installing ShellCheck into .tools/..."
+  npm install --prefix "${tools_dir}" --no-audit --no-fund --silent shellcheck@4.1.0
+  "${tools_dir}/node_modules/.bin/shellcheck" --version > /dev/null
+  ln -sf node_modules/shellcheck/bin/shellcheck "${tools_dir}/shellcheck"
 fi
 
 # Git hooks: Husky's `prepare` script points core.hooksPath at .husky/_ during npm install.

@@ -3,5 +3,6 @@
   "[python]": {
     "editor.defaultFormatter": "charliermarsh.ruff"
   },
+  "shellcheck.executablePath": "${workspaceFolder}/.tools/shellcheck",
   "workbench.externalBrowser": "brave"
 }
