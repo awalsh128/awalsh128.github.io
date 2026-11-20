@@ -54,7 +54,9 @@ python3 scripts/resume_to_md.py exported.md --output - # preview
 The Projects list in `content/_index.md` is built from the `REPOS` list in `scripts/update_projects.py` (each entry is
 checked to exist) and rendered in a collapsed block between the `projects:start` and `projects:end`
 markers. A pre-commit hook regenerates it with `scripts/update_projects.py` (via an authenticated `gh` CLI)
-and stages the result. `scripts/setup_dev.sh` enables the hook. To preview the list without writing:
+and stages the result. The hook's steps live in `scripts/precommit.sh`; `scripts/precommit.sh --local` refreshes the
+generated files in the working tree without calling `gh` or touching git, so nothing is staged. `scripts/setup_dev.sh`
+enables the hook. To preview the list without writing:
 
 ```sh
 python3 scripts/update_projects.py --output -
