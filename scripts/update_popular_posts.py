@@ -23,8 +23,8 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 from downloads import DOWNLOADS_DIR, newest_export, read_export_csv
+from generated_markdown import ROOT_DIR, write_if_changed
 
-ROOT_DIR = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT = ROOT_DIR / "data" / "popular_posts.json"
 CSV_NAME = "Pages.csv"
 # Search Console names the zip after the property and the export date; a repeat download adds " (1)" and so
@@ -87,11 +87,7 @@ def main() -> int:
     if args.output == "-":
         print(content, end="")
         return 0
-    path = Path(args.output)
-    if path.exists() and path.read_text() == content:
-        return 0
-    path.write_text(content)
-    print(f"update_popular_posts: updated {path.relative_to(ROOT_DIR)} from {export.name}", file=sys.stderr)
+    write_if_changed(Path(args.output), content, "update_popular_posts")
     return 0
 
 

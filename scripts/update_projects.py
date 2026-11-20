@@ -2,19 +2,16 @@
 
 """Sync the homepage project list with a hardcoded list of GitHub repositories.
 
-Each repository in REPOS is validated through the GitHub CLI (`gh`): it must exist
-and be reachable, otherwise the script fails. The bullet list between the projects
-markers in content/_index.md is then rewritten inside a collapsed <details> block,
-with the "Projects" heading as its toggle and a heading per group of REPOS.
-Each bullet starts with the project's icon (the `project-icon` shortcode), links
-the repository name to GitHub, and ends with the first sentence of its
-description.
+Each repository in REPOS is validated through the GitHub CLI (`gh`): it must exist and be reachable, otherwise
+the script fails. The bullet list between the projects markers in content/_index.md is then rewritten inside a
+collapsed <details> block, with the "Projects" heading as its toggle and a heading per group of REPOS. Each
+bullet starts with the project's icon (the `project-icon` shortcode), links the repository name to GitHub, and
+ends with the first sentence of its description.
 
-Icons are downloaded by project_logos.py: each repository's README logo, or the
-file named in LOGO_OVERRIDES.
+Icons are downloaded by project_logos.py: each repository's README logo, or the file named in LOGO_OVERRIDES.
 
-Exits non-zero when `gh` is missing or a repository is not found, so callers such
-as the pre-commit hook can decide whether that should block.
+Exits non-zero when `gh` is missing or a repository is not found, so callers such as the pre-commit hook can
+decide whether that should block.
 """
 
 import argparse
@@ -23,11 +20,10 @@ import subprocess
 import sys
 from pathlib import Path
 
-from generated_markdown import first_sentence, replace_between
+from generated_markdown import ROOT_DIR, first_sentence, update_between
 from github_api import gh_api
 from project_logos import sync_logos
 
-ROOT_DIR = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT = ROOT_DIR / "content" / "_index.md"
 # Projects shown on the homepage, grouped by type. Groups and the repositories in them render in this order,
 # each group under its own heading inside the collapsed block.
@@ -127,16 +123,11 @@ def main() -> int:
 
     sync_logos(list(fetched.values()), LOGO_OVERRIDES)
 
-    path = Path(args.output)
-    content = path.read_text()
     try:
-        updated = replace_between(content, START_MARKER, END_MARKER, projects)
+        update_between(Path(args.output), START_MARKER, END_MARKER, projects, "update_projects")
     except ValueError as error:
         print(f"update_projects: {error}", file=sys.stderr)
         return 1
-    if updated != content:
-        path.write_text(updated)
-        print(f"update_projects: updated {path.relative_to(ROOT_DIR)}", file=sys.stderr)
     return 0
 
 

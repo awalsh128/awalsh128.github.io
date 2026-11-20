@@ -18,9 +18,9 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
+from generated_markdown import ROOT_DIR, write_if_changed
 from linkedin_export import load_csv
 
-ROOT_DIR = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT = ROOT_DIR / "data" / "linkedin_recommendations.json"
 DATE_FORMATS = (
     "%m/%d/%y, %I:%M %p",
@@ -90,12 +90,7 @@ def main() -> int:
     if args.output == "-":
         print(content, end="")
         return 0
-    path = Path(args.output)
-    if path.exists() and path.read_text() == content:
-        return 0
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(content)
-    print(f"update_recommendations: updated {path.relative_to(ROOT_DIR)}", file=sys.stderr)
+    write_if_changed(Path(args.output), content, "update_recommendations")
     return 0
 
 

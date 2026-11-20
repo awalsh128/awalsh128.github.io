@@ -23,10 +23,9 @@ import sys
 from pathlib import Path
 from urllib.parse import urlparse
 
-from generated_markdown import first_sentence, replace_between
+from generated_markdown import ROOT_DIR, first_sentence, update_between
 from github_api import gh_json
 
-ROOT_DIR = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT = ROOT_DIR / "content" / "api.md"
 OWNER = "awalsh128"
 SITE_HOSTS = {"awalsh128.com", "www.awalsh128.com"}
@@ -63,9 +62,7 @@ def npm_packages(repo: str) -> list[str]:
         workspaces = workspaces.get("packages", [])
     packages = []
     for workspace in workspaces:
-        if (
-            "*" in workspace
-        ):  # Globs would need a directory listing; list workspaces explicitly to include them.
+        if "*" in workspace:  # Globs would need a directory listing; list workspaces explicitly instead.
             continue
         package = read_package(repo, f"{workspace.strip('/')}/package.json")
         if package.get("name") and not package.get("private"):
@@ -126,16 +123,11 @@ def main() -> int:
         print(apis)
         return 0
 
-    path = Path(args.output)
-    content = path.read_text()
     try:
-        updated = replace_between(content, START_MARKER, END_MARKER, apis)
+        update_between(Path(args.output), START_MARKER, END_MARKER, apis, "update_apis")
     except ValueError as error:
         print(f"update_apis: {error}", file=sys.stderr)
         return 1
-    if updated != content:
-        path.write_text(updated)
-        print(f"update_apis: updated {path.relative_to(ROOT_DIR)}", file=sys.stderr)
     return 0
 
 
