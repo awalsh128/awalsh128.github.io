@@ -4,5 +4,21 @@
     "editor.defaultFormatter": "charliermarsh.ruff"
   },
   "shellcheck.executablePath": "${workspaceFolder}/.tools/shellcheck",
-  "workbench.externalBrowser": "brave"
+  "workbench.externalBrowser": "brave",
+  "files.watcherExclude": {
+    "**/node_modules/**": true,
+    "**/public/**": true,
+    "**/dist/**": true
+  },
+  "keep-sorted.exclude": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/*.min.js",
+    "**/*.min.css",
+    "**/vendor/**",
+    "**/build/**",
+    "**/public/**",
+    "**/static/**",
+    "^content/posts/2025-12-25-vscode-keep-sorted/index\\.md$"
+  ]
 }
