@@ -47,9 +47,13 @@ stash.
   `source = "../awalsh128.github.io.private/_drafts"`, `target = "content/posts"`, `files = ["! **.html"]`.
   Production builds don't use it, so drafts can't be published by accident.
 - If you find a draft in this repo, move it to the private repo and remove it here.
-- Bring a draft into `content/posts/` only when Andrew says it's ready to publish. Remove `draft: true` and
-  any agent prompt files (such as `agent.md`) and resolve every `TODO(andrew):` first, then delete it from the
-  private repo.
+- Publish with `scripts/publish_draft.sh`. A draft is ready when Andrew says so: set `draft: false` in its front
+  matter in the private repo, then run the script (`-n` lists what it would publish). It finds every draft marked
+  `draft: false`, skips one that still has a `TODO(andrew):` or a same-named post in `content/posts/`, copies the
+  rest without agent prompt files (such as `agent.md`), drops the `draft: false` line, builds the site as a check,
+  and removes the drafts from the private repo. It commits nothing: commit the deletions in the private repo, then
+  commit the new posts here on a branch and open a PR. Drafts with no `draft` key or `draft: true` are never
+  published.
 
 ## Read before you start
 
