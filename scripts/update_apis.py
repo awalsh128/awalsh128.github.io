@@ -40,7 +40,7 @@ def docs_url(homepage: str | None) -> str | None:
     path = url.path.strip("/")
     if url.hostname not in SITE_HOSTS or not path:
         return None
-    return f"https://awalsh128.com/{path}/"
+    return f"https://www.awalsh128.com/{path}/"
 
 
 def read_package(repo: str, path: str) -> dict:

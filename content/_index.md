@@ -15,22 +15,22 @@ how their team works. [More at Lykotek →](https://lykotek.com)
 ### GitHub Actions and CI/CD
 
 - {{< project-icon "cache-apt-pkgs-action" >}} [**cache-apt-pkgs-action**](https://github.com/awalsh128/cache-apt-pkgs-action): Cache APT packages in GitHub Actions.
-- {{< project-icon "npm-publish-strict" >}} [**npm-publish-strict**](https://github.com/awalsh128/npm-publish-strict): An opinionated NPM publish GitHub Action that uses semantic versioning, typedoc generation, and packaging.
-- {{< project-icon "semantic-release-sentinel-app" >}} [**semantic-release-sentinel-app**](https://github.com/awalsh128/semantic-release-sentinel-app): GitHub App to callout semantic release concerns and flag potential implications.
+- {{< project-icon "npm-publish-strict" >}} [**npm-publish-strict**](https://github.com/awalsh128/npm-publish-strict): Opinionated GitHub Action that releases an npm package with semantic-release and trusted publishing.
+- {{< project-icon "semantic-release-sentinel-app" >}} [**semantic-release-sentinel-app**](https://github.com/awalsh128/semantic-release-sentinel-app): Probot GitHub App that previews the version each pull request will release under semantic-release.
 
 ### Editor extensions
 
-- {{< project-icon "vscode-keep-sorted" >}} [**vscode-keep-sorted**](https://github.com/awalsh128/vscode-keep-sorted): VSCode linter extension for google/keep-sorted.
-- {{< project-icon "vscode-regex-explain" >}} [**vscode-regex-explain**](https://github.com/awalsh128/vscode-regex-explain): Explains regular expressions in plain English and diagrams along with experimentation for modified test patterns and inputs.
+- {{< project-icon "vscode-keep-sorted" >}} [**vscode-keep-sorted**](https://github.com/awalsh128/vscode-keep-sorted): VS Code extension that keeps marked blocks sorted in any language with Google's keep-sorted.
+- {{< project-icon "vscode-regex-explain" >}} [**vscode-regex-explain**](https://github.com/awalsh128/vscode-regex-explain): Explain regexes in plain English and warn about catastrophic backtracking: an npm library and a VS Code extension.
 
 ### AI agents and templates
 
-- {{< project-icon "skills" >}} [**skills**](https://github.com/awalsh128/skills): Installable agentic skills that I use in my dev workflows, built for Claude Code.
+- {{< project-icon "skills" >}} [**skills**](https://github.com/awalsh128/skills): Installable agentic skills for dev workflows, built for Claude Code.
 - {{< project-icon "gh-dev-powerpack" >}} [**gh-dev-powerpack**](https://github.com/awalsh128/gh-dev-powerpack): Powerpack for developing code and managing CI/CD.
 
 ### Libraries
 
-- {{< project-icon "winston-host-adapters" >}} [**winston-host-adapters**](https://github.com/awalsh128/winston-host-adapters): Customized Winston wrapper specifically for VSCE and includes lazy logging support.
+- {{< project-icon "winston-host-adapters" >}} [**winston-host-adapters**](https://github.com/awalsh128/winston-host-adapters): Winston loggers for VS Code extensions, GitHub Actions workflows, or any host you give a small adapter to.
 - {{< project-icon "ts-apt" >}} [**ts-apt**](https://github.com/awalsh128/ts-apt): TypeScript library for APT and APT-fast package operations on Debian-based Linux systems.
 - {{< project-icon "fluentcpp" >}} [**fluentcpp**](https://github.com/awalsh128/fluentcpp): Statically typed, fluent query functions for C++20 containers that are easy to discover through auto-complete.
 - {{< project-icon "PcapngFile" >}} [**PcapngFile**](https://github.com/awalsh128/PcapngFile): Reads PCAP Next Generation files and generates CLR objects from its data.
