@@ -38,13 +38,13 @@ This repo is public, so unpublished posts never go in it, not even as `draft: tr
 stash.
 
 - Write drafts in the private repo `awalsh128/awalsh128.github.io.private` (cloned at
-  `../awalsh128.github.io.private`), under `_drafts/` with the same name a post would get here
-  (`_drafts/YYYY-MM-DD-slug/index.md` for a bundle). Commit them there.
+  `../awalsh128.github.io.private`), under `posts/` with the same name a post would get here
+  (`posts/YYYY-MM-DD-slug/index.md` for a bundle). Commit them there.
 - Preview drafts with the local-only `hugo.local.toml` (listed in `.git/info/exclude`, never committed), which
-  mounts the private repo's `_drafts/` onto `content/posts`:
+  mounts the private repo's `posts/` onto `content/posts`:
   `.tools/hugo server -D --config hugo.toml,hugo.local.toml`. If the file is missing, recreate it: re-declare
   Hugo's default mounts (archetypes, assets, content, data, i18n, layouts, static) and add
-  `source = "../awalsh128.github.io.private/_drafts"`, `target = "content/posts"`, `files = ["! **.html"]`.
+  `source = "../awalsh128.github.io.private/posts"`, `target = "content/posts"`, `files = ["! **.html"]`.
   Production builds don't use it, so drafts can't be published by accident.
 - If you find a draft in this repo, move it to the private repo and remove it here.
 - Publish with `scripts/publish_draft.sh`. A draft is ready when Andrew says so: set `draft: false` in its front

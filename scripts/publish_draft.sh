@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Publish the drafts in the private drafts repo that are marked ready with `draft: false`.
 #
-# Drafts live in _drafts/ of the private repo (see "Drafts stay private" in AGENTS.md). Flip a draft's front matter to
+# Drafts live in posts/ of the private repo (see "Drafts stay private" in AGENTS.md). Flip a draft's front matter to
 # `draft: false` there when it is ready. This script finds every such draft and, for each one:
 #
 #   1. refuses it while a `TODO(andrew):` is left in it, or when content/posts/ already has a post of that name,
@@ -38,7 +38,7 @@ for arg in "$@"; do
   esac
 done
 
-[[ -d "${drafts_repo}/_drafts" ]] || fail "no _drafts/ in ${drafts_repo} (set DRAFTS_REPO)"
+[[ -d "${drafts_repo}/posts" ]] || fail "no posts/ in ${drafts_repo} (set DRAFTS_REPO)"
 drafts_repo="$(cd "${drafts_repo}" && pwd)"
 
 # The post file of a draft: index.md for a bundle, the file itself for a single-file draft.
@@ -80,7 +80,7 @@ ready=()
 blocked=0
 skipped=0
 shopt -s nullglob
-for entry in "${drafts_repo}"/_drafts/*; do
+for entry in "${drafts_repo}"/posts/*; do
   name="$(basename "${entry}")"
   [[ -d "${entry}" || "${entry}" == *.md ]] || continue
   selected "${name}" || continue
@@ -117,7 +117,7 @@ undo() {
 }
 
 for name in "${ready[@]}"; do
-  src="${drafts_repo}/_drafts/${name}"
+  src="${drafts_repo}/posts/${name}"
   if [[ -d "${src}" ]]; then
     cp -r "${src}" "${posts_dir}/${name}"
     copied+=("${name}")
@@ -140,8 +140,8 @@ if ! (cd "${root}" && HUGO_ENVIRONMENT=production "${hugo_bin}" --gc --minify -d
 fi
 
 for name in "${ready[@]}"; do
-  git -C "${drafts_repo}" rm -r -q --cached --ignore-unmatch -- "_drafts/${name}"
-  rm -rf "${drafts_repo:?}/_drafts/${name}"
+  git -C "${drafts_repo}" rm -r -q --cached --ignore-unmatch -- "posts/${name}"
+  rm -rf "${drafts_repo:?}/posts/${name}"
   info "published ${name}"
 done
 
