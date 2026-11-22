@@ -26,7 +26,7 @@ how their team works. [More at Lykotek →](https://lykotek.com)
 ### AI agents and templates
 
 - {{< project-icon "skills" >}} [**skills**](https://github.com/awalsh128/skills): Installable agentic skills for dev workflows, built for Claude Code.
-- {{< project-icon "gh-dev-powerpack" >}} [**gh-dev-powerpack**](https://github.com/awalsh128/gh-dev-powerpack): Powerpack for developing code and managing CI/CD.
+- {{< project-icon "gh-dev-powerpack" >}} [**gh-dev-powerpack**](https://github.com/awalsh128/gh-dev-powerpack): Bootstrap repos with GitHub CI/CD, release, conventional-commit and agent-config templates.
 
 ### Libraries
 

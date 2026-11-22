@@ -40,6 +40,12 @@ stash.
 - Write drafts in the private repo `awalsh128/awalsh128.github.io.private` (cloned at
   `../awalsh128.github.io.private`), under `_drafts/` with the same name a post would get here
   (`_drafts/YYYY-MM-DD-slug/index.md` for a bundle). Commit them there.
+- Preview drafts with the local-only `hugo.local.toml` (listed in `.git/info/exclude`, never committed), which
+  mounts the private repo's `_drafts/` onto `content/posts`:
+  `.tools/hugo server -D --config hugo.toml,hugo.local.toml`. If the file is missing, recreate it: re-declare
+  Hugo's default mounts (archetypes, assets, content, data, i18n, layouts, static) and add
+  `source = "../awalsh128.github.io.private/_drafts"`, `target = "content/posts"`, `files = ["! **.html"]`.
+  Production builds don't use it, so drafts can't be published by accident.
 - If you find a draft in this repo, move it to the private repo and remove it here.
 - Bring a draft into `content/posts/` only when Andrew says it's ready to publish. Remove `draft: true` and
   any agent prompt files (such as `agent.md`) and resolve every `TODO(andrew):` first, then delete it from the
