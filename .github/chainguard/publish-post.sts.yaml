@@ -1,0 +1,15 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/octo-sts/app/refs/heads/main/pkg/octosts/octosts.TrustPolicy.json
+
+# Tokens for the private drafts repo's publish-posts workflow to push a branch and open a pull request here.
+# Octo STS reads this file from the default branch (master). The subject carries the owner and repository IDs,
+# so a repository that later takes the private repo's name doesn't match, and only that workflow file running
+# on master does.
+issuer: https://token.actions.githubusercontent.com
+subject_pattern: "repo:awalsh128@2087466/awalsh128.github.io.private@276272877:.*"
+claim_pattern:
+  ref: "refs/heads/master"
+  job_workflow_ref: "awalsh128/awalsh128.github.io.private/\\.github/workflows/publish-posts\\.yml@refs/heads/master"
+
+permissions:
+  contents: write
+  pull_requests: write
