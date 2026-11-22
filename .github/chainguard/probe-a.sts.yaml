@@ -1,0 +1,6 @@
+# TEMPORARY: probe for debugging publish-post.sts.yaml. Read-only. Delete once the trust policy works.
+issuer: https://token.actions.githubusercontent.com
+subject_pattern: "repo:awalsh128/awalsh128.github.io.private:.*"
+
+permissions:
+  contents: read
