@@ -1,25 +1,20 @@
 ---
 title: VSCode Keep Sorted Extension
-lastmod: 2026-10-22 00:00:01 -0700
+lastmod: 2026-11-21 00:00:01 -0800
 tags:
   - VS Code
   - TypeScript
   - Open Source
 ---
 
-<table width="100%">
-  <tr>
-    <td width="48"><img src="logo.png" alt="Logo" width="48" height="48"></td>
-    <td style="padding-left:1em"><h1>VSCode Keep Sorted Extension</h1></td>
-  </tr>
-</table>
+<img src="logo.png" alt="Keep Sorted logo" width="64" height="64">
 
-> [!NOTE] Updated October 2026 for version 1.0.3. This post originally announced the 0.0.1 release in
+> [!NOTE] Updated November 2026 for version 1.2.1. This post originally announced the 0.0.1 release in
 > December 2025. Commands, settings, and features below reflect the latest version.
 
 I released a lightweight VS Code extension that keeps marked blocks in your code sorted using
 **[Google's Keep Sorted](https://github.com/google/keep-sorted)** formatter. I saw a gap for an extension that
-handles blocks generically, in any language, with options to modify the sorting behavior. It is now at 1.0.2
+handles blocks generically, in any language, with options to modify the sorting behavior. It is now at 1.2.1
 and available on both the
 [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=awalsh128.keep-sorted) and the
 [Open VSX Registry](https://open-vsx.org/extension/awalsh128/keep-sorted).
@@ -34,6 +29,10 @@ It is a language agnostic sorting tool that works in any programming language or
 - 💾 **Sort on Save**: Optional sorting on save through a source fix-all action.
 - ✨ **Autocomplete and Hover Docs**: Suggestions for option names and values on `keep-sorted start` lines,
   with documentation on hover. Options that conflict with ones already on the line aren't suggested.
+- 🚫 **Exclude from the Lightbulb**: Add a file to `keep-sorted.exclude` with one quick fix, including for
+  warnings that sorting can't fix.
+- 🤖 **AI Agent Support**: Copilot tools and an MCP server that let agents add and sort blocks with your
+  default options.
 - ⚡ **No Extra Installs**: Native keep-sorted v0.10.0 binaries are bundled for Windows x64, Linux x64, and
   macOS Intel/Apple Silicon, so you don't need a separate keep-sorted install or a Go compiler.
 - 🎛️ **Flexible Configuration**: Enable/disable toggle, autocomplete toggle, file exclusion patterns, and
@@ -290,6 +289,8 @@ The extension warns when these blocks aren't sorted and offers fixes.
 Use `Ctrl+Shift+P` / `Cmd+Shift+P` and search for:
 
 - **"Keep Sorted: Sort Current File"** - Sort all keep-sorted blocks in the active file.
+- **"Keep Sorted: Add AI Instructions to Workspace"** - Set up agent instructions and the MCP server. See
+  [AI Agents](#ai-agents).
 - **"Keep Sorted: Sort All Files with Problems"** - Sort every file with Keep Sorted warnings. This covers
   workspace files scanned at startup (respecting `files.exclude` and `keep-sorted.exclude`) plus files opened
   or edited since. All changes are applied as one edit, so review them and then use **File → Save All**.
@@ -307,6 +308,9 @@ When the extension detects unsorted content:
 3. Choose from the available actions:
    - **"Sort all lines in file (keep-sorted)"** - Sorts all keep-sorted blocks in the file.
    - **"Sort all files with problems (keep-sorted)"** - Shown when other files also have warnings.
+   - **"Exclude this file (keep-sorted)"** - Adds an exact-match pattern for the file to
+     `keep-sorted.exclude`, in your workspace settings (or user settings when no folder is open). Remove the
+     pattern from the setting to undo it.
 
 Quick fixes are also available from the Problems panel (`Ctrl+Shift+M` / `Cmd+Shift+M`). Once a file is
 sorted, its resolved warnings disappear from Problems while any remaining issues stay visible.
@@ -334,14 +338,29 @@ Without this, saving refreshes diagnostics but doesn't sort. `editor.formatOnSav
 Add options after `start` and autocomplete suggests option names with documentation, then known values such as
 `yes`/`no` or `order=asc|desc` after the `=`. Hover over an option to see its documentation.
 
+### AI Agents
+
+Keep Sorted gives AI coding agents guidance that matches the installed version, and tools to add and sort
+blocks: `keepSorted_getGuide`, `keepSorted_getPreferences`, `keepSorted_wrapRange` and `keepSorted_run`.
+GitHub Copilot agent mode can use them without setup, and VS Code asks before running the ones that change
+files.
+
+For other agents, run **Keep Sorted: Add AI Instructions to Workspace** and choose what to set up: an
+`AGENTS.md` section, an agent skill, or an MCP server for Claude Code, Cursor or any MCP client. Each file
+change is shown as a diff and written only after you confirm.
+
+Use `keep-sorted.wrap.preferences` to set the default options for blocks that agents add. The
+[AI agents doc](https://github.com/awalsh128/vscode-keep-sorted/blob/main/docs/AI_AGENTS.md) has the details.
+
 ### Settings
 
-| Setting                    | Default | Description                                                             |
-| -------------------------- | ------- | ----------------------------------------------------------------------- |
-| `keep-sorted.enabled`      | `true`  | Enable diagnostics, sorting commands, and code actions.                 |
-| `keep-sorted.autoComplete` | `true`  | Suggest option names and values after `start`, with documentation.      |
-| `keep-sorted.exclude`      | `[]`    | Exclude files from diagnostics and sorting; regex first, glob fallback. |
-| `keep-sorted.logFilepath`  | `""`    | Add file logging alongside Output; empty disables file logging.         |
+| Setting                        | Default | Description                                                             |
+| ------------------------------ | ------- | ----------------------------------------------------------------------- |
+| `keep-sorted.enabled`          | `true`  | Enable diagnostics, sorting commands, and code actions.                 |
+| `keep-sorted.autoComplete`     | `true`  | Suggest option names and values after `start`, with documentation.      |
+| `keep-sorted.exclude`          | `[]`    | Exclude files from diagnostics and sorting; regex first, glob fallback. |
+| `keep-sorted.wrap.preferences` | `{}`    | Default options AI agents use for new blocks.                           |
+| `keep-sorted.logFilepath`      | `""`    | Add file logging alongside Output; empty disables file logging.         |
 
 For example, to exclude generated and vendored files:
 
@@ -369,19 +388,23 @@ Keep Sorted works with any file type and is language agnostic. Common use cases 
    - Check that the file isn't excluded via `keep-sorted.exclude` patterns.
    - Make sure the block has matching `keep-sorted start` and `keep-sorted end` markers.
 
-2. **Commands Not Available?**
+2. **Warning That Sorting Doesn't Fix?**
+   - A `keep-sorted start` with no matching `end` (e.g. prose or a JSON string that mentions the directive)
+     can't be fixed by sorting. Only **Exclude this file (keep-sorted)** is offered, as the preferred fix.
+
+3. **Commands Not Available?**
    - Open the Command Palette (`Ctrl+Shift+P` / `Cmd+Shift+P`) and search for "Keep Sorted". The commands are
      hidden while `keep-sorted.enabled` is off.
    - If they still don't appear, reload VS Code (`Developer: Reload Window`).
 
-3. **Save Doesn't Sort?**
+4. **Save Doesn't Sort?**
    - Configure `source.fixAll.keepSorted` as shown in Sort on Save. Format on save alone doesn't invoke this
      extension.
 
-4. **Performance Issues?**
+5. **Performance Issues?**
    - Add problematic file patterns to `keep-sorted.exclude`.
 
-5. **Viewing Extension Logs**
+6. **Viewing Extension Logs**
    - Open the Output panel: `View` → `Output` or `Ctrl+Shift+U` / `Cmd+Shift+U`.
    - Select "Keep Sorted" from the dropdown menu.
    - Logs show extension activity, errors, and diagnostic information.
