@@ -54,6 +54,10 @@ stash.
   and removes the drafts from the private repo. It commits nothing: commit the deletions in the private repo, then
   commit the new posts here on a branch and open a PR. Drafts with no `draft` key or `draft: true` are never
   published.
+- The private repo's Publish posts workflow runs this script with `--keep-source` when a post's `draft` flips to
+  `false` and opens the PR here (`publish/<slug>`). `--keep-source` leaves the post in the private repo; its
+  Remove published posts workflow deletes it once the post is in `content/posts/`. The Octo STS policy that lets
+  it open the PR is `.github/chainguard/publish-post.sts.yaml`.
 
 ## Read before you start
 

@@ -8,7 +8,7 @@
 #   2. copies it to content/posts/ without agent prompt files (agent.md) and drops the `draft: false` line, since
 #      published posts don't carry the key,
 #   3. builds the site once as production does, to check what was copied,
-#   4. removes it from the private repo and stages the deletion there.
+#   4. removes it from the private repo and stages the deletion there (not with --keep-source).
 #
 # Drafts with no `draft` key or `draft: true` are left alone. Nothing is committed or pushed: review the result, then
 # commit and push the private repo's deletions and open a PR here for the new posts.
@@ -17,6 +17,9 @@
 #   scripts/publish_draft.sh              publish every draft marked `draft: false`
 #   scripts/publish_draft.sh <name>...    only these drafts, by name (2026-11-21-skills)
 #   scripts/publish_draft.sh -n           list what would be published, change nothing
+#   scripts/publish_draft.sh --keep-source   copy the posts but leave them in the private repo. The publish-posts
+#                                         workflow uses it: the post stays until its PR merges, and the private
+#                                         repo's remove-published workflow clears it afterwards.
 #
 # DRAFTS_REPO sets the private repo's path (default: ../awalsh128.github.io.private).
 
@@ -28,11 +31,13 @@ set -euo pipefail
 drafts_repo="${DRAFTS_REPO:-${root}/../awalsh128.github.io.private}"
 posts_dir="${root}/content/posts"
 dry_run=0
+keep_source=0
 wanted=()
 
 for arg in "$@"; do
   case "${arg}" in
     -n | --dry-run) dry_run=1 ;;
+    --keep-source) keep_source=1 ;;
     -*) fail "unknown option: ${arg}" ;;
     *) wanted+=("${arg%/}") ;;
   esac
@@ -137,6 +142,12 @@ info "building the site to check the new posts"
 if ! (cd "${root}" && HUGO_ENVIRONMENT=production "${hugo_bin}" --gc --minify -d "${build_dir}" > /dev/null); then
   undo
   fail "the site did not build with the new posts, so they were not copied (run hugo to see why)"
+fi
+
+if [[ ${keep_source} -eq 1 ]]; then
+  info "copied ${#ready[@]} post(s); left in the private repo (--keep-source)"
+  [[ ${blocked} -eq 0 ]] || exit 1
+  exit 0
 fi
 
 for name in "${ready[@]}"; do
