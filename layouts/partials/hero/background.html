@@ -76,7 +76,7 @@
   {{ if $random }}
   {{ partial "random-background.html" (dict "class" $class "style" $style) }}
   {{ else }}
-  <img id="background-image" src="{{ $featuredURL }}" role="presentation" loading="eager" decoding="async"
+  <img id="background-image" src="{{ $featuredURL }}" alt="" role="presentation" loading="eager" decoding="async"
     fetchpriority="high" class="{{ $class }}" {{ if $style }}style="{{ $style | safeCSS }}" {{ end }} />
   {{ end }}
   <div class="absolute inset-0 bg-gradient-to-t from-neutral dark:from-neutral-800 to-transparent mix-blend-normal">
