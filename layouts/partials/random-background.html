@@ -19,6 +19,7 @@
       var img = document.createElement("img");
       img.id = "background-image";
       img.className = {{ $.class }};
+      img.alt = "";
       img.setAttribute("role", "presentation");
       img.setAttribute("fetchpriority", "high");
       {{- with $.style }}
@@ -33,6 +34,7 @@
       id="background-image"
       class="{{ $.class }}"
       src="{{ index $urls 0 }}"
+      alt=""
       role="presentation"
       {{ with $.style }}style="{{ . | safeCSS }}"{{ end }}>
   </noscript>
