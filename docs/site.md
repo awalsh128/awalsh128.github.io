@@ -8,6 +8,12 @@ Post, list, and tag pages get a background picked at random on each load from `a
 (see `layouts/partials/random-background.html`); add or remove a .jpg there to change the rotation. The
 homepage keeps `assets/img/header.jpg`.
 
+## Year grouping
+
+The posts list and tag pages group posts by year of `lastmod`, falling back to the date, so an updated post
+shows under the year it was updated. `layouts/_default/list.html` and `term.html` are copies of Blowfish's
+with `GroupByDate` changed to `GroupByLastmod`; re-copy them when upgrading the theme.
+
 ## CSS
 
 Site CSS overrides live in `assets/css/custom/`, one file per responsibility, and are bundled into
