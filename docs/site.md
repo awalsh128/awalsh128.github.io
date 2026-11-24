@@ -11,8 +11,8 @@ homepage keeps `assets/img/header.jpg`.
 ## Year grouping
 
 The posts list and tag pages group posts by year of `lastmod`, falling back to the date, so an updated post
-shows under the year it was updated. `layouts/_default/list.html` and `term.html` are copies of Blowfish's with
-`GroupByDate` changed to `GroupByLastmod`; re-copy them when upgrading the theme.
+shows under the year it was updated. `layouts/_default/list.html` and `term.html` are copies of Blowfish's
+with `GroupByDate` changed to `GroupByLastmod`; re-copy them when upgrading the theme.
 
 ## CSS
 
