@@ -40,6 +40,7 @@ REPOS = {
     "AI agents and templates": [
         "awalsh128/skills",
         "awalsh128/gh-dev-powerpack",
+        "awalsh128/gh-ts-action-template",
     ],
     "Libraries": [
         "awalsh128/winston-host-adapters",

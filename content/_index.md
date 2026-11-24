@@ -27,6 +27,7 @@ how their team works. [More at Lykotek →](https://lykotek.com)
 
 - {{< project-icon "skills" >}} [**skills**](https://github.com/awalsh128/skills): Installable agentic skills for dev workflows, built for Claude Code.
 - {{< project-icon "gh-dev-powerpack" >}} [**gh-dev-powerpack**](https://github.com/awalsh128/gh-dev-powerpack): Bootstrap repos with GitHub CI/CD, release, conventional-commit and agent-config templates.
+- {{< project-icon "gh-ts-action-template" >}} [**gh-ts-action-template**](https://github.com/awalsh128/gh-ts-action-template): GitHub template repository for starting TypeScript GitHub Actions.
 
 ### Libraries
 
