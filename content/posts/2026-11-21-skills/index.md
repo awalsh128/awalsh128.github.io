@@ -8,8 +8,11 @@ tags:
 
 <img src="logo.svg" alt="Agent Skills logo" width="64" height="64">
 
-> [!NOTE] This post may become out of date. See the project's
+<!-- prettier-ignore-start -->
+> [!NOTE]
+> This post may become out of date. See the project's
 > [README](https://github.com/awalsh128/skills/blob/main/README.md) for the latest.
+<!-- prettier-ignore-end -->
 
 I published a set of [agent skills](https://github.com/awalsh128/skills) for Claude Code, or any agent that
 reads `SKILL.md` files. Each skill covers a task I repeat often (e.g. writing a README, reviewing a CI

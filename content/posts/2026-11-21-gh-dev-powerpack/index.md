@@ -9,8 +9,11 @@ tags:
 
 <img src="logo.svg" alt="gh-dev-powerpack logo" width="64" height="64">
 
-> [!NOTE] This post may become out of date. See the project's
+<!-- prettier-ignore-start -->
+> [!NOTE]
+> This post may become out of date. See the project's
 > [README](https://github.com/awalsh128/gh-dev-powerpack/blob/main/README.md) for the latest.
+<!-- prettier-ignore-end -->
 
 I published [gh-dev-powerpack](https://github.com/awalsh128/gh-dev-powerpack), a repo of templates and helper
 scripts that bootstrap a new project, or raise the quality of an existing one, with a single command. It

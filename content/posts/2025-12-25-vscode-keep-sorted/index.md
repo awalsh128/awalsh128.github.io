@@ -9,8 +9,11 @@ tags:
 
 <img src="logo.png" alt="Keep Sorted logo" width="64" height="64">
 
-> [!NOTE] Updated November 2026 for version 1.2.1. This post originally announced the 0.0.1 release in
-> December 2025. Commands, settings, and features below reflect the latest version.
+<!-- prettier-ignore-start -->
+> [!NOTE]
+> Updated November 2026 for version 1.2.1. This post originally announced the 0.0.1 release in December 2025.
+> Commands, settings, and features below reflect the latest version.
+<!-- prettier-ignore-end -->
 
 I released a lightweight VS Code extension that keeps marked blocks in your code sorted using
 **[Google's Keep Sorted](https://github.com/google/keep-sorted)** formatter. I saw a gap for an extension that
@@ -262,9 +265,11 @@ Duplicates are removed by default, but you can disable it:
 
 ## Usage
 
-> [!IMPORTANT] See
-> [google/keep-sorted#options](https://github.com/google/keep-sorted?tab=readme-ov-file#options) for complete
-> documentation on all the options that are available.
+<!-- prettier-ignore-start -->
+> [!IMPORTANT]
+> See [google/keep-sorted#options](https://github.com/google/keep-sorted?tab=readme-ov-file#options) for
+> complete documentation on all the options that are available.
+<!-- prettier-ignore-end -->
 
 ### Setting Up Keep Sorted Blocks
 

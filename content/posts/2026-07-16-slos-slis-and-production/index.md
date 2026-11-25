@@ -9,7 +9,10 @@ summary: "SLIs, SLOs, and SLAs, and how to use them for monitoring, on-call, and
 description: "SLIs, SLOs, and SLAs, and how to use them for monitoring, on-call, and incident response."
 ---
 
-> [!TIP] Want the short version? Get the one-pager [cheat sheet (PDF)](cheat-sheet.pdf).
+<!-- prettier-ignore-start -->
+> [!TIP]
+> Want the short version? Get the one-pager [cheat sheet (PDF)](cheat-sheet.pdf).
+<!-- prettier-ignore-end -->
 
 Setting clear expectations for your service helps you:
 
@@ -79,9 +82,12 @@ your service targets 99.9%, its critical dependencies should target 99.99%.
 
 ![API depending on an AAA endpoint, which depends on a database, each targeting one more nine of availability](api-aaa-db-dependencies.svg)
 
-> [!NOTE] This isn't a hard rule. It depends on how many dependencies you have and how much availability they
-> can realistically provide. Sometimes an extra 5 is enough (e.g. 99.95% instead of 99.99%). It comes down to
-> your risk analysis and how the systems behave in production.
+<!-- prettier-ignore-start -->
+> [!NOTE]
+> This isn't a hard rule. It depends on how many dependencies you have and how much availability they can
+> realistically provide. Sometimes an extra 5 is enough (e.g. 99.95% instead of 99.99%). It comes down to your
+> risk analysis and how the systems behave in production.
+<!-- prettier-ignore-end -->
 
 ## SLAs (Service Level Agreements)
 
@@ -234,7 +240,10 @@ If your alerts send notifications, link the playbook directly from them.
 
 Let's say your service provides market quotes to financial companies and availability starts degrading.
 
-> [!NOTE] `...` is a placeholder for more text so this example isn't too verbose.
+<!-- prettier-ignore-start -->
+> [!NOTE]
+> `...` is a placeholder for more text so this example isn't too verbose.
+<!-- prettier-ignore-end -->
 
 <div class="example-doc">
 

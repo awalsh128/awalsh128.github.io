@@ -10,8 +10,7 @@ from the old Jekyll and Blogger site (`author`, `toc`, `toc_icon`, `thumbnail`, 
 `last_modified_at`, `blogger_*`); nothing reads them. The table of contents is on for every post via
 `showTableOfContents` in `hugo.toml`.
 
-To pin a post to the top of the homepage Posts section, add `pinned: YYYY-MM-DD` with today's date; remove the
-line to unpin. AGENTS.md says when to review pins.
+Pinning a post to the top of the homepage is covered in AGENTS.md ("Pinned posts").
 
 ## Page bundles
 
@@ -56,6 +55,16 @@ siunitx-style macros defined in `layouts/_default/_markup/render-passthrough.htm
 ## Callouts
 
 Use GitHub alert syntax (`> [!NOTE]`, `> [!WARNING]`), not shortcodes.
+
+Put the text on the lines below `> [!NOTE]`, never on the same line, and wrap the whole callout in Prettier
+ignore comments so Prettier doesn't join the type and text back onto one line:
+
+```markdown
+<!-- prettier-ignore-start -->
+> [!NOTE]
+> The text goes here, wrapped at 110 columns.
+<!-- prettier-ignore-end -->
+```
 
 ## Tags
 

@@ -9,8 +9,11 @@ tags:
 
 <img src="logo.png" alt="Cache APT Packages logo" width="64" height="64">
 
-> [!NOTE] This post may become out of date. See the project's
+<!-- prettier-ignore-start -->
+> [!NOTE]
+> This post may become out of date. See the project's
 > [README](https://github.com/awalsh128/cache-apt-pkgs-action/blob/main-2/README.md) for the latest.
+<!-- prettier-ignore-end -->
 
 Version 2 of [cache-apt-pkgs-action](https://github.com/awalsh128/cache-apt-pkgs-action) is in release
 candidate (`v2.0.0-rc.1`). It is a rewrite of the Bash version in TypeScript, and its inputs and outputs are
@@ -42,9 +45,11 @@ steps:
 Change `version` to start a fresh cache (e.g. after a runner image change). The action runs on `node24`, so
 self-hosted runners need a runner version that supports it. GitHub-hosted runners already do.
 
-> [!IMPORTANT] v2 has no floating `v2` tag, on purpose. A tag that moves lets a compromised release change
-> what your workflow runs. Pin an exact `v2.*.*` release or a full commit SHA. `@v1` and `@latest` still point
-> at v1.
+<!-- prettier-ignore-start -->
+> [!IMPORTANT]
+> v2 has no floating `v2` tag, on purpose. A tag that moves lets a compromised release change what your
+> workflow runs. Pin an exact `v2.*.*` release or a full commit SHA. `@v1` and `@latest` still point at v1.
+<!-- prettier-ignore-end -->
 
 ## What changed inside
 

@@ -11,8 +11,11 @@ tags:
 
 <img src="logo.png" alt="Regex Explain logo" width="64" height="64">
 
-> [!NOTE] This post may become out of date. See the project's
+<!-- prettier-ignore-start -->
+> [!NOTE]
+> This post may become out of date. See the project's
 > [README](https://github.com/awalsh128/vscode-regex-explain/blob/main/README.md) for the latest.
+<!-- prettier-ignore-end -->
 
 I released [Regex Explain](https://github.com/awalsh128/vscode-regex-explain), a VS Code extension that
 explains a regular expression in plain English, and warns about patterns that can backtrack catastrophically
