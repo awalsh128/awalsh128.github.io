@@ -50,6 +50,9 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: python3 scripts/update_projects.py
+      # Fail when a copied Blowfish layout drifts from the theme (docs/site.md, "Year grouping").
+      - name: Check theme overrides
+        run: scripts/check_theme_overrides.sh
       - name: Build
         env:
           HUGO_ENVIRONMENT: production

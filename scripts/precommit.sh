@@ -12,7 +12,8 @@
 # 3. Refresh the homepage's popular posts from the newest Search Console export in ~/Downloads.
 # 4. Refresh the resume page's LinkedIn recommendations from the newest LinkedIn data export in ~/Downloads.
 # 5. Regenerate content/resume.pdf when the resume changes.
-# 6. Rebuild post download archives (e.g. scaffold.tar.gz) when the folder they're built from changes.
+# 6. Check the copied Blowfish layouts against the theme when go.mod or go.sum changes.
+# 7. Rebuild post download archives (e.g. scaffold.tar.gz) when the folder they're built from changes.
 
 # shellcheck source=common.sh
 . "$(dirname "${BASH_SOURCE[0]}")/common.sh"
@@ -67,6 +68,11 @@ if ! git -C "${root}" diff --cached --quiet -- "${resume_sources[@]}"; then
   else
     info "skipping PDF resume; commit continues with the existing ${pdf}."
   fi
+fi
+
+# A Blowfish bump can change the layouts that layouts/_default/list.html and term.html copy; check them then.
+if ! git -C "${root}" diff --cached --quiet -- go.mod go.sum; then
+  "${root}/scripts/check_theme_overrides.sh" || fail "re-copy the changed Blowfish layouts (docs/site.md)."
 fi
 
 # Rebuild a post's download archive when files in the folder it's built from are part of the commit.

@@ -13,6 +13,8 @@ homepage keeps `assets/img/header.jpg`.
 The posts list and tag pages group posts by year of `lastmod`, falling back to the date, so an updated post
 shows under the year it was updated. `layouts/_default/list.html` and `term.html` are copies of Blowfish's
 with `GroupByDate` changed to `GroupByLastmod`; re-copy them when upgrading the theme.
+`scripts/check_theme_overrides.sh` fails when they differ from the theme's files beyond that one change; the
+deploy workflow and the pre-commit hook (when `go.mod` or `go.sum` is staged) run it.
 
 ## CSS
 
