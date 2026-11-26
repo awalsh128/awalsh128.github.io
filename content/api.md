@@ -13,6 +13,7 @@ matches the version you install.
 
 - [**fluentcpp**](https://www.awalsh128.com/fluentcpp/) - Statically typed, fluent query functions for C++20 containers that are easy to discover through auto-complete.
 - [**ts-apt**](https://www.awalsh128.com/ts-apt/) - TypeScript library for APT and APT-fast package operations on Debian-based Linux systems. Published on [npm](https://www.npmjs.com/package/ts-apt).
+- [**vscode-regex-explain**](https://www.awalsh128.com/vscode-regex-explain/) - Explain regexes in plain English and warn about catastrophic backtracking: an npm library and a VS Code extension. Published on [npm](https://www.npmjs.com/package/regex-explain).
 - [**winston-host-adapters**](https://www.awalsh128.com/winston-host-adapters/) - Winston loggers for VS Code extensions, GitHub Actions workflows, or any host you give a small adapter to. Published on npm as [@awalsh128/winston-host](https://www.npmjs.com/package/@awalsh128/winston-host), [@awalsh128/winston-vscode](https://www.npmjs.com/package/@awalsh128/winston-vscode), [@awalsh128/winston-github-actions](https://www.npmjs.com/package/@awalsh128/winston-github-actions).
 
 <!-- apis:end -->
