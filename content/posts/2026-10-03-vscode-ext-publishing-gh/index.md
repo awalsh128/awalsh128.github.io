@@ -5,7 +5,6 @@ tags:
   # keep-sorted start
   - GitHub
   - Open Source
-  - TypeScript
   - VS Code
   # keep-sorted end
 ---
@@ -25,8 +24,11 @@ What I wanted was:
 - No stored registry tokens, using trusted publishing for both the Marketplace and Open VSX.
 - A bundled VSIX, with CI checking what ships in it.
 
-\*Replace `my-publisher`, `my-extension`, and `owner/repo` with your own names throughout, **or fill them in
-below and the post (including the code) will use them.**
+<!-- prettier-ignore-start -->
+> [!IMPORTANT]
+> Replace `my-publisher`, `my-extension`, and `owner/repo` with your own names throughout, or fill them in
+> below and the post (including the code) will use them.**
+<!-- prettier-ignore-end -->
 
 {{< placeholders "my-publisher|Publisher ID" "my-extension|Extension name" "owner/repo|GitHub repository" >}}
 
