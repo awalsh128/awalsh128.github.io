@@ -6,7 +6,7 @@ Instructions for AI agents (Claude Code, Codex, Copilot, Cursor, ...) working in
 ## Repository conventions
 
 - Hugo site with the Blowfish theme. On a fresh clone run `scripts/setup_dev.sh`, then build with
-  `.tools/hugo --gc` and preview with `.tools/hugo server`.
+  `.tools/hugo --gc` and preview with `scripts/preview.sh`.
 - Posts are `content/posts/YYYY-MM-DD-slug.md`; the filename sets the date and the `/slug/` URL. Don't rename
   existing posts, since that breaks published URLs and Disqus threads.
 - A post whose slug matches one of my repositories that has a GitHub Pages site sets `slug: <repo>-release`,
@@ -52,7 +52,7 @@ stash.
   `../awalsh128.github.io.private`), under `posts/` with the same name a post would get here
   (`posts/YYYY-MM-DD-slug/index.md` for a bundle). Commit them there.
 - Preview drafts with the local-only `hugo.local.toml` (listed in `.git/info/exclude`, never committed):
-  `.tools/hugo server -D --config hugo.toml,hugo.local.toml`. If it is missing, recreate it from the private
+  `scripts/preview.sh -D --config hugo.toml,hugo.local.toml`. If it is missing, recreate it from the private
   repo's README ("Serve the drafts"). Production builds don't read it, so drafts can't be published by
   accident.
 - If you find a draft in this repo, move it to the private repo and remove it here.

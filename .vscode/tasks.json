@@ -5,12 +5,8 @@
       "label": "Hugo: serve with drafts",
       "detail": "Live preview at http://localhost:1313/; open it with 'Simple Browser: Show'",
       "type": "shell",
-      "command": "${workspaceFolder}/.tools/hugo",
-      "args": [
-        "server",
-        "-D",
-        "--navigateToChanged"
-      ],
+      "command": "${workspaceFolder}/scripts/preview.sh",
+      "args": ["-D", "--navigateToChanged"],
       "isBackground": true,
       "group": {
         "kind": "build",

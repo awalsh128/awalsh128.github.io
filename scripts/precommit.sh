@@ -3,9 +3,8 @@
 # files.
 #
 # Usage: scripts/precommit.sh [--local]
-#   --local  Update files in the working tree only. It makes no gh calls and no git commands, and stages
-#            nothing. It skips the GitHub-backed syncs (homepage projects, API page) and the PDF and archive
-#            rebuilds, since those depend on what is staged.
+#   --local  Update files in the working tree only: no git commands, nothing staged. It skips the API page
+#            sync and the PDF and archive rebuilds, which depend on what is staged.
 #
 # 1. Sync the homepage project list and project logos with the REPOS list in update_projects.py.
 # 2. Sync the API page with the repositories that publish API docs (update_apis.py).
@@ -40,12 +39,12 @@ run_sync() {
   fi
 }
 
-# The GitHub-backed syncs call gh, so --local leaves them out.
+# Without gh or a network this keeps the list and logos already in the working tree.
+run_sync "homepage projects" update_projects.py content/_index.md assets/img/projects
 if [ "${local_only}" -eq 0 ]; then
-  run_sync "homepage projects" update_projects.py content/_index.md assets/img/projects
   run_sync "API page" update_apis.py content/api.md
 else
-  info "--local: skipping the GitHub-backed syncs (homepage projects, API page)."
+  info "--local: skipping the API page sync."
 fi
 # Search clicks that rank the homepage's popular posts. Without a Search Console export it changes nothing.
 run_sync "popular posts" update_popular_posts.py data/popular_posts.json
