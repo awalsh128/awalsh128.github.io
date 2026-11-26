@@ -79,9 +79,9 @@ the language(s) shown in code, then the platform, then the topic:
 
 - Languages: `C`, `C#`, `C++`, `Java`, `PowerShell`, `Python`, `TypeScript`.
 - Platforms: `.NET`, `Android`, `Entity Framework`, `GitHub`, `VS Code`.
-- Topics: `Algorithms`, `Build Systems`, `Career`, `Compression`, `Computer Science`, `Concurrency`,
-  `Data Acquisition`, `Databases`, `Logging`, `Open Source` (project releases), `Performance`, `Reliability`,
-  `Security`, `Software Design`, `Static Analysis`, `System Administration`, `Testing`.
+- Topics: `Agentic AI`, `Algorithms`, `Build Systems`, `Career`, `Compression`, `Computer Science`,
+  `Concurrency`, `Data Acquisition`, `Databases`, `Logging`, `Open Source` (project releases), `Performance`,
+  `Reliability`, `Security`, `Software Design`, `Static Analysis`, `System Administration`, `Testing`.
 - Cross-posting: `Article` marks a post to republish on lykotek.com. Hugo exports these posts to
   `/tags/article/lykotek.json` (`layouts/_default/term.lykotekexport.json`), and lykotek.com's sync script
   copies them from the live site. It doesn't count toward the 1-4 tags. Everything in a tagged post also

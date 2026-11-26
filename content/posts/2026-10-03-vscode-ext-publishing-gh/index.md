@@ -27,7 +27,7 @@ What I wanted was:
 <!-- prettier-ignore-start -->
 > [!IMPORTANT]
 > Replace `my-publisher`, `my-extension`, and `owner/repo` with your own names throughout, or fill them in
-> below and the post (including the code) will use them.**
+> below and the post (including the code) will use them.
 <!-- prettier-ignore-end -->
 
 {{< placeholders "my-publisher|Publisher ID" "my-extension|Extension name" "owner/repo|GitHub repository" >}}
