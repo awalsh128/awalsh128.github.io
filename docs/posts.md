@@ -4,13 +4,19 @@ Authoring conventions for `content/posts/`.
 
 ## Front matter
 
-Use Hugo and Blowfish keys only: `title`, `summary`, `tags`, and `lastmod` for the last meaningful update. The
-date comes from the file or folder name, so a `date` key is optional and doesn't override it. Leave out keys
-from the old Jekyll and Blogger site (`author`, `toc`, `toc_icon`, `thumbnail`, `modified_time`,
-`last_modified_at`, `blogger_*`); nothing reads them. The table of contents is on for every post via
-`showTableOfContents` in `hugo.toml`.
+Use Hugo and Blowfish keys only: `title`, `summary`, `tags`, `lastmod` for the last meaningful update, and
+`slug` for a release post (below). The date comes from the file or folder name, so a `date` key is optional
+and doesn't override it. Leave out keys from the old Jekyll and Blogger site (`author`, `toc`, `toc_icon`,
+`thumbnail`, `modified_time`, `last_modified_at`, `blogger_*`); nothing reads them. The table of contents is
+on for every post via `showTableOfContents` in `hugo.toml`.
 
 Pinning a post to the top of the homepage is covered in AGENTS.md ("Pinned posts").
+
+## Release posts
+
+GitHub Pages serves a repository's own site at `/<repo>/`, ahead of any page here, so a post named after such
+a repository can't be reached. Give it `slug: <repo>-release` in its front matter and keep the filename. Check
+whether the repository has a site with `gh api repos/awalsh128/<repo> --jq .has_pages`.
 
 ## Page bundles
 

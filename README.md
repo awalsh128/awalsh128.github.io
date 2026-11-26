@@ -19,9 +19,12 @@ It installs Hugo extended into `.tools/` (git-ignored) at the same version CI us
 ## Local preview
 
 ```sh
-.tools/hugo server   # http://localhost:1313, live reload
+scripts/preview.sh   # http://localhost:1313, live reload
 .tools/hugo --gc     # build into public/
 ```
+
+`preview.sh` first refreshes the homepage project list through `gh`, and uses the local list if it can't. It
+passes its arguments to `hugo server`.
 
 ## Layout
 
@@ -56,7 +59,7 @@ The Projects list in `content/_index.md` is built from the `REPOS` list in `scri
 entry is checked to exist) and rendered in a collapsed block between the `projects:start` and `projects:end`
 markers. A pre-commit hook regenerates it with `scripts/update_projects.py` (via an authenticated `gh` CLI)
 and stages the result. The hook's steps live in `scripts/precommit.sh`; `scripts/precommit.sh --local`
-refreshes the generated files in the working tree without calling `gh` or touching git, so nothing is staged.
+refreshes the generated files in the working tree without touching git, so nothing is staged.
 `scripts/setup_dev.sh` enables the hook. To preview the list without writing:
 
 ```sh

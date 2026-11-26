@@ -77,6 +77,8 @@ def sync_logos(repos: list[dict], overrides: dict[str, str], logo_dir: Path = LO
             logo = fetch_logo(slug, overrides.get(name))
         except (subprocess.CalledProcessError, KeyError, ValueError, OSError) as e:
             print(f"update_projects: no logo for {slug}: {e}", file=sys.stderr)
+            # A failed fetch (offline, rate limit) keeps the logo already here instead of removing it as stale.
+            keep.update(path.name for path in logo_dir.glob(f"{name}.*"))
             continue
         if not logo:
             continue
