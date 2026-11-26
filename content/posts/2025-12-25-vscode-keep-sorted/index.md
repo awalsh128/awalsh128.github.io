@@ -5,6 +5,7 @@ tags:
   - VS Code
   - TypeScript
   - Open Source
+  - Agentic AI
 ---
 
 <img src="logo.png" alt="Keep Sorted logo" width="64" height="64">

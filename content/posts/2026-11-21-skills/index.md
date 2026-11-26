@@ -4,6 +4,7 @@ summary:
   "Installable skills that apply one set of conventions to READMEs, CI workflows, TypeScript and tests."
 tags:
   - Open Source
+  - Agentic AI
 ---
 
 <img src="logo.svg" alt="Agent Skills logo" width="64" height="64">
