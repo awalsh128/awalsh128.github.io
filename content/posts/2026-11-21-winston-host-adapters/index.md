@@ -11,14 +11,20 @@ tags:
 
 <img src="logo.png" alt="Winston host adapters logo" width="64" height="64">
 
-> [!NOTE] This post may become out of date. See the project's
+<!-- prettier-ignore-start -->
+> [!NOTE]
+> This post may become out of date. See the project's
 > [README](https://github.com/awalsh128/winston-host-adapters/blob/main/README.md) for the latest.
+<!-- prettier-ignore-end -->
 
 I published [Winston Host Adapters](https://github.com/awalsh128/winston-host-adapters), a set of
 [Winston](https://github.com/winstonjs/winston) loggers for the places my code runs: VS Code extensions and
 GitHub Actions workflows. A host is anything else you give a small adapter to.
 
-> [!NOTE] This is an unofficial extension of Winston and is not affiliated with the Winston project.
+<!-- prettier-ignore-start -->
+> [!NOTE]
+> This is an unofficial extension of Winston and is not affiliated with the Winston project.
+<!-- prettier-ignore-end -->
 
 While developing GitHub actions, NPM based libraries, and VSCode extensions, there were certain features that
 I kept replicating across my projects (e.g. file references in log lines, lazy log evaluation for expensive

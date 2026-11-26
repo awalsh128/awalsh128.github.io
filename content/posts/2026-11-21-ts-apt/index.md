@@ -8,8 +8,11 @@ tags:
 
 <img src="logo.png" alt="ts-apt logo" width="64" height="64">
 
-> [!NOTE] This post may become out of date. See the project's
+<!-- prettier-ignore-start -->
+> [!NOTE]
+> This post may become out of date. See the project's
 > [README](https://github.com/awalsh128/ts-apt/blob/main/README.md) for the latest.
+<!-- prettier-ignore-end -->
 
 I released [ts-apt](https://github.com/awalsh128/ts-apt), a TypeScript library for APT package operations on
 Debian-based Linux systems. It works with the standard APT binaries and with
@@ -47,7 +50,10 @@ const installed = await manager.listInstalled();
 console.log(searchResults.length, installed.length);
 ```
 
-> [!NOTE] Mutating operations need `sudo`. If the running user doesn't have it, those calls fail.
+<!-- prettier-ignore-start -->
+> [!NOTE]
+> Mutating operations need `sudo`. If the running user doesn't have it, those calls fail.
+<!-- prettier-ignore-end -->
 
 ## Testing
 

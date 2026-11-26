@@ -24,10 +24,12 @@ The layout of this post will follow:
 - Define the types used to communicate the memory semantics involved.
 - Walk through examples, styles and use of the different types described.
 
-> [!WARNING] We will tend to generalize ideas and lack preciseness in some areas. This is intentional to keep
-> the reader on track. For example, I will not point out memory nuance, or undefined behavior treatments from
-> different compilers. Also, it is assumed that you already understand what pointers, const and references
-> are.
+<!-- prettier-ignore-start -->
+> [!WARNING]
+> We will tend to generalize ideas and lack preciseness in some areas. This is intentional to keep the reader
+> on track. For example, I will not point out memory nuance, or undefined behavior treatments from different
+> compilers. Also, it is assumed that you already understand what pointers, const and references are.
+<!-- prettier-ignore-end -->
 
 ## The Literal Approach (AKA Wrong Approach)
 
@@ -112,8 +114,11 @@ void Foo() {
 The object lifetime is tied to the declaration of an instance and the explicit deallocation of the instance
 ([see examples](http://www.cplusplus.com/doc/tutorial/dynamic/)).
 
-> [!WARNING] Missed deallocation can results in Out of Memory (OOM) errors. This is one of the most dangerous
-> durations since the [de]allocation is controlled by the dev.
+<!-- prettier-ignore-start -->
+> [!WARNING]
+> Missed deallocation can results in Out of Memory (OOM) errors. This is one of the most dangerous durations
+> since the [de]allocation is controlled by the dev.
+<!-- prettier-ignore-end -->
 
 ```cpp
 void Foo(Object* o) {
@@ -218,11 +223,14 @@ void Foo(const int x) {
 
 ### References &amp; Pointers
 
-> [!WARNING] Don't confuse C# reference types with C++ references. In computer science it is defined as a
-> [value that indirectly accesses a particular datum](<https://en.wikipedia.org/wiki/Reference_(computer_science)>).
-> C++ narrows this definition to a
-> [specific datatype implementation](<https://en.wikipedia.org/wiki/Reference_(C%2B%2B)>) using the `&`
-> operator, whereas the general definition could refer to pointers as well.
+<!-- prettier-ignore-start -->
+> [!WARNING]
+> Don't confuse C# reference types with C++ references. In computer science it is defined as a [value that
+> indirectly accesses a particular datum](<https://en.wikipedia.org/wiki/Reference_(computer_science)>). C++
+> narrows this definition to a [specific datatype
+> implementation](<https://en.wikipedia.org/wiki/Reference_(C%2B%2B)>) using the `&` operator, whereas the
+> general definition could refer to pointers as well.
+<!-- prettier-ignore-end -->
 
 ```cpp
 void Foo() {
@@ -476,9 +484,12 @@ void Foo() {
 
 Below are some different ways to think about how to provide your signatures and what they convey.
 
-> [!WARNING] Note in each section how pointer can be ambiguous and possibly result in multiple ownership. Most
-> of the time you never really want two objects holding on to the same pointer unless they are well
-> coordinated. If one deletes the pointer you will get a segmentation fault upon further access.
+<!-- prettier-ignore-start -->
+> [!WARNING]
+> Note in each section how pointer can be ambiguous and possibly result in multiple ownership. Most of the
+> time you never really want two objects holding on to the same pointer unless they are well coordinated. If
+> one deletes the pointer you will get a segmentation fault upon further access.
+<!-- prettier-ignore-end -->
 
 ### Inputs
 
@@ -530,8 +541,11 @@ void Foo(int& x); // Read and write reference to x.
 void Foo(int* x); // Read and write of x from pointer.
 ```
 
-> [!NOTE] There is nothing inherently bad with having outputs as arguments but whenever possible it is better
-> to communicate it on the return. See the Readability section below for more information and cases.
+<!-- prettier-ignore-start -->
+> [!NOTE]
+> There is nothing inherently bad with having outputs as arguments but whenever possible it is better to
+> communicate it on the return. See the Readability section below for more information and cases.
+<!-- prettier-ignore-end -->
 
 #### Readability
 

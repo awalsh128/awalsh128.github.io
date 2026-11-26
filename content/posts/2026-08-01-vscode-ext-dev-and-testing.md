@@ -79,9 +79,12 @@ The code below comes from my extension, so a few values are specific to it. Swap
 - `log/keep-sorted.log` - the log file path inside the test workspace, excluded from the workspace snapshot in
   `suite/index.ts`.
 
-> [!NOTE] Per-test logging assumes your extension writes its log to a file whose path comes from a workspace
-> setting. My test workspace's `.vscode/settings.json` has `"keep-sorted.logFilepath": "log/keep-sorted.log"`.
-> If your extension only logs to an output channel, drop `TestLogs` or add a file logging setting first.
+<!-- prettier-ignore-start -->
+> [!NOTE]
+> Per-test logging assumes your extension writes its log to a file whose path comes from a workspace setting.
+> My test workspace's `.vscode/settings.json` has `"keep-sorted.logFilepath": "log/keep-sorted.log"`. If your
+> extension only logs to an output channel, drop `TestLogs` or add a file logging setting first.
+<!-- prettier-ignore-end -->
 
 ## The Code
 
@@ -466,9 +469,12 @@ describe("extension", () => {
 });
 ```
 
-> [!WARNING] A fixed `delay` is the simplest way to wait on async work, but it can get flaky on slow CI
-> machines. If that happens, poll for the expected state with a timeout or wait on an event like
+<!-- prettier-ignore-start -->
+> [!WARNING]
+> A fixed `delay` is the simplest way to wait on async work, but it can get flaky on slow CI machines. If that
+> happens, poll for the expected state with a timeout or wait on an event like
 > `vscode.languages.onDidChangeDiagnostics` instead.
+<!-- prettier-ignore-end -->
 
 ### Mutating Files
 
