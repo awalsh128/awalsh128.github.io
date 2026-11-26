@@ -1,5 +1,6 @@
 ---
 title: Winston Host Adapters
+slug: winston-host-adapters-release
 summary:
   "Winston loggers for VS Code extensions and GitHub Actions, plus a small interface for any other host."
 tags:

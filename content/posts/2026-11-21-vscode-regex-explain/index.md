@@ -1,5 +1,6 @@
 ---
 title: Regex Explain for VS Code
+slug: vscode-regex-explain-release
 summary:
   "Explain a regex in plain English on hover, and get a warning when it can backtrack catastrophically."
 tags:

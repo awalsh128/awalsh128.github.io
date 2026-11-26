@@ -1,5 +1,6 @@
 ---
 title: ts-apt, an APT Library for TypeScript
+slug: ts-apt-release
 summary: "A typed TypeScript library for APT and apt-fast operations on Debian-based Linux systems."
 tags:
   - TypeScript

@@ -9,6 +9,8 @@ Instructions for AI agents (Claude Code, Codex, Copilot, Cursor, ...) working in
   `.tools/hugo --gc` and preview with `.tools/hugo server`.
 - Posts are `content/posts/YYYY-MM-DD-slug.md`; the filename sets the date and the `/slug/` URL. Don't rename
   existing posts, since that breaks published URLs and Disqus threads.
+- A post whose slug matches one of my repositories that has a GitHub Pages site sets `slug: <repo>-release`,
+  or the repo's site takes over its URL ([docs/posts.md](docs/posts.md), "Release posts").
 - Post images go in a page bundle (`content/posts/YYYY-MM-DD-slug/index.md`), never under `static/`.
 - Generated files are never edited by hand: the project list in `content/_index.md`, the library list in
   `content/api.md`, `content/resume.pdf`, `data/linkedin_recommendations.json`, `data/popular_posts.json`, and
