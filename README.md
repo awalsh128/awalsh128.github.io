@@ -88,4 +88,4 @@ hugo mod get -u github.com/nunocoracao/blowfish/v2
 
 ## Deployment
 
-Pushing to `master` runs `.github/workflows/hugo.yml`, which builds and deploys to GitHub Pages.
+Pushing to `main` runs `.github/workflows/hugo.yml`, which builds and deploys to GitHub Pages.

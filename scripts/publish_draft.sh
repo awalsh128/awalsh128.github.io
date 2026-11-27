@@ -157,6 +157,6 @@ for name in "${ready[@]}"; do
 done
 
 branch="$(git -C "${root}" branch --show-current)"
-[[ "${branch}" != "master" ]] || info "you are on master: create a branch before committing"
+[[ "${branch}" != "main" ]] || info "you are on main: create a branch before committing"
 info "next: commit the deletions in ${drafts_repo}, then commit the new posts here and open a PR"
 [[ ${blocked} -eq 0 ]] || exit 1
